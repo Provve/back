@@ -1,0 +1,866 @@
+openapi: "3.1.0"
+info:
+  title: Provve API
+  version: "beta"
+  description: Операции, требующие идентификатор аккаунта, извлекают идентификатор из токена авторизации.
+servers:
+  - url: http://localhost/api/v1
+  - url: https://provve.tech/api/v1
+tags:
+  - name: accounts
+  - name: notifications
+  - name: skills
+  - name: votes
+  - name: sessions
+
+paths:
+  /accounts:
+    post:
+      tags:
+        - accounts
+      summary: Регистрация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                email:
+                  type: string
+                  description: Для восстановления пароля и рассылок
+                password:
+                  type: string
+                consent_personal_data:
+                  type: boolean
+                  description: Согласен ли пользователь на обработку персональных данных
+                username:
+                  type: string
+                  description: Отображаемое имя профиля
+      responses:
+        '200':
+          description: Успешная регистрация
+        '409':
+          description: Пользователь уже существует
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+      security:
+        - bearerAuth: [ ]
+
+  /accounts/auth:
+    get:
+      tags:
+        - accounts
+      summary: Аутентификация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+              required: [ login, password ]
+      responses:
+        '200':
+          description: Успешная аутентификация
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+        '403':
+          description: Аккаунт существует, но данные неверны
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /accounts/upgrade:
+    get:
+      tags:
+        - accounts
+      summary: Получение статуса платного аккаунта
+      responses:
+        '200':
+          description: Пользователь уже получил
+        '400':
+          description: Платёжный шлюз недоступен
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+        '502':
+          description: Платёжный шлюз уведомил Систему об неуспешной оплате
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+      security:
+        - bearerAuth: [ ]
+
+  /accounts/email:
+    put:
+      summary: Изменение почты аккаунта
+      tags:
+        - accounts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Идентификатор аккаунта
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  description: новая почта аккаунта
+      responses:
+        '200':
+          description: Почта аккаунта успешно изменена
+      security:
+        - bearerAuth: [ ]
+
+  /accounts/password:
+    put:
+      summary: Обновление пароля аккаунта
+      tags:
+        - accounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - reset_code
+                - new_password
+                - login
+              properties:
+                reset_code:
+                  type: string
+                  description: токен для сброса пароля, отправленный пользователю на почту
+                new_password:
+                  type: string
+                login:
+                  type: string
+                  description: логин аккаунта, пароль от которого надо сбросить
+      responses:
+        '200':
+          description: Пароль успешно обновлён
+  /accounts/reset-code:
+    get:
+      summary: Запросить код сброса парроля на email
+      tags:
+        - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Код отправлен на email
+        '404':
+          description: На почту не зарегистрирован ни один аккаунт
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /accounts/avatar:
+    put:
+      summary: Обновление аватара аккаунта
+      tags:
+        - accounts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор аккаунта
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - avatar
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Аватар успешно обновлён
+      security:
+        - bearerAuth: [ ]
+
+  /accounts/session:
+    post:
+      tags:
+        - sessions
+      summary: Создать сессию
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                exam_id:
+                  type: string
+                  format: uuid
+                  description: Идентификатор экзамена
+      responses:
+        '201':
+          description: Сессия успешно создана для пользователя
+        '200':
+          description: Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+        '401':
+          description: MAC Антифрода не проходит соответствие
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+        '409':
+          description: Дважды пройти экзамен нельзя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+      security:
+        - bearerAuth: [ ]
+    delete:
+      summary: Закрыть сессию
+      tags:
+        - sessions
+      responses:
+        '200':
+          description: Сессия закрыта
+      security:
+        - bearerAuth: [ ]
+
+  /accounts/session/observation:
+    post:
+      summary: Загрузить результат наблюдения
+      tags:
+        - sessions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "antifraud-api.yaml#/components/schemas/Observation"
+      responses:
+        '200':
+          description: Данные наблюдения загружены
+      security:
+        - bearerAuth: [ ]
+
+  /skills:
+    get:
+      tags:
+        - skills
+      summary: Получение списка навыков
+      parameters:
+        - $ref: "#/components/parameters/Pagination"
+        - $ref: "#/components/parameters/Filter"
+      responses:
+        '200':
+          description: Успешно получен список навыков
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Skill.response"
+
+  /skills/{skill_id}/exams:
+    get:
+      tags:
+        - skills
+      summary: Получение списка экзаменов по навыку
+      parameters:
+        - $ref: "#/components/parameters/Pagination"
+        - $ref: "#/components/parameters/Filter"
+      responses:
+        '200':
+          description: Успешно получен список экзаменов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exam.response"
+
+  /skills/{skill_id}/exams/{id}/solution:
+    post:
+      tags:
+        - skills
+      summary: Отправка решения экамена на проверку
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор экзамена, для которой отправляется решение
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                solution:
+                  type: string
+                  format: binary
+                  description: Архив с решением (загружается как файл)
+              required:
+                - solution
+      responses:
+        '202':
+          description: Решение успешно принято на проверку
+        '200':
+          description: Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+        '403':
+          description: Нет активной сессии
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+      security:
+        - bearerAuth: [ ]
+
+  /skills/{skill_id}/results:
+    get:
+      summary: Получение результатов по экзаменам навыка
+      tags:
+        - skills
+      parameters:
+        - $ref: "#/components/parameters/Pagination"
+        - $ref: "#/components/parameters/Filter"
+      responses:
+        '200':
+          description: Список результатов успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Result.response"
+      security:
+        - bearerAuth: [ ]
+
+  /skills/{skill_id}/exams/{exam_id}/result:
+    get:
+      summary: Посмотреть результат
+      tags:
+        - skills
+      responses:
+        '200':
+          description: Результат получен
+        '403':
+          description: Уровень аккаунта не позволяет
+        '404':
+          description: Результат не найден (был удалён или неверная ссылка)
+      security:
+        - bearerAuth: [ ]
+
+  /votes:
+    get:
+      summary: Получить список голосований
+      tags:
+        - votes
+      parameters:
+        - $ref: "#/components/parameters/Pagination"
+        - $ref: "#/components/parameters/Filter"
+      responses:
+        '200':
+          description: Получены голосования
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vote.response"
+    post:
+      tags:
+        - votes
+      summary: Создать голосование
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/SkillAddVote'
+                - $ref: '#/components/schemas/SkillDelVote'
+                - $ref: '#/components/schemas/ExamAddVote'
+              discriminator:
+                propertyName: action
+                mapping:
+                  add_skill: '#/components/schemas/SkillAddVote'
+                  delete_skill: '#/components/schemas/SkillDelVote'
+                  add_exam: '#/components/schemas/ExamAddVote'
+      responses:
+        '200':
+          description: Голосование успешно создано
+        '409':
+          description: Объект голосования уже существует
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+      security:
+        - bearerAuth: [ ]
+
+  /votes/{id}/voting:
+    post:
+      tags:
+        - votes
+      summary: Проголосовать
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор голоса, за который отдаётся голос
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reaction:
+                  type: string
+                  enum: [ +1, -1 ]
+                  description: |
+                    +1 — за,
+                    -1 — против
+              required:
+                - reaction
+      responses:
+        '200':
+          description: Голос учтен
+        '403':
+          description: Авторам запрещено голосовать
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+      security:
+        - bearerAuth: [ ]
+
+  /votes/{id}/comments:
+    get:
+      summary: Получить комментарии к голосованию
+      tags:
+        - votes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор голосования
+      responses:
+        '200':
+          description: Получен список комментариев
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment.response"
+    post:
+      summary: Добавление комментария к голосованию
+      tags:
+        - votes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор голосования
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - comment
+              properties:
+                comment:
+                  type: string
+                  description: содержимое
+      responses:
+        '200':
+          description: Комментарий успешно добавлен
+      security:
+        - bearerAuth: [ ]
+
+  /votes/{vote_id}/comments/{comment_id}:
+    put:
+      summary: Редактирование комментария к голосованию
+      tags:
+        - votes
+      parameters:
+        - name: vote_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор голосования
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор комментария
+      responses:
+        '200':
+          description: Комментарий успешно отредактирован
+        '401':
+          description: Вы не автор комментария!
+      security:
+        - bearerAuth: [ ]
+    delete:
+      summary: Удаление комментария к голосованию
+      tags:
+        - votes
+      parameters:
+        - name: vote_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор голосования
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор комментария
+      responses:
+        '200':
+          description: Комментарий успешно удалён
+        '401':
+          description: Вы не автор комментария!
+      security:
+        - bearerAuth: [ ]
+
+  /notifications:
+    get:
+      summary: Получение уведомлений
+      tags:
+        - notifications
+      parameters:
+        - $ref: "#/components/parameters/Pagination"
+      responses:
+        '200':
+          description: Список уведомлений успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+      security:
+        - bearerAuth: [ ]
+    delete:
+      summary: Пометить уведомления прочитанными
+      tags:
+        - notifications
+      responses:
+        '200':
+          description: Уведомления удалены
+      security:
+        - bearerAuth: [ ]
+
+  /antifraud-mac:
+    post:
+      summary: Передать MAC Антифрода
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "antifraud-api.yaml#/components/schemas/Mac"
+      responses:
+        '200':
+          description: MAC получен
+      security:
+        - bearerAuth: [ ]
+
+components:
+  parameters:
+    Filter:
+      name: filter
+      in: query
+      explode: true
+      schema:
+        $ref: "#/components/schemas/Filter"
+    Pagination:
+      name: pagination
+      in: query
+      required: true
+      explode: true
+      schema:
+        $ref: "#/components/schemas/Pagination"
+  schemas:
+    Filter:
+      type: object
+      properties:
+        field:
+          type: string
+          description: Название фильтруемого поля
+        predicate:
+          type: object
+          properties:
+            operator:
+              type: string
+              enum: [ NOT, EQ, NOT_EQ, AND, OR, LIKE ]
+              description: Применяемый оператор
+            value:
+              type: string
+              description: Правый операнд
+          required:
+            - operator
+            - value
+      required:
+        - field
+        - predicate
+    Pagination:
+      type: object
+      required:
+        - page
+        - size
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Номер страницы
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Количество элементов на странице
+
+    Skill.response:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Название навыка
+        vote_id:
+          type: string
+          format: uuid
+          description: ID голосования, в результате которого навык был добавлен в систему.
+      required:
+        - name
+        - vote_id
+    Exam.response:
+      type: object
+      properties:
+        name:
+          type: string
+        desc:
+          type: string
+        session:
+          type: string
+          format: uuid
+    Result.response:
+      type: object
+      properties:
+        exam_id:
+          type: string
+          format: uuid
+          description: ID экзамена, по которой получен результат
+        exam_name:
+          type: string
+          format: uuid
+          description: Название экзамена, по которой получен результат
+
+    Vote:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [ delete_skill, add_skill, add_exam ]
+        arguments:
+          type: string
+          description: Аргументы за совершение действия, предложенного в голосовании.
+    SkillAddVote:
+      allOf:
+        - $ref: '#/components/schemas/Vote'
+        - type: object
+          properties:
+            name:
+              type: string
+              description: Наименование навыка
+    SkillDelVote:
+      allOf:
+        - $ref: '#/components/schemas/Vote'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Идентификатор навыка
+    ExamAddVote:
+      allOf:
+        - $ref: '#/components/schemas/Vote'
+        - type: object
+          properties:
+            skill_id:
+              type: string
+              format: uuid
+              description: Идентификатор навыка, для проверки которого создан экзамен
+            name:
+              type: string
+              description: Название экзамена работы
+            arguments:
+              type: string
+              description: Пояснение для людей, почему эта экзамен важен
+            desc:
+              type: string
+              description: Финальная постановка задания для экзаменуемых
+            material:
+              type: string
+              format: binary
+              description: Архив проекта с автотестами (загружается как файл)
+            ignored_files:
+              type: array
+              items:
+                type: string
+              description: Список файлов, которые система исключит из решения пользователя
+            criterias:
+              type: array
+              items:
+                type: string
+              description: Подстроки, которые должны находиться в консоли, чтобы решение было признано верным
+            run_command:
+              type: string
+              description: Команда для запуска автотестов
+          required:
+            - skill_id
+            - exam_name
+            - desc
+            - material
+            - criterias
+            - run_command
+
+    Vote.response:
+      allOf:
+        - $ref: '#/components/schemas/Vote'
+        - type: object
+          properties:
+            votes:
+              type: object
+              description: Голоса
+              properties:
+                positive:
+                  type: integer
+                negative:
+                  type: integer
+            expire_at:
+              type: string
+              format: date-time
+              description: Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие.
+              example: '2025-12-31T23:59:59Z'
+
+    Comment.response:
+      type: object
+      properties:
+        author:
+          $ref: "#/components/schemas/Profile.response"
+          description: Автор комментария
+        comment:
+          type: string
+          description: Содержимое
+    Profile.response:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Id профиля
+        avatar_url:
+          type: string
+          description: URL на аватар профиля
+        username:
+          type: string
+          description: Отображаемое имя профиля
+
+    Notification:
+      type: object
+      description: Уведомление о событии в системе
+      properties:
+        level:
+          type: string
+          enum:
+            - error
+            - warning
+            - info
+        message:
+          type: string
+          description: Содержимое, может содержать разметку
+          examples:
+            - Идёт [голосование](/votes/1) за удаление
+            - Антифрод неподлинный
+        created_at:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
