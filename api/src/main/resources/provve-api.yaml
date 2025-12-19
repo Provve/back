@@ -776,27 +776,13 @@ components:
             material:
               type: string
               format: binary
-              description: Архив проекта с автотестами (загружается как файл)
-            ignored_files:
-              type: array
-              items:
-                type: string
-              description: Список файлов, которые система исключит из решения пользователя
-            criterias:
-              type: array
-              items:
-                type: string
-              description: Подстроки, которые должны находиться в консоли, чтобы решение было признано верным
-            run_command:
-              type: string
-              description: Команда для запуска автотестов
+              description: Архив проекта с автотестами
           required:
             - skill_id
-            - exam_name
+            - name
+            - arguments
             - desc
             - material
-            - criterias
-            - run_command
 
     Vote.response:
       allOf:
