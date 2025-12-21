@@ -283,7 +283,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "antifraud-api.yaml#/components/schemas/Observation"
+              $ref: "../../../build/specs/antifraud-api.yaml#/components/schemas/Observation"
       responses:
         '200':
           description: Данные наблюдения загружены
@@ -633,10 +633,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "antifraud-api.yaml#/components/schemas/Mac"
+              $ref: "../../../build/specs/antifraud-api.yaml#/components/schemas/Mac"
       responses:
         '200':
-          description: MAC получен
+          description: MAC передан
       security:
         - bearerAuth: [ ]
 
