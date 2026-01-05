@@ -280,16 +280,6 @@ paths:
       security:
         - bearerAuth: [ ]
 
-  /session:
-    delete:
-      summary: Закрыть сессию
-      tags:
-        - sessions
-      responses:
-        '200':
-          description: Сессия закрыта
-      security:
-        - bearerAuth: [ ]
   /observation:
     post:
       summary: Загрузить результат наблюдения
