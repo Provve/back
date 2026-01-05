@@ -51,7 +51,7 @@ paths:
       security:
         - bearerAuth: [ ]
 
-  /accounts/auth:
+  /auth:
     get:
       tags:
         - accounts
@@ -91,7 +91,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Notification"
 
-  /accounts/upgrade:
+  /upgrade:
     get:
       tags:
         - accounts
@@ -114,7 +114,7 @@ paths:
       security:
         - bearerAuth: [ ]
 
-  /accounts/email:
+  /email:
     put:
       summary: Изменение почты аккаунта
       tags:
@@ -144,7 +144,7 @@ paths:
       security:
         - bearerAuth: [ ]
 
-  /accounts/password:
+  /password:
     put:
       summary: Обновление пароля аккаунта
       tags:
@@ -171,7 +171,7 @@ paths:
       responses:
         '200':
           description: Пароль успешно обновлён
-  /accounts/reset-code:
+  /reset-code:
     get:
       summary: Запросить код сброса парроля на email
       tags:
@@ -194,7 +194,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Notification"
 
-  /accounts/avatar:
+  /avatar:
     put:
       summary: Обновление аватара аккаунта
       tags:
@@ -225,7 +225,20 @@ paths:
       security:
         - bearerAuth: [ ]
 
-  /accounts/session:
+  /session/stage-1:
+    get:
+      tags:
+        - sessions
+      description: Получить рандомныое значение для подтверждения подлинности Антифрода.
+      responses:
+        '200':
+          description: Случайное число, которое нужно зашифровать
+          content:
+            application/json:
+              schema:
+                type: integer
+
+  /session/stage-2:
     post:
       tags:
         - sessions
@@ -241,17 +254,19 @@ paths:
                   type: string
                   format: uuid
                   description: Идентификатор экзамена
+                cipher:
+                  type: integer
+                  description: Зашифрованное случайное число, полученное ранее.
       responses:
         '201':
           description: Сессия успешно создана для пользователя
-        '200':
-          description: Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Notification"
-        '401':
-          description: MAC Антифрода не проходит соответствие
+                $ref: "#/components/schemas/SessionCreatedNotification"
+
+        '200':
+          description: Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
           content:
             application/json:
               schema:
@@ -264,6 +279,8 @@ paths:
                 $ref: "#/components/schemas/Notification"
       security:
         - bearerAuth: [ ]
+
+  /session:
     delete:
       summary: Закрыть сессию
       tags:
@@ -273,8 +290,7 @@ paths:
           description: Сессия закрыта
       security:
         - bearerAuth: [ ]
-
-  /accounts/session/observation:
+  /observation:
     post:
       summary: Загрузить результат наблюдения
       tags:
@@ -324,7 +340,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Exam.response"
 
-  /skills/{skill_id}/exams/{id}/solution:
+  /exams/{id}/solution:
     post:
       tags:
         - skills
@@ -388,7 +404,7 @@ paths:
       security:
         - bearerAuth: [ ]
 
-  /skills/{skill_id}/exams/{exam_id}/result:
+  /exams/{exam_id}/result:
     get:
       summary: Посмотреть результат
       tags:
@@ -625,21 +641,6 @@ paths:
       security:
         - bearerAuth: [ ]
 
-  /antifraud-mac:
-    post:
-      summary: Передать MAC Антифрода
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "../../../build/specs/antifraud-api.yaml#/components/schemas/Mac"
-      responses:
-        '200':
-          description: MAC передан
-      security:
-        - bearerAuth: [ ]
-
 components:
   parameters:
     Filter:
@@ -845,6 +846,15 @@ components:
         created_at:
           type: string
           format: date-time
+
+    SessionCreatedNotification:
+      type: object
+      properties:
+        notification:
+          $ref: "#/components/schemas/Notification"
+        hash:
+          type: string
+          description: hash(notification)
 
   securitySchemes:
     bearerAuth:
