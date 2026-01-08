@@ -1,0 +1,37 @@
+package tech.provve.api.server;
+
+public class ApiResponse<T> {
+
+    private final T data;
+
+    private final int statusCode;
+
+    public ApiResponse() {
+        this(200, null);
+    }
+
+    public ApiResponse(int statusCode, T data) {
+        this.statusCode = statusCode;
+        this.data = data;
+    }
+
+    public ApiResponse(T data) {
+        this(200, data);
+    }
+
+    public ApiResponse(int statusCode) {
+        this(statusCode, null);
+    }
+
+    public boolean hasData() {
+        return data != null;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+}

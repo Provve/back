@@ -10,3 +10,6 @@ build/
 *.iws
 *.iml
 *.ipr
+
+.clj-kondo
+.lsp

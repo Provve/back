@@ -1,0 +1,88 @@
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        // добавить мой генератор в список доступных
+        classpath "tech.provve.openapi-generators:java-vertx-web-with-uuid:1.0"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openapi.generator' version '7.18.0'
+}
+
+configurations {
+    spec {
+        extendsFrom(compileOnly)
+        canBeResolved = true
+        description = "Pull resource files as artifacts from another projects"
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    spec libs.antifraud.api
+
+    implementation libs.bundles.vertx
+    implementation libs.jackson.databind
+    implementation libs.slf4j
+}
+
+// run 'build' task to get specs
+configurations.spec.resolvedConfiguration.resolvedArtifacts.each {
+    def specContent = it.file.getText(StandardCharsets.UTF_8 as String)
+    def destination = layout
+            .projectDirectory
+            .file("/build/specs/$it.name.$it.extension")
+            .asFile
+    Files.createDirectories(destination.parentFile.toPath())
+    destination.write(specContent)
+}
+
+
+tasks.openApiGenerate {
+    dependsOn(build)
+
+    generatorName = 'java-vertx-web-uuid'
+    inputSpec = "${rootProject.layout.projectDirectory}/provve-api.yaml"
+    outputDir = "${layout.projectDirectory}"
+    configOptions = [
+            apiPackage  : "tech.provve.api.server.generated",
+            modelPackage: "tech.provve.api.server.generated.dto"
+    ]
+    globalProperties = [
+            models: "",
+            apis  : "",
+    ]
+}
+
+processResources {
+    from("$rootProject.layout.projectDirectory") {
+        include 'provve-api.yaml'
+    }
+}
+
+
+run {
+    mainClass = 'io.vertx.core.Launcher'
+    args = ['start']
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'io.vertx.core.Launcher',
+                'Main-Verticle': 'tech.provve.api.server.HttpServerVerticle'
+        )
+    }
+}

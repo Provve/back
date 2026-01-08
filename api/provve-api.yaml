@@ -289,7 +289,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "../../../build/specs/antifraud-api.yaml#/components/schemas/Observation"
+              $ref: "server/build/specs/antifraud-api.yaml#/components/schemas/ObservationUpload"
       responses:
         '200':
           description: Данные наблюдения загружены
@@ -399,6 +399,14 @@ paths:
       summary: Посмотреть результат
       tags:
         - skills
+      parameters:
+        - name: exam_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор экзамена, результат по которому нужно получить
       responses:
         '200':
           description: Результат получен
@@ -809,6 +817,7 @@ components:
         id:
           type: string
           format: uuid
+          example: d8cbb1f0-f4eb-46b4-b1b6-c0a670544254
           description: Id профиля
         avatar_url:
           type: string
