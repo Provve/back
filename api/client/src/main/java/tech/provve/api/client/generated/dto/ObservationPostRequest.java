@@ -14,16 +14,13 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
-
 import tech.provve.api.client.generated.dto.ObservationPostRequestObservation;
 
 import com.google.gson.Gson;
@@ -39,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -48,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * ObservationPostRequest
@@ -58,7 +54,103 @@ public class ObservationPostRequest {
 
     public static final String SERIALIZED_NAME_OBSERVATION = "observation";
 
+    @SerializedName(SERIALIZED_NAME_OBSERVATION)
+    @javax.annotation.Nullable
+    private ObservationPostRequestObservation observation;
+
     public static final String SERIALIZED_NAME_MAC = "mac";
+
+    @SerializedName(SERIALIZED_NAME_MAC)
+    @javax.annotation.Nullable
+    private String mac;
+
+    public ObservationPostRequest() {
+    }
+
+    public ObservationPostRequest observation(@javax.annotation.Nullable ObservationPostRequestObservation observation) {
+        this.observation = observation;
+        return this;
+    }
+
+    /**
+     * Get observation
+     *
+     * @return observation
+     */
+    @javax.annotation.Nullable
+    public ObservationPostRequestObservation getObservation() {
+        return observation;
+    }
+
+    public void setObservation(@javax.annotation.Nullable ObservationPostRequestObservation observation) {
+        this.observation = observation;
+    }
+
+
+    public ObservationPostRequest mac(@javax.annotation.Nullable String mac) {
+        this.mac = mac;
+        return this;
+    }
+
+    /**
+     * Message Authentication Code, состоящее из Observation и шифрованного хеша Observation
+     *
+     * @return mac
+     */
+    @javax.annotation.Nullable
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(@javax.annotation.Nullable String mac) {
+        this.mac = mac;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ObservationPostRequest observationPostRequest = (ObservationPostRequest) o;
+        return Objects.equals(this.observation, observationPostRequest.observation) &&
+                Objects.equals(this.mac, observationPostRequest.mac);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(observation, mac);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ObservationPostRequest {\n");
+        sb.append("    observation: ")
+          .append(toIndentedString(observation))
+          .append("\n");
+        sb.append("    mac: ")
+          .append(toIndentedString(mac))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -70,17 +162,6 @@ public class ObservationPostRequest {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_OBSERVATION)
-    @javax.annotation.Nullable
-    private ObservationPostRequestObservation observation;
-
-    @SerializedName(SERIALIZED_NAME_MAC)
-    @javax.annotation.Nullable
-    private String mac;
-
-    public ObservationPostRequest() {
     }
 
     /**
@@ -131,110 +212,6 @@ public class ObservationPostRequest {
         }
     }
 
-    /**
-     * Create an instance of ObservationPostRequest given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of ObservationPostRequest
-     * @throws IOException if the JSON string is invalid with respect to ObservationPostRequest
-     */
-    public static ObservationPostRequest fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, ObservationPostRequest.class);
-    }
-
-    public ObservationPostRequest observation(@javax.annotation.Nullable ObservationPostRequestObservation observation) {
-        this.observation = observation;
-        return this;
-    }
-
-    /**
-     * Get observation
-     *
-     * @return observation
-     */
-    @javax.annotation.Nullable
-    public ObservationPostRequestObservation getObservation() {
-        return observation;
-    }
-
-    public void setObservation(@javax.annotation.Nullable ObservationPostRequestObservation observation) {
-        this.observation = observation;
-    }
-
-    public ObservationPostRequest mac(@javax.annotation.Nullable String mac) {
-        this.mac = mac;
-        return this;
-    }
-
-    /**
-     * Message Authentication Code, состоящее из Observation и шифрованного хеша Observation
-     *
-     * @return mac
-     */
-    @javax.annotation.Nullable
-    public String getMac() {
-        return mac;
-    }
-
-    public void setMac(@javax.annotation.Nullable String mac) {
-        this.mac = mac;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ObservationPostRequest observationPostRequest = (ObservationPostRequest) o;
-        return Objects.equals(this.observation, observationPostRequest.observation) &&
-                Objects.equals(this.mac, observationPostRequest.mac);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(observation, mac);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ObservationPostRequest {\n");
-        sb.append("    observation: ")
-          .append(toIndentedString(observation))
-          .append("\n");
-        sb.append("    mac: ")
-          .append(toIndentedString(mac))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of ObservationPostRequest to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -265,5 +242,26 @@ public class ObservationPostRequest {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of ObservationPostRequest given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of ObservationPostRequest
+     * @throws IOException if the JSON string is invalid with respect to ObservationPostRequest
+     */
+    public static ObservationPostRequest fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, ObservationPostRequest.class);
+    }
+
+    /**
+     * Convert an instance of ObservationPostRequest to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

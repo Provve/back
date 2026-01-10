@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -38,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -47,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * ExamResponse
@@ -57,9 +54,133 @@ public class ExamResponse {
 
     public static final String SERIALIZED_NAME_NAME = "name";
 
+    @SerializedName(SERIALIZED_NAME_NAME)
+    @javax.annotation.Nullable
+    private String name;
+
     public static final String SERIALIZED_NAME_DESC = "desc";
 
+    @SerializedName(SERIALIZED_NAME_DESC)
+    @javax.annotation.Nullable
+    private String desc;
+
     public static final String SERIALIZED_NAME_SESSION = "session";
+
+    @SerializedName(SERIALIZED_NAME_SESSION)
+    @javax.annotation.Nullable
+    private UUID session;
+
+    public ExamResponse() {
+    }
+
+    public ExamResponse name(@javax.annotation.Nullable String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return name
+     */
+    @javax.annotation.Nullable
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@javax.annotation.Nullable String name) {
+        this.name = name;
+    }
+
+
+    public ExamResponse desc(@javax.annotation.Nullable String desc) {
+        this.desc = desc;
+        return this;
+    }
+
+    /**
+     * Get desc
+     *
+     * @return desc
+     */
+    @javax.annotation.Nullable
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(@javax.annotation.Nullable String desc) {
+        this.desc = desc;
+    }
+
+
+    public ExamResponse session(@javax.annotation.Nullable UUID session) {
+        this.session = session;
+        return this;
+    }
+
+    /**
+     * Get session
+     *
+     * @return session
+     */
+    @javax.annotation.Nullable
+    public UUID getSession() {
+        return session;
+    }
+
+    public void setSession(@javax.annotation.Nullable UUID session) {
+        this.session = session;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ExamResponse examResponse = (ExamResponse) o;
+        return Objects.equals(this.name, examResponse.name) &&
+                Objects.equals(this.desc, examResponse.desc) &&
+                Objects.equals(this.session, examResponse.session);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, desc, session);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ExamResponse {\n");
+        sb.append("    name: ")
+          .append(toIndentedString(name))
+          .append("\n");
+        sb.append("    desc: ")
+          .append(toIndentedString(desc))
+          .append("\n");
+        sb.append("    session: ")
+          .append(toIndentedString(session))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -71,21 +192,6 @@ public class ExamResponse {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_NAME)
-    @javax.annotation.Nullable
-    private String name;
-
-    @SerializedName(SERIALIZED_NAME_DESC)
-    @javax.annotation.Nullable
-    private String desc;
-
-    @SerializedName(SERIALIZED_NAME_SESSION)
-    @javax.annotation.Nullable
-    private UUID session;
-
-    public ExamResponse() {
     }
 
     /**
@@ -151,133 +257,6 @@ public class ExamResponse {
         }
     }
 
-    /**
-     * Create an instance of ExamResponse given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of ExamResponse
-     * @throws IOException if the JSON string is invalid with respect to ExamResponse
-     */
-    public static ExamResponse fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, ExamResponse.class);
-    }
-
-    public ExamResponse name(@javax.annotation.Nullable String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return name
-     */
-    @javax.annotation.Nullable
-    public String getName() {
-        return name;
-    }
-
-    public void setName(@javax.annotation.Nullable String name) {
-        this.name = name;
-    }
-
-    public ExamResponse desc(@javax.annotation.Nullable String desc) {
-        this.desc = desc;
-        return this;
-    }
-
-    /**
-     * Get desc
-     *
-     * @return desc
-     */
-    @javax.annotation.Nullable
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(@javax.annotation.Nullable String desc) {
-        this.desc = desc;
-    }
-
-    public ExamResponse session(@javax.annotation.Nullable UUID session) {
-        this.session = session;
-        return this;
-    }
-
-    /**
-     * Get session
-     *
-     * @return session
-     */
-    @javax.annotation.Nullable
-    public UUID getSession() {
-        return session;
-    }
-
-    public void setSession(@javax.annotation.Nullable UUID session) {
-        this.session = session;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ExamResponse examResponse = (ExamResponse) o;
-        return Objects.equals(this.name, examResponse.name) &&
-                Objects.equals(this.desc, examResponse.desc) &&
-                Objects.equals(this.session, examResponse.session);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, desc, session);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ExamResponse {\n");
-        sb.append("    name: ")
-          .append(toIndentedString(name))
-          .append("\n");
-        sb.append("    desc: ")
-          .append(toIndentedString(desc))
-          .append("\n");
-        sb.append("    session: ")
-          .append(toIndentedString(session))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of ExamResponse to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -308,5 +287,26 @@ public class ExamResponse {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of ExamResponse given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of ExamResponse
+     * @throws IOException if the JSON string is invalid with respect to ExamResponse
+     */
+    public static ExamResponse fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, ExamResponse.class);
+    }
+
+    /**
+     * Convert an instance of ExamResponse to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+    return JSON.getGson().toJson(this);
+  }
 }
 

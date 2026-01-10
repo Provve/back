@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -38,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -47,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * ProfileResponse
@@ -57,9 +54,133 @@ public class ProfileResponse {
 
     public static final String SERIALIZED_NAME_ID = "id";
 
+    @SerializedName(SERIALIZED_NAME_ID)
+    @javax.annotation.Nullable
+    private UUID id;
+
     public static final String SERIALIZED_NAME_AVATAR_URL = "avatar_url";
 
+    @SerializedName(SERIALIZED_NAME_AVATAR_URL)
+    @javax.annotation.Nullable
+    private String avatarUrl;
+
     public static final String SERIALIZED_NAME_USERNAME = "username";
+
+    @SerializedName(SERIALIZED_NAME_USERNAME)
+    @javax.annotation.Nullable
+    private String username;
+
+    public ProfileResponse() {
+    }
+
+    public ProfileResponse id(@javax.annotation.Nullable UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Id профиля
+     *
+     * @return id
+     */
+    @javax.annotation.Nullable
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(@javax.annotation.Nullable UUID id) {
+        this.id = id;
+    }
+
+
+    public ProfileResponse avatarUrl(@javax.annotation.Nullable String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+        return this;
+    }
+
+    /**
+     * URL на аватар профиля
+     *
+     * @return avatarUrl
+     */
+    @javax.annotation.Nullable
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(@javax.annotation.Nullable String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+
+    public ProfileResponse username(@javax.annotation.Nullable String username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * Отображаемое имя профиля
+     *
+     * @return username
+     */
+    @javax.annotation.Nullable
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(@javax.annotation.Nullable String username) {
+        this.username = username;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ProfileResponse profileResponse = (ProfileResponse) o;
+        return Objects.equals(this.id, profileResponse.id) &&
+                Objects.equals(this.avatarUrl, profileResponse.avatarUrl) &&
+                Objects.equals(this.username, profileResponse.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, avatarUrl, username);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ProfileResponse {\n");
+        sb.append("    id: ")
+          .append(toIndentedString(id))
+          .append("\n");
+        sb.append("    avatarUrl: ")
+          .append(toIndentedString(avatarUrl))
+          .append("\n");
+        sb.append("    username: ")
+          .append(toIndentedString(username))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -71,21 +192,6 @@ public class ProfileResponse {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_ID)
-    @javax.annotation.Nullable
-    private UUID id;
-
-    @SerializedName(SERIALIZED_NAME_AVATAR_URL)
-    @javax.annotation.Nullable
-    private String avatarUrl;
-
-    @SerializedName(SERIALIZED_NAME_USERNAME)
-    @javax.annotation.Nullable
-    private String username;
-
-    public ProfileResponse() {
     }
 
     /**
@@ -151,133 +257,6 @@ public class ProfileResponse {
         }
     }
 
-    /**
-     * Create an instance of ProfileResponse given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of ProfileResponse
-     * @throws IOException if the JSON string is invalid with respect to ProfileResponse
-     */
-    public static ProfileResponse fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, ProfileResponse.class);
-    }
-
-    public ProfileResponse id(@javax.annotation.Nullable UUID id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Id профиля
-     *
-     * @return id
-     */
-    @javax.annotation.Nullable
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(@javax.annotation.Nullable UUID id) {
-        this.id = id;
-    }
-
-    public ProfileResponse avatarUrl(@javax.annotation.Nullable String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-        return this;
-    }
-
-    /**
-     * URL на аватар профиля
-     *
-     * @return avatarUrl
-     */
-    @javax.annotation.Nullable
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(@javax.annotation.Nullable String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public ProfileResponse username(@javax.annotation.Nullable String username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Отображаемое имя профиля
-     *
-     * @return username
-     */
-    @javax.annotation.Nullable
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(@javax.annotation.Nullable String username) {
-        this.username = username;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ProfileResponse profileResponse = (ProfileResponse) o;
-        return Objects.equals(this.id, profileResponse.id) &&
-                Objects.equals(this.avatarUrl, profileResponse.avatarUrl) &&
-                Objects.equals(this.username, profileResponse.username);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, avatarUrl, username);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ProfileResponse {\n");
-        sb.append("    id: ")
-          .append(toIndentedString(id))
-          .append("\n");
-        sb.append("    avatarUrl: ")
-          .append(toIndentedString(avatarUrl))
-          .append("\n");
-        sb.append("    username: ")
-          .append(toIndentedString(username))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of ProfileResponse to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -308,5 +287,26 @@ public class ProfileResponse {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of ProfileResponse given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of ProfileResponse
+     * @throws IOException if the JSON string is invalid with respect to ProfileResponse
+     */
+    public static ProfileResponse fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, ProfileResponse.class);
+    }
+
+    /**
+     * Convert an instance of ProfileResponse to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+    return JSON.getGson().toJson(this);
+  }
 }
 

@@ -14,16 +14,13 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
-
 import tech.provve.api.client.generated.dto.FilterPredicate;
 
 import com.google.gson.Gson;
@@ -39,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -48,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * Filter
@@ -58,7 +54,103 @@ public class Filter {
 
     public static final String SERIALIZED_NAME_FIELD = "field";
 
+    @SerializedName(SERIALIZED_NAME_FIELD)
+    @javax.annotation.Nonnull
+    private String field;
+
     public static final String SERIALIZED_NAME_PREDICATE = "predicate";
+
+    @SerializedName(SERIALIZED_NAME_PREDICATE)
+    @javax.annotation.Nonnull
+    private FilterPredicate predicate;
+
+    public Filter() {
+    }
+
+    public Filter field(@javax.annotation.Nonnull String field) {
+        this.field = field;
+        return this;
+    }
+
+    /**
+     * Название фильтруемого поля
+     *
+     * @return field
+     */
+    @javax.annotation.Nonnull
+    public String getField() {
+        return field;
+    }
+
+    public void setField(@javax.annotation.Nonnull String field) {
+        this.field = field;
+    }
+
+
+    public Filter predicate(@javax.annotation.Nonnull FilterPredicate predicate) {
+        this.predicate = predicate;
+        return this;
+    }
+
+    /**
+     * Get predicate
+     *
+     * @return predicate
+     */
+    @javax.annotation.Nonnull
+    public FilterPredicate getPredicate() {
+        return predicate;
+    }
+
+    public void setPredicate(@javax.annotation.Nonnull FilterPredicate predicate) {
+        this.predicate = predicate;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Filter filter = (Filter) o;
+        return Objects.equals(this.field, filter.field) &&
+                Objects.equals(this.predicate, filter.predicate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(field, predicate);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class Filter {\n");
+        sb.append("    field: ")
+          .append(toIndentedString(field))
+          .append("\n");
+        sb.append("    predicate: ")
+          .append(toIndentedString(predicate))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -70,17 +162,6 @@ public class Filter {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(Arrays.asList("field", "predicate"));
-    }
-
-    @SerializedName(SERIALIZED_NAME_FIELD)
-    @javax.annotation.Nonnull
-    private String field;
-
-    @SerializedName(SERIALIZED_NAME_PREDICATE)
-    @javax.annotation.Nonnull
-    private FilterPredicate predicate;
-
-    public Filter() {
     }
 
     /**
@@ -140,110 +221,6 @@ public class Filter {
         FilterPredicate.validateJsonElement(jsonObj.get("predicate"));
     }
 
-    /**
-     * Create an instance of Filter given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of Filter
-     * @throws IOException if the JSON string is invalid with respect to Filter
-     */
-    public static Filter fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, Filter.class);
-    }
-
-    public Filter field(@javax.annotation.Nonnull String field) {
-        this.field = field;
-        return this;
-    }
-
-    /**
-     * Название фильтруемого поля
-     *
-     * @return field
-     */
-    @javax.annotation.Nonnull
-    public String getField() {
-        return field;
-    }
-
-    public void setField(@javax.annotation.Nonnull String field) {
-        this.field = field;
-    }
-
-    public Filter predicate(@javax.annotation.Nonnull FilterPredicate predicate) {
-        this.predicate = predicate;
-        return this;
-    }
-
-    /**
-     * Get predicate
-     *
-     * @return predicate
-     */
-    @javax.annotation.Nonnull
-    public FilterPredicate getPredicate() {
-        return predicate;
-    }
-
-    public void setPredicate(@javax.annotation.Nonnull FilterPredicate predicate) {
-        this.predicate = predicate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Filter filter = (Filter) o;
-        return Objects.equals(this.field, filter.field) &&
-                Objects.equals(this.predicate, filter.predicate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(field, predicate);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Filter {\n");
-        sb.append("    field: ")
-          .append(toIndentedString(field))
-          .append("\n");
-        sb.append("    predicate: ")
-          .append(toIndentedString(predicate))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of Filter to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -274,5 +251,26 @@ public class Filter {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of Filter given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of Filter
+     * @throws IOException if the JSON string is invalid with respect to Filter
+     */
+    public static Filter fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, Filter.class);
+    }
+
+    /**
+     * Convert an instance of Filter to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

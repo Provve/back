@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -38,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -47,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * ResultResponse
@@ -57,7 +54,103 @@ public class ResultResponse {
 
     public static final String SERIALIZED_NAME_EXAM_ID = "exam_id";
 
+    @SerializedName(SERIALIZED_NAME_EXAM_ID)
+    @javax.annotation.Nullable
+    private UUID examId;
+
     public static final String SERIALIZED_NAME_EXAM_NAME = "exam_name";
+
+    @SerializedName(SERIALIZED_NAME_EXAM_NAME)
+    @javax.annotation.Nullable
+    private UUID examName;
+
+    public ResultResponse() {
+    }
+
+    public ResultResponse examId(@javax.annotation.Nullable UUID examId) {
+        this.examId = examId;
+        return this;
+    }
+
+    /**
+     * ID экзамена, по которой получен результат
+     *
+     * @return examId
+     */
+    @javax.annotation.Nullable
+    public UUID getExamId() {
+        return examId;
+    }
+
+    public void setExamId(@javax.annotation.Nullable UUID examId) {
+        this.examId = examId;
+    }
+
+
+    public ResultResponse examName(@javax.annotation.Nullable UUID examName) {
+        this.examName = examName;
+        return this;
+    }
+
+    /**
+     * Название экзамена, по которой получен результат
+     *
+     * @return examName
+     */
+    @javax.annotation.Nullable
+    public UUID getExamName() {
+        return examName;
+    }
+
+    public void setExamName(@javax.annotation.Nullable UUID examName) {
+        this.examName = examName;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ResultResponse resultResponse = (ResultResponse) o;
+        return Objects.equals(this.examId, resultResponse.examId) &&
+                Objects.equals(this.examName, resultResponse.examName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(examId, examName);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ResultResponse {\n");
+        sb.append("    examId: ")
+          .append(toIndentedString(examId))
+          .append("\n");
+        sb.append("    examName: ")
+          .append(toIndentedString(examName))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -69,17 +162,6 @@ public class ResultResponse {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_EXAM_ID)
-    @javax.annotation.Nullable
-    private UUID examId;
-
-    @SerializedName(SERIALIZED_NAME_EXAM_NAME)
-    @javax.annotation.Nullable
-    private UUID examName;
-
-    public ResultResponse() {
     }
 
     /**
@@ -135,110 +217,6 @@ public class ResultResponse {
         }
     }
 
-    /**
-     * Create an instance of ResultResponse given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of ResultResponse
-     * @throws IOException if the JSON string is invalid with respect to ResultResponse
-     */
-    public static ResultResponse fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, ResultResponse.class);
-    }
-
-    public ResultResponse examId(@javax.annotation.Nullable UUID examId) {
-        this.examId = examId;
-        return this;
-    }
-
-    /**
-     * ID экзамена, по которой получен результат
-     *
-     * @return examId
-     */
-    @javax.annotation.Nullable
-    public UUID getExamId() {
-        return examId;
-    }
-
-    public void setExamId(@javax.annotation.Nullable UUID examId) {
-        this.examId = examId;
-    }
-
-    public ResultResponse examName(@javax.annotation.Nullable UUID examName) {
-        this.examName = examName;
-        return this;
-    }
-
-    /**
-     * Название экзамена, по которой получен результат
-     *
-     * @return examName
-     */
-    @javax.annotation.Nullable
-    public UUID getExamName() {
-        return examName;
-    }
-
-    public void setExamName(@javax.annotation.Nullable UUID examName) {
-        this.examName = examName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ResultResponse resultResponse = (ResultResponse) o;
-        return Objects.equals(this.examId, resultResponse.examId) &&
-                Objects.equals(this.examName, resultResponse.examName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(examId, examName);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ResultResponse {\n");
-        sb.append("    examId: ")
-          .append(toIndentedString(examId))
-          .append("\n");
-        sb.append("    examName: ")
-          .append(toIndentedString(examName))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of ResultResponse to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -269,5 +247,26 @@ public class ResultResponse {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of ResultResponse given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of ResultResponse
+     * @throws IOException if the JSON string is invalid with respect to ResultResponse
+     */
+    public static ResultResponse fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, ResultResponse.class);
+    }
+
+    /**
+     * Convert an instance of ResultResponse to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

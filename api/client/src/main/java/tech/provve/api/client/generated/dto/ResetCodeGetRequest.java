@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * ResetCodeGetRequest
@@ -55,6 +52,74 @@ import tech.provve.api.client.JSON;
 public class ResetCodeGetRequest {
 
     public static final String SERIALIZED_NAME_EMAIL = "email";
+
+    @SerializedName(SERIALIZED_NAME_EMAIL)
+    @javax.annotation.Nullable
+    private String email;
+
+    public ResetCodeGetRequest() {
+    }
+
+    public ResetCodeGetRequest email(@javax.annotation.Nullable String email) {
+        this.email = email;
+        return this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return email
+     */
+    @javax.annotation.Nullable
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@javax.annotation.Nullable String email) {
+        this.email = email;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ResetCodeGetRequest resetCodeGetRequest = (ResetCodeGetRequest) o;
+        return Objects.equals(this.email, resetCodeGetRequest.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ResetCodeGetRequest {\n");
+        sb.append("    email: ")
+          .append(toIndentedString(email))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -66,13 +131,6 @@ public class ResetCodeGetRequest {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_EMAIL)
-    @javax.annotation.Nullable
-    private String email;
-
-    public ResetCodeGetRequest() {
     }
 
     /**
@@ -118,87 +176,6 @@ public class ResetCodeGetRequest {
         }
     }
 
-    /**
-     * Create an instance of ResetCodeGetRequest given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of ResetCodeGetRequest
-     * @throws IOException if the JSON string is invalid with respect to ResetCodeGetRequest
-     */
-    public static ResetCodeGetRequest fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, ResetCodeGetRequest.class);
-    }
-
-    public ResetCodeGetRequest email(@javax.annotation.Nullable String email) {
-        this.email = email;
-        return this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return email
-     */
-    @javax.annotation.Nullable
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@javax.annotation.Nullable String email) {
-        this.email = email;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ResetCodeGetRequest resetCodeGetRequest = (ResetCodeGetRequest) o;
-        return Objects.equals(this.email, resetCodeGetRequest.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ResetCodeGetRequest {\n");
-        sb.append("    email: ")
-          .append(toIndentedString(email))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of ResetCodeGetRequest to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -229,5 +206,26 @@ public class ResetCodeGetRequest {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of ResetCodeGetRequest given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of ResetCodeGetRequest
+     * @throws IOException if the JSON string is invalid with respect to ResetCodeGetRequest
+     */
+    public static ResetCodeGetRequest fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, ResetCodeGetRequest.class);
+    }
+
+    /**
+     * Convert an instance of ResetCodeGetRequest to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

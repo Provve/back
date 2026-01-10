@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * EmailPutRequest
@@ -56,78 +53,11 @@ public class EmailPutRequest {
 
     public static final String SERIALIZED_NAME_EMAIL = "email";
 
-    public static HashSet<String> openapiFields;
-
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("email"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("email"));
-    }
-
     @SerializedName(SERIALIZED_NAME_EMAIL)
     @javax.annotation.Nonnull
     private String email;
 
     public EmailPutRequest() {
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to EmailPutRequest
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!EmailPutRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The required field(s) %s in EmailPutRequest is not found in the empty JSON string",
-                        EmailPutRequest.openapiRequiredFields.toString()
-                ));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
-                                                                 .entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!EmailPutRequest.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The field `%s` in the JSON string is not defined in the `EmailPutRequest` properties. JSON: %s",
-                        entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : EmailPutRequest.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject()
-                           .get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The required field `%s` is not found in the JSON string: %s",
-                        requiredField,
-                        jsonElement.toString()
-                ));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("email")
-                    .isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(
-                    java.util.Locale.ROOT,
-                    "Expected the field `email` to be a primitive type in the JSON string but got `%s`",
-                    jsonObj.get("email")
-                           .toString()
-            ));
-        }
     }
 
     /**
@@ -189,26 +119,72 @@ public class EmailPutRequest {
         return sb.toString();
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
+
+    public static HashSet<String> openapiFields;
+
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("email"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(Arrays.asList("email"));
     }
 
     /**
-     * Convert an instance of EmailPutRequest to an JSON string
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return JSON string
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to EmailPutRequest
      */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!EmailPutRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The required field(s) %s in EmailPutRequest is not found in the empty JSON string",
+                        EmailPutRequest.openapiRequiredFields.toString()
+                ));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
+                                                                 .entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!EmailPutRequest.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The field `%s` in the JSON string is not defined in the `EmailPutRequest` properties. JSON: %s",
+                        entry.getKey(),
+                        jsonElement.toString()
+                ));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : EmailPutRequest.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject()
+                           .get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The required field `%s` is not found in the JSON string: %s",
+                        requiredField,
+                        jsonElement.toString()
+                ));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("email")
+                    .isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(
+                    java.util.Locale.ROOT,
+                    "Expected the field `email` to be a primitive type in the JSON string but got `%s`",
+                    jsonObj.get("email")
+                           .toString()
+            ));
+        }
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
@@ -241,5 +217,26 @@ public class EmailPutRequest {
             }.nullSafe();
         }
     }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
+    /**
+     * Convert an instance of EmailPutRequest to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

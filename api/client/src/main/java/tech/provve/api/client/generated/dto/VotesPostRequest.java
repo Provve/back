@@ -14,21 +14,19 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
-
 import tech.provve.api.client.generated.dto.ExamAddVote;
 import tech.provve.api.client.generated.dto.SkillAddVote;
 import tech.provve.api.client.generated.dto.SkillDelVote;
+
 
 
 import java.io.IOException;
@@ -62,15 +60,141 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
 public class VotesPostRequest extends AbstractOpenApiSchema {
+    private static final Logger log = Logger.getLogger(VotesPostRequest.class.getName());
+
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!VotesPostRequest.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'VotesPostRequest' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<SkillAddVote> adapterSkillAddVote = gson.getDelegateAdapter(
+                    this,
+                    TypeToken.get(SkillAddVote.class)
+            );
+            final TypeAdapter<SkillDelVote> adapterSkillDelVote = gson.getDelegateAdapter(
+                    this,
+                    TypeToken.get(SkillDelVote.class)
+            );
+            final TypeAdapter<ExamAddVote> adapterExamAddVote = gson.getDelegateAdapter(
+                    this,
+                    TypeToken.get(ExamAddVote.class)
+            );
+
+            return (TypeAdapter<T>) new TypeAdapter<VotesPostRequest>() {
+                @Override
+                public void write(JsonWriter out, VotesPostRequest value) throws IOException {
+                    if (value == null || value.getActualInstance() == null) {
+                        elementAdapter.write(out, null);
+                        return;
+                    }
+
+                    // check if the actual instance is of the type `SkillAddVote`
+                    if (value.getActualInstance() instanceof SkillAddVote) {
+                        JsonElement element = adapterSkillAddVote.toJsonTree((SkillAddVote) value.getActualInstance());
+                        elementAdapter.write(out, element);
+                        return;
+                    }
+                    // check if the actual instance is of the type `SkillDelVote`
+                    if (value.getActualInstance() instanceof SkillDelVote) {
+                        JsonElement element = adapterSkillDelVote.toJsonTree((SkillDelVote) value.getActualInstance());
+                        elementAdapter.write(out, element);
+                        return;
+                    }
+                    // check if the actual instance is of the type `ExamAddVote`
+                    if (value.getActualInstance() instanceof ExamAddVote) {
+                        JsonElement element = adapterExamAddVote.toJsonTree((ExamAddVote) value.getActualInstance());
+                        elementAdapter.write(out, element);
+                        return;
+                    }
+                    throw new IOException(
+                            "Failed to serialize as the type doesn't match oneOf schemas: ExamAddVote, SkillAddVote, SkillDelVote");
+                }
+
+                @Override
+                public VotesPostRequest read(JsonReader in) throws IOException {
+                    Object deserialized = null;
+                    JsonElement jsonElement = elementAdapter.read(in);
+
+                    int match = 0;
+                    ArrayList<String> errorMessages = new ArrayList<>();
+                    TypeAdapter actualAdapter = elementAdapter;
+
+                    // deserialize SkillAddVote
+                    try {
+                        // validate the JSON object to see if any exception is thrown
+                        SkillAddVote.validateJsonElement(jsonElement);
+                        actualAdapter = adapterSkillAddVote;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'SkillAddVote'");
+                    } catch (Exception e) {
+                        // deserialization failed, continue
+                        errorMessages.add(String.format(
+                                java.util.Locale.ROOT,
+                                "Deserialization for SkillAddVote failed with `%s`.",
+                                e.getMessage()
+                        ));
+                        log.log(Level.FINER, "Input data does not match schema 'SkillAddVote'", e);
+                    }
+                    // deserialize SkillDelVote
+                    try {
+                        // validate the JSON object to see if any exception is thrown
+                        SkillDelVote.validateJsonElement(jsonElement);
+                        actualAdapter = adapterSkillDelVote;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'SkillDelVote'");
+                    } catch (Exception e) {
+                        // deserialization failed, continue
+                        errorMessages.add(String.format(
+                                java.util.Locale.ROOT,
+                                "Deserialization for SkillDelVote failed with `%s`.",
+                                e.getMessage()
+                        ));
+                        log.log(Level.FINER, "Input data does not match schema 'SkillDelVote'", e);
+                    }
+                    // deserialize ExamAddVote
+                    try {
+                        // validate the JSON object to see if any exception is thrown
+                        ExamAddVote.validateJsonElement(jsonElement);
+                        actualAdapter = adapterExamAddVote;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'ExamAddVote'");
+                    } catch (Exception e) {
+                        // deserialization failed, continue
+                        errorMessages.add(String.format(
+                                java.util.Locale.ROOT,
+                                "Deserialization for ExamAddVote failed with `%s`.",
+                                e.getMessage()
+                        ));
+                        log.log(Level.FINER, "Input data does not match schema 'ExamAddVote'", e);
+                    }
+
+                    if (match == 1) {
+                        VotesPostRequest ret = new VotesPostRequest();
+                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
+                        return ret;
+                    }
+
+                    throw new IOException(String.format(
+                            java.util.Locale.ROOT,
+                            "Failed deserialization for VotesPostRequest: %d classes match result, expected 1. Detailed failure message for oneOf schemas: %s. JSON: %s",
+                            match,
+                            errorMessages,
+                            jsonElement.toString()
+                    ));
+                }
+            }.nullSafe();
+        }
+    }
 
     // store a list of schema names defined in oneOf
     public static final Map<String, Class<?>> schemas = new HashMap<String, Class<?>>();
-
-    private static final Logger log = Logger.getLogger(VotesPostRequest.class.getName());
 
     static {
         schemas.put("SkillAddVote", SkillAddVote.class);
@@ -241,134 +365,6 @@ public class VotesPostRequest extends AbstractOpenApiSchema {
     public String toJson() {
         return JSON.getGson()
                    .toJson(this);
-    }
-
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!VotesPostRequest.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'VotesPostRequest' and its subtypes
-            }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<SkillAddVote> adapterSkillAddVote = gson.getDelegateAdapter(
-                    this,
-                    TypeToken.get(SkillAddVote.class)
-            );
-            final TypeAdapter<SkillDelVote> adapterSkillDelVote = gson.getDelegateAdapter(
-                    this,
-                    TypeToken.get(SkillDelVote.class)
-            );
-            final TypeAdapter<ExamAddVote> adapterExamAddVote = gson.getDelegateAdapter(
-                    this,
-                    TypeToken.get(ExamAddVote.class)
-            );
-
-            return (TypeAdapter<T>) new TypeAdapter<VotesPostRequest>() {
-                @Override
-                public void write(JsonWriter out, VotesPostRequest value) throws IOException {
-                    if (value == null || value.getActualInstance() == null) {
-                        elementAdapter.write(out, null);
-                        return;
-                    }
-
-                    // check if the actual instance is of the type `SkillAddVote`
-                    if (value.getActualInstance() instanceof SkillAddVote) {
-                        JsonElement element = adapterSkillAddVote.toJsonTree((SkillAddVote) value.getActualInstance());
-                        elementAdapter.write(out, element);
-                        return;
-                    }
-                    // check if the actual instance is of the type `SkillDelVote`
-                    if (value.getActualInstance() instanceof SkillDelVote) {
-                        JsonElement element = adapterSkillDelVote.toJsonTree((SkillDelVote) value.getActualInstance());
-                        elementAdapter.write(out, element);
-                        return;
-                    }
-                    // check if the actual instance is of the type `ExamAddVote`
-                    if (value.getActualInstance() instanceof ExamAddVote) {
-                        JsonElement element = adapterExamAddVote.toJsonTree((ExamAddVote) value.getActualInstance());
-                        elementAdapter.write(out, element);
-                        return;
-                    }
-                    throw new IOException(
-                            "Failed to serialize as the type doesn't match oneOf schemas: ExamAddVote, SkillAddVote, SkillDelVote");
-                }
-
-                @Override
-                public VotesPostRequest read(JsonReader in) throws IOException {
-                    Object deserialized = null;
-                    JsonElement jsonElement = elementAdapter.read(in);
-
-                    int match = 0;
-                    ArrayList<String> errorMessages = new ArrayList<>();
-                    TypeAdapter actualAdapter = elementAdapter;
-
-                    // deserialize SkillAddVote
-                    try {
-                        // validate the JSON object to see if any exception is thrown
-                        SkillAddVote.validateJsonElement(jsonElement);
-                        actualAdapter = adapterSkillAddVote;
-                        match++;
-                        log.log(Level.FINER, "Input data matches schema 'SkillAddVote'");
-                    } catch (Exception e) {
-                        // deserialization failed, continue
-                        errorMessages.add(String.format(
-                                java.util.Locale.ROOT,
-                                "Deserialization for SkillAddVote failed with `%s`.",
-                                e.getMessage()
-                        ));
-                        log.log(Level.FINER, "Input data does not match schema 'SkillAddVote'", e);
-                    }
-                    // deserialize SkillDelVote
-                    try {
-                        // validate the JSON object to see if any exception is thrown
-                        SkillDelVote.validateJsonElement(jsonElement);
-                        actualAdapter = adapterSkillDelVote;
-                        match++;
-                        log.log(Level.FINER, "Input data matches schema 'SkillDelVote'");
-                    } catch (Exception e) {
-                        // deserialization failed, continue
-                        errorMessages.add(String.format(
-                                java.util.Locale.ROOT,
-                                "Deserialization for SkillDelVote failed with `%s`.",
-                                e.getMessage()
-                        ));
-                        log.log(Level.FINER, "Input data does not match schema 'SkillDelVote'", e);
-                    }
-                    // deserialize ExamAddVote
-                    try {
-                        // validate the JSON object to see if any exception is thrown
-                        ExamAddVote.validateJsonElement(jsonElement);
-                        actualAdapter = adapterExamAddVote;
-                        match++;
-                        log.log(Level.FINER, "Input data matches schema 'ExamAddVote'");
-                    } catch (Exception e) {
-                        // deserialization failed, continue
-                        errorMessages.add(String.format(
-                                java.util.Locale.ROOT,
-                                "Deserialization for ExamAddVote failed with `%s`.",
-                                e.getMessage()
-                        ));
-                        log.log(Level.FINER, "Input data does not match schema 'ExamAddVote'", e);
-                    }
-
-                    if (match == 1) {
-                        VotesPostRequest ret = new VotesPostRequest();
-                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
-                        return ret;
-                    }
-
-                    throw new IOException(String.format(
-                            java.util.Locale.ROOT,
-                            "Failed deserialization for VotesPostRequest: %d classes match result, expected 1. Detailed failure message for oneOf schemas: %s. JSON: %s",
-                            match,
-                            errorMessages,
-                            jsonElement.toString()
-                    ));
-                }
-            }.nullSafe();
-        }
     }
 }
 

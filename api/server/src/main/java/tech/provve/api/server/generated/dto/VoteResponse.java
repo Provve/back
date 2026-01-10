@@ -1,15 +1,34 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.time.OffsetDateTime;
-import java.util.Objects;
+
+import tech.provve.api.server.generated.dto.VoteResponseAllOfVotes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VoteResponse {
 
+
+    public enum ActionEnum {
+        DELETE_SKILL("delete_skill"),
+        ADD_SKILL("add_skill"),
+        ADD_EXAM("add_exam");
+
+        private String value;
+
+        ActionEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
+    }
 
     private ActionEnum action;
 
@@ -30,6 +49,7 @@ public class VoteResponse {
         this.expireAt = expireAt;
     }
 
+
     @JsonProperty("action")
     public ActionEnum getAction() {
         return action;
@@ -38,6 +58,7 @@ public class VoteResponse {
     public void setAction(ActionEnum action) {
         this.action = action;
     }
+
 
     @JsonProperty("arguments")
     public String getArguments() {
@@ -48,6 +69,7 @@ public class VoteResponse {
         this.arguments = arguments;
     }
 
+
     @JsonProperty("votes")
     public VoteResponseAllOfVotes getVotes() {
         return votes;
@@ -57,6 +79,7 @@ public class VoteResponse {
         this.votes = votes;
     }
 
+
     @JsonProperty("expire_at")
     public OffsetDateTime getExpireAt() {
         return expireAt;
@@ -65,6 +88,7 @@ public class VoteResponse {
     public void setExpireAt(OffsetDateTime expireAt) {
         this.expireAt = expireAt;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -117,23 +141,5 @@ public class VoteResponse {
         }
         return o.toString()
                 .replace("\n", "\n    ");
-    }
-
-    public enum ActionEnum {
-        DELETE_SKILL("delete_skill"),
-        ADD_SKILL("add_skill"),
-        ADD_EXAM("add_exam");
-
-        private String value;
-
-        ActionEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
     }
 }

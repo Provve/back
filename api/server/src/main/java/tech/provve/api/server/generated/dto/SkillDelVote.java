@@ -1,14 +1,31 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Objects;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkillDelVote {
 
+
+    public enum ActionEnum {
+        DELETE_SKILL("delete_skill"),
+        ADD_SKILL("add_skill"),
+        ADD_EXAM("add_exam");
+
+        private String value;
+
+        ActionEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
+    }
 
     private ActionEnum action;
 
@@ -26,6 +43,7 @@ public class SkillDelVote {
         this.id = id;
     }
 
+
     @JsonProperty("action")
     public ActionEnum getAction() {
         return action;
@@ -34,6 +52,7 @@ public class SkillDelVote {
     public void setAction(ActionEnum action) {
         this.action = action;
     }
+
 
     @JsonProperty("arguments")
     public String getArguments() {
@@ -44,6 +63,7 @@ public class SkillDelVote {
         this.arguments = arguments;
     }
 
+
     @JsonProperty("id")
     public java.util.UUID getId() {
         return id;
@@ -52,6 +72,7 @@ public class SkillDelVote {
     public void setId(java.util.UUID id) {
         this.id = id;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -100,23 +121,5 @@ public class SkillDelVote {
         }
         return o.toString()
                 .replace("\n", "\n    ");
-    }
-
-    public enum ActionEnum {
-        DELETE_SKILL("delete_skill"),
-        ADD_SKILL("add_skill"),
-        ADD_EXAM("add_exam");
-
-        private String value;
-
-        ActionEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
     }
 }

@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * Pagination
@@ -56,7 +53,106 @@ public class Pagination {
 
     public static final String SERIALIZED_NAME_PAGE = "page";
 
+    @SerializedName(SERIALIZED_NAME_PAGE)
+    @javax.annotation.Nonnull
+    private Integer page;
+
     public static final String SERIALIZED_NAME_SIZE = "size";
+
+    @SerializedName(SERIALIZED_NAME_SIZE)
+    @javax.annotation.Nonnull
+    private Integer size;
+
+    public Pagination() {
+    }
+
+    public Pagination page(@javax.annotation.Nonnull Integer page) {
+        this.page = page;
+        return this;
+    }
+
+    /**
+     * Номер страницы
+     * minimum: 1
+     *
+     * @return page
+     */
+    @javax.annotation.Nonnull
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(@javax.annotation.Nonnull Integer page) {
+        this.page = page;
+    }
+
+
+    public Pagination size(@javax.annotation.Nonnull Integer size) {
+        this.size = size;
+        return this;
+    }
+
+    /**
+     * Количество элементов на странице
+     * minimum: 1
+     * maximum: 100
+     *
+     * @return size
+     */
+    @javax.annotation.Nonnull
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(@javax.annotation.Nonnull Integer size) {
+        this.size = size;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Pagination pagination = (Pagination) o;
+        return Objects.equals(this.page, pagination.page) &&
+                Objects.equals(this.size, pagination.size);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(page, size);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class Pagination {\n");
+        sb.append("    page: ")
+          .append(toIndentedString(page))
+          .append("\n");
+        sb.append("    size: ")
+          .append(toIndentedString(size))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -68,17 +164,6 @@ public class Pagination {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(Arrays.asList("page", "size"));
-    }
-
-    @SerializedName(SERIALIZED_NAME_PAGE)
-    @javax.annotation.Nonnull
-    private Integer page;
-
-    @SerializedName(SERIALIZED_NAME_SIZE)
-    @javax.annotation.Nonnull
-    private Integer size;
-
-    public Pagination() {
     }
 
     /**
@@ -127,113 +212,6 @@ public class Pagination {
         JsonObject jsonObj = jsonElement.getAsJsonObject();
     }
 
-    /**
-     * Create an instance of Pagination given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of Pagination
-     * @throws IOException if the JSON string is invalid with respect to Pagination
-     */
-    public static Pagination fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, Pagination.class);
-    }
-
-    public Pagination page(@javax.annotation.Nonnull Integer page) {
-        this.page = page;
-        return this;
-    }
-
-    /**
-     * Номер страницы
-     * minimum: 1
-     *
-     * @return page
-     */
-    @javax.annotation.Nonnull
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(@javax.annotation.Nonnull Integer page) {
-        this.page = page;
-    }
-
-    public Pagination size(@javax.annotation.Nonnull Integer size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
-     * Количество элементов на странице
-     * minimum: 1
-     * maximum: 100
-     *
-     * @return size
-     */
-    @javax.annotation.Nonnull
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(@javax.annotation.Nonnull Integer size) {
-        this.size = size;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Pagination pagination = (Pagination) o;
-        return Objects.equals(this.page, pagination.page) &&
-                Objects.equals(this.size, pagination.size);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(page, size);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Pagination {\n");
-        sb.append("    page: ")
-          .append(toIndentedString(page))
-          .append("\n");
-        sb.append("    size: ")
-          .append(toIndentedString(size))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of Pagination to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -264,5 +242,26 @@ public class Pagination {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of Pagination given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of Pagination
+     * @throws IOException if the JSON string is invalid with respect to Pagination
+     */
+    public static Pagination fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, Pagination.class);
+    }
+
+    /**
+     * Convert an instance of Pagination to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+    return JSON.getGson().toJson(this);
+  }
 }
 

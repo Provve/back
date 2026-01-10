@@ -14,16 +14,13 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
-
 import tech.provve.api.client.generated.dto.Notification;
 
 import com.google.gson.Gson;
@@ -39,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -48,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * SessionCreatedNotification
@@ -58,7 +54,103 @@ public class SessionCreatedNotification {
 
     public static final String SERIALIZED_NAME_NOTIFICATION = "notification";
 
+    @SerializedName(SERIALIZED_NAME_NOTIFICATION)
+    @javax.annotation.Nullable
+    private Notification notification;
+
     public static final String SERIALIZED_NAME_HASH = "hash";
+
+    @SerializedName(SERIALIZED_NAME_HASH)
+    @javax.annotation.Nullable
+    private String hash;
+
+    public SessionCreatedNotification() {
+    }
+
+    public SessionCreatedNotification notification(@javax.annotation.Nullable Notification notification) {
+        this.notification = notification;
+        return this;
+    }
+
+    /**
+     * Get notification
+     *
+     * @return notification
+     */
+    @javax.annotation.Nullable
+    public Notification getNotification() {
+        return notification;
+    }
+
+    public void setNotification(@javax.annotation.Nullable Notification notification) {
+        this.notification = notification;
+    }
+
+
+    public SessionCreatedNotification hash(@javax.annotation.Nullable String hash) {
+        this.hash = hash;
+        return this;
+    }
+
+    /**
+     * hash(notification)
+     *
+     * @return hash
+     */
+    @javax.annotation.Nullable
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(@javax.annotation.Nullable String hash) {
+        this.hash = hash;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SessionCreatedNotification sessionCreatedNotification = (SessionCreatedNotification) o;
+        return Objects.equals(this.notification, sessionCreatedNotification.notification) &&
+                Objects.equals(this.hash, sessionCreatedNotification.hash);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(notification, hash);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class SessionCreatedNotification {\n");
+        sb.append("    notification: ")
+          .append(toIndentedString(notification))
+          .append("\n");
+        sb.append("    hash: ")
+          .append(toIndentedString(hash))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -70,17 +162,6 @@ public class SessionCreatedNotification {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_NOTIFICATION)
-    @javax.annotation.Nullable
-    private Notification notification;
-
-    @SerializedName(SERIALIZED_NAME_HASH)
-    @javax.annotation.Nullable
-    private String hash;
-
-    public SessionCreatedNotification() {
     }
 
     /**
@@ -131,110 +212,6 @@ public class SessionCreatedNotification {
         }
     }
 
-    /**
-     * Create an instance of SessionCreatedNotification given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of SessionCreatedNotification
-     * @throws IOException if the JSON string is invalid with respect to SessionCreatedNotification
-     */
-    public static SessionCreatedNotification fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, SessionCreatedNotification.class);
-    }
-
-    public SessionCreatedNotification notification(@javax.annotation.Nullable Notification notification) {
-        this.notification = notification;
-        return this;
-    }
-
-    /**
-     * Get notification
-     *
-     * @return notification
-     */
-    @javax.annotation.Nullable
-    public Notification getNotification() {
-        return notification;
-    }
-
-    public void setNotification(@javax.annotation.Nullable Notification notification) {
-        this.notification = notification;
-    }
-
-    public SessionCreatedNotification hash(@javax.annotation.Nullable String hash) {
-        this.hash = hash;
-        return this;
-    }
-
-    /**
-     * hash(notification)
-     *
-     * @return hash
-     */
-    @javax.annotation.Nullable
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(@javax.annotation.Nullable String hash) {
-        this.hash = hash;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SessionCreatedNotification sessionCreatedNotification = (SessionCreatedNotification) o;
-        return Objects.equals(this.notification, sessionCreatedNotification.notification) &&
-                Objects.equals(this.hash, sessionCreatedNotification.hash);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(notification, hash);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class SessionCreatedNotification {\n");
-        sb.append("    notification: ")
-          .append(toIndentedString(notification))
-          .append("\n");
-        sb.append("    hash: ")
-          .append(toIndentedString(hash))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of SessionCreatedNotification to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -265,5 +242,26 @@ public class SessionCreatedNotification {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of SessionCreatedNotification given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of SessionCreatedNotification
+     * @throws IOException if the JSON string is invalid with respect to SessionCreatedNotification
+     */
+    public static SessionCreatedNotification fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, SessionCreatedNotification.class);
+    }
+
+    /**
+     * Convert an instance of SessionCreatedNotification to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

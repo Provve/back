@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * FilterPredicate
@@ -54,109 +51,21 @@ import tech.provve.api.client.JSON;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
 public class FilterPredicate {
 
-    public static final String SERIALIZED_NAME_OPERATOR = "operator";
-
     public static final String SERIALIZED_NAME_VALUE = "value";
 
-    public static HashSet<String> openapiFields;
-
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("operator", "value"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("operator", "value"));
-    }
+    public static final String SERIALIZED_NAME_OPERATOR = "operator";
 
     @SerializedName(SERIALIZED_NAME_OPERATOR)
     @javax.annotation.Nonnull
     private OperatorEnum operator;
+
+    public static HashSet<String> openapiFields;
 
     @SerializedName(SERIALIZED_NAME_VALUE)
     @javax.annotation.Nonnull
     private String value;
 
     public FilterPredicate() {
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to FilterPredicate
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!FilterPredicate.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The required field(s) %s in FilterPredicate is not found in the empty JSON string",
-                        FilterPredicate.openapiRequiredFields.toString()
-                ));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
-                                                                 .entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!FilterPredicate.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The field `%s` in the JSON string is not defined in the `FilterPredicate` properties. JSON: %s",
-                        entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
-        }
-
-        // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : FilterPredicate.openapiRequiredFields) {
-            if (jsonElement.getAsJsonObject()
-                           .get(requiredField) == null) {
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The required field `%s` is not found in the JSON string: %s",
-                        requiredField,
-                        jsonElement.toString()
-                ));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if (!jsonObj.get("operator")
-                    .isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(
-                    java.util.Locale.ROOT,
-                    "Expected the field `operator` to be a primitive type in the JSON string but got `%s`",
-                    jsonObj.get("operator")
-                           .toString()
-            ));
-        }
-        // validate the required field `operator`
-        OperatorEnum.validateJsonElement(jsonObj.get("operator"));
-        if (!jsonObj.get("value")
-                    .isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(
-                    java.util.Locale.ROOT,
-                    "Expected the field `value` to be a primitive type in the JSON string but got `%s`",
-                    jsonObj.get("value")
-                           .toString()
-            ));
-        }
-    }
-
-    /**
-     * Create an instance of FilterPredicate given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of FilterPredicate
-     * @throws IOException if the JSON string is invalid with respect to FilterPredicate
-     */
-    public static FilterPredicate fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, FilterPredicate.class);
     }
 
     public FilterPredicate operator(@javax.annotation.Nonnull OperatorEnum operator) {
@@ -178,6 +87,7 @@ public class FilterPredicate {
         this.operator = operator;
     }
 
+
     public FilterPredicate value(@javax.annotation.Nonnull String value) {
         this.value = value;
         return this;
@@ -196,6 +106,7 @@ public class FilterPredicate {
     public void setValue(@javax.annotation.Nonnull String value) {
         this.value = value;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -241,15 +152,132 @@ public class FilterPredicate {
                 .replace("\n", "\n    ");
     }
 
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("operator", "value"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(Arrays.asList("operator", "value"));
+    }
+
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to FilterPredicate
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!FilterPredicate.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The required field(s) %s in FilterPredicate is not found in the empty JSON string",
+                        FilterPredicate.openapiRequiredFields.toString()
+                ));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
+                                                                 .entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!FilterPredicate.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The field `%s` in the JSON string is not defined in the `FilterPredicate` properties. JSON: %s",
+                        entry.getKey(),
+                        jsonElement.toString()
+                ));
+            }
+        }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : FilterPredicate.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject()
+                           .get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The required field `%s` is not found in the JSON string: %s", requiredField,
+                        jsonElement.toString()
+                ));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if (!jsonObj.get("operator")
+                    .isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(
+                    java.util.Locale.ROOT,
+                    "Expected the field `operator` to be a primitive type in the JSON string but got `%s`",
+                    jsonObj.get("operator")
+                           .toString()
+            ));
+        }
+        // validate the required field `operator`
+        OperatorEnum.validateJsonElement(jsonObj.get("operator"));
+        if (!jsonObj.get("value")
+                    .isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(
+                    java.util.Locale.ROOT,
+                    "Expected the field `value` to be a primitive type in the JSON string but got `%s`",
+                    jsonObj.get("value")
+                           .toString()
+            ));
+        }
+    }
+
+    /**
+     * Create an instance of FilterPredicate given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of FilterPredicate
+     * @throws IOException if the JSON string is invalid with respect to FilterPredicate
+     */
+    public static FilterPredicate fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, FilterPredicate.class);
+    }
+
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!FilterPredicate.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'FilterPredicate' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<FilterPredicate> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(FilterPredicate.class));
+
+            return (TypeAdapter<T>) new TypeAdapter<FilterPredicate>() {
+                @Override
+                public void write(JsonWriter out, FilterPredicate value) throws IOException {
+                    JsonObject obj = thisAdapter.toJsonTree(value)
+                                                .getAsJsonObject();
+                    elementAdapter.write(out, obj);
+                }
+
+                @Override
+                public FilterPredicate read(JsonReader in) throws IOException {
+                    JsonElement jsonElement = elementAdapter.read(in);
+                    validateJsonElement(jsonElement);
+                    return thisAdapter.fromJsonTree(jsonElement);
+                }
+
+            }.nullSafe();
+        }
+    }
+
     /**
      * Convert an instance of FilterPredicate to an JSON string
      *
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
+    return JSON.getGson().toJson(this);
+  }
 
     /**
      * Применяемый оператор
@@ -309,37 +337,6 @@ public class FilterPredicate {
                 String value = jsonReader.nextString();
                 return OperatorEnum.fromValue(value);
             }
-        }
-    }
-
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!FilterPredicate.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'FilterPredicate' and its subtypes
-            }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<FilterPredicate> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(FilterPredicate.class));
-
-            return (TypeAdapter<T>) new TypeAdapter<FilterPredicate>() {
-                @Override
-                public void write(JsonWriter out, FilterPredicate value) throws IOException {
-                    JsonObject obj = thisAdapter.toJsonTree(value)
-                                                .getAsJsonObject();
-                    elementAdapter.write(out, obj);
-                }
-
-                @Override
-                public FilterPredicate read(JsonReader in) throws IOException {
-                    JsonElement jsonElement = elementAdapter.read(in);
-                    validateJsonElement(jsonElement);
-                    return thisAdapter.fromJsonTree(jsonElement);
-                }
-
-            }.nullSafe();
         }
     }
 }

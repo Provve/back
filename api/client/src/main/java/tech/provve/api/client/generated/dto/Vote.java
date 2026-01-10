@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * Vote
@@ -54,101 +51,21 @@ import tech.provve.api.client.JSON;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
 public class Vote {
 
-    public static final String SERIALIZED_NAME_ACTION = "action";
-
     public static final String SERIALIZED_NAME_ARGUMENTS = "arguments";
 
-    public static HashSet<String> openapiFields;
-
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("action", "arguments"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(0);
-    }
+    public static final String SERIALIZED_NAME_ACTION = "action";
 
     @SerializedName(SERIALIZED_NAME_ACTION)
     @javax.annotation.Nullable
     private ActionEnum action;
+
+    public static HashSet<String> openapiFields;
 
     @SerializedName(SERIALIZED_NAME_ARGUMENTS)
     @javax.annotation.Nullable
     private String arguments;
 
     public Vote() {
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to Vote
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!Vote.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The required field(s) %s in Vote is not found in the empty JSON string",
-                        Vote.openapiRequiredFields.toString()
-                ));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
-                                                                 .entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!Vote.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The field `%s` in the JSON string is not defined in the `Vote` properties. JSON: %s",
-                        entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if ((jsonObj.get("action") != null && !jsonObj.get("action")
-                                                      .isJsonNull()) && !jsonObj.get("action")
-                                                                                .isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(
-                    java.util.Locale.ROOT,
-                    "Expected the field `action` to be a primitive type in the JSON string but got `%s`",
-                    jsonObj.get("action")
-                           .toString()
-            ));
-        }
-        // validate the optional field `action`
-        if (jsonObj.get("action") != null && !jsonObj.get("action")
-                                                     .isJsonNull()) {
-            ActionEnum.validateJsonElement(jsonObj.get("action"));
-        }
-        if ((jsonObj.get("arguments") != null && !jsonObj.get("arguments")
-                                                         .isJsonNull()) && !jsonObj.get("arguments")
-                                                                                   .isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(
-                    java.util.Locale.ROOT,
-                    "Expected the field `arguments` to be a primitive type in the JSON string but got `%s`",
-                    jsonObj.get("arguments")
-                           .toString()
-            ));
-        }
-    }
-
-    /**
-     * Create an instance of Vote given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of Vote
-     * @throws IOException if the JSON string is invalid with respect to Vote
-     */
-    public static Vote fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, Vote.class);
     }
 
     public Vote action(@javax.annotation.Nullable ActionEnum action) {
@@ -170,6 +87,7 @@ public class Vote {
         this.action = action;
     }
 
+
     public Vote arguments(@javax.annotation.Nullable String arguments) {
         this.arguments = arguments;
         return this;
@@ -188,6 +106,7 @@ public class Vote {
     public void setArguments(@javax.annotation.Nullable String arguments) {
         this.arguments = arguments;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -233,15 +152,124 @@ public class Vote {
                 .replace("\n", "\n    ");
     }
 
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("action", "arguments"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(0);
+    }
+
+    /**
+     * Validates the JSON Element and throws an exception if issues found
+     *
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to Vote
+     */
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!Vote.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The required field(s) %s in Vote is not found in the empty JSON string",
+                        Vote.openapiRequiredFields.toString()
+                ));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
+                                                                 .entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!Vote.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The field `%s` in the JSON string is not defined in the `Vote` properties. JSON: %s", entry.getKey(),
+                        jsonElement.toString()
+                ));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if ((jsonObj.get("action") != null && !jsonObj.get("action")
+                                                      .isJsonNull()) && !jsonObj.get("action")
+                                                                                .isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(
+                    java.util.Locale.ROOT,
+                    "Expected the field `action` to be a primitive type in the JSON string but got `%s`",
+                    jsonObj.get("action")
+                           .toString()
+            ));
+        }
+        // validate the optional field `action`
+        if (jsonObj.get("action") != null && !jsonObj.get("action")
+                                                     .isJsonNull()) {
+            ActionEnum.validateJsonElement(jsonObj.get("action"));
+        }
+        if ((jsonObj.get("arguments") != null && !jsonObj.get("arguments")
+                                                         .isJsonNull()) && !jsonObj.get("arguments")
+                                                                                   .isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(
+                    java.util.Locale.ROOT,
+                    "Expected the field `arguments` to be a primitive type in the JSON string but got `%s`",
+                    jsonObj.get("arguments")
+                           .toString()
+            ));
+        }
+    }
+
+    /**
+     * Create an instance of Vote given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of Vote
+     * @throws IOException if the JSON string is invalid with respect to Vote
+     */
+    public static Vote fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, Vote.class);
+    }
+
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!Vote.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'Vote' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<Vote> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(Vote.class));
+
+            return (TypeAdapter<T>) new TypeAdapter<Vote>() {
+                @Override
+                public void write(JsonWriter out, Vote value) throws IOException {
+                    JsonObject obj = thisAdapter.toJsonTree(value)
+                                                .getAsJsonObject();
+                    elementAdapter.write(out, obj);
+                }
+
+                @Override
+                public Vote read(JsonReader in) throws IOException {
+                    JsonElement jsonElement = elementAdapter.read(in);
+                    validateJsonElement(jsonElement);
+                    return thisAdapter.fromJsonTree(jsonElement);
+                }
+
+            }.nullSafe();
+        }
+    }
+
     /**
      * Convert an instance of Vote to an JSON string
      *
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
+    return JSON.getGson().toJson(this);
+  }
 
     /**
      * Gets or Sets action
@@ -295,37 +323,6 @@ public class Vote {
                 String value = jsonReader.nextString();
                 return ActionEnum.fromValue(value);
             }
-        }
-    }
-
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!Vote.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'Vote' and its subtypes
-            }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<Vote> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Vote.class));
-
-            return (TypeAdapter<T>) new TypeAdapter<Vote>() {
-                @Override
-                public void write(JsonWriter out, Vote value) throws IOException {
-                    JsonObject obj = thisAdapter.toJsonTree(value)
-                                                .getAsJsonObject();
-                    elementAdapter.write(out, obj);
-                }
-
-                @Override
-                public Vote read(JsonReader in) throws IOException {
-                    JsonElement jsonElement = elementAdapter.read(in);
-                    validateJsonElement(jsonElement);
-                    return thisAdapter.fromJsonTree(jsonElement);
-                }
-
-            }.nullSafe();
         }
     }
 }

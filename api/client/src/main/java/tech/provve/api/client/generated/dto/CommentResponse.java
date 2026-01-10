@@ -14,16 +14,13 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
-
 import tech.provve.api.client.generated.dto.ProfileResponse;
 
 import com.google.gson.Gson;
@@ -39,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -48,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * CommentResponse
@@ -58,7 +54,103 @@ public class CommentResponse {
 
     public static final String SERIALIZED_NAME_AUTHOR = "author";
 
+    @SerializedName(SERIALIZED_NAME_AUTHOR)
+    @javax.annotation.Nullable
+    private ProfileResponse author;
+
     public static final String SERIALIZED_NAME_COMMENT = "comment";
+
+    @SerializedName(SERIALIZED_NAME_COMMENT)
+    @javax.annotation.Nullable
+    private String comment;
+
+    public CommentResponse() {
+    }
+
+    public CommentResponse author(@javax.annotation.Nullable ProfileResponse author) {
+        this.author = author;
+        return this;
+    }
+
+    /**
+     * Автор комментария
+     *
+     * @return author
+     */
+    @javax.annotation.Nullable
+    public ProfileResponse getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(@javax.annotation.Nullable ProfileResponse author) {
+        this.author = author;
+    }
+
+
+    public CommentResponse comment(@javax.annotation.Nullable String comment) {
+        this.comment = comment;
+        return this;
+    }
+
+    /**
+     * Содержимое
+     *
+     * @return comment
+     */
+    @javax.annotation.Nullable
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(@javax.annotation.Nullable String comment) {
+        this.comment = comment;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        CommentResponse commentResponse = (CommentResponse) o;
+        return Objects.equals(this.author, commentResponse.author) &&
+                Objects.equals(this.comment, commentResponse.comment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(author, comment);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class CommentResponse {\n");
+        sb.append("    author: ")
+          .append(toIndentedString(author))
+          .append("\n");
+        sb.append("    comment: ")
+          .append(toIndentedString(comment))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -70,17 +162,6 @@ public class CommentResponse {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_AUTHOR)
-    @javax.annotation.Nullable
-    private ProfileResponse author;
-
-    @SerializedName(SERIALIZED_NAME_COMMENT)
-    @javax.annotation.Nullable
-    private String comment;
-
-    public CommentResponse() {
     }
 
     /**
@@ -131,110 +212,6 @@ public class CommentResponse {
         }
     }
 
-    /**
-     * Create an instance of CommentResponse given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of CommentResponse
-     * @throws IOException if the JSON string is invalid with respect to CommentResponse
-     */
-    public static CommentResponse fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, CommentResponse.class);
-    }
-
-    public CommentResponse author(@javax.annotation.Nullable ProfileResponse author) {
-        this.author = author;
-        return this;
-    }
-
-    /**
-     * Автор комментария
-     *
-     * @return author
-     */
-    @javax.annotation.Nullable
-    public ProfileResponse getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(@javax.annotation.Nullable ProfileResponse author) {
-        this.author = author;
-    }
-
-    public CommentResponse comment(@javax.annotation.Nullable String comment) {
-        this.comment = comment;
-        return this;
-    }
-
-    /**
-     * Содержимое
-     *
-     * @return comment
-     */
-    @javax.annotation.Nullable
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(@javax.annotation.Nullable String comment) {
-        this.comment = comment;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        CommentResponse commentResponse = (CommentResponse) o;
-        return Objects.equals(this.author, commentResponse.author) &&
-                Objects.equals(this.comment, commentResponse.comment);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(author, comment);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CommentResponse {\n");
-        sb.append("    author: ")
-          .append(toIndentedString(author))
-          .append("\n");
-        sb.append("    comment: ")
-          .append(toIndentedString(comment))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of CommentResponse to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -265,5 +242,26 @@ public class CommentResponse {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of CommentResponse given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of CommentResponse
+     * @throws IOException if the JSON string is invalid with respect to CommentResponse
+     */
+    public static CommentResponse fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, CommentResponse.class);
+    }
+
+    /**
+     * Convert an instance of CommentResponse to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

@@ -13,8 +13,7 @@
 
 package tech.provve.api.client.generated.dto;
 
-import tech.provve.api.client.ApiException;
-
+import tech.provve.api.client.generated.ApiException;
 import java.util.Objects;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -25,14 +24,14 @@ import java.util.Map;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
 public abstract class AbstractOpenApiSchema {
 
-    // schema type (e.g. oneOf, anyOf)
-    private final String schemaType;
-
     // store the actual instance of the schema/object
     private Object instance;
 
     // is nullable
     private Boolean isNullable;
+
+    // schema type (e.g. oneOf, anyOf)
+    private final String schemaType;
 
     public AbstractOpenApiSchema(String schemaType, Boolean isNullable) {
         this.schemaType = schemaType;

@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -39,7 +37,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -48,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * ExamAddVote
@@ -56,19 +53,226 @@ import tech.provve.api.client.JSON;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
 public class ExamAddVote {
 
+    public static final String SERIALIZED_NAME_ARGUMENTS = "arguments";
+
     public static final String SERIALIZED_NAME_ACTION = "action";
 
-    public static final String SERIALIZED_NAME_ARGUMENTS = "arguments";
+    @SerializedName(SERIALIZED_NAME_ACTION)
+    @javax.annotation.Nullable
+    private ActionEnum action;
 
     public static final String SERIALIZED_NAME_SKILL_ID = "skill_id";
 
+    @SerializedName(SERIALIZED_NAME_ARGUMENTS)
+    @javax.annotation.Nonnull
+    private String arguments;
+
     public static final String SERIALIZED_NAME_NAME = "name";
+
+    @SerializedName(SERIALIZED_NAME_SKILL_ID)
+    @javax.annotation.Nonnull
+    private UUID skillId;
 
     public static final String SERIALIZED_NAME_DESC = "desc";
 
+    @SerializedName(SERIALIZED_NAME_NAME)
+    @javax.annotation.Nonnull
+    private String name;
+
     public static final String SERIALIZED_NAME_MATERIAL = "material";
 
+    @SerializedName(SERIALIZED_NAME_DESC)
+    @javax.annotation.Nonnull
+    private String desc;
+
     public static HashSet<String> openapiFields;
+
+    @SerializedName(SERIALIZED_NAME_MATERIAL)
+    @javax.annotation.Nonnull
+    private File material;
+
+    public ExamAddVote() {
+    }
+
+    public ExamAddVote action(@javax.annotation.Nullable ActionEnum action) {
+        this.action = action;
+        return this;
+    }
+
+    /**
+     * Get action
+     *
+     * @return action
+     */
+    @javax.annotation.Nullable
+    public ActionEnum getAction() {
+        return action;
+    }
+
+    public void setAction(@javax.annotation.Nullable ActionEnum action) {
+        this.action = action;
+    }
+
+
+    public ExamAddVote arguments(@javax.annotation.Nonnull String arguments) {
+        this.arguments = arguments;
+        return this;
+    }
+
+    /**
+     * Пояснение для людей, почему эта экзамен важен
+     *
+     * @return arguments
+     */
+    @javax.annotation.Nonnull
+    public String getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(@javax.annotation.Nonnull String arguments) {
+        this.arguments = arguments;
+    }
+
+
+    public ExamAddVote skillId(@javax.annotation.Nonnull UUID skillId) {
+        this.skillId = skillId;
+        return this;
+    }
+
+    /**
+     * Идентификатор навыка, для проверки которого создан экзамен
+     *
+     * @return skillId
+     */
+    @javax.annotation.Nonnull
+    public UUID getSkillId() {
+        return skillId;
+    }
+
+    public void setSkillId(@javax.annotation.Nonnull UUID skillId) {
+        this.skillId = skillId;
+    }
+
+
+    public ExamAddVote name(@javax.annotation.Nonnull String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Название экзамена работы
+     *
+     * @return name
+     */
+    @javax.annotation.Nonnull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@javax.annotation.Nonnull String name) {
+        this.name = name;
+    }
+
+
+    public ExamAddVote desc(@javax.annotation.Nonnull String desc) {
+        this.desc = desc;
+        return this;
+    }
+
+    /**
+     * Финальная постановка задания для экзаменуемых
+     *
+     * @return desc
+     */
+    @javax.annotation.Nonnull
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(@javax.annotation.Nonnull String desc) {
+        this.desc = desc;
+    }
+
+
+    public ExamAddVote material(@javax.annotation.Nonnull File material) {
+        this.material = material;
+        return this;
+    }
+
+    /**
+     * Архив проекта с автотестами
+     *
+     * @return material
+     */
+    @javax.annotation.Nonnull
+    public File getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(@javax.annotation.Nonnull File material) {
+        this.material = material;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ExamAddVote examAddVote = (ExamAddVote) o;
+        return Objects.equals(this.action, examAddVote.action) &&
+                Objects.equals(this.arguments, examAddVote.arguments) &&
+                Objects.equals(this.skillId, examAddVote.skillId) &&
+                Objects.equals(this.name, examAddVote.name) &&
+                Objects.equals(this.desc, examAddVote.desc) &&
+                Objects.equals(this.material, examAddVote.material);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(action, arguments, skillId, name, desc, material);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ExamAddVote {\n");
+        sb.append("    action: ")
+          .append(toIndentedString(action))
+          .append("\n");
+        sb.append("    arguments: ")
+          .append(toIndentedString(arguments))
+          .append("\n");
+        sb.append("    skillId: ")
+          .append(toIndentedString(skillId))
+          .append("\n");
+        sb.append("    name: ")
+          .append(toIndentedString(name))
+          .append("\n");
+        sb.append("    desc: ")
+          .append(toIndentedString(desc))
+          .append("\n");
+        sb.append("    material: ")
+          .append(toIndentedString(material))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
 
     public static HashSet<String> openapiRequiredFields;
 
@@ -85,33 +289,6 @@ public class ExamAddVote {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(Arrays.asList("arguments", "skill_id", "name", "desc", "material"));
-    }
-
-    @SerializedName(SERIALIZED_NAME_ACTION)
-    @javax.annotation.Nullable
-    private ActionEnum action;
-
-    @SerializedName(SERIALIZED_NAME_ARGUMENTS)
-    @javax.annotation.Nonnull
-    private String arguments;
-
-    @SerializedName(SERIALIZED_NAME_SKILL_ID)
-    @javax.annotation.Nonnull
-    private UUID skillId;
-
-    @SerializedName(SERIALIZED_NAME_NAME)
-    @javax.annotation.Nonnull
-    private String name;
-
-    @SerializedName(SERIALIZED_NAME_DESC)
-    @javax.annotation.Nonnull
-    private String desc;
-
-    @SerializedName(SERIALIZED_NAME_MATERIAL)
-    @javax.annotation.Nonnull
-    private File material;
-
-    public ExamAddVote() {
     }
 
     /**
@@ -223,189 +400,45 @@ public class ExamAddVote {
                    .fromJson(jsonString, ExamAddVote.class);
     }
 
-    public ExamAddVote action(@javax.annotation.Nullable ActionEnum action) {
-        this.action = action;
-        return this;
-    }
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
-    /**
-     * Get action
-     *
-     * @return action
-     */
-    @javax.annotation.Nullable
-    public ActionEnum getAction() {
-        return action;
-    }
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!ExamAddVote.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'ExamAddVote' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<ExamAddVote> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(ExamAddVote.class));
 
-    public void setAction(@javax.annotation.Nullable ActionEnum action) {
-        this.action = action;
-    }
+            return (TypeAdapter<T>) new TypeAdapter<ExamAddVote>() {
+                @Override
+                public void write(JsonWriter out, ExamAddVote value) throws IOException {
+                    JsonObject obj = thisAdapter.toJsonTree(value)
+                                                .getAsJsonObject();
+                    elementAdapter.write(out, obj);
+                }
 
-    public ExamAddVote arguments(@javax.annotation.Nonnull String arguments) {
-        this.arguments = arguments;
-        return this;
-    }
+                @Override
+                public ExamAddVote read(JsonReader in) throws IOException {
+                    JsonElement jsonElement = elementAdapter.read(in);
+                    validateJsonElement(jsonElement);
+                    return thisAdapter.fromJsonTree(jsonElement);
+                }
 
-    /**
-     * Пояснение для людей, почему эта экзамен важен
-     *
-     * @return arguments
-     */
-    @javax.annotation.Nonnull
-    public String getArguments() {
-        return arguments;
-    }
-
-    public void setArguments(@javax.annotation.Nonnull String arguments) {
-        this.arguments = arguments;
-    }
-
-    public ExamAddVote skillId(@javax.annotation.Nonnull UUID skillId) {
-        this.skillId = skillId;
-        return this;
-    }
-
-    /**
-     * Идентификатор навыка, для проверки которого создан экзамен
-     *
-     * @return skillId
-     */
-    @javax.annotation.Nonnull
-    public UUID getSkillId() {
-        return skillId;
-    }
-
-    public void setSkillId(@javax.annotation.Nonnull UUID skillId) {
-        this.skillId = skillId;
-    }
-
-    public ExamAddVote name(@javax.annotation.Nonnull String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Название экзамена работы
-     *
-     * @return name
-     */
-    @javax.annotation.Nonnull
-    public String getName() {
-        return name;
-    }
-
-    public void setName(@javax.annotation.Nonnull String name) {
-        this.name = name;
-    }
-
-    public ExamAddVote desc(@javax.annotation.Nonnull String desc) {
-        this.desc = desc;
-        return this;
-    }
-
-    /**
-     * Финальная постановка задания для экзаменуемых
-     *
-     * @return desc
-     */
-    @javax.annotation.Nonnull
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(@javax.annotation.Nonnull String desc) {
-        this.desc = desc;
-    }
-
-    public ExamAddVote material(@javax.annotation.Nonnull File material) {
-        this.material = material;
-        return this;
-    }
-
-    /**
-     * Архив проекта с автотестами
-     *
-     * @return material
-     */
-    @javax.annotation.Nonnull
-    public File getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(@javax.annotation.Nonnull File material) {
-        this.material = material;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+            }.nullSafe();
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ExamAddVote examAddVote = (ExamAddVote) o;
-        return Objects.equals(this.action, examAddVote.action) &&
-                Objects.equals(this.arguments, examAddVote.arguments) &&
-                Objects.equals(this.skillId, examAddVote.skillId) &&
-                Objects.equals(this.name, examAddVote.name) &&
-                Objects.equals(this.desc, examAddVote.desc) &&
-                Objects.equals(this.material, examAddVote.material);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(action, arguments, skillId, name, desc, material);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ExamAddVote {\n");
-        sb.append("    action: ")
-          .append(toIndentedString(action))
-          .append("\n");
-        sb.append("    arguments: ")
-          .append(toIndentedString(arguments))
-          .append("\n");
-        sb.append("    skillId: ")
-          .append(toIndentedString(skillId))
-          .append("\n");
-        sb.append("    name: ")
-          .append(toIndentedString(name))
-          .append("\n");
-        sb.append("    desc: ")
-          .append(toIndentedString(desc))
-          .append("\n");
-        sb.append("    material: ")
-          .append(toIndentedString(material))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
     }
 
     /**
      * Convert an instance of ExamAddVote to an JSON string
      *
      * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
+  }
 
     /**
      * Gets or Sets action
@@ -459,37 +492,6 @@ public class ExamAddVote {
                 String value = jsonReader.nextString();
                 return ActionEnum.fromValue(value);
             }
-        }
-    }
-
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!ExamAddVote.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'ExamAddVote' and its subtypes
-            }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<ExamAddVote> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ExamAddVote.class));
-
-            return (TypeAdapter<T>) new TypeAdapter<ExamAddVote>() {
-                @Override
-                public void write(JsonWriter out, ExamAddVote value) throws IOException {
-                    JsonObject obj = thisAdapter.toJsonTree(value)
-                                                .getAsJsonObject();
-                    elementAdapter.write(out, obj);
-                }
-
-                @Override
-                public ExamAddVote read(JsonReader in) throws IOException {
-                    JsonElement jsonElement = elementAdapter.read(in);
-                    validateJsonElement(jsonElement);
-                    return thisAdapter.fromJsonTree(jsonElement);
-                }
-
-            }.nullSafe();
         }
     }
 }

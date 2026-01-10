@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +37,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -48,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * ObservationPostRequestObservation
@@ -56,9 +53,84 @@ import tech.provve.api.client.JSON;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
 public class ObservationPostRequestObservation {
 
+    public static HashSet<String> openapiFields;
+
     public static final String SERIALIZED_NAME_VIOLATIONS = "violations";
 
-    public static HashSet<String> openapiFields;
+    @SerializedName(SERIALIZED_NAME_VIOLATIONS)
+    @javax.annotation.Nullable
+    private List<ViolationsEnum> violations = new ArrayList<>();
+
+    public ObservationPostRequestObservation() {
+    }
+
+    public ObservationPostRequestObservation violations(@javax.annotation.Nullable List<ViolationsEnum> violations) {
+        this.violations = violations;
+        return this;
+    }
+
+    public ObservationPostRequestObservation addViolationsItem(ViolationsEnum violationsItem) {
+        if (this.violations == null) {
+            this.violations = new ArrayList<>();
+        }
+        this.violations.add(violationsItem);
+        return this;
+    }
+
+    /**
+     * Какие запрещённые действия пользователь совершал. Если указано, значит совершал.
+     *
+     * @return violations
+     */
+    @javax.annotation.Nullable
+    public List<ViolationsEnum> getViolations() {
+        return violations;
+    }
+
+    public void setViolations(@javax.annotation.Nullable List<ViolationsEnum> violations) {
+        this.violations = violations;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ObservationPostRequestObservation observationPostRequestObservation = (ObservationPostRequestObservation) o;
+        return Objects.equals(this.violations, observationPostRequestObservation.violations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(violations);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ObservationPostRequestObservation {\n");
+        sb.append("    violations: ")
+          .append(toIndentedString(violations))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
 
     public static HashSet<String> openapiRequiredFields;
 
@@ -68,13 +140,6 @@ public class ObservationPostRequestObservation {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_VIOLATIONS)
-    @javax.annotation.Nullable
-    private List<ViolationsEnum> violations = new ArrayList<>();
-
-    public ObservationPostRequestObservation() {
     }
 
     /**
@@ -133,71 +198,35 @@ public class ObservationPostRequestObservation {
                    .fromJson(jsonString, ObservationPostRequestObservation.class);
     }
 
-    public ObservationPostRequestObservation violations(@javax.annotation.Nullable List<ViolationsEnum> violations) {
-        this.violations = violations;
-        return this;
-    }
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
-    public ObservationPostRequestObservation addViolationsItem(ViolationsEnum violationsItem) {
-        if (this.violations == null) {
-            this.violations = new ArrayList<>();
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!ObservationPostRequestObservation.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'ObservationPostRequestObservation' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<ObservationPostRequestObservation> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(ObservationPostRequestObservation.class));
+
+            return (TypeAdapter<T>) new TypeAdapter<ObservationPostRequestObservation>() {
+                @Override
+                public void write(JsonWriter out, ObservationPostRequestObservation value) throws IOException {
+                    JsonObject obj = thisAdapter.toJsonTree(value)
+                                                .getAsJsonObject();
+                    elementAdapter.write(out, obj);
+                }
+
+                @Override
+                public ObservationPostRequestObservation read(JsonReader in) throws IOException {
+                    JsonElement jsonElement = elementAdapter.read(in);
+                    validateJsonElement(jsonElement);
+                    return thisAdapter.fromJsonTree(jsonElement);
+                }
+
+            }.nullSafe();
         }
-        this.violations.add(violationsItem);
-        return this;
-    }
-
-    /**
-     * Какие запрещённые действия пользователь совершал. Если указано, значит совершал.
-     *
-     * @return violations
-     */
-    @javax.annotation.Nullable
-    public List<ViolationsEnum> getViolations() {
-        return violations;
-    }
-
-    public void setViolations(@javax.annotation.Nullable List<ViolationsEnum> violations) {
-        this.violations = violations;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ObservationPostRequestObservation observationPostRequestObservation = (ObservationPostRequestObservation) o;
-        return Objects.equals(this.violations, observationPostRequestObservation.violations);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(violations);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ObservationPostRequestObservation {\n");
-        sb.append("    violations: ")
-          .append(toIndentedString(violations))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
     }
 
     /**
@@ -206,9 +235,8 @@ public class ObservationPostRequestObservation {
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
+    return JSON.getGson().toJson(this);
+  }
 
     /**
      * Gets or Sets violations
@@ -271,37 +299,6 @@ public class ObservationPostRequestObservation {
                 String value = jsonReader.nextString();
                 return ViolationsEnum.fromValue(value);
             }
-        }
-    }
-
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!ObservationPostRequestObservation.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'ObservationPostRequestObservation' and its subtypes
-            }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<ObservationPostRequestObservation> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(ObservationPostRequestObservation.class));
-
-            return (TypeAdapter<T>) new TypeAdapter<ObservationPostRequestObservation>() {
-                @Override
-                public void write(JsonWriter out, ObservationPostRequestObservation value) throws IOException {
-                    JsonObject obj = thisAdapter.toJsonTree(value)
-                                                .getAsJsonObject();
-                    elementAdapter.write(out, obj);
-                }
-
-                @Override
-                public ObservationPostRequestObservation read(JsonReader in) throws IOException {
-                    JsonElement jsonElement = elementAdapter.read(in);
-                    validateJsonElement(jsonElement);
-                    return thisAdapter.fromJsonTree(jsonElement);
-                }
-
-            }.nullSafe();
         }
     }
 }

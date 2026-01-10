@@ -14,17 +14,14 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-
 import tech.provve.api.client.generated.dto.VoteResponseAllOfVotes;
 
 import com.google.gson.Gson;
@@ -40,7 +37,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -49,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * VoteResponse
@@ -57,15 +53,166 @@ import tech.provve.api.client.JSON;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
 public class VoteResponse {
 
+    public static final String SERIALIZED_NAME_ARGUMENTS = "arguments";
+
     public static final String SERIALIZED_NAME_ACTION = "action";
 
-    public static final String SERIALIZED_NAME_ARGUMENTS = "arguments";
+    @SerializedName(SERIALIZED_NAME_ACTION)
+    @javax.annotation.Nullable
+    private ActionEnum action;
 
     public static final String SERIALIZED_NAME_VOTES = "votes";
 
+    @SerializedName(SERIALIZED_NAME_ARGUMENTS)
+    @javax.annotation.Nullable
+    private String arguments;
+
     public static final String SERIALIZED_NAME_EXPIRE_AT = "expire_at";
 
+    @SerializedName(SERIALIZED_NAME_VOTES)
+    @javax.annotation.Nullable
+    private VoteResponseAllOfVotes votes;
+
     public static HashSet<String> openapiFields;
+
+    @SerializedName(SERIALIZED_NAME_EXPIRE_AT)
+    @javax.annotation.Nullable
+    private OffsetDateTime expireAt;
+
+    public VoteResponse() {
+    }
+
+    public VoteResponse action(@javax.annotation.Nullable ActionEnum action) {
+        this.action = action;
+        return this;
+    }
+
+    /**
+     * Get action
+     *
+     * @return action
+     */
+    @javax.annotation.Nullable
+    public ActionEnum getAction() {
+        return action;
+    }
+
+    public void setAction(@javax.annotation.Nullable ActionEnum action) {
+        this.action = action;
+    }
+
+
+    public VoteResponse arguments(@javax.annotation.Nullable String arguments) {
+        this.arguments = arguments;
+        return this;
+    }
+
+    /**
+     * Аргументы за совершение действия, предложенного в голосовании.
+     *
+     * @return arguments
+     */
+    @javax.annotation.Nullable
+    public String getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(@javax.annotation.Nullable String arguments) {
+        this.arguments = arguments;
+    }
+
+
+    public VoteResponse votes(@javax.annotation.Nullable VoteResponseAllOfVotes votes) {
+        this.votes = votes;
+        return this;
+    }
+
+    /**
+     * Get votes
+     *
+     * @return votes
+     */
+    @javax.annotation.Nullable
+    public VoteResponseAllOfVotes getVotes() {
+        return votes;
+    }
+
+    public void setVotes(@javax.annotation.Nullable VoteResponseAllOfVotes votes) {
+        this.votes = votes;
+    }
+
+
+    public VoteResponse expireAt(@javax.annotation.Nullable OffsetDateTime expireAt) {
+        this.expireAt = expireAt;
+        return this;
+    }
+
+    /**
+     * Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие.
+     *
+     * @return expireAt
+     */
+    @javax.annotation.Nullable
+    public OffsetDateTime getExpireAt() {
+        return expireAt;
+    }
+
+    public void setExpireAt(@javax.annotation.Nullable OffsetDateTime expireAt) {
+        this.expireAt = expireAt;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        VoteResponse voteResponse = (VoteResponse) o;
+        return Objects.equals(this.action, voteResponse.action) &&
+                Objects.equals(this.arguments, voteResponse.arguments) &&
+                Objects.equals(this.votes, voteResponse.votes) &&
+                Objects.equals(this.expireAt, voteResponse.expireAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(action, arguments, votes, expireAt);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class VoteResponse {\n");
+        sb.append("    action: ")
+          .append(toIndentedString(action))
+          .append("\n");
+        sb.append("    arguments: ")
+          .append(toIndentedString(arguments))
+          .append("\n");
+        sb.append("    votes: ")
+          .append(toIndentedString(votes))
+          .append("\n");
+        sb.append("    expireAt: ")
+          .append(toIndentedString(expireAt))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
 
     public static HashSet<String> openapiRequiredFields;
 
@@ -75,25 +222,6 @@ public class VoteResponse {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_ACTION)
-    @javax.annotation.Nullable
-    private ActionEnum action;
-
-    @SerializedName(SERIALIZED_NAME_ARGUMENTS)
-    @javax.annotation.Nullable
-    private String arguments;
-
-    @SerializedName(SERIALIZED_NAME_VOTES)
-    @javax.annotation.Nullable
-    private VoteResponseAllOfVotes votes;
-
-    @SerializedName(SERIALIZED_NAME_EXPIRE_AT)
-    @javax.annotation.Nullable
-    private OffsetDateTime expireAt;
-
-    public VoteResponse() {
     }
 
     /**
@@ -171,132 +299,35 @@ public class VoteResponse {
                    .fromJson(jsonString, VoteResponse.class);
     }
 
-    public VoteResponse action(@javax.annotation.Nullable ActionEnum action) {
-        this.action = action;
-        return this;
-    }
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
-    /**
-     * Get action
-     *
-     * @return action
-     */
-    @javax.annotation.Nullable
-    public ActionEnum getAction() {
-        return action;
-    }
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!VoteResponse.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'VoteResponse' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<VoteResponse> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(VoteResponse.class));
 
-    public void setAction(@javax.annotation.Nullable ActionEnum action) {
-        this.action = action;
-    }
+            return (TypeAdapter<T>) new TypeAdapter<VoteResponse>() {
+                @Override
+                public void write(JsonWriter out, VoteResponse value) throws IOException {
+                    JsonObject obj = thisAdapter.toJsonTree(value)
+                                                .getAsJsonObject();
+                    elementAdapter.write(out, obj);
+                }
 
-    public VoteResponse arguments(@javax.annotation.Nullable String arguments) {
-        this.arguments = arguments;
-        return this;
-    }
+                @Override
+                public VoteResponse read(JsonReader in) throws IOException {
+                    JsonElement jsonElement = elementAdapter.read(in);
+                    validateJsonElement(jsonElement);
+                    return thisAdapter.fromJsonTree(jsonElement);
+                }
 
-    /**
-     * Аргументы за совершение действия, предложенного в голосовании.
-     *
-     * @return arguments
-     */
-    @javax.annotation.Nullable
-    public String getArguments() {
-        return arguments;
-    }
-
-    public void setArguments(@javax.annotation.Nullable String arguments) {
-        this.arguments = arguments;
-    }
-
-    public VoteResponse votes(@javax.annotation.Nullable VoteResponseAllOfVotes votes) {
-        this.votes = votes;
-        return this;
-    }
-
-    /**
-     * Get votes
-     *
-     * @return votes
-     */
-    @javax.annotation.Nullable
-    public VoteResponseAllOfVotes getVotes() {
-        return votes;
-    }
-
-    public void setVotes(@javax.annotation.Nullable VoteResponseAllOfVotes votes) {
-        this.votes = votes;
-    }
-
-    public VoteResponse expireAt(@javax.annotation.Nullable OffsetDateTime expireAt) {
-        this.expireAt = expireAt;
-        return this;
-    }
-
-    /**
-     * Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие.
-     *
-     * @return expireAt
-     */
-    @javax.annotation.Nullable
-    public OffsetDateTime getExpireAt() {
-        return expireAt;
-    }
-
-    public void setExpireAt(@javax.annotation.Nullable OffsetDateTime expireAt) {
-        this.expireAt = expireAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+            }.nullSafe();
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        VoteResponse voteResponse = (VoteResponse) o;
-        return Objects.equals(this.action, voteResponse.action) &&
-                Objects.equals(this.arguments, voteResponse.arguments) &&
-                Objects.equals(this.votes, voteResponse.votes) &&
-                Objects.equals(this.expireAt, voteResponse.expireAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(action, arguments, votes, expireAt);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class VoteResponse {\n");
-        sb.append("    action: ")
-          .append(toIndentedString(action))
-          .append("\n");
-        sb.append("    arguments: ")
-          .append(toIndentedString(arguments))
-          .append("\n");
-        sb.append("    votes: ")
-          .append(toIndentedString(votes))
-          .append("\n");
-        sb.append("    expireAt: ")
-          .append(toIndentedString(expireAt))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
     }
 
     /**
@@ -304,10 +335,9 @@ public class VoteResponse {
      *
      * @return JSON string
      */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
+  public String toJson() {
+    return JSON.getGson().toJson(this);
+  }
 
     /**
      * Gets or Sets action
@@ -361,37 +391,6 @@ public class VoteResponse {
                 String value = jsonReader.nextString();
                 return ActionEnum.fromValue(value);
             }
-        }
-    }
-
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!VoteResponse.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'VoteResponse' and its subtypes
-            }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<VoteResponse> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(VoteResponse.class));
-
-            return (TypeAdapter<T>) new TypeAdapter<VoteResponse>() {
-                @Override
-                public void write(JsonWriter out, VoteResponse value) throws IOException {
-                    JsonObject obj = thisAdapter.toJsonTree(value)
-                                                .getAsJsonObject();
-                    elementAdapter.write(out, obj);
-                }
-
-                @Override
-                public VoteResponse read(JsonReader in) throws IOException {
-                    JsonElement jsonElement = elementAdapter.read(in);
-                    validateJsonElement(jsonElement);
-                    return thisAdapter.fromJsonTree(jsonElement);
-                }
-
-            }.nullSafe();
         }
     }
 }

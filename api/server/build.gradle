@@ -30,12 +30,14 @@ tasks.openApiGenerate {
 
     generatorName = 'java-vertx-web-uuid'
     inputSpec = "${rootProject.layout.projectDirectory}/provve-api.yaml"
-    outputDir = "${layout.projectDirectory}/"
+    outputDir = "${layout.projectDirectory}"
     configOptions = [
-            apiPackage  : "tech.provve.api.server.generated",
+            invokerPackage: "tech.provve.api.server.generated",
+            apiPackage    : "tech.provve.api.server.generated.api",
             modelPackage           : "tech.provve.api.server.generated.dto",
             hideGenerationTimestamp: "true"
     ]
+    templateDir = "${layout.projectDirectory}/src/main/resources/templates"
 }
 
 processResources {

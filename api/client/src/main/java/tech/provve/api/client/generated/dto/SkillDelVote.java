@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -38,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -47,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * SkillDelVote
@@ -55,13 +52,136 @@ import tech.provve.api.client.JSON;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
 public class SkillDelVote {
 
+    public static final String SERIALIZED_NAME_ARGUMENTS = "arguments";
+
     public static final String SERIALIZED_NAME_ACTION = "action";
 
-    public static final String SERIALIZED_NAME_ARGUMENTS = "arguments";
+    @SerializedName(SERIALIZED_NAME_ACTION)
+    @javax.annotation.Nullable
+    private ActionEnum action;
 
     public static final String SERIALIZED_NAME_ID = "id";
 
+    @SerializedName(SERIALIZED_NAME_ARGUMENTS)
+    @javax.annotation.Nullable
+    private String arguments;
+
     public static HashSet<String> openapiFields;
+
+    @SerializedName(SERIALIZED_NAME_ID)
+    @javax.annotation.Nullable
+    private UUID id;
+
+    public SkillDelVote() {
+    }
+
+    public SkillDelVote action(@javax.annotation.Nullable ActionEnum action) {
+        this.action = action;
+        return this;
+    }
+
+    /**
+     * Get action
+     *
+     * @return action
+     */
+    @javax.annotation.Nullable
+    public ActionEnum getAction() {
+        return action;
+    }
+
+    public void setAction(@javax.annotation.Nullable ActionEnum action) {
+        this.action = action;
+    }
+
+
+    public SkillDelVote arguments(@javax.annotation.Nullable String arguments) {
+        this.arguments = arguments;
+        return this;
+    }
+
+    /**
+     * Аргументы за совершение действия, предложенного в голосовании.
+     *
+     * @return arguments
+     */
+    @javax.annotation.Nullable
+    public String getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(@javax.annotation.Nullable String arguments) {
+        this.arguments = arguments;
+    }
+
+
+    public SkillDelVote id(@javax.annotation.Nullable UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Идентификатор навыка
+     *
+     * @return id
+     */
+    @javax.annotation.Nullable
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(@javax.annotation.Nullable UUID id) {
+        this.id = id;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SkillDelVote skillDelVote = (SkillDelVote) o;
+        return Objects.equals(this.action, skillDelVote.action) &&
+                Objects.equals(this.arguments, skillDelVote.arguments) &&
+                Objects.equals(this.id, skillDelVote.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(action, arguments, id);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class SkillDelVote {\n");
+        sb.append("    action: ")
+          .append(toIndentedString(action))
+          .append("\n");
+        sb.append("    arguments: ")
+          .append(toIndentedString(arguments))
+          .append("\n");
+        sb.append("    id: ")
+          .append(toIndentedString(id))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
 
     public static HashSet<String> openapiRequiredFields;
 
@@ -71,21 +191,6 @@ public class SkillDelVote {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_ACTION)
-    @javax.annotation.Nullable
-    private ActionEnum action;
-
-    @SerializedName(SERIALIZED_NAME_ARGUMENTS)
-    @javax.annotation.Nullable
-    private String arguments;
-
-    @SerializedName(SERIALIZED_NAME_ID)
-    @javax.annotation.Nullable
-    private UUID id;
-
-    public SkillDelVote() {
     }
 
     /**
@@ -168,109 +273,35 @@ public class SkillDelVote {
                    .fromJson(jsonString, SkillDelVote.class);
     }
 
-    public SkillDelVote action(@javax.annotation.Nullable ActionEnum action) {
-        this.action = action;
-        return this;
-    }
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
-    /**
-     * Get action
-     *
-     * @return action
-     */
-    @javax.annotation.Nullable
-    public ActionEnum getAction() {
-        return action;
-    }
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!SkillDelVote.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'SkillDelVote' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<SkillDelVote> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(SkillDelVote.class));
 
-    public void setAction(@javax.annotation.Nullable ActionEnum action) {
-        this.action = action;
-    }
+            return (TypeAdapter<T>) new TypeAdapter<SkillDelVote>() {
+                @Override
+                public void write(JsonWriter out, SkillDelVote value) throws IOException {
+                    JsonObject obj = thisAdapter.toJsonTree(value)
+                                                .getAsJsonObject();
+                    elementAdapter.write(out, obj);
+                }
 
-    public SkillDelVote arguments(@javax.annotation.Nullable String arguments) {
-        this.arguments = arguments;
-        return this;
-    }
+                @Override
+                public SkillDelVote read(JsonReader in) throws IOException {
+                    JsonElement jsonElement = elementAdapter.read(in);
+                    validateJsonElement(jsonElement);
+                    return thisAdapter.fromJsonTree(jsonElement);
+                }
 
-    /**
-     * Аргументы за совершение действия, предложенного в голосовании.
-     *
-     * @return arguments
-     */
-    @javax.annotation.Nullable
-    public String getArguments() {
-        return arguments;
-    }
-
-    public void setArguments(@javax.annotation.Nullable String arguments) {
-        this.arguments = arguments;
-    }
-
-    public SkillDelVote id(@javax.annotation.Nullable UUID id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Идентификатор навыка
-     *
-     * @return id
-     */
-    @javax.annotation.Nullable
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(@javax.annotation.Nullable UUID id) {
-        this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+            }.nullSafe();
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SkillDelVote skillDelVote = (SkillDelVote) o;
-        return Objects.equals(this.action, skillDelVote.action) &&
-                Objects.equals(this.arguments, skillDelVote.arguments) &&
-                Objects.equals(this.id, skillDelVote.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(action, arguments, id);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class SkillDelVote {\n");
-        sb.append("    action: ")
-          .append(toIndentedString(action))
-          .append("\n");
-        sb.append("    arguments: ")
-          .append(toIndentedString(arguments))
-          .append("\n");
-        sb.append("    id: ")
-          .append(toIndentedString(id))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
     }
 
     /**
@@ -279,9 +310,8 @@ public class SkillDelVote {
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
+    return JSON.getGson().toJson(this);
+  }
 
     /**
      * Gets or Sets action
@@ -335,37 +365,6 @@ public class SkillDelVote {
                 String value = jsonReader.nextString();
                 return ActionEnum.fromValue(value);
             }
-        }
-    }
-
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!SkillDelVote.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'SkillDelVote' and its subtypes
-            }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<SkillDelVote> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(SkillDelVote.class));
-
-            return (TypeAdapter<T>) new TypeAdapter<SkillDelVote>() {
-                @Override
-                public void write(JsonWriter out, SkillDelVote value) throws IOException {
-                    JsonObject obj = thisAdapter.toJsonTree(value)
-                                                .getAsJsonObject();
-                    elementAdapter.write(out, obj);
-                }
-
-                @Override
-                public SkillDelVote read(JsonReader in) throws IOException {
-                    JsonElement jsonElement = elementAdapter.read(in);
-                    validateJsonElement(jsonElement);
-                    return thisAdapter.fromJsonTree(jsonElement);
-                }
-
-            }.nullSafe();
         }
     }
 }

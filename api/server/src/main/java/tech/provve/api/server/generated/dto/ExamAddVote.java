@@ -1,15 +1,32 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.vertx.ext.web.FileUpload;
 
-import java.util.Objects;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamAddVote {
 
+
+    public enum ActionEnum {
+        DELETE_SKILL("delete_skill"),
+        ADD_SKILL("add_skill"),
+        ADD_EXAM("add_exam");
+
+        private String value;
+
+        ActionEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
+    }
 
     private ActionEnum action;
 
@@ -36,6 +53,7 @@ public class ExamAddVote {
         this.material = material;
     }
 
+
     @JsonProperty("action")
     public ActionEnum getAction() {
         return action;
@@ -44,6 +62,7 @@ public class ExamAddVote {
     public void setAction(ActionEnum action) {
         this.action = action;
     }
+
 
     @JsonProperty("arguments")
     public String getArguments() {
@@ -54,6 +73,7 @@ public class ExamAddVote {
         this.arguments = arguments;
     }
 
+
     @JsonProperty("skill_id")
     public java.util.UUID getSkillId() {
         return skillId;
@@ -62,6 +82,7 @@ public class ExamAddVote {
     public void setSkillId(java.util.UUID skillId) {
         this.skillId = skillId;
     }
+
 
     @JsonProperty("name")
     public String getName() {
@@ -72,6 +93,7 @@ public class ExamAddVote {
         this.name = name;
     }
 
+
     @JsonProperty("desc")
     public String getDesc() {
         return desc;
@@ -81,6 +103,7 @@ public class ExamAddVote {
         this.desc = desc;
     }
 
+
     @JsonProperty("material")
     public FileUpload getMaterial() {
         return material;
@@ -89,6 +112,7 @@ public class ExamAddVote {
     public void setMaterial(FileUpload material) {
         this.material = material;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -149,23 +173,5 @@ public class ExamAddVote {
         }
         return o.toString()
                 .replace("\n", "\n    ");
-    }
-
-    public enum ActionEnum {
-        DELETE_SKILL("delete_skill"),
-        ADD_SKILL("add_skill"),
-        ADD_EXAM("add_exam");
-
-        private String value;
-
-        ActionEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
     }
 }

@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -38,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -47,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * SkillResponse
@@ -57,7 +54,103 @@ public class SkillResponse {
 
     public static final String SERIALIZED_NAME_NAME = "name";
 
+    @SerializedName(SERIALIZED_NAME_NAME)
+    @javax.annotation.Nonnull
+    private String name;
+
     public static final String SERIALIZED_NAME_VOTE_ID = "vote_id";
+
+    @SerializedName(SERIALIZED_NAME_VOTE_ID)
+    @javax.annotation.Nonnull
+    private UUID voteId;
+
+    public SkillResponse() {
+    }
+
+    public SkillResponse name(@javax.annotation.Nonnull String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Название навыка
+     *
+     * @return name
+     */
+    @javax.annotation.Nonnull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@javax.annotation.Nonnull String name) {
+        this.name = name;
+    }
+
+
+    public SkillResponse voteId(@javax.annotation.Nonnull UUID voteId) {
+        this.voteId = voteId;
+        return this;
+    }
+
+    /**
+     * ID голосования, в результате которого навык был добавлен в систему.
+     *
+     * @return voteId
+     */
+    @javax.annotation.Nonnull
+    public UUID getVoteId() {
+        return voteId;
+    }
+
+    public void setVoteId(@javax.annotation.Nonnull UUID voteId) {
+        this.voteId = voteId;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SkillResponse skillResponse = (SkillResponse) o;
+        return Objects.equals(this.name, skillResponse.name) &&
+                Objects.equals(this.voteId, skillResponse.voteId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, voteId);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class SkillResponse {\n");
+        sb.append("    name: ")
+          .append(toIndentedString(name))
+          .append("\n");
+        sb.append("    voteId: ")
+          .append(toIndentedString(voteId))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -69,17 +162,6 @@ public class SkillResponse {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(Arrays.asList("name", "vote_id"));
-    }
-
-    @SerializedName(SERIALIZED_NAME_NAME)
-    @javax.annotation.Nonnull
-    private String name;
-
-    @SerializedName(SERIALIZED_NAME_VOTE_ID)
-    @javax.annotation.Nonnull
-    private UUID voteId;
-
-    public SkillResponse() {
     }
 
     /**
@@ -146,110 +228,6 @@ public class SkillResponse {
         }
     }
 
-    /**
-     * Create an instance of SkillResponse given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of SkillResponse
-     * @throws IOException if the JSON string is invalid with respect to SkillResponse
-     */
-    public static SkillResponse fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, SkillResponse.class);
-    }
-
-    public SkillResponse name(@javax.annotation.Nonnull String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Название навыка
-     *
-     * @return name
-     */
-    @javax.annotation.Nonnull
-    public String getName() {
-        return name;
-    }
-
-    public void setName(@javax.annotation.Nonnull String name) {
-        this.name = name;
-    }
-
-    public SkillResponse voteId(@javax.annotation.Nonnull UUID voteId) {
-        this.voteId = voteId;
-        return this;
-    }
-
-    /**
-     * ID голосования, в результате которого навык был добавлен в систему.
-     *
-     * @return voteId
-     */
-    @javax.annotation.Nonnull
-    public UUID getVoteId() {
-        return voteId;
-    }
-
-    public void setVoteId(@javax.annotation.Nonnull UUID voteId) {
-        this.voteId = voteId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SkillResponse skillResponse = (SkillResponse) o;
-        return Objects.equals(this.name, skillResponse.name) &&
-                Objects.equals(this.voteId, skillResponse.voteId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, voteId);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class SkillResponse {\n");
-        sb.append("    name: ")
-          .append(toIndentedString(name))
-          .append("\n");
-        sb.append("    voteId: ")
-          .append(toIndentedString(voteId))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of SkillResponse to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -280,5 +258,26 @@ public class SkillResponse {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of SkillResponse given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of SkillResponse
+     * @throws IOException if the JSON string is invalid with respect to SkillResponse
+     */
+    public static SkillResponse fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, SkillResponse.class);
+    }
+
+    /**
+     * Convert an instance of SkillResponse to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

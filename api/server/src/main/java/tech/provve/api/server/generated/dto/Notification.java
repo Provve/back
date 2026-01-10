@@ -1,11 +1,10 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /**
  * Уведомление о событии в системе
@@ -13,6 +12,24 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Notification {
 
+
+    public enum LevelEnum {
+        ERROR("error"),
+        WARNING("warning"),
+        INFO("info");
+
+        private String value;
+
+        LevelEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
+    }
 
     private LevelEnum level;
 
@@ -30,6 +47,7 @@ public class Notification {
         this.createdAt = createdAt;
     }
 
+
     @JsonProperty("level")
     public LevelEnum getLevel() {
         return level;
@@ -38,6 +56,7 @@ public class Notification {
     public void setLevel(LevelEnum level) {
         this.level = level;
     }
+
 
     @JsonProperty("message")
     public String getMessage() {
@@ -48,6 +67,7 @@ public class Notification {
         this.message = message;
     }
 
+
     @JsonProperty("created_at")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -56,6 +76,7 @@ public class Notification {
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -104,23 +125,5 @@ public class Notification {
         }
         return o.toString()
                 .replace("\n", "\n    ");
-    }
-
-    public enum LevelEnum {
-        ERROR("error"),
-        WARNING("warning"),
-        INFO("info");
-
-        private String value;
-
-        LevelEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
     }
 }

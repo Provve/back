@@ -27,7 +27,8 @@ tasks.openApiGenerate {
     inputSpec = "${rootProject.layout.projectDirectory}/provve-api.yaml"
     outputDir = "${layout.projectDirectory}"
     configOptions = [
-            apiPackage             : "tech.provve.api.client.generated",
+            invokerPackage: "tech.provve.api.client.generated",
+            apiPackage    : "tech.provve.api.client.generated.api",
             modelPackage           : "tech.provve.api.client.generated.dto",
             hideGenerationTimestamp: "true"
     ]

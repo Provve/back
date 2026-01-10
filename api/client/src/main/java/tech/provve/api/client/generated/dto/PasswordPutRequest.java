@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * PasswordPutRequest
@@ -56,9 +53,133 @@ public class PasswordPutRequest {
 
     public static final String SERIALIZED_NAME_RESET_CODE = "reset_code";
 
+    @SerializedName(SERIALIZED_NAME_RESET_CODE)
+    @javax.annotation.Nonnull
+    private String resetCode;
+
     public static final String SERIALIZED_NAME_NEW_PASSWORD = "new_password";
 
+    @SerializedName(SERIALIZED_NAME_NEW_PASSWORD)
+    @javax.annotation.Nonnull
+    private String newPassword;
+
     public static final String SERIALIZED_NAME_LOGIN = "login";
+
+    @SerializedName(SERIALIZED_NAME_LOGIN)
+    @javax.annotation.Nonnull
+    private String login;
+
+    public PasswordPutRequest() {
+    }
+
+    public PasswordPutRequest resetCode(@javax.annotation.Nonnull String resetCode) {
+        this.resetCode = resetCode;
+        return this;
+    }
+
+    /**
+     * токен для сброса пароля, отправленный пользователю на почту
+     *
+     * @return resetCode
+     */
+    @javax.annotation.Nonnull
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(@javax.annotation.Nonnull String resetCode) {
+        this.resetCode = resetCode;
+    }
+
+
+    public PasswordPutRequest newPassword(@javax.annotation.Nonnull String newPassword) {
+        this.newPassword = newPassword;
+        return this;
+    }
+
+    /**
+     * Get newPassword
+     *
+     * @return newPassword
+     */
+    @javax.annotation.Nonnull
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(@javax.annotation.Nonnull String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+
+    public PasswordPutRequest login(@javax.annotation.Nonnull String login) {
+        this.login = login;
+        return this;
+    }
+
+    /**
+     * логин аккаунта, пароль от которого надо сбросить
+     *
+     * @return login
+     */
+    @javax.annotation.Nonnull
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(@javax.annotation.Nonnull String login) {
+        this.login = login;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PasswordPutRequest passwordPutRequest = (PasswordPutRequest) o;
+        return Objects.equals(this.resetCode, passwordPutRequest.resetCode) &&
+                Objects.equals(this.newPassword, passwordPutRequest.newPassword) &&
+                Objects.equals(this.login, passwordPutRequest.login);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(resetCode, newPassword, login);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class PasswordPutRequest {\n");
+        sb.append("    resetCode: ")
+          .append(toIndentedString(resetCode))
+          .append("\n");
+        sb.append("    newPassword: ")
+          .append(toIndentedString(newPassword))
+          .append("\n");
+        sb.append("    login: ")
+          .append(toIndentedString(login))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -70,21 +191,6 @@ public class PasswordPutRequest {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(Arrays.asList("reset_code", "new_password", "login"));
-    }
-
-    @SerializedName(SERIALIZED_NAME_RESET_CODE)
-    @javax.annotation.Nonnull
-    private String resetCode;
-
-    @SerializedName(SERIALIZED_NAME_NEW_PASSWORD)
-    @javax.annotation.Nonnull
-    private String newPassword;
-
-    @SerializedName(SERIALIZED_NAME_LOGIN)
-    @javax.annotation.Nonnull
-    private String login;
-
-    public PasswordPutRequest() {
     }
 
     /**
@@ -160,133 +266,6 @@ public class PasswordPutRequest {
         }
     }
 
-    /**
-     * Create an instance of PasswordPutRequest given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of PasswordPutRequest
-     * @throws IOException if the JSON string is invalid with respect to PasswordPutRequest
-     */
-    public static PasswordPutRequest fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, PasswordPutRequest.class);
-    }
-
-    public PasswordPutRequest resetCode(@javax.annotation.Nonnull String resetCode) {
-        this.resetCode = resetCode;
-        return this;
-    }
-
-    /**
-     * токен для сброса пароля, отправленный пользователю на почту
-     *
-     * @return resetCode
-     */
-    @javax.annotation.Nonnull
-    public String getResetCode() {
-        return resetCode;
-    }
-
-    public void setResetCode(@javax.annotation.Nonnull String resetCode) {
-        this.resetCode = resetCode;
-    }
-
-    public PasswordPutRequest newPassword(@javax.annotation.Nonnull String newPassword) {
-        this.newPassword = newPassword;
-        return this;
-    }
-
-    /**
-     * Get newPassword
-     *
-     * @return newPassword
-     */
-    @javax.annotation.Nonnull
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(@javax.annotation.Nonnull String newPassword) {
-        this.newPassword = newPassword;
-    }
-
-    public PasswordPutRequest login(@javax.annotation.Nonnull String login) {
-        this.login = login;
-        return this;
-    }
-
-    /**
-     * логин аккаунта, пароль от которого надо сбросить
-     *
-     * @return login
-     */
-    @javax.annotation.Nonnull
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(@javax.annotation.Nonnull String login) {
-        this.login = login;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        PasswordPutRequest passwordPutRequest = (PasswordPutRequest) o;
-        return Objects.equals(this.resetCode, passwordPutRequest.resetCode) &&
-                Objects.equals(this.newPassword, passwordPutRequest.newPassword) &&
-                Objects.equals(this.login, passwordPutRequest.login);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(resetCode, newPassword, login);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class PasswordPutRequest {\n");
-        sb.append("    resetCode: ")
-          .append(toIndentedString(resetCode))
-          .append("\n");
-        sb.append("    newPassword: ")
-          .append(toIndentedString(newPassword))
-          .append("\n");
-        sb.append("    login: ")
-          .append(toIndentedString(login))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of PasswordPutRequest to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -317,5 +296,26 @@ public class PasswordPutRequest {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of PasswordPutRequest given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of PasswordPutRequest
+     * @throws IOException if the JSON string is invalid with respect to PasswordPutRequest
+     */
+    public static PasswordPutRequest fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, PasswordPutRequest.class);
+    }
+
+    /**
+     * Convert an instance of PasswordPutRequest to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+    return JSON.getGson().toJson(this);
+  }
 }
 

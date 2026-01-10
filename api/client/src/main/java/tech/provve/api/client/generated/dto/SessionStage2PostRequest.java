@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -38,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -47,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * SessionStage2PostRequest
@@ -57,84 +54,17 @@ public class SessionStage2PostRequest {
 
     public static final String SERIALIZED_NAME_EXAM_ID = "exam_id";
 
-    public static final String SERIALIZED_NAME_CIPHER = "cipher";
-
-    public static HashSet<String> openapiFields;
-
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("exam_id", "cipher"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(0);
-    }
-
     @SerializedName(SERIALIZED_NAME_EXAM_ID)
     @javax.annotation.Nullable
     private UUID examId;
+
+    public static final String SERIALIZED_NAME_CIPHER = "cipher";
 
     @SerializedName(SERIALIZED_NAME_CIPHER)
     @javax.annotation.Nullable
     private Integer cipher;
 
     public SessionStage2PostRequest() {
-    }
-
-    /**
-     * Validates the JSON Element and throws an exception if issues found
-     *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to SessionStage2PostRequest
-     */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!SessionStage2PostRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The required field(s) %s in SessionStage2PostRequest is not found in the empty JSON string",
-                        SessionStage2PostRequest.openapiRequiredFields.toString()
-                ));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
-                                                                 .entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!SessionStage2PostRequest.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The field `%s` in the JSON string is not defined in the `SessionStage2PostRequest` properties. JSON: %s",
-                        entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if ((jsonObj.get("exam_id") != null && !jsonObj.get("exam_id")
-                                                       .isJsonNull()) && !jsonObj.get("exam_id")
-                                                                                 .isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(
-                    java.util.Locale.ROOT,
-                    "Expected the field `exam_id` to be a primitive type in the JSON string but got `%s`",
-                    jsonObj.get("exam_id")
-                           .toString()
-            ));
-        }
-    }
-
-    /**
-     * Create an instance of SessionStage2PostRequest given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of SessionStage2PostRequest
-     * @throws IOException if the JSON string is invalid with respect to SessionStage2PostRequest
-     */
-    public static SessionStage2PostRequest fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, SessionStage2PostRequest.class);
     }
 
     public SessionStage2PostRequest examId(@javax.annotation.Nullable UUID examId) {
@@ -156,6 +86,7 @@ public class SessionStage2PostRequest {
         this.examId = examId;
     }
 
+
     public SessionStage2PostRequest cipher(@javax.annotation.Nullable Integer cipher) {
         this.cipher = cipher;
         return this;
@@ -174,6 +105,7 @@ public class SessionStage2PostRequest {
     public void setCipher(@javax.annotation.Nullable Integer cipher) {
         this.cipher = cipher;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -219,14 +151,60 @@ public class SessionStage2PostRequest {
                 .replace("\n", "\n    ");
     }
 
+
+    public static HashSet<String> openapiFields;
+
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("exam_id", "cipher"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(0);
+    }
+
     /**
-     * Convert an instance of SessionStage2PostRequest to an JSON string
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return JSON string
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to SessionStage2PostRequest
      */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!SessionStage2PostRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The required field(s) %s in SessionStage2PostRequest is not found in the empty JSON string",
+                        SessionStage2PostRequest.openapiRequiredFields.toString()
+                ));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
+                                                                 .entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!SessionStage2PostRequest.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The field `%s` in the JSON string is not defined in the `SessionStage2PostRequest` properties. JSON: %s",
+                        entry.getKey(),
+                        jsonElement.toString()
+                ));
+            }
+        }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if ((jsonObj.get("exam_id") != null && !jsonObj.get("exam_id")
+                                                       .isJsonNull()) && !jsonObj.get("exam_id")
+                                                                                 .isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(
+                    java.util.Locale.ROOT,
+                    "Expected the field `exam_id` to be a primitive type in the JSON string but got `%s`",
+                    jsonObj.get("exam_id")
+                           .toString()
+            ));
+        }
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
@@ -259,5 +237,26 @@ public class SessionStage2PostRequest {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of SessionStage2PostRequest given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of SessionStage2PostRequest
+     * @throws IOException if the JSON string is invalid with respect to SessionStage2PostRequest
+     */
+    public static SessionStage2PostRequest fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, SessionStage2PostRequest.class);
+    }
+
+    /**
+     * Convert an instance of SessionStage2PostRequest to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

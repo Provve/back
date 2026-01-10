@@ -1,14 +1,31 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Objects;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Vote {
 
+
+    public enum ActionEnum {
+        DELETE_SKILL("delete_skill"),
+        ADD_SKILL("add_skill"),
+        ADD_EXAM("add_exam");
+
+        private String value;
+
+        ActionEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
+    }
 
     private ActionEnum action;
 
@@ -23,6 +40,7 @@ public class Vote {
         this.arguments = arguments;
     }
 
+
     @JsonProperty("action")
     public ActionEnum getAction() {
         return action;
@@ -32,6 +50,7 @@ public class Vote {
         this.action = action;
     }
 
+
     @JsonProperty("arguments")
     public String getArguments() {
         return arguments;
@@ -40,6 +59,7 @@ public class Vote {
     public void setArguments(String arguments) {
         this.arguments = arguments;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -84,23 +104,5 @@ public class Vote {
         }
         return o.toString()
                 .replace("\n", "\n    ");
-    }
-
-    public enum ActionEnum {
-        DELETE_SKILL("delete_skill"),
-        ADD_SKILL("add_skill"),
-        ADD_EXAM("add_exam");
-
-        private String value;
-
-        ActionEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
     }
 }

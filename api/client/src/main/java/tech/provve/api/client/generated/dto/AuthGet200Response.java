@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * AuthGet200Response
@@ -55,6 +52,74 @@ import tech.provve.api.client.JSON;
 public class AuthGet200Response {
 
     public static final String SERIALIZED_NAME_TOKEN = "token";
+
+    @SerializedName(SERIALIZED_NAME_TOKEN)
+    @javax.annotation.Nullable
+    private String token;
+
+    public AuthGet200Response() {
+    }
+
+    public AuthGet200Response token(@javax.annotation.Nullable String token) {
+        this.token = token;
+        return this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return token
+     */
+    @javax.annotation.Nullable
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(@javax.annotation.Nullable String token) {
+        this.token = token;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AuthGet200Response authGet200Response = (AuthGet200Response) o;
+        return Objects.equals(this.token, authGet200Response.token);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(token);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class AuthGet200Response {\n");
+        sb.append("    token: ")
+          .append(toIndentedString(token))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -66,13 +131,6 @@ public class AuthGet200Response {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_TOKEN)
-    @javax.annotation.Nullable
-    private String token;
-
-    public AuthGet200Response() {
     }
 
     /**
@@ -118,87 +176,6 @@ public class AuthGet200Response {
         }
     }
 
-    /**
-     * Create an instance of AuthGet200Response given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of AuthGet200Response
-     * @throws IOException if the JSON string is invalid with respect to AuthGet200Response
-     */
-    public static AuthGet200Response fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, AuthGet200Response.class);
-    }
-
-    public AuthGet200Response token(@javax.annotation.Nullable String token) {
-        this.token = token;
-        return this;
-    }
-
-    /**
-     * Get token
-     *
-     * @return token
-     */
-    @javax.annotation.Nullable
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(@javax.annotation.Nullable String token) {
-        this.token = token;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        AuthGet200Response authGet200Response = (AuthGet200Response) o;
-        return Objects.equals(this.token, authGet200Response.token);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(token);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class AuthGet200Response {\n");
-        sb.append("    token: ")
-          .append(toIndentedString(token))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of AuthGet200Response to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -229,5 +206,26 @@ public class AuthGet200Response {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of AuthGet200Response given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of AuthGet200Response
+     * @throws IOException if the JSON string is invalid with respect to AuthGet200Response
+     */
+    public static AuthGet200Response fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, AuthGet200Response.class);
+    }
+
+    /**
+     * Convert an instance of AuthGet200Response to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -38,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -47,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * Уведомление о событии в системе
@@ -55,13 +52,136 @@ import tech.provve.api.client.JSON;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
 public class Notification {
 
+    public static final String SERIALIZED_NAME_MESSAGE = "message";
+
     public static final String SERIALIZED_NAME_LEVEL = "level";
 
-    public static final String SERIALIZED_NAME_MESSAGE = "message";
+    @SerializedName(SERIALIZED_NAME_LEVEL)
+    @javax.annotation.Nullable
+    private LevelEnum level;
 
     public static final String SERIALIZED_NAME_CREATED_AT = "created_at";
 
+    @SerializedName(SERIALIZED_NAME_MESSAGE)
+    @javax.annotation.Nullable
+    private String message;
+
     public static HashSet<String> openapiFields;
+
+    @SerializedName(SERIALIZED_NAME_CREATED_AT)
+    @javax.annotation.Nullable
+    private OffsetDateTime createdAt;
+
+    public Notification() {
+    }
+
+    public Notification level(@javax.annotation.Nullable LevelEnum level) {
+        this.level = level;
+        return this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return level
+     */
+    @javax.annotation.Nullable
+    public LevelEnum getLevel() {
+        return level;
+    }
+
+    public void setLevel(@javax.annotation.Nullable LevelEnum level) {
+        this.level = level;
+    }
+
+
+    public Notification message(@javax.annotation.Nullable String message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
+     * Содержимое, может содержать разметку
+     *
+     * @return message
+     */
+    @javax.annotation.Nullable
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(@javax.annotation.Nullable String message) {
+        this.message = message;
+    }
+
+
+    public Notification createdAt(@javax.annotation.Nullable OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return createdAt
+     */
+    @javax.annotation.Nullable
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(@javax.annotation.Nullable OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Notification notification = (Notification) o;
+        return Objects.equals(this.level, notification.level) &&
+                Objects.equals(this.message, notification.message) &&
+                Objects.equals(this.createdAt, notification.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(level, message, createdAt);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class Notification {\n");
+        sb.append("    level: ")
+          .append(toIndentedString(level))
+          .append("\n");
+        sb.append("    message: ")
+          .append(toIndentedString(message))
+          .append("\n");
+        sb.append("    createdAt: ")
+          .append(toIndentedString(createdAt))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
 
     public static HashSet<String> openapiRequiredFields;
 
@@ -71,21 +191,6 @@ public class Notification {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_LEVEL)
-    @javax.annotation.Nullable
-    private LevelEnum level;
-
-    @SerializedName(SERIALIZED_NAME_MESSAGE)
-    @javax.annotation.Nullable
-    private String message;
-
-    @SerializedName(SERIALIZED_NAME_CREATED_AT)
-    @javax.annotation.Nullable
-    private OffsetDateTime createdAt;
-
-    public Notification() {
     }
 
     /**
@@ -158,109 +263,35 @@ public class Notification {
                    .fromJson(jsonString, Notification.class);
     }
 
-    public Notification level(@javax.annotation.Nullable LevelEnum level) {
-        this.level = level;
-        return this;
-    }
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
-    /**
-     * Get level
-     *
-     * @return level
-     */
-    @javax.annotation.Nullable
-    public LevelEnum getLevel() {
-        return level;
-    }
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!Notification.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'Notification' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<Notification> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(Notification.class));
 
-    public void setLevel(@javax.annotation.Nullable LevelEnum level) {
-        this.level = level;
-    }
+            return (TypeAdapter<T>) new TypeAdapter<Notification>() {
+                @Override
+                public void write(JsonWriter out, Notification value) throws IOException {
+                    JsonObject obj = thisAdapter.toJsonTree(value)
+                                                .getAsJsonObject();
+                    elementAdapter.write(out, obj);
+                }
 
-    public Notification message(@javax.annotation.Nullable String message) {
-        this.message = message;
-        return this;
-    }
+                @Override
+                public Notification read(JsonReader in) throws IOException {
+                    JsonElement jsonElement = elementAdapter.read(in);
+                    validateJsonElement(jsonElement);
+                    return thisAdapter.fromJsonTree(jsonElement);
+                }
 
-    /**
-     * Содержимое, может содержать разметку
-     *
-     * @return message
-     */
-    @javax.annotation.Nullable
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(@javax.annotation.Nullable String message) {
-        this.message = message;
-    }
-
-    public Notification createdAt(@javax.annotation.Nullable OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return createdAt
-     */
-    @javax.annotation.Nullable
-    public OffsetDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(@javax.annotation.Nullable OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+            }.nullSafe();
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Notification notification = (Notification) o;
-        return Objects.equals(this.level, notification.level) &&
-                Objects.equals(this.message, notification.message) &&
-                Objects.equals(this.createdAt, notification.createdAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(level, message, createdAt);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Notification {\n");
-        sb.append("    level: ")
-          .append(toIndentedString(level))
-          .append("\n");
-        sb.append("    message: ")
-          .append(toIndentedString(message))
-          .append("\n");
-        sb.append("    createdAt: ")
-          .append(toIndentedString(createdAt))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
     }
 
     /**
@@ -269,9 +300,8 @@ public class Notification {
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
+    return JSON.getGson().toJson(this);
+  }
 
     /**
      * Gets or Sets level
@@ -325,37 +355,6 @@ public class Notification {
                 String value = jsonReader.nextString();
                 return LevelEnum.fromValue(value);
             }
-        }
-    }
-
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!Notification.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'Notification' and its subtypes
-            }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<Notification> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(Notification.class));
-
-            return (TypeAdapter<T>) new TypeAdapter<Notification>() {
-                @Override
-                public void write(JsonWriter out, Notification value) throws IOException {
-                    JsonObject obj = thisAdapter.toJsonTree(value)
-                                                .getAsJsonObject();
-                    elementAdapter.write(out, obj);
-                }
-
-                @Override
-                public Notification read(JsonReader in) throws IOException {
-                    JsonElement jsonElement = elementAdapter.read(in);
-                    validateJsonElement(jsonElement);
-                    return thisAdapter.fromJsonTree(jsonElement);
-                }
-
-            }.nullSafe();
         }
     }
 }

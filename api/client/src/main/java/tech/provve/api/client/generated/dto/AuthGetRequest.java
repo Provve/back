@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * AuthGetRequest
@@ -56,7 +53,103 @@ public class AuthGetRequest {
 
     public static final String SERIALIZED_NAME_LOGIN = "login";
 
+    @SerializedName(SERIALIZED_NAME_LOGIN)
+    @javax.annotation.Nonnull
+    private String login;
+
     public static final String SERIALIZED_NAME_PASSWORD = "password";
+
+    @SerializedName(SERIALIZED_NAME_PASSWORD)
+    @javax.annotation.Nonnull
+    private String password;
+
+    public AuthGetRequest() {
+    }
+
+    public AuthGetRequest login(@javax.annotation.Nonnull String login) {
+        this.login = login;
+        return this;
+    }
+
+    /**
+     * Get login
+     *
+     * @return login
+     */
+    @javax.annotation.Nonnull
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(@javax.annotation.Nonnull String login) {
+        this.login = login;
+    }
+
+
+    public AuthGetRequest password(@javax.annotation.Nonnull String password) {
+        this.password = password;
+        return this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return password
+     */
+    @javax.annotation.Nonnull
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(@javax.annotation.Nonnull String password) {
+        this.password = password;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AuthGetRequest authGetRequest = (AuthGetRequest) o;
+        return Objects.equals(this.login, authGetRequest.login) &&
+                Objects.equals(this.password, authGetRequest.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(login, password);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class AuthGetRequest {\n");
+        sb.append("    login: ")
+          .append(toIndentedString(login))
+          .append("\n");
+        sb.append("    password: ")
+          .append(toIndentedString(password))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+
 
     public static HashSet<String> openapiFields;
 
@@ -68,17 +161,6 @@ public class AuthGetRequest {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(Arrays.asList("login", "password"));
-    }
-
-    @SerializedName(SERIALIZED_NAME_LOGIN)
-    @javax.annotation.Nonnull
-    private String login;
-
-    @SerializedName(SERIALIZED_NAME_PASSWORD)
-    @javax.annotation.Nonnull
-    private String password;
-
-    public AuthGetRequest() {
     }
 
     /**
@@ -145,110 +227,6 @@ public class AuthGetRequest {
         }
     }
 
-    /**
-     * Create an instance of AuthGetRequest given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of AuthGetRequest
-     * @throws IOException if the JSON string is invalid with respect to AuthGetRequest
-     */
-    public static AuthGetRequest fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, AuthGetRequest.class);
-    }
-
-    public AuthGetRequest login(@javax.annotation.Nonnull String login) {
-        this.login = login;
-        return this;
-    }
-
-    /**
-     * Get login
-     *
-     * @return login
-     */
-    @javax.annotation.Nonnull
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(@javax.annotation.Nonnull String login) {
-        this.login = login;
-    }
-
-    public AuthGetRequest password(@javax.annotation.Nonnull String password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return password
-     */
-    @javax.annotation.Nonnull
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(@javax.annotation.Nonnull String password) {
-        this.password = password;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        AuthGetRequest authGetRequest = (AuthGetRequest) o;
-        return Objects.equals(this.login, authGetRequest.login) &&
-                Objects.equals(this.password, authGetRequest.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(login, password);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class AuthGetRequest {\n");
-        sb.append("    login: ")
-          .append(toIndentedString(login))
-          .append("\n");
-        sb.append("    password: ")
-          .append(toIndentedString(password))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of AuthGetRequest to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -279,5 +257,26 @@ public class AuthGetRequest {
             }.nullSafe();
         }
     }
+
+    /**
+     * Create an instance of AuthGetRequest given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of AuthGetRequest
+     * @throws IOException if the JSON string is invalid with respect to AuthGetRequest
+     */
+    public static AuthGetRequest fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, AuthGetRequest.class);
+    }
+
+    /**
+     * Convert an instance of AuthGetRequest to an JSON string
+     *
+     * @return JSON string
+     */
+    public String toJson() {
+        return JSON.getGson().toJson(this);
+  }
 }
 

@@ -14,13 +14,11 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import tech.provve.api.client.JSON;
+import tech.provve.api.client.generated.JSON;
 
 /**
  * AccountsPostRequest
@@ -56,15 +53,171 @@ public class AccountsPostRequest {
 
     public static final String SERIALIZED_NAME_LOGIN = "login";
 
+    @SerializedName(SERIALIZED_NAME_LOGIN)
+    @javax.annotation.Nullable
+    private String login;
+
     public static final String SERIALIZED_NAME_EMAIL = "email";
+
+    @SerializedName(SERIALIZED_NAME_EMAIL)
+    @javax.annotation.Nullable
+    private String email;
 
     public static final String SERIALIZED_NAME_PASSWORD = "password";
 
+    @SerializedName(SERIALIZED_NAME_PASSWORD)
+    @javax.annotation.Nullable
+    private String password;
+
     public static final String SERIALIZED_NAME_CONSENT_PERSONAL_DATA = "consent_personal_data";
+
+    @SerializedName(SERIALIZED_NAME_CONSENT_PERSONAL_DATA)
+    @javax.annotation.Nullable
+    private Boolean consentPersonalData;
 
     public static final String SERIALIZED_NAME_USERNAME = "username";
 
+    @SerializedName(SERIALIZED_NAME_USERNAME)
+    @javax.annotation.Nullable
+    private String username;
+
+    public AccountsPostRequest() {
+    }
+
+    public AccountsPostRequest login(@javax.annotation.Nullable String login) {
+        this.login = login;
+        return this;
+    }
+
+    /**
+     * Get login
+     *
+     * @return login
+     */
+    @javax.annotation.Nullable
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(@javax.annotation.Nullable String login) {
+        this.login = login;
+    }
+
+
+    public AccountsPostRequest email(@javax.annotation.Nullable String email) {
+        this.email = email;
+        return this;
+    }
+
+    /**
+     * Для восстановления пароля и рассылок
+     *
+     * @return email
+     */
+    @javax.annotation.Nullable
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@javax.annotation.Nullable String email) {
+        this.email = email;
+    }
+
+
+    public AccountsPostRequest password(@javax.annotation.Nullable String password) {
+        this.password = password;
+        return this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return password
+     */
+    @javax.annotation.Nullable
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(@javax.annotation.Nullable String password) {
+        this.password = password;
+    }
+
+
+    public AccountsPostRequest consentPersonalData(@javax.annotation.Nullable Boolean consentPersonalData) {
+        this.consentPersonalData = consentPersonalData;
+        return this;
+    }
+
+    /**
+     * Согласен ли пользователь на обработку персональных данных
+     *
+     * @return consentPersonalData
+     */
+    @javax.annotation.Nullable
+    public Boolean getConsentPersonalData() {
+        return consentPersonalData;
+    }
+
+    public void setConsentPersonalData(@javax.annotation.Nullable Boolean consentPersonalData) {
+        this.consentPersonalData = consentPersonalData;
+    }
+
+
+    public AccountsPostRequest username(@javax.annotation.Nullable String username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * Отображаемое имя профиля
+     *
+     * @return username
+     */
+    @javax.annotation.Nullable
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(@javax.annotation.Nullable String username) {
+        this.username = username;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AccountsPostRequest accountsPostRequest = (AccountsPostRequest) o;
+        return Objects.equals(this.login, accountsPostRequest.login) &&
+                Objects.equals(this.email, accountsPostRequest.email) &&
+                Objects.equals(this.password, accountsPostRequest.password) &&
+                Objects.equals(this.consentPersonalData, accountsPostRequest.consentPersonalData) &&
+                Objects.equals(this.username, accountsPostRequest.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(login, email, password, consentPersonalData, username);
+    }
+
     public static HashSet<String> openapiFields;
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
 
     public static HashSet<String> openapiRequiredFields;
 
@@ -80,29 +233,6 @@ public class AccountsPostRequest {
 
         // a set of required properties/fields (JSON key names)
         openapiRequiredFields = new HashSet<String>(0);
-    }
-
-    @SerializedName(SERIALIZED_NAME_LOGIN)
-    @javax.annotation.Nullable
-    private String login;
-
-    @SerializedName(SERIALIZED_NAME_EMAIL)
-    @javax.annotation.Nullable
-    private String email;
-
-    @SerializedName(SERIALIZED_NAME_PASSWORD)
-    @javax.annotation.Nullable
-    private String password;
-
-    @SerializedName(SERIALIZED_NAME_CONSENT_PERSONAL_DATA)
-    @javax.annotation.Nullable
-    private Boolean consentPersonalData;
-
-    @SerializedName(SERIALIZED_NAME_USERNAME)
-    @javax.annotation.Nullable
-    private String username;
-
-    public AccountsPostRequest() {
     }
 
     /**
@@ -190,167 +320,6 @@ public class AccountsPostRequest {
                    .fromJson(jsonString, AccountsPostRequest.class);
     }
 
-    public AccountsPostRequest login(@javax.annotation.Nullable String login) {
-        this.login = login;
-        return this;
-    }
-
-    /**
-     * Get login
-     *
-     * @return login
-     */
-    @javax.annotation.Nullable
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(@javax.annotation.Nullable String login) {
-        this.login = login;
-    }
-
-    public AccountsPostRequest email(@javax.annotation.Nullable String email) {
-        this.email = email;
-        return this;
-    }
-
-    /**
-     * Для восстановления пароля и рассылок
-     *
-     * @return email
-     */
-    @javax.annotation.Nullable
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@javax.annotation.Nullable String email) {
-        this.email = email;
-    }
-
-    public AccountsPostRequest password(@javax.annotation.Nullable String password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return password
-     */
-    @javax.annotation.Nullable
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(@javax.annotation.Nullable String password) {
-        this.password = password;
-    }
-
-    public AccountsPostRequest consentPersonalData(@javax.annotation.Nullable Boolean consentPersonalData) {
-        this.consentPersonalData = consentPersonalData;
-        return this;
-    }
-
-    /**
-     * Согласен ли пользователь на обработку персональных данных
-     *
-     * @return consentPersonalData
-     */
-    @javax.annotation.Nullable
-    public Boolean getConsentPersonalData() {
-        return consentPersonalData;
-    }
-
-    public void setConsentPersonalData(@javax.annotation.Nullable Boolean consentPersonalData) {
-        this.consentPersonalData = consentPersonalData;
-    }
-
-    public AccountsPostRequest username(@javax.annotation.Nullable String username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Отображаемое имя профиля
-     *
-     * @return username
-     */
-    @javax.annotation.Nullable
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(@javax.annotation.Nullable String username) {
-        this.username = username;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        AccountsPostRequest accountsPostRequest = (AccountsPostRequest) o;
-        return Objects.equals(this.login, accountsPostRequest.login) &&
-                Objects.equals(this.email, accountsPostRequest.email) &&
-                Objects.equals(this.password, accountsPostRequest.password) &&
-                Objects.equals(this.consentPersonalData, accountsPostRequest.consentPersonalData) &&
-                Objects.equals(this.username, accountsPostRequest.username);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(login, email, password, consentPersonalData, username);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class AccountsPostRequest {\n");
-        sb.append("    login: ")
-          .append(toIndentedString(login))
-          .append("\n");
-        sb.append("    email: ")
-          .append(toIndentedString(email))
-          .append("\n");
-        sb.append("    password: ")
-          .append(toIndentedString(password))
-          .append("\n");
-        sb.append("    consentPersonalData: ")
-          .append(toIndentedString(consentPersonalData))
-          .append("\n");
-        sb.append("    username: ")
-          .append(toIndentedString(username))
-          .append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString()
-                .replace("\n", "\n    ");
-    }
-
-    /**
-     * Convert an instance of AccountsPostRequest to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-        return JSON.getGson()
-                   .toJson(this);
-    }
-
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
 
         @SuppressWarnings("unchecked")
@@ -381,5 +350,36 @@ public class AccountsPostRequest {
             }.nullSafe();
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class AccountsPostRequest {\n");
+        sb.append("    login: ")
+          .append(toIndentedString(login))
+          .append("\n");
+        sb.append("    email: ")
+          .append(toIndentedString(email))
+          .append("\n");
+        sb.append("    password: ")
+          .append(toIndentedString(password))
+          .append("\n");
+        sb.append("    consentPersonalData: ")
+          .append(toIndentedString(consentPersonalData))
+          .append("\n");
+        sb.append("    username: ")
+          .append(toIndentedString(username)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert an instance of AccountsPostRequest to an JSON string
+     *
+     * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
+  }
 }
 

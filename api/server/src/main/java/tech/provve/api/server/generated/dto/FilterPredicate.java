@@ -1,14 +1,34 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Objects;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FilterPredicate {
 
+
+    public enum OperatorEnum {
+        NOT("NOT"),
+        EQ("EQ"),
+        NOT_EQ("NOT_EQ"),
+        AND("AND"),
+        OR("OR"),
+        LIKE("LIKE");
+
+        private String value;
+
+        OperatorEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
+    }
 
     private OperatorEnum operator;
 
@@ -23,6 +43,7 @@ public class FilterPredicate {
         this.value = value;
     }
 
+
     @JsonProperty("operator")
     public OperatorEnum getOperator() {
         return operator;
@@ -32,6 +53,7 @@ public class FilterPredicate {
         this.operator = operator;
     }
 
+
     @JsonProperty("value")
     public String getValue() {
         return value;
@@ -40,6 +62,7 @@ public class FilterPredicate {
     public void setValue(String value) {
         this.value = value;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -84,26 +107,5 @@ public class FilterPredicate {
         }
         return o.toString()
                 .replace("\n", "\n    ");
-    }
-
-    public enum OperatorEnum {
-        NOT("NOT"),
-        EQ("EQ"),
-        NOT_EQ("NOT_EQ"),
-        AND("AND"),
-        OR("OR"),
-        LIKE("LIKE");
-
-        private String value;
-
-        OperatorEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
     }
 }
