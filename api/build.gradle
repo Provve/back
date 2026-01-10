@@ -1,0 +1,34 @@
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+configurations {
+    spec {
+        extendsFrom(compileOnly)
+        canBeResolved = true
+        description = "Pull resource files as artifacts from another projects"
+    }
+}
+
+repositories {
+    mavenLocal()
+}
+
+dependencies {
+    spec libs.antifraud.api
+}
+
+// run 'build' task to get specs
+configurations.spec.resolvedConfiguration.resolvedArtifacts.each {
+    def specContent = it.file.getText(StandardCharsets.UTF_8 as String)
+    def destination = layout
+            .projectDirectory
+            .file("/build/specs/$it.name.$it.extension")
+            .asFile
+    Files.createDirectories(destination.parentFile.toPath())
+    destination.write(specContent)
+}

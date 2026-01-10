@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    alias(libs.plugins.openapi.generator)
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(libs.findbugs.jsr305)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.gson)
+    implementation(libs.gson.fire)
+    implementation(libs.jakarta.wsrs.api)
+    implementation(libs.jackson.databind.nullable)
+    implementation(libs.commons.lang3)
+    implementation(libs.jakarta.annotation.api)
+}
+
+tasks.openApiGenerate {
+    dependsOn(build)
+
+    generatorName = 'java'
+    inputSpec = "${rootProject.layout.projectDirectory}/provve-api.yaml"
+    outputDir = "${layout.projectDirectory}"
+    configOptions = [
+            apiPackage             : "tech.provve.api.client.generated",
+            modelPackage           : "tech.provve.api.client.generated.dto",
+            hideGenerationTimestamp: "true"
+    ]
+}
+
+processResources {
+    from("$rootProject.layout.projectDirectory") {
+        include 'provve-api.yaml'
+    }
+}
