@@ -4,6 +4,7 @@ vertx = '4.5.23'
 
 [libraries]
 antifraud-api = { group = 'tech.provve.specs', name = 'antifraud-api', version = 'beta' }
+provve-client = { group = 'tech.provve.api', name = 'client', version = 'beta' }
 vertx-core = { module = 'io.vertx:vertx-core', version.ref = 'vertx' }
 vertx-web = { module = 'io.vertx:vertx-web', version.ref = 'vertx' }
 vertx-web-open-api = { module = 'io.vertx:vertx-web-openapi', version.ref = 'vertx' }

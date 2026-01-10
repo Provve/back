@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
     alias(libs.plugins.openapi.generator)
 }
 
@@ -35,5 +36,18 @@ tasks.openApiGenerate {
 processResources {
     from("$rootProject.layout.projectDirectory") {
         include 'provve-api.yaml'
+    }
+}
+
+publishing {
+    publications {
+        apiSpec(MavenPublication) {
+            group = 'tech.provve.api'
+            version = 'beta'
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
     }
 }

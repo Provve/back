@@ -5,6 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 api/**/.openapi-generator/
+**/bin/
 
 ### IntelliJ IDEA ###
 .idea/
@@ -14,3 +15,4 @@ api/**/.openapi-generator/
 
 .clj-kondo
 .lsp
+.vscode
