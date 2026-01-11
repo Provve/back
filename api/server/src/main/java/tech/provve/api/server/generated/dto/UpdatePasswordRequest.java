@@ -1,11 +1,12 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PasswordPutRequest {
+public class UpdatePasswordRequest {
 
     private String resetCode;
 
@@ -13,11 +14,11 @@ public class PasswordPutRequest {
 
     private String login;
 
-    public PasswordPutRequest() {
+    public UpdatePasswordRequest() {
 
     }
 
-    public PasswordPutRequest(String resetCode, String newPassword, String login) {
+    public UpdatePasswordRequest(String resetCode, String newPassword, String login) {
         this.resetCode = resetCode;
         this.newPassword = newPassword;
         this.login = login;
@@ -62,10 +63,10 @@ public class PasswordPutRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        PasswordPutRequest passwordPutRequest = (PasswordPutRequest) o;
-        return Objects.equals(resetCode, passwordPutRequest.resetCode) &&
-                Objects.equals(newPassword, passwordPutRequest.newPassword) &&
-                Objects.equals(login, passwordPutRequest.login);
+        UpdatePasswordRequest updatePasswordRequest = (UpdatePasswordRequest) o;
+        return Objects.equals(resetCode, updatePasswordRequest.resetCode) &&
+                Objects.equals(newPassword, updatePasswordRequest.newPassword) &&
+                Objects.equals(login, updatePasswordRequest.login);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class PasswordPutRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class PasswordPutRequest {\n");
+        sb.append("class UpdatePasswordRequest {\n");
 
         sb.append("    resetCode: ")
           .append(toIndentedString(resetCode))

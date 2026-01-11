@@ -203,10 +203,9 @@ public class Filter {
                         java.util.Locale.ROOT,
                         "The required field `%s` is not found in the JSON string: %s",
                         requiredField,
-                        jsonElement.toString()
-                ));
-            }
+                        jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if (!jsonObj.get("field")
                     .isJsonPrimitive()) {
@@ -270,7 +269,7 @@ public class Filter {
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson().toJson(this);
+    return JSON.getGson().toJson(this);
   }
 }
 

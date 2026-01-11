@@ -75,5 +75,5 @@ public class HttpBearerAuth implements Authentication {
 
     private static String upperCaseBearer(String scheme) {
         return ("bearer".equalsIgnoreCase(scheme)) ? "Bearer" : scheme;
-    }
+  }
 }

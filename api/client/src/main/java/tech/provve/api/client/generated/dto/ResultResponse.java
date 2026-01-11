@@ -190,10 +190,9 @@ public class ResultResponse {
                         java.util.Locale.ROOT,
                         "The field `%s` in the JSON string is not defined in the `ResultResponse` properties. JSON: %s",
                         entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
+                        jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if ((jsonObj.get("exam_id") != null && !jsonObj.get("exam_id")
                                                        .isJsonNull()) && !jsonObj.get("exam_id")
@@ -266,7 +265,7 @@ public class ResultResponse {
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson().toJson(this);
+    return JSON.getGson().toJson(this);
   }
 }
 

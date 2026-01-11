@@ -14,11 +14,13 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -35,6 +37,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -46,33 +49,45 @@ import java.util.Set;
 import tech.provve.api.client.generated.JSON;
 
 /**
- * VotesIdVotingPostRequest
+ * CastVoteRequest
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
-public class VotesIdVotingPostRequest {
+public class CastVoteRequest {
+
+    public static final String SERIALIZED_NAME_REACTION = "reaction";
+
+    public static HashSet<String> openapiFields;
+
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("reaction"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(Arrays.asList("reaction"));
+    }
 
     @SerializedName(SERIALIZED_NAME_REACTION)
     @javax.annotation.Nonnull
     private ReactionEnum reaction;
 
-    public static final String SERIALIZED_NAME_REACTION = "reaction";
-
-    public VotesIdVotingPostRequest() {
+    public CastVoteRequest() {
     }
 
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
      * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to VotesIdVotingPostRequest
+     * @throws IOException if the JSON Element is invalid with respect to CastVoteRequest
      */
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
-            if (!VotesIdVotingPostRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+            if (!CastVoteRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
-                        "The required field(s) %s in VotesIdVotingPostRequest is not found in the empty JSON string",
-                        VotesIdVotingPostRequest.openapiRequiredFields.toString()
+                        "The required field(s) %s in CastVoteRequest is not found in the empty JSON string",
+                        CastVoteRequest.openapiRequiredFields.toString()
                 ));
             }
         }
@@ -81,17 +96,18 @@ public class VotesIdVotingPostRequest {
                                                                  .entrySet();
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!VotesIdVotingPostRequest.openapiFields.contains(entry.getKey())) {
+            if (!CastVoteRequest.openapiFields.contains(entry.getKey())) {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
-                        "The field `%s` in the JSON string is not defined in the `VotesIdVotingPostRequest` properties. JSON: %s",
-                        entry.getKey(), jsonElement.toString()
+                        "The field `%s` in the JSON string is not defined in the `CastVoteRequest` properties. JSON: %s",
+                        entry.getKey(),
+                        jsonElement.toString()
                 ));
             }
         }
 
         // check to make sure all required properties/fields are present in the JSON string
-        for (String requiredField : VotesIdVotingPostRequest.openapiRequiredFields) {
+        for (String requiredField : CastVoteRequest.openapiRequiredFields) {
             if (jsonElement.getAsJsonObject()
                            .get(requiredField) == null) {
                 throw new IllegalArgumentException(String.format(
@@ -117,18 +133,18 @@ public class VotesIdVotingPostRequest {
     }
 
     /**
-     * Create an instance of VotesIdVotingPostRequest given an JSON string
+     * Create an instance of CastVoteRequest given an JSON string
      *
      * @param jsonString JSON string
-     * @return An instance of VotesIdVotingPostRequest
-     * @throws IOException if the JSON string is invalid with respect to VotesIdVotingPostRequest
+     * @return An instance of CastVoteRequest
+     * @throws IOException if the JSON string is invalid with respect to CastVoteRequest
      */
-    public static VotesIdVotingPostRequest fromJson(String jsonString) throws IOException {
+    public static CastVoteRequest fromJson(String jsonString) throws IOException {
         return JSON.getGson()
-                   .fromJson(jsonString, VotesIdVotingPostRequest.class);
+                   .fromJson(jsonString, CastVoteRequest.class);
     }
 
-    public VotesIdVotingPostRequest reaction(@javax.annotation.Nonnull ReactionEnum reaction) {
+    public CastVoteRequest reaction(@javax.annotation.Nonnull ReactionEnum reaction) {
         this.reaction = reaction;
         return this;
     }
@@ -155,8 +171,8 @@ public class VotesIdVotingPostRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        VotesIdVotingPostRequest votesIdVotingPostRequest = (VotesIdVotingPostRequest) o;
-        return Objects.equals(this.reaction, votesIdVotingPostRequest.reaction);
+        CastVoteRequest castVoteRequest = (CastVoteRequest) o;
+        return Objects.equals(this.reaction, castVoteRequest.reaction);
     }
 
     @Override
@@ -167,25 +183,12 @@ public class VotesIdVotingPostRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class VotesIdVotingPostRequest {\n");
+        sb.append("class CastVoteRequest {\n");
         sb.append("    reaction: ")
           .append(toIndentedString(reaction))
           .append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-
-    public static HashSet<String> openapiFields;
-
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("reaction"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("reaction"));
     }
 
     /**
@@ -200,52 +203,22 @@ public class VotesIdVotingPostRequest {
                 .replace("\n", "\n    ");
     }
 
-    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!VotesIdVotingPostRequest.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'VotesIdVotingPostRequest' and its subtypes
-            }
-            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<VotesIdVotingPostRequest> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(VotesIdVotingPostRequest.class));
-
-            return (TypeAdapter<T>) new TypeAdapter<VotesIdVotingPostRequest>() {
-                @Override
-                public void write(JsonWriter out, VotesIdVotingPostRequest value) throws IOException {
-                    JsonObject obj = thisAdapter.toJsonTree(value)
-                                                .getAsJsonObject();
-                    elementAdapter.write(out, obj);
-                }
-
-                @Override
-                public VotesIdVotingPostRequest read(JsonReader in) throws IOException {
-                    JsonElement jsonElement = elementAdapter.read(in);
-                    validateJsonElement(jsonElement);
-                    return thisAdapter.fromJsonTree(jsonElement);
-                }
-
-            }.nullSafe();
-        }
-    }
-
     /**
-     * Convert an instance of VotesIdVotingPostRequest to an JSON string
+     * Convert an instance of CastVoteRequest to an JSON string
      *
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson().toJson(this);
-  }
+        return JSON.getGson()
+                   .toJson(this);
+    }
 
     /**
      * +1 — за, -1 — против
      */
     @JsonAdapter(ReactionEnum.Adapter.class)
     public enum ReactionEnum {
-        _1("1"),
+        _1("+1"),
 
         _12("-1");
 
@@ -290,6 +263,37 @@ public class VotesIdVotingPostRequest {
                 String value = jsonReader.nextString();
                 return ReactionEnum.fromValue(value);
             }
+        }
+    }
+
+    public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (!CastVoteRequest.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'CastVoteRequest' and its subtypes
+            }
+            final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+            final TypeAdapter<CastVoteRequest> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(CastVoteRequest.class));
+
+            return (TypeAdapter<T>) new TypeAdapter<CastVoteRequest>() {
+                @Override
+                public void write(JsonWriter out, CastVoteRequest value) throws IOException {
+                    JsonObject obj = thisAdapter.toJsonTree(value)
+                                                .getAsJsonObject();
+                    elementAdapter.write(out, obj);
+                }
+
+                @Override
+                public CastVoteRequest read(JsonReader in) throws IOException {
+                    JsonElement jsonElement = elementAdapter.read(in);
+                    validateJsonElement(jsonElement);
+                    return thisAdapter.fromJsonTree(jsonElement);
+                }
+
+            }.nullSafe();
         }
     }
 }

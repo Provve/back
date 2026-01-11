@@ -203,10 +203,9 @@ public class SkillResponse {
                         java.util.Locale.ROOT,
                         "The required field `%s` is not found in the JSON string: %s",
                         requiredField,
-                        jsonElement.toString()
-                ));
-            }
+                        jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if (!jsonObj.get("name")
                     .isJsonPrimitive()) {
@@ -277,7 +276,7 @@ public class SkillResponse {
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson().toJson(this);
+    return JSON.getGson().toJson(this);
   }
 }
 

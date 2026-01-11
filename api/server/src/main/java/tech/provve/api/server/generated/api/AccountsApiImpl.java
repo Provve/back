@@ -1,13 +1,12 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.AccountsPostRequest;
-import tech.provve.api.server.generated.dto.AuthGet200Response;
-import tech.provve.api.server.generated.dto.AuthGetRequest;
-import tech.provve.api.server.generated.dto.EmailPutRequest;
+import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
+import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import io.vertx.ext.web.FileUpload;
 import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.PasswordPutRequest;
-import tech.provve.api.server.generated.dto.ResetCodeGetRequest;
+import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.UpdateEmailRequest;
+import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 
 import tech.provve.api.server.generated.ApiResponse;
 
@@ -21,31 +20,32 @@ import java.util.Map;
 // Implement this class
 
 public class AccountsApiImpl implements AccountsApi {
-    public Future<ApiResponse<Void>> accountsPost(AccountsPostRequest accountsPostRequest) {
+
+    public Future<ApiResponse<AuthenticateUser200Response>> authenticateUser(AuthenticateUserRequest authenticateUserRequest) {
+        return Future.failedFuture(new HttpException(501)); // todo call application service
+    }
+
+    public Future<ApiResponse<Void>> registerUser(RegisterUserRequest registerUserRequest) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<AuthGet200Response>> authGet(AuthGetRequest authGetRequest) {
+    public Future<ApiResponse<Void>> requestResetCode(String email) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<Void>> avatarPut(java.util.UUID id, FileUpload avatar) {
+    public Future<ApiResponse<Void>> updateAvatar(FileUpload avatar) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<Void>> emailPut(String id, EmailPutRequest emailPutRequest) {
+    public Future<ApiResponse<Void>> updateEmail(UpdateEmailRequest updateEmailRequest) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<Void>> passwordPut(PasswordPutRequest passwordPutRequest) {
+    public Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<Void>> resetCodeGet(ResetCodeGetRequest resetCodeGetRequest) {
-        return Future.failedFuture(new HttpException(501));
-    }
-
-    public Future<ApiResponse<Void>> upgradeGet() {
+    public Future<ApiResponse<Void>> upgradeAccount() {
         return Future.failedFuture(new HttpException(501));
     }
 

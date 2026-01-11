@@ -58,14 +58,60 @@ public class JSON {
     private static LocalDateTypeAdapter localDateTypeAdapter = new LocalDateTypeAdapter();
     private static ByteArrayAdapter byteArrayAdapter = new ByteArrayAdapter();
 
+    static {
+        GsonBuilder gsonBuilder = createGson();
+        gsonBuilder.registerTypeAdapter(Date.class, dateTypeAdapter);
+        gsonBuilder.registerTypeAdapter(java.sql.Date.class, sqlDateTypeAdapter);
+        gsonBuilder.registerTypeAdapter(OffsetDateTime.class, offsetDateTimeTypeAdapter);
+        gsonBuilder.registerTypeAdapter(LocalDate.class, localDateTypeAdapter);
+        gsonBuilder.registerTypeAdapter(byte[].class, byteArrayAdapter);
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.AddCommentOnVoteRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.AuthenticateUser200Response.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.AuthenticateUserRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.CastVoteRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.CommentResponse.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.CreateSessionRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.CreateVoteRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ExamAddVote.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ExamResponse.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.Filter.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.FilterPredicate.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.Notification.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.Observation.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ObservationUpload.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.Pagination.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ProfileResponse.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.RegisterUserRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ResultResponse.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.SessionCreatedNotification.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.SkillAddVote.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.SkillDelVote.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.SkillResponse.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.UpdateEmailRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.UpdatePasswordRequest.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.Vote.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.VoteResponse.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.VoteResponseAllOfVotes.CustomTypeAdapterFactory());
+        gson = gsonBuilder.create();
+    }
+
+    private static String getDiscriminatorValue(JsonElement readElement, String discriminatorField) {
+        JsonElement element = readElement.getAsJsonObject()
+                                         .get(discriminatorField);
+        if (null == element) {
+            throw new IllegalArgumentException("missing discriminator field: <" + discriminatorField + ">");
+        }
+        return element.getAsString();
+    }
+
     @SuppressWarnings("unchecked")
     public static GsonBuilder createGson() {
         GsonFireBuilder fireBuilder = new GsonFireBuilder()
                 .registerTypeSelector(
-                        tech.provve.api.client.generated.dto.VotesPostRequest.class,
-                        new TypeSelector<tech.provve.api.client.generated.dto.VotesPostRequest>() {
+                        tech.provve.api.client.generated.dto.CreateVoteRequest.class,
+                        new TypeSelector<tech.provve.api.client.generated.dto.CreateVoteRequest>() {
                             @Override
-                            public Class<? extends tech.provve.api.client.generated.dto.VotesPostRequest> getClassForElement(JsonElement readElement) {
+                            public Class<? extends tech.provve.api.client.generated.dto.CreateVoteRequest> getClassForElement(JsonElement readElement) {
                                 Map<String, Class> classByDiscriminatorValue = new HashMap<String, Class>();
                                 classByDiscriminatorValue.put(
                                         "add_exam",
@@ -80,8 +126,8 @@ public class JSON {
                                         tech.provve.api.client.generated.dto.SkillDelVote.class
                                 );
                                 classByDiscriminatorValue.put(
-                                        "_votes_post_request",
-                                        tech.provve.api.client.generated.dto.VotesPostRequest.class
+                                        "CreateVote.request",
+                                        tech.provve.api.client.generated.dto.CreateVoteRequest.class
                                 );
                                 return getClassByDiscriminator(
                                         classByDiscriminatorValue,
@@ -94,20 +140,11 @@ public class JSON {
         return builder;
     }
 
-    private static String getDiscriminatorValue(JsonElement readElement, String discriminatorField) {
-        JsonElement element = readElement.getAsJsonObject()
-                                         .get(discriminatorField);
-        if (null == element) {
-            throw new IllegalArgumentException("missing discriminator field: <" + discriminatorField + ">");
-        }
-        return element.getAsString();
-    }
-
     /**
      * Returns the Java class that implements the OpenAPI schema for the specified discriminator value.
      *
      * @param classByDiscriminatorValue The map of discriminator values to Java classes.
-     * @param discriminatorValue        The value of the OpenAPI discriminator in the input data.
+     * @param discriminatorValue The value of the OpenAPI discriminator in the input data.
      * @return The Java class that implements the OpenAPI schema
      */
     private static Class getClassByDiscriminator(Map classByDiscriminatorValue, String discriminatorValue) {
@@ -116,44 +153,6 @@ public class JSON {
             throw new IllegalArgumentException("cannot determine model class of name: <" + discriminatorValue + ">");
         }
         return clazz;
-    }
-
-    static {
-        GsonBuilder gsonBuilder = createGson();
-        gsonBuilder.registerTypeAdapter(Date.class, dateTypeAdapter);
-        gsonBuilder.registerTypeAdapter(java.sql.Date.class, sqlDateTypeAdapter);
-        gsonBuilder.registerTypeAdapter(OffsetDateTime.class, offsetDateTimeTypeAdapter);
-        gsonBuilder.registerTypeAdapter(LocalDate.class, localDateTypeAdapter);
-        gsonBuilder.registerTypeAdapter(byte[].class, byteArrayAdapter);
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.AccountsPostRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.AuthGet200Response.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.AuthGetRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.CommentResponse.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.EmailPutRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ExamAddVote.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ExamResponse.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.Filter.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.FilterPredicate.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.Notification.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ObservationPostRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ObservationPostRequestObservation.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.Pagination.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.PasswordPutRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ProfileResponse.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ResetCodeGetRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.ResultResponse.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.SessionCreatedNotification.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.SessionStage2PostRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.SkillAddVote.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.SkillDelVote.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.SkillResponse.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.Vote.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.VoteResponse.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.VoteResponseAllOfVotes.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.VotesIdCommentsPostRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.VotesIdVotingPostRequest.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new tech.provve.api.client.generated.dto.VotesPostRequest.CustomTypeAdapterFactory());
-        gson = gsonBuilder.create();
     }
 
     /**
@@ -362,14 +361,6 @@ public class JSON {
         localDateTypeAdapter.setFormat(dateFormat);
     }
 
-    public static void setDateFormat(DateFormat dateFormat) {
-        dateTypeAdapter.setFormat(dateFormat);
-    }
-
-    public static void setSqlDateFormat(DateFormat dateFormat) {
-        sqlDateTypeAdapter.setFormat(dateFormat);
-    }
-
     /**
      * Gson TypeAdapter for java.sql.Date type
      * If the dateFormat is null, a simple "yyyy-MM-dd" format will be used
@@ -481,5 +472,13 @@ public class JSON {
                 throw new JsonParseException(e);
             }
         }
+    }
+
+    public static void setDateFormat(DateFormat dateFormat) {
+        dateTypeAdapter.setFormat(dateFormat);
+    }
+
+    public static void setSqlDateFormat(DateFormat dateFormat) {
+        sqlDateTypeAdapter.setFormat(dateFormat);
     }
 }

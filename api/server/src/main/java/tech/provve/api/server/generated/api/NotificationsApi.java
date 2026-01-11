@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface NotificationsApi {
-    Future<ApiResponse<Void>> notificationsDelete();
-    Future<ApiResponse<List<Notification>>> notificationsGet(Pagination pagination);
+
+    Future<ApiResponse<List<Notification>>> listNotifications(Pagination pagination);
+
+    Future<ApiResponse<Void>> markNotificationsAsRead();
 }

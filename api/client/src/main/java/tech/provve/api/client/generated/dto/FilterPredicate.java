@@ -152,16 +152,6 @@ public class FilterPredicate {
                 .replace("\n", "\n    ");
     }
 
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("operator", "value"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("operator", "value"));
-    }
-
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
@@ -199,11 +189,10 @@ public class FilterPredicate {
                            .get(requiredField) == null) {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
-                        "The required field `%s` is not found in the JSON string: %s", requiredField,
-                        jsonElement.toString()
-                ));
-            }
+                        "The required field `%s` is not found in the JSON string: %s",
+                        requiredField, jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if (!jsonObj.get("operator")
                     .isJsonPrimitive()) {
@@ -225,6 +214,16 @@ public class FilterPredicate {
                            .toString()
             ));
         }
+    }
+
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("operator", "value"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(Arrays.asList("operator", "value"));
     }
 
     /**
@@ -274,8 +273,8 @@ public class FilterPredicate {
      * Convert an instance of FilterPredicate to an JSON string
      *
      * @return JSON string
-     */
-    public String toJson() {
+   */
+  public String toJson() {
     return JSON.getGson().toJson(this);
   }
 

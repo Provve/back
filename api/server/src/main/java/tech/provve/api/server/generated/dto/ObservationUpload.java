@@ -1,33 +1,34 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tech.provve.api.server.generated.dto.ObservationPostRequestObservation;
+import tech.provve.api.server.generated.dto.Observation;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ObservationPostRequest {
+public class ObservationUpload {
 
-    private ObservationPostRequestObservation observation;
+    private Observation observation;
 
     private String mac;
 
-    public ObservationPostRequest() {
+    public ObservationUpload() {
 
     }
 
-    public ObservationPostRequest(ObservationPostRequestObservation observation, String mac) {
+    public ObservationUpload(Observation observation, String mac) {
         this.observation = observation;
         this.mac = mac;
     }
 
 
     @JsonProperty("observation")
-    public ObservationPostRequestObservation getObservation() {
+    public Observation getObservation() {
         return observation;
     }
 
-    public void setObservation(ObservationPostRequestObservation observation) {
+    public void setObservation(Observation observation) {
         this.observation = observation;
     }
 
@@ -50,9 +51,9 @@ public class ObservationPostRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ObservationPostRequest observationPostRequest = (ObservationPostRequest) o;
-        return Objects.equals(observation, observationPostRequest.observation) &&
-                Objects.equals(mac, observationPostRequest.mac);
+        ObservationUpload observationUpload = (ObservationUpload) o;
+        return Objects.equals(observation, observationUpload.observation) &&
+                Objects.equals(mac, observationUpload.mac);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class ObservationPostRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ObservationPostRequest {\n");
+        sb.append("class ObservationUpload {\n");
 
         sb.append("    observation: ")
           .append(toIndentedString(observation))

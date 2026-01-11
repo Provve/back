@@ -1,10 +1,10 @@
-openapi: "3.1.0"
+openapi: "3.0.4" # такая версия из-за неподдерживаемости vertx web openapi
 info:
   title: Provve API
   version: "beta"
   description: Операции, требующие идентификатор аккаунта, извлекают идентификатор из токена авторизации.
 servers:
-  - url: http://localhost/api/v1
+  - url: http://localhost:8080/api/v1
   - url: https://provve.tech/api/v1
 tags:
   - name: accounts
@@ -19,26 +19,13 @@ paths:
       tags:
         - accounts
       summary: Регистрация пользователя
+      operationId: registerUser
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                login:
-                  type: string
-                email:
-                  type: string
-                  description: Для восстановления пароля и рассылок
-                password:
-                  type: string
-                consent_personal_data:
-                  type: boolean
-                  description: Согласен ли пользователь на обработку персональных данных
-                username:
-                  type: string
-                  description: Отображаемое имя профиля
+              $ref: '#/components/schemas/RegisterUser.request'
       responses:
         '200':
           description: Успешная регистрация
@@ -52,22 +39,17 @@ paths:
         - bearerAuth: [ ]
 
   /auth:
-    get:
+    post:
       tags:
         - accounts
       summary: Аутентификация пользователя
+      operationId: authenticateUser
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                login:
-                  type: string
-                password:
-                  type: string
-              required: [ login, password ]
+              $ref: '#/components/schemas/AuthenticateUser.request'
       responses:
         '200':
           description: Успешная аутентификация
@@ -96,6 +78,7 @@ paths:
       tags:
         - accounts
       summary: Получение статуса платного аккаунта
+      operationId: upgradeAccount
       responses:
         '200':
           description: Пользователь уже получил
@@ -119,25 +102,13 @@ paths:
       summary: Изменение почты аккаунта
       tags:
         - accounts
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Идентификатор аккаунта
+      operationId: updateEmail
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - email
-              properties:
-                email:
-                  type: string
-                  description: новая почта аккаунта
+              $ref: '#/components/schemas/UpdateEmail.request'
       responses:
         '200':
           description: Почта аккаунта успешно изменена
@@ -149,41 +120,29 @@ paths:
       summary: Обновление пароля аккаунта
       tags:
         - accounts
+      operationId: updatePassword
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - reset_code
-                - new_password
-                - login
-              properties:
-                reset_code:
-                  type: string
-                  description: токен для сброса пароля, отправленный пользователю на почту
-                new_password:
-                  type: string
-                login:
-                  type: string
-                  description: логин аккаунта, пароль от которого надо сбросить
+              $ref: '#/components/schemas/UpdatePassword.request'
       responses:
         '200':
           description: Пароль успешно обновлён
+
   /reset-code:
     get:
-      summary: Запросить код сброса парроля на email
+      summary: Запросить код сброса пароля на email
       tags:
         - accounts
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
+      operationId: requestResetCode
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Код отправлен на email
@@ -199,26 +158,13 @@ paths:
       summary: Обновление аватара аккаунта
       tags:
         - accounts
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: Идентификатор аккаунта
+      operationId: updateAvatar
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
-              type: object
-              required:
-                - avatar
-              properties:
-                avatar:
-                  type: string
-                  format: binary
+              $ref: '#/components/schemas/UpdateAvatar.request'
       responses:
         '200':
           description: Аватар успешно обновлён
@@ -230,6 +176,7 @@ paths:
       tags:
         - sessions
       description: Получить рандомныое значение для подтверждения подлинности Антифрода.
+      operationId: getRandomValueForAntifraud
       responses:
         '200':
           description: Случайное число, которое нужно зашифровать
@@ -243,20 +190,13 @@ paths:
       tags:
         - sessions
       summary: Создать сессию
+      operationId: createSession
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                exam_id:
-                  type: string
-                  format: uuid
-                  description: Идентификатор экзамена
-                cipher:
-                  type: integer
-                  description: Зашифрованное случайное число, полученное ранее.
+              $ref: '#/components/schemas/CreateSession.request'
       responses:
         '201':
           description: Сессия успешно создана для пользователя
@@ -264,7 +204,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SessionCreatedNotification"
-
         '200':
           description: Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
           content:
@@ -285,6 +224,7 @@ paths:
       summary: Загрузить результат наблюдения
       tags:
         - sessions
+      operationId: uploadObservation
       requestBody:
         content:
           application/json:
@@ -301,6 +241,7 @@ paths:
       tags:
         - skills
       summary: Получение списка навыков
+      operationId: listSkills
       parameters:
         - $ref: "#/components/parameters/Pagination"
         - $ref: "#/components/parameters/Filter"
@@ -319,6 +260,7 @@ paths:
       tags:
         - skills
       summary: Получение списка экзаменов по навыку
+      operationId: listExamsBySkill
       parameters:
         - $ref: "#/components/parameters/Pagination"
         - $ref: "#/components/parameters/Filter"
@@ -334,7 +276,8 @@ paths:
     post:
       tags:
         - skills
-      summary: Отправка решения экамена на проверку
+      summary: Отправка решения экзамена на проверку
+      operationId: submitExamSolution
       parameters:
         - name: id
           in: path
@@ -348,14 +291,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: object
-              properties:
-                solution:
-                  type: string
-                  format: binary
-                  description: Архив с решением (загружается как файл)
-              required:
-                - solution
+              $ref: '#/components/schemas/SubmitExamSolution.request'
       responses:
         '202':
           description: Решение успешно принято на проверку
@@ -379,6 +315,7 @@ paths:
       summary: Получение результатов по экзаменам навыка
       tags:
         - skills
+      operationId: getResultsBySkill
       parameters:
         - $ref: "#/components/parameters/Pagination"
         - $ref: "#/components/parameters/Filter"
@@ -399,6 +336,7 @@ paths:
       summary: Посмотреть результат
       tags:
         - skills
+      operationId: viewExamResult
       parameters:
         - name: exam_id
           in: path
@@ -422,6 +360,7 @@ paths:
       summary: Получить список голосований
       tags:
         - votes
+      operationId: listVotes
       parameters:
         - $ref: "#/components/parameters/Pagination"
         - $ref: "#/components/parameters/Filter"
@@ -438,21 +377,13 @@ paths:
       tags:
         - votes
       summary: Создать голосование
+      operationId: createVote
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/SkillAddVote'
-                - $ref: '#/components/schemas/SkillDelVote'
-                - $ref: '#/components/schemas/ExamAddVote'
-              discriminator:
-                propertyName: action
-                mapping:
-                  add_skill: '#/components/schemas/SkillAddVote'
-                  delete_skill: '#/components/schemas/SkillDelVote'
-                  add_exam: '#/components/schemas/ExamAddVote'
+              $ref: '#/components/schemas/CreateVote.request'
       responses:
         '200':
           description: Голосование успешно создано
@@ -470,6 +401,7 @@ paths:
       tags:
         - votes
       summary: Проголосовать
+      operationId: castVote
       parameters:
         - name: id
           in: path
@@ -483,16 +415,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                reaction:
-                  type: string
-                  enum: [ +1, -1 ]
-                  description: |
-                    +1 — за,
-                    -1 — против
-              required:
-                - reaction
+              $ref: '#/components/schemas/CastVote.request'
       responses:
         '200':
           description: Голос учтен
@@ -510,6 +433,7 @@ paths:
       summary: Получить комментарии к голосованию
       tags:
         - votes
+      operationId: listCommentsOnVote
       parameters:
         - name: id
           in: path
@@ -531,6 +455,7 @@ paths:
       summary: Добавление комментария к голосованию
       tags:
         - votes
+      operationId: addCommentOnVote
       parameters:
         - name: id
           in: path
@@ -544,13 +469,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - comment
-              properties:
-                comment:
-                  type: string
-                  description: содержимое
+              $ref: '#/components/schemas/AddCommentOnVote.request'
       responses:
         '200':
           description: Комментарий успешно добавлен
@@ -562,6 +481,7 @@ paths:
       summary: Редактирование комментария к голосованию
       tags:
         - votes
+      operationId: editCommentOnVote
       parameters:
         - name: vote_id
           in: path
@@ -588,6 +508,7 @@ paths:
       summary: Удаление комментария к голосованию
       tags:
         - votes
+      operationId: deleteCommentOnVote
       parameters:
         - name: vote_id
           in: path
@@ -616,6 +537,7 @@ paths:
       summary: Получение уведомлений
       tags:
         - notifications
+      operationId: listNotifications
       parameters:
         - $ref: "#/components/parameters/Pagination"
       responses:
@@ -633,6 +555,7 @@ paths:
       summary: Пометить уведомления прочитанными
       tags:
         - notifications
+      operationId: markNotificationsAsRead
       responses:
         '200':
           description: Уведомления удалены
@@ -838,10 +761,11 @@ components:
             - info
         message:
           type: string
-          description: Содержимое, может содержать разметку
-          examples:
-            - Идёт [голосование](/votes/1) за удаление
-            - Антифрод неподлинный
+          description: |
+            Содержимое, может содержать разметку
+            examples:
+              - Идёт [голосование](/votes/1) за удаление
+              - Антифрод неподлинный
         created_at:
           type: string
           format: date-time
@@ -855,6 +779,119 @@ components:
           type: string
           description: hash(notification)
 
+    RegisterUser.request:
+      type: object
+      properties:
+        login:
+          type: string
+        email:
+          type: string
+          description: Для восстановления пароля и рассылок
+        password:
+          type: string
+        consent_personal_data:
+          type: boolean
+          description: Согласен ли пользователь на обработку персональных данных
+        username:
+          type: string
+          description: Отображаемое имя профиля
+
+    AuthenticateUser.request:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+      required: [ login, password ]
+
+    UpdateEmail.request:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          description: Новая почта аккаунта
+
+    UpdatePassword.request:
+      type: object
+      required:
+        - reset_code
+        - new_password
+        - login
+      properties:
+        reset_code:
+          type: string
+          description: Токен для сброса пароля, отправленный пользователю на почту
+        new_password:
+          type: string
+        login:
+          type: string
+          description: Логин аккаунта, пароль от которого надо сбросить
+
+    UpdateAvatar.request:
+      type: object
+      required:
+        - avatar
+      properties:
+        avatar:
+          type: string
+          format: binary
+
+    CreateSession.request:
+      type: object
+      properties:
+        exam_id:
+          type: string
+          format: uuid
+          description: Идентификатор экзамена
+        cipher:
+          type: integer
+          description: Зашифрованное случайное число, полученное ранее
+
+    SubmitExamSolution.request:
+      type: object
+      properties:
+        solution:
+          type: string
+          format: binary
+          description: Архив с решением (загружается как файл)
+      required:
+        - solution
+
+    CreateVote.request:
+      oneOf:
+        - $ref: '#/components/schemas/SkillAddVote'
+        - $ref: '#/components/schemas/SkillDelVote'
+        - $ref: '#/components/schemas/ExamAddVote'
+      discriminator:
+        propertyName: action
+        mapping:
+          add_skill: '#/components/schemas/SkillAddVote'
+          delete_skill: '#/components/schemas/SkillDelVote'
+          add_exam: '#/components/schemas/ExamAddVote'
+
+    CastVote.request:
+      type: object
+      properties:
+        reaction:
+          type: string
+          enum: [ '+1', '-1' ]
+          description: |
+            +1 — за,
+            -1 — против
+      required:
+        - reaction
+
+    AddCommentOnVote.request:
+      type: object
+      required:
+        - comment
+      properties:
+        comment:
+          type: string
+          description: Содержимое комментария
   securitySchemes:
     bearerAuth:
       type: http

@@ -23,6 +23,10 @@ dependencies {
     implementation libs.bundles.vertx
     implementation libs.jackson.databind
     implementation libs.slf4j
+    implementation libs.guice
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 }
 
 tasks.openApiGenerate {
@@ -44,18 +48,13 @@ processResources {
     from("$rootProject.layout.projectDirectory") {
         include 'provve-api.yaml'
     }
+    from(rootProject.layout.buildDirectory.file('/specs')) {
+        include 'antifraud-api.yaml'
+        into('build/specs')
+    }
 }
 
 run {
     mainClass = 'io.vertx.core.Launcher'
-    args = ['start']
-}
-
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'io.vertx.core.Launcher',
-                'Main-Verticle': 'tech.provve.api.server.HttpServerVerticle'
-        )
-    }
+    args = ['run', 'tech.provve.api.server.ApiServer']
 }

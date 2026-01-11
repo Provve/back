@@ -1,248 +1,248 @@
 package tech.provve.api.server.generated.api;
 
+import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
+import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
+import io.vertx.ext.web.FileUpload;
+import tech.provve.api.server.generated.dto.Notification;
+import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.UpdateEmailRequest;
+import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
+
+import tech.provve.api.server.RouteHandler;
+import com.google.inject.Inject;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.FileUpload;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameter;
 import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.RequestParameter;
 import io.vertx.ext.web.validation.ValidationHandler;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.provve.api.server.generated.dto.*;
 
-import java.util.UUID;
+import java.util.List;
+import java.util.Map;
 
-public class AccountsApiHandler {
+public class AccountsApiHandler implements RouteHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(AccountsApiHandler.class);
+        private static final Logger logger = LoggerFactory.getLogger(AccountsApiHandler.class);
 
-    private final AccountsApi api;
+        private final AccountsApi api;
 
-    public AccountsApiHandler(AccountsApi api) {
-        this.api = api;
-    }
+        @Inject
+        public AccountsApiHandler(AccountsApi api) {
+                this.api = api;
+        }
 
-    public void mount(RouterBuilder builder) {
-        builder.operation("accountsPost")
-               .handler(this::accountsPost);
-        builder.operation("authGet")
-               .handler(this::authGet);
-        builder.operation("avatarPut")
-               .handler(this::avatarPut);
-        builder.operation("emailPut")
-               .handler(this::emailPut);
-        builder.operation("passwordPut")
-               .handler(this::passwordPut);
-        builder.operation("resetCodeGet")
-               .handler(this::resetCodeGet);
-        builder.operation("upgradeGet")
-               .handler(this::upgradeGet);
-    }
+        public void mount(RouterBuilder builder) {
+                builder.operation("authenticateUser")
+                       .handler(this::authenticateUser);
+                builder.operation("registerUser")
+                       .handler(this::registerUser);
+                builder.operation("requestResetCode")
+                       .handler(this::requestResetCode);
+                builder.operation("updateAvatar")
+                       .handler(this::updateAvatar);
+                builder.operation("updateEmail")
+                       .handler(this::updateEmail);
+                builder.operation("updatePassword")
+                       .handler(this::updatePassword);
+                builder.operation("upgradeAccount")
+                       .handler(this::upgradeAccount);
+        }
 
-    private void accountsPost(RoutingContext routingContext) {
-        logger.info("accountsPost()");
-
-        // Param extraction
-        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
-
-        RequestParameter body = requestParameters.body();
-        AccountsPostRequest accountsPostRequest = body != null ? DatabindCodec.mapper()
-                                                                              .convertValue(
-                                                                                      body.get(),
-                                                                                      new TypeReference<AccountsPostRequest>() {
-                                                                                      }
-                                                                              ) : null;
-
-        logger.debug("Parameter accountsPostRequest is {}", accountsPostRequest);
-
-        api.accountsPost(accountsPostRequest)
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
-
-    private void authGet(RoutingContext routingContext) {
-        logger.info("authGet()");
+        private void authenticateUser(RoutingContext routingContext) {
+                logger.info("authenticateUser()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        RequestParameter body = requestParameters.body();
-        AuthGetRequest authGetRequest = body != null ? DatabindCodec.mapper()
-                                                                    .convertValue(
-                                                                            body.get(),
-                                                                            new TypeReference<AuthGetRequest>() {
-                                                                            }
-                                                                    ) : null;
+                RequestParameter body = requestParameters.body();
+                AuthenticateUserRequest authenticateUserRequest = body != null ? DatabindCodec.mapper()
+                                                                                              .convertValue(
+                                                                                                      body.get(),
+                                                                                                      new TypeReference<AuthenticateUserRequest>() {
+                                                                                                      }
+                                                                                              ) : null;
 
-        logger.debug("Parameter authGetRequest is {}", authGetRequest);
+                logger.debug("Parameter authenticateUserRequest is {}", authenticateUserRequest);
 
-        api.authGet(authGetRequest)
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
+                api.authenticateUser(authenticateUserRequest)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
+        }
 
-    private void avatarPut(RoutingContext routingContext) {
-        logger.info("avatarPut()");
-
-        // Param extraction
-        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
-
-        java.util.UUID id = requestParameters.pathParameter("id") != null
-                ? UUID.fromString(requestParameters.pathParameter("id")
-                                                   .getString()) : null;
-        FileUpload avatar = routingContext.fileUploads()
-                                          .iterator()
-                                          .next();
-
-        logger.debug("Parameter id is {}", id);
-        logger.debug("Parameter avatar is {}", avatar);
-
-        api.avatarPut(id, avatar)
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
-
-    private void emailPut(RoutingContext routingContext) {
-        logger.info("emailPut()");
+        private void registerUser(RoutingContext routingContext) {
+                logger.info("registerUser()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String id = requestParameters.pathParameter("id") != null ? requestParameters.pathParameter("id")
-                                                                                     .getString() : null;
-        RequestParameter body = requestParameters.body();
-        EmailPutRequest emailPutRequest = body != null ? DatabindCodec.mapper()
-                                                                      .convertValue(
-                                                                              body.get(),
-                                                                              new TypeReference<EmailPutRequest>() {
-                                                                              }
-                                                                      ) : null;
+                RequestParameter body = requestParameters.body();
+                RegisterUserRequest registerUserRequest = body != null ? DatabindCodec.mapper()
+                                                                                      .convertValue(
+                                                                                              body.get(),
+                                                                                              new TypeReference<RegisterUserRequest>() {
+                                                                                              }
+                                                                                      ) : null;
 
-        logger.debug("Parameter id is {}", id);
-        logger.debug("Parameter emailPutRequest is {}", emailPutRequest);
+                logger.debug("Parameter registerUserRequest is {}", registerUserRequest);
 
-        api.emailPut(id, emailPutRequest)
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
+                api.registerUser(registerUserRequest)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
+        }
 
-    private void passwordPut(RoutingContext routingContext) {
-        logger.info("passwordPut()");
+        private void requestResetCode(RoutingContext routingContext) {
+                logger.info("requestResetCode()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        RequestParameter body = requestParameters.body();
-        PasswordPutRequest passwordPutRequest = body != null ? DatabindCodec.mapper()
-                                                                            .convertValue(
-                                                                                    body.get(),
-                                                                                    new TypeReference<PasswordPutRequest>() {
-                                                                                    }
-                                                                            ) : null;
+                String email = requestParameters.queryParameter("email") != null ? requestParameters.queryParameter(
+                                                                                                            "email")
+                                                                                                    .getString() : null;
 
-        logger.debug("Parameter passwordPutRequest is {}", passwordPutRequest);
+                logger.debug("Parameter email is {}", email);
 
-        api.passwordPut(passwordPutRequest)
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
+                api.requestResetCode(email)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
+        }
 
-    private void resetCodeGet(RoutingContext routingContext) {
-        logger.info("resetCodeGet()");
+        private void updateAvatar(RoutingContext routingContext) {
+                logger.info("updateAvatar()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        RequestParameter body = requestParameters.body();
-        ResetCodeGetRequest resetCodeGetRequest = body != null ? DatabindCodec.mapper()
-                                                                              .convertValue(
-                                                                                      body.get(),
-                                                                                      new TypeReference<ResetCodeGetRequest>() {
-                                                                                      }
-                                                                              ) : null;
+                FileUpload avatar = routingContext.fileUploads()
+                                                  .iterator()
+                                                  .next();
 
-        logger.debug("Parameter resetCodeGetRequest is {}", resetCodeGetRequest);
+                logger.debug("Parameter avatar is {}", avatar);
 
-        api.resetCodeGet(resetCodeGetRequest)
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
+                api.updateAvatar(avatar)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
+        }
 
-    private void upgradeGet(RoutingContext routingContext) {
-        logger.info("upgradeGet()");
+        private void updateEmail(RoutingContext routingContext) {
+                logger.info("updateEmail()");
+
+        // Param extraction
+        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
+
+                RequestParameter body = requestParameters.body();
+                UpdateEmailRequest updateEmailRequest = body != null ? DatabindCodec.mapper()
+                                                                                    .convertValue(
+                                                                                            body.get(),
+                                                                                            new TypeReference<UpdateEmailRequest>() {
+                                                                                            }
+                                                                                    ) : null;
+
+                logger.debug("Parameter updateEmailRequest is {}", updateEmailRequest);
+
+                api.updateEmail(updateEmailRequest)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
+        }
+
+        private void updatePassword(RoutingContext routingContext) {
+                logger.info("updatePassword()");
+
+        // Param extraction
+        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
+
+                RequestParameter body = requestParameters.body();
+                UpdatePasswordRequest updatePasswordRequest = body != null ? DatabindCodec.mapper()
+                                                                                          .convertValue(
+                                                                                                  body.get(),
+                                                                                                  new TypeReference<UpdatePasswordRequest>() {
+                                                                                                  }
+                                                                                          ) : null;
+
+                logger.debug("Parameter updatePasswordRequest is {}", updatePasswordRequest);
+
+                api.updatePassword(updatePasswordRequest)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
+        }
+
+        private void upgradeAccount(RoutingContext routingContext) {
+                logger.info("upgradeAccount()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
 
-        api.upgradeGet()
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
+                api.upgradeAccount()
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
+        }
 
 }

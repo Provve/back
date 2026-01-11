@@ -1,57 +1,23 @@
 package {{invokerPackage}};
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.http.HttpServerOptions;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.openapi.RouterBuilderOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.api.*;
 {{#apiInfo}}{{#apis}}
     import {{apiPackage}}.{{classname}}Handler;
-    import {{apiPackage}}.{{classname}}Impl;{{/apis}}{{/apiInfo}}
+    import {{apiPackage}}.{{classname}}Impl;
+{{/apis}}{{/apiInfo}}
 
-public class HttpServerVerticle extends AbstractVerticle {
-
-private static final Logger logger = LoggerFactory.getLogger(HttpServerVerticle.class);
-private static final String specFile = "provve-api.yaml";
-
-{{#apiInfo}}{{#apis}}
-    private final {{classname}}Handler {{classVarName}}Handler = new {{classname}}Handler(new {{classname}}Impl());{{/apis}}{{/apiInfo}}
+// костыль для динамического подтягивания всех гененрируемых api handler`ов
+public class HttpServerVerticle extends AbstractModule {
 
 @Override
-public void start(Promise
-<Void> startPromise) {
-    RouterBuilder.create(vertx, specFile)
-    .map(builder -> {
-    builder.setOptions(new RouterBuilderOptions()
-    // For production use case, you need to enable this flag and provide the proper security handler
-    .setRequireSecurityHandlers(false)
-    );
+protected void configure() {
+Multibinder
+<RouteHandler> binder = Multibinder.newSetBinder(binder(), RouteHandler.class);
     {{#apiInfo}}{{#apis}}
-        {{classVarName}}Handler.mount(builder);{{/apis}}{{/apiInfo}}
-
-    Router router = builder.createRouter();
-    router.errorHandler(400, this::validationFailureHandler);
-
-    return router;
-    })
-    .compose(router ->
-    vertx.createHttpServer()
-    .requestHandler(router)
-    .listen(8080)
-    )
-    .onSuccess(server -> logger.info("Http verticle deploy successful"))
-    .onFailure(t -> logger.error("Http verticle failed to deploy", t))
-    // Complete the start promise
-    .
-    <Void>mapEmpty().onComplete(startPromise);
-        }
-
-        private void validationFailureHandler(RoutingContext rc) {
-        rc.response().setStatusCode(400)
-        .end("Bad Request : " + rc.failure().getMessage());
-        }
-        }
+        binder.addBinding().toInstance(new {{classname}}Handler(new {{classname}}Impl()));
+    {{/apis}}{{/apiInfo}}
+    }
+    }

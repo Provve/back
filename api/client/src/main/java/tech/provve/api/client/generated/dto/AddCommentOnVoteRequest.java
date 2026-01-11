@@ -14,14 +14,15 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 import java.util.Arrays;
-import tech.provve.api.client.generated.dto.ProfileResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,6 +37,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -47,44 +49,45 @@ import java.util.Set;
 import tech.provve.api.client.generated.JSON;
 
 /**
- * CommentResponse
+ * AddCommentOnVoteRequest
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
-public class CommentResponse {
-
-    public static final String SERIALIZED_NAME_AUTHOR = "author";
-
-    @SerializedName(SERIALIZED_NAME_AUTHOR)
-    @javax.annotation.Nullable
-    private ProfileResponse author;
+public class AddCommentOnVoteRequest {
 
     public static final String SERIALIZED_NAME_COMMENT = "comment";
 
-    @SerializedName(SERIALIZED_NAME_COMMENT)
-    @javax.annotation.Nullable
-    private String comment;
+    public static HashSet<String> openapiFields;
 
-    public CommentResponse() {
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("comment"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(Arrays.asList("comment"));
     }
 
-    public CommentResponse author(@javax.annotation.Nullable ProfileResponse author) {
-        this.author = author;
-        return this;
+    @SerializedName(SERIALIZED_NAME_COMMENT)
+    @javax.annotation.Nonnull
+    private String comment;
+
+    public AddCommentOnVoteRequest() {
     }
 
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
      * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to CommentResponse
+     * @throws IOException if the JSON Element is invalid with respect to AddCommentOnVoteRequest
      */
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
-            if (!CommentResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+            if (!AddCommentOnVoteRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
-                        "The required field(s) %s in CommentResponse is not found in the empty JSON string",
-                        CommentResponse.openapiRequiredFields.toString()
+                        "The required field(s) %s in AddCommentOnVoteRequest is not found in the empty JSON string",
+                        AddCommentOnVoteRequest.openapiRequiredFields.toString()
                 ));
             }
         }
@@ -93,23 +96,31 @@ public class CommentResponse {
                                                                  .entrySet();
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!CommentResponse.openapiFields.contains(entry.getKey())) {
+            if (!AddCommentOnVoteRequest.openapiFields.contains(entry.getKey())) {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
-                        "The field `%s` in the JSON string is not defined in the `CommentResponse` properties. JSON: %s",
+                        "The field `%s` in the JSON string is not defined in the `AddCommentOnVoteRequest` properties. JSON: %s",
                         entry.getKey(),
-                        jsonElement.toString()));
+                        jsonElement.toString()
+                ));
+            }
         }
-      }
+
+        // check to make sure all required properties/fields are present in the JSON string
+        for (String requiredField : AddCommentOnVoteRequest.openapiRequiredFields) {
+            if (jsonElement.getAsJsonObject()
+                           .get(requiredField) == null) {
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The required field `%s` is not found in the JSON string: %s",
+                        requiredField,
+                        jsonElement.toString()
+                ));
+            }
+        }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the optional field `author`
-        if (jsonObj.get("author") != null && !jsonObj.get("author")
-                                                     .isJsonNull()) {
-            ProfileResponse.validateJsonElement(jsonObj.get("author"));
-        }
-        if ((jsonObj.get("comment") != null && !jsonObj.get("comment")
-                                                       .isJsonNull()) && !jsonObj.get("comment")
-                                                                                 .isJsonPrimitive()) {
+        if (!jsonObj.get("comment")
+                    .isJsonPrimitive()) {
             throw new IllegalArgumentException(String.format(
                     java.util.Locale.ROOT,
                     "Expected the field `comment` to be a primitive type in the JSON string but got `%s`",
@@ -119,30 +130,36 @@ public class CommentResponse {
         }
     }
 
-    public void setAuthor(@javax.annotation.Nullable ProfileResponse author) {
-        this.author = author;
+    /**
+     * Create an instance of AddCommentOnVoteRequest given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of AddCommentOnVoteRequest
+     * @throws IOException if the JSON string is invalid with respect to AddCommentOnVoteRequest
+     */
+    public static AddCommentOnVoteRequest fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, AddCommentOnVoteRequest.class);
     }
 
-
-    public CommentResponse comment(@javax.annotation.Nullable String comment) {
+    public AddCommentOnVoteRequest comment(@javax.annotation.Nonnull String comment) {
         this.comment = comment;
         return this;
     }
 
     /**
-     * Содержимое
+     * Содержимое комментария
      *
      * @return comment
      */
-    @javax.annotation.Nullable
+    @javax.annotation.Nonnull
     public String getComment() {
         return comment;
     }
 
-    public void setComment(@javax.annotation.Nullable String comment) {
+    public void setComment(@javax.annotation.Nonnull String comment) {
         this.comment = comment;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -152,23 +169,19 @@ public class CommentResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CommentResponse commentResponse = (CommentResponse) o;
-        return Objects.equals(this.author, commentResponse.author) &&
-                Objects.equals(this.comment, commentResponse.comment);
+        AddCommentOnVoteRequest addCommentOnVoteRequest = (AddCommentOnVoteRequest) o;
+        return Objects.equals(this.comment, addCommentOnVoteRequest.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, comment);
+        return Objects.hash(comment);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CommentResponse {\n");
-        sb.append("    author: ")
-          .append(toIndentedString(author))
-          .append("\n");
+        sb.append("class AddCommentOnVoteRequest {\n");
         sb.append("    comment: ")
           .append(toIndentedString(comment))
           .append("\n");
@@ -188,27 +201,14 @@ public class CommentResponse {
                 .replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("author", "comment"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(0);
-    }
-
     /**
-     * Get author
+     * Convert an instance of AddCommentOnVoteRequest to an JSON string
      *
-     * @return author
+     * @return JSON string
      */
-    @javax.annotation.Nullable
-    public ProfileResponse getAuthor() {
-        return author;
+    public String toJson() {
+        return JSON.getGson()
+                   .toJson(this);
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
@@ -216,23 +216,23 @@ public class CommentResponse {
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!CommentResponse.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'CommentResponse' and its subtypes
+            if (!AddCommentOnVoteRequest.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'AddCommentOnVoteRequest' and its subtypes
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<CommentResponse> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(CommentResponse.class));
+            final TypeAdapter<AddCommentOnVoteRequest> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(AddCommentOnVoteRequest.class));
 
-            return (TypeAdapter<T>) new TypeAdapter<CommentResponse>() {
+            return (TypeAdapter<T>) new TypeAdapter<AddCommentOnVoteRequest>() {
                 @Override
-                public void write(JsonWriter out, CommentResponse value) throws IOException {
+                public void write(JsonWriter out, AddCommentOnVoteRequest value) throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value)
                                                 .getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
 
                 @Override
-                public CommentResponse read(JsonReader in) throws IOException {
+                public AddCommentOnVoteRequest read(JsonReader in) throws IOException {
                     JsonElement jsonElement = elementAdapter.read(in);
                     validateJsonElement(jsonElement);
                     return thisAdapter.fromJsonTree(jsonElement);
@@ -241,26 +241,5 @@ public class CommentResponse {
             }.nullSafe();
         }
     }
-
-    /**
-     * Create an instance of CommentResponse given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of CommentResponse
-     * @throws IOException if the JSON string is invalid with respect to CommentResponse
-     */
-    public static CommentResponse fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, CommentResponse.class);
-    }
-
-    /**
-     * Convert an instance of CommentResponse to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-    return JSON.getGson().toJson(this);
-  }
 }
 

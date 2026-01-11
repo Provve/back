@@ -101,13 +101,59 @@ public class Notification {
     }
 
     /**
-     * Содержимое, может содержать разметку
+     * Validates the JSON Element and throws an exception if issues found
      *
-     * @return message
+     * @param jsonElement JSON Element
+     * @throws IOException if the JSON Element is invalid with respect to Notification
      */
-    @javax.annotation.Nullable
-    public String getMessage() {
-        return message;
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+        if (jsonElement == null) {
+            if (!Notification.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The required field(s) %s in Notification is not found in the empty JSON string",
+                        Notification.openapiRequiredFields.toString()
+                ));
+            }
+        }
+
+        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
+                                                                 .entrySet();
+        // check to see if the JSON string contains additional fields
+        for (Map.Entry<String, JsonElement> entry : entries) {
+            if (!Notification.openapiFields.contains(entry.getKey())) {
+                throw new IllegalArgumentException(String.format(
+                        java.util.Locale.ROOT,
+                        "The field `%s` in the JSON string is not defined in the `Notification` properties. JSON: %s",
+                        entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+        if ((jsonObj.get("level") != null && !jsonObj.get("level")
+                                                     .isJsonNull()) && !jsonObj.get("level")
+                                                                               .isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(
+                    java.util.Locale.ROOT,
+                    "Expected the field `level` to be a primitive type in the JSON string but got `%s`",
+                    jsonObj.get("level")
+                           .toString()
+            ));
+        }
+        // validate the optional field `level`
+        if (jsonObj.get("level") != null && !jsonObj.get("level")
+                                                    .isJsonNull()) {
+            LevelEnum.validateJsonElement(jsonObj.get("level"));
+        }
+        if ((jsonObj.get("message") != null && !jsonObj.get("message")
+                                                       .isJsonNull()) && !jsonObj.get("message")
+                                                                                 .isJsonPrimitive()) {
+            throw new IllegalArgumentException(String.format(
+                    java.util.Locale.ROOT,
+                    "Expected the field `message` to be a primitive type in the JSON string but got `%s`",
+                    jsonObj.get("message")
+                           .toString()
+            ));
+        }
     }
 
     public void setMessage(@javax.annotation.Nullable String message) {
@@ -183,6 +229,18 @@ public class Notification {
                 .replace("\n", "\n    ");
     }
 
+    /**
+     * Create an instance of Notification given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of Notification
+     * @throws IOException if the JSON string is invalid with respect to Notification
+     */
+    public static Notification fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, Notification.class);
+    }
+
     public static HashSet<String> openapiRequiredFields;
 
     static {
@@ -194,73 +252,13 @@ public class Notification {
     }
 
     /**
-     * Validates the JSON Element and throws an exception if issues found
+     * Содержимое, может содержать разметку examples:   - Идёт [голосование](/votes/1) за удаление   - Антифрод неподлинный
      *
-     * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to Notification
+     * @return message
      */
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        if (jsonElement == null) {
-            if (!Notification.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The required field(s) %s in Notification is not found in the empty JSON string",
-                        Notification.openapiRequiredFields.toString()
-                ));
-            }
-        }
-
-        Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject()
-                                                                 .entrySet();
-        // check to see if the JSON string contains additional fields
-        for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!Notification.openapiFields.contains(entry.getKey())) {
-                throw new IllegalArgumentException(String.format(
-                        java.util.Locale.ROOT,
-                        "The field `%s` in the JSON string is not defined in the `Notification` properties. JSON: %s",
-                        entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
-        }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        if ((jsonObj.get("level") != null && !jsonObj.get("level")
-                                                     .isJsonNull()) && !jsonObj.get("level")
-                                                                               .isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(
-                    java.util.Locale.ROOT,
-                    "Expected the field `level` to be a primitive type in the JSON string but got `%s`",
-                    jsonObj.get("level")
-                           .toString()
-            ));
-        }
-        // validate the optional field `level`
-        if (jsonObj.get("level") != null && !jsonObj.get("level")
-                                                    .isJsonNull()) {
-            LevelEnum.validateJsonElement(jsonObj.get("level"));
-        }
-        if ((jsonObj.get("message") != null && !jsonObj.get("message")
-                                                       .isJsonNull()) && !jsonObj.get("message")
-                                                                                 .isJsonPrimitive()) {
-            throw new IllegalArgumentException(String.format(
-                    java.util.Locale.ROOT,
-                    "Expected the field `message` to be a primitive type in the JSON string but got `%s`",
-                    jsonObj.get("message")
-                           .toString()
-            ));
-        }
-    }
-
-    /**
-     * Create an instance of Notification given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of Notification
-     * @throws IOException if the JSON string is invalid with respect to Notification
-     */
-    public static Notification fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, Notification.class);
+    @javax.annotation.Nullable
+    public String getMessage() {
+        return message;
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
@@ -297,9 +295,9 @@ public class Notification {
     /**
      * Convert an instance of Notification to an JSON string
      *
-     * @return JSON string
-     */
-    public String toJson() {
+   * @return JSON string
+   */
+  public String toJson() {
     return JSON.getGson().toJson(this);
   }
 

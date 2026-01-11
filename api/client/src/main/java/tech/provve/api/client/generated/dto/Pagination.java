@@ -204,11 +204,9 @@ public class Pagination {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
                         "The required field `%s` is not found in the JSON string: %s",
-                        requiredField,
-                        jsonElement.toString()
-                ));
-            }
+                        requiredField, jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
     }
 
@@ -258,9 +256,9 @@ public class Pagination {
     /**
      * Convert an instance of Pagination to an JSON string
      *
-     * @return JSON string
-     */
-    public String toJson() {
+   * @return JSON string
+   */
+  public String toJson() {
     return JSON.getGson().toJson(this);
   }
 }

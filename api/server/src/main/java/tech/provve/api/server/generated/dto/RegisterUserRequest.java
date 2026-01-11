@@ -1,11 +1,12 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AccountsPostRequest {
+public class RegisterUserRequest {
 
     private String login;
 
@@ -17,11 +18,11 @@ public class AccountsPostRequest {
 
     private String username;
 
-    public AccountsPostRequest() {
+    public RegisterUserRequest() {
 
     }
 
-    public AccountsPostRequest(String login, String email, String password, Boolean consentPersonalData, String username) {
+    public RegisterUserRequest(String login, String email, String password, Boolean consentPersonalData, String username) {
         this.login = login;
         this.email = email;
         this.password = password;
@@ -88,12 +89,12 @@ public class AccountsPostRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AccountsPostRequest accountsPostRequest = (AccountsPostRequest) o;
-        return Objects.equals(login, accountsPostRequest.login) &&
-                Objects.equals(email, accountsPostRequest.email) &&
-                Objects.equals(password, accountsPostRequest.password) &&
-                Objects.equals(consentPersonalData, accountsPostRequest.consentPersonalData) &&
-                Objects.equals(username, accountsPostRequest.username);
+        RegisterUserRequest registerUserRequest = (RegisterUserRequest) o;
+        return Objects.equals(login, registerUserRequest.login) &&
+                Objects.equals(email, registerUserRequest.email) &&
+                Objects.equals(password, registerUserRequest.password) &&
+                Objects.equals(consentPersonalData, registerUserRequest.consentPersonalData) &&
+                Objects.equals(username, registerUserRequest.username);
     }
 
     @Override
@@ -104,7 +105,7 @@ public class AccountsPostRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class AccountsPostRequest {\n");
+        sb.append("class RegisterUserRequest {\n");
 
         sb.append("    login: ")
           .append(toIndentedString(login))

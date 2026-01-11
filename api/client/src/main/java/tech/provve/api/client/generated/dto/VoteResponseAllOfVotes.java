@@ -189,10 +189,9 @@ public class VoteResponseAllOfVotes {
                         java.util.Locale.ROOT,
                         "The field `%s` in the JSON string is not defined in the `VoteResponseAllOfVotes` properties. JSON: %s",
                         entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
+                        jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
     }
 
@@ -245,7 +244,7 @@ public class VoteResponseAllOfVotes {
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson().toJson(this);
+    return JSON.getGson().toJson(this);
   }
 }
 

@@ -14,14 +14,16 @@
 package tech.provve.api.client.generated.dto;
 
 import java.util.Objects;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 import java.util.Arrays;
-import tech.provve.api.client.generated.dto.ProfileResponse;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,6 +38,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -47,44 +50,51 @@ import java.util.Set;
 import tech.provve.api.client.generated.JSON;
 
 /**
- * CommentResponse
+ * CreateSessionRequest
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.18.0")
-public class CommentResponse {
+public class CreateSessionRequest {
 
-    public static final String SERIALIZED_NAME_AUTHOR = "author";
+    public static final String SERIALIZED_NAME_EXAM_ID = "exam_id";
 
-    @SerializedName(SERIALIZED_NAME_AUTHOR)
-    @javax.annotation.Nullable
-    private ProfileResponse author;
+    public static final String SERIALIZED_NAME_CIPHER = "cipher";
 
-    public static final String SERIALIZED_NAME_COMMENT = "comment";
+    public static HashSet<String> openapiFields;
 
-    @SerializedName(SERIALIZED_NAME_COMMENT)
-    @javax.annotation.Nullable
-    private String comment;
+    public static HashSet<String> openapiRequiredFields;
 
-    public CommentResponse() {
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("exam_id", "cipher"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(0);
     }
 
-    public CommentResponse author(@javax.annotation.Nullable ProfileResponse author) {
-        this.author = author;
-        return this;
+    @SerializedName(SERIALIZED_NAME_EXAM_ID)
+    @javax.annotation.Nullable
+    private UUID examId;
+
+    @SerializedName(SERIALIZED_NAME_CIPHER)
+    @javax.annotation.Nullable
+    private Integer cipher;
+
+    public CreateSessionRequest() {
     }
 
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
      * @param jsonElement JSON Element
-     * @throws IOException if the JSON Element is invalid with respect to CommentResponse
+     * @throws IOException if the JSON Element is invalid with respect to CreateSessionRequest
      */
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
-            if (!CommentResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+            if (!CreateSessionRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
-                        "The required field(s) %s in CommentResponse is not found in the empty JSON string",
-                        CommentResponse.openapiRequiredFields.toString()
+                        "The required field(s) %s in CreateSessionRequest is not found in the empty JSON string",
+                        CreateSessionRequest.openapiRequiredFields.toString()
                 ));
             }
         }
@@ -93,56 +103,77 @@ public class CommentResponse {
                                                                  .entrySet();
         // check to see if the JSON string contains additional fields
         for (Map.Entry<String, JsonElement> entry : entries) {
-            if (!CommentResponse.openapiFields.contains(entry.getKey())) {
+            if (!CreateSessionRequest.openapiFields.contains(entry.getKey())) {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
-                        "The field `%s` in the JSON string is not defined in the `CommentResponse` properties. JSON: %s",
+                        "The field `%s` in the JSON string is not defined in the `CreateSessionRequest` properties. JSON: %s",
                         entry.getKey(),
-                        jsonElement.toString()));
+                        jsonElement.toString()
+                ));
+            }
         }
-      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-        // validate the optional field `author`
-        if (jsonObj.get("author") != null && !jsonObj.get("author")
-                                                     .isJsonNull()) {
-            ProfileResponse.validateJsonElement(jsonObj.get("author"));
-        }
-        if ((jsonObj.get("comment") != null && !jsonObj.get("comment")
-                                                       .isJsonNull()) && !jsonObj.get("comment")
+        if ((jsonObj.get("exam_id") != null && !jsonObj.get("exam_id")
+                                                       .isJsonNull()) && !jsonObj.get("exam_id")
                                                                                  .isJsonPrimitive()) {
             throw new IllegalArgumentException(String.format(
                     java.util.Locale.ROOT,
-                    "Expected the field `comment` to be a primitive type in the JSON string but got `%s`",
-                    jsonObj.get("comment")
+                    "Expected the field `exam_id` to be a primitive type in the JSON string but got `%s`",
+                    jsonObj.get("exam_id")
                            .toString()
             ));
         }
     }
 
-    public void setAuthor(@javax.annotation.Nullable ProfileResponse author) {
-        this.author = author;
+    /**
+     * Create an instance of CreateSessionRequest given an JSON string
+     *
+     * @param jsonString JSON string
+     * @return An instance of CreateSessionRequest
+     * @throws IOException if the JSON string is invalid with respect to CreateSessionRequest
+     */
+    public static CreateSessionRequest fromJson(String jsonString) throws IOException {
+        return JSON.getGson()
+                   .fromJson(jsonString, CreateSessionRequest.class);
     }
 
-
-    public CommentResponse comment(@javax.annotation.Nullable String comment) {
-        this.comment = comment;
+    public CreateSessionRequest examId(@javax.annotation.Nullable UUID examId) {
+        this.examId = examId;
         return this;
     }
 
     /**
-     * Содержимое
+     * Идентификатор экзамена
      *
-     * @return comment
+     * @return examId
      */
     @javax.annotation.Nullable
-    public String getComment() {
-        return comment;
+    public UUID getExamId() {
+        return examId;
     }
 
-    public void setComment(@javax.annotation.Nullable String comment) {
-        this.comment = comment;
+    public void setExamId(@javax.annotation.Nullable UUID examId) {
+        this.examId = examId;
     }
 
+    public CreateSessionRequest cipher(@javax.annotation.Nullable Integer cipher) {
+        this.cipher = cipher;
+        return this;
+    }
+
+    /**
+     * Зашифрованное случайное число, полученное ранее
+     *
+     * @return cipher
+     */
+    @javax.annotation.Nullable
+    public Integer getCipher() {
+        return cipher;
+    }
+
+    public void setCipher(@javax.annotation.Nullable Integer cipher) {
+        this.cipher = cipher;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -152,25 +183,25 @@ public class CommentResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CommentResponse commentResponse = (CommentResponse) o;
-        return Objects.equals(this.author, commentResponse.author) &&
-                Objects.equals(this.comment, commentResponse.comment);
+        CreateSessionRequest createSessionRequest = (CreateSessionRequest) o;
+        return Objects.equals(this.examId, createSessionRequest.examId) &&
+                Objects.equals(this.cipher, createSessionRequest.cipher);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, comment);
+        return Objects.hash(examId, cipher);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CommentResponse {\n");
-        sb.append("    author: ")
-          .append(toIndentedString(author))
+        sb.append("class CreateSessionRequest {\n");
+        sb.append("    examId: ")
+          .append(toIndentedString(examId))
           .append("\n");
-        sb.append("    comment: ")
-          .append(toIndentedString(comment))
+        sb.append("    cipher: ")
+          .append(toIndentedString(cipher))
           .append("\n");
         sb.append("}");
         return sb.toString();
@@ -188,27 +219,14 @@ public class CommentResponse {
                 .replace("\n", "\n    ");
     }
 
-
-    public static HashSet<String> openapiFields;
-
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("author", "comment"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(0);
-    }
-
     /**
-     * Get author
+     * Convert an instance of CreateSessionRequest to an JSON string
      *
-     * @return author
+     * @return JSON string
      */
-    @javax.annotation.Nullable
-    public ProfileResponse getAuthor() {
-        return author;
+    public String toJson() {
+        return JSON.getGson()
+                   .toJson(this);
     }
 
     public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
@@ -216,23 +234,23 @@ public class CommentResponse {
         @SuppressWarnings("unchecked")
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (!CommentResponse.class.isAssignableFrom(type.getRawType())) {
-                return null; // this class only serializes 'CommentResponse' and its subtypes
+            if (!CreateSessionRequest.class.isAssignableFrom(type.getRawType())) {
+                return null; // this class only serializes 'CreateSessionRequest' and its subtypes
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<CommentResponse> thisAdapter
-                    = gson.getDelegateAdapter(this, TypeToken.get(CommentResponse.class));
+            final TypeAdapter<CreateSessionRequest> thisAdapter
+                    = gson.getDelegateAdapter(this, TypeToken.get(CreateSessionRequest.class));
 
-            return (TypeAdapter<T>) new TypeAdapter<CommentResponse>() {
+            return (TypeAdapter<T>) new TypeAdapter<CreateSessionRequest>() {
                 @Override
-                public void write(JsonWriter out, CommentResponse value) throws IOException {
+                public void write(JsonWriter out, CreateSessionRequest value) throws IOException {
                     JsonObject obj = thisAdapter.toJsonTree(value)
                                                 .getAsJsonObject();
                     elementAdapter.write(out, obj);
                 }
 
                 @Override
-                public CommentResponse read(JsonReader in) throws IOException {
+                public CreateSessionRequest read(JsonReader in) throws IOException {
                     JsonElement jsonElement = elementAdapter.read(in);
                     validateJsonElement(jsonElement);
                     return thisAdapter.fromJsonTree(jsonElement);
@@ -241,26 +259,5 @@ public class CommentResponse {
             }.nullSafe();
         }
     }
-
-    /**
-     * Create an instance of CommentResponse given an JSON string
-     *
-     * @param jsonString JSON string
-     * @return An instance of CommentResponse
-     * @throws IOException if the JSON string is invalid with respect to CommentResponse
-     */
-    public static CommentResponse fromJson(String jsonString) throws IOException {
-        return JSON.getGson()
-                   .fromJson(jsonString, CommentResponse.class);
-    }
-
-    /**
-     * Convert an instance of CommentResponse to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
-    return JSON.getGson().toJson(this);
-  }
 }
 

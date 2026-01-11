@@ -1,21 +1,22 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SessionStage2PostRequest {
+public class CreateSessionRequest {
 
     private java.util.UUID examId;
 
     private Integer cipher;
 
-    public SessionStage2PostRequest() {
+    public CreateSessionRequest() {
 
     }
 
-    public SessionStage2PostRequest(java.util.UUID examId, Integer cipher) {
+    public CreateSessionRequest(java.util.UUID examId, Integer cipher) {
         this.examId = examId;
         this.cipher = cipher;
     }
@@ -49,9 +50,9 @@ public class SessionStage2PostRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SessionStage2PostRequest sessionStage2PostRequest = (SessionStage2PostRequest) o;
-        return Objects.equals(examId, sessionStage2PostRequest.examId) &&
-                Objects.equals(cipher, sessionStage2PostRequest.cipher);
+        CreateSessionRequest createSessionRequest = (CreateSessionRequest) o;
+        return Objects.equals(examId, createSessionRequest.examId) &&
+                Objects.equals(cipher, createSessionRequest.cipher);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class SessionStage2PostRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class SessionStage2PostRequest {\n");
+        sb.append("class CreateSessionRequest {\n");
 
         sb.append("    examId: ")
           .append(toIndentedString(examId))

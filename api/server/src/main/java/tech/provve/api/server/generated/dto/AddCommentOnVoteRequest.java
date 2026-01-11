@@ -1,30 +1,31 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class EmailPutRequest {
+public class AddCommentOnVoteRequest {
 
-    private String email;
+    private String comment;
 
-    public EmailPutRequest() {
+    public AddCommentOnVoteRequest() {
 
     }
 
-    public EmailPutRequest(String email) {
-        this.email = email;
+    public AddCommentOnVoteRequest(String comment) {
+        this.comment = comment;
     }
 
 
-    @JsonProperty("email")
-    public String getEmail() {
-        return email;
+    @JsonProperty("comment")
+    public String getComment() {
+        return comment;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
 
@@ -36,22 +37,22 @@ public class EmailPutRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        EmailPutRequest emailPutRequest = (EmailPutRequest) o;
-        return Objects.equals(email, emailPutRequest.email);
+        AddCommentOnVoteRequest addCommentOnVoteRequest = (AddCommentOnVoteRequest) o;
+        return Objects.equals(comment, addCommentOnVoteRequest.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email);
+        return Objects.hash(comment);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class EmailPutRequest {\n");
+        sb.append("class AddCommentOnVoteRequest {\n");
 
-        sb.append("    email: ")
-          .append(toIndentedString(email))
+        sb.append("    comment: ")
+          .append(toIndentedString(comment))
           .append("\n");
         sb.append("}");
         return sb.toString();

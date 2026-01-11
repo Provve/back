@@ -152,16 +152,6 @@ public class Vote {
                 .replace("\n", "\n    ");
     }
 
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("action", "arguments"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(0);
-    }
-
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
@@ -186,11 +176,10 @@ public class Vote {
             if (!Vote.openapiFields.contains(entry.getKey())) {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
-                        "The field `%s` in the JSON string is not defined in the `Vote` properties. JSON: %s", entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
+                        "The field `%s` in the JSON string is not defined in the `Vote` properties. JSON: %s",
+                        entry.getKey(), jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if ((jsonObj.get("action") != null && !jsonObj.get("action")
                                                       .isJsonNull()) && !jsonObj.get("action")
@@ -217,6 +206,16 @@ public class Vote {
                            .toString()
             ));
         }
+    }
+
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("action", "arguments"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(0);
     }
 
     /**
@@ -266,8 +265,8 @@ public class Vote {
      * Convert an instance of Vote to an JSON string
      *
      * @return JSON string
-     */
-    public String toJson() {
+   */
+  public String toJson() {
     return JSON.getGson().toJson(this);
   }
 

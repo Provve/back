@@ -27,15 +27,13 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
-import tech.provve.api.client.generated.dto.AccountsPostRequest;
-import tech.provve.api.client.generated.dto.AuthGet200Response;
-import tech.provve.api.client.generated.dto.AuthGetRequest;
-import tech.provve.api.client.generated.dto.EmailPutRequest;
+import tech.provve.api.client.generated.dto.AuthenticateUser200Response;
+import tech.provve.api.client.generated.dto.AuthenticateUserRequest;
 import java.io.File;
 import tech.provve.api.client.generated.dto.Notification;
-import tech.provve.api.client.generated.dto.PasswordPutRequest;
-import tech.provve.api.client.generated.dto.ResetCodeGetRequest;
-import java.util.UUID;
+import tech.provve.api.client.generated.dto.RegisterUserRequest;
+import tech.provve.api.client.generated.dto.UpdateEmailRequest;
+import tech.provve.api.client.generated.dto.UpdatePasswordRequest;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -81,76 +79,60 @@ public class AccountsApi {
     }
 
     /**
-     * Регистрация пользователя (asynchronously)
+     * Аутентификация пользователя
      *
-     * @param accountsPostRequest  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Успешная регистрация </td><td>  -  </td></tr>
-    <tr><td> 409 </td><td> Пользователь уже существует </td><td>  -  </td></tr>
-    </table>
+     * @param authenticateUserRequest (required)
+     * @return AuthenticateUser200Response
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Успешная аутентификация </td><td>  -  </td></tr>
+     * <tr><td> 404 </td><td> Пользователь не найден </td><td>  -  </td></tr>
+     * <tr><td> 403 </td><td> Аккаунт существует, но данные неверны </td><td>  -  </td></tr>
+     * </table>
      */
-    public okhttp3.Call accountsPostAsync(@javax.annotation.Nonnull AccountsPostRequest accountsPostRequest, final ApiCallback<Void> _callback) throws ApiException {
+    public AuthenticateUser200Response authenticateUser(@javax.annotation.Nonnull AuthenticateUserRequest authenticateUserRequest) throws ApiException {
+        ApiResponse<AuthenticateUser200Response> localVarResp = authenticateUserWithHttpInfo(authenticateUserRequest);
+        return localVarResp.getData();
+    }
 
-        okhttp3.Call localVarCall = accountsPostValidateBeforeCall(accountsPostRequest, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
+    /**
+     * Аутентификация пользователя
+     *
+     * @param authenticateUserRequest (required)
+     * @return ApiResponse&lt;AuthenticateUser200Response&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Успешная аутентификация </td><td>  -  </td></tr>
+     * <tr><td> 404 </td><td> Пользователь не найден </td><td>  -  </td></tr>
+     * <tr><td> 403 </td><td> Аккаунт существует, но данные неверны </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<AuthenticateUser200Response> authenticateUserWithHttpInfo(@javax.annotation.Nonnull AuthenticateUserRequest authenticateUserRequest) throws ApiException {
+        okhttp3.Call localVarCall = authenticateUserValidateBeforeCall(authenticateUserRequest, null);
+        Type localVarReturnType = new TypeToken<AuthenticateUser200Response>() {
+        }.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call accountsPostValidateBeforeCall(@javax.annotation.Nonnull AccountsPostRequest accountsPostRequest, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'accountsPostRequest' is set
-        if (accountsPostRequest == null) {
+    private okhttp3.Call authenticateUserValidateBeforeCall(@javax.annotation.Nonnull AuthenticateUserRequest authenticateUserRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'authenticateUserRequest' is set
+        if (authenticateUserRequest == null) {
             throw new ApiException(
-                    "Missing the required parameter 'accountsPostRequest' when calling accountsPost(Async)");
+                    "Missing the required parameter 'authenticateUserRequest' when calling authenticateUser(Async)");
         }
 
-        return accountsPostCall(accountsPostRequest, _callback);
+        return authenticateUserCall(authenticateUserRequest, _callback);
 
     }
 
     /**
-     * Регистрация пользователя
-     *
-     * @param accountsPostRequest (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Успешная регистрация </td><td>  -  </td></tr>
-     * <tr><td> 409 </td><td> Пользователь уже существует </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void accountsPost(@javax.annotation.Nonnull AccountsPostRequest accountsPostRequest) throws ApiException {
-        accountsPostWithHttpInfo(accountsPostRequest);
-    }
-
-    /**
-     * Регистрация пользователя
-     *
-     * @param accountsPostRequest (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Успешная регистрация </td><td>  -  </td></tr>
-     * <tr><td> 409 </td><td> Пользователь уже существует </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Void> accountsPostWithHttpInfo(@javax.annotation.Nonnull AccountsPostRequest accountsPostRequest) throws ApiException {
-        okhttp3.Call localVarCall = accountsPostValidateBeforeCall(accountsPostRequest, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Build call for accountsPost
-     * @param accountsPostRequest  (required)
+     * Build call for authenticateUser
+     * @param authenticateUserRequest  (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -158,11 +140,12 @@ public class AccountsApi {
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Успешная регистрация </td><td>  -  </td></tr>
-    <tr><td> 409 </td><td> Пользователь уже существует </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Успешная аутентификация </td><td>  -  </td></tr>
+    <tr><td> 404 </td><td> Пользователь не найден </td><td>  -  </td></tr>
+    <tr><td> 403 </td><td> Аккаунт существует, но данные неверны </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call accountsPostCall(@javax.annotation.Nonnull AccountsPostRequest accountsPostRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call authenticateUserCall(@javax.annotation.Nonnull AuthenticateUserRequest authenticateUserRequest, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -176,10 +159,10 @@ public class AccountsApi {
             basePath = null;
         }
 
-        Object localVarPostBody = accountsPostRequest;
+        Object localVarPostBody = authenticateUserRequest;
 
         // create path and map variables
-        String localVarPath = "/accounts";
+        String localVarPath = "/auth";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -197,6 +180,149 @@ public class AccountsApi {
 
         final String[] localVarContentTypes = {
                 "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[]{};
+        return localVarApiClient.buildCall(
+                basePath,
+                localVarPath,
+                "POST",
+                localVarQueryParams,
+                localVarCollectionQueryParams,
+                localVarPostBody,
+                localVarHeaderParams,
+                localVarCookieParams,
+                localVarFormParams,
+                localVarAuthNames,
+                _callback
+        );
+    }
+
+    /**
+     * Аутентификация пользователя (asynchronously)
+     * 
+     * @param authenticateUserRequest  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Успешная аутентификация </td><td>  -  </td></tr>
+    <tr><td> 404 </td><td> Пользователь не найден </td><td>  -  </td></tr>
+    <tr><td> 403 </td><td> Аккаунт существует, но данные неверны </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call authenticateUserAsync(@javax.annotation.Nonnull AuthenticateUserRequest authenticateUserRequest, final ApiCallback<AuthenticateUser200Response> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = authenticateUserValidateBeforeCall(authenticateUserRequest, _callback);
+        Type localVarReturnType = new TypeToken<AuthenticateUser200Response>() {
+        }.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Регистрация пользователя
+     *
+     * @param registerUserRequest  (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Успешная регистрация </td><td>  -  </td></tr>
+    <tr><td> 409 </td><td> Пользователь уже существует </td><td>  -  </td></tr>
+    </table>
+     */
+    public void registerUser(@javax.annotation.Nonnull RegisterUserRequest registerUserRequest) throws ApiException {
+        registerUserWithHttpInfo(registerUserRequest);
+    }
+
+    /**
+     * Регистрация пользователя
+     *
+     * @param registerUserRequest (required)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Успешная регистрация </td><td>  -  </td></tr>
+     * <tr><td> 409 </td><td> Пользователь уже существует </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Void> registerUserWithHttpInfo(@javax.annotation.Nonnull RegisterUserRequest registerUserRequest) throws ApiException {
+        okhttp3.Call localVarCall = registerUserValidateBeforeCall(registerUserRequest, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call registerUserValidateBeforeCall(@javax.annotation.Nonnull RegisterUserRequest registerUserRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'registerUserRequest' is set
+        if (registerUserRequest == null) {
+            throw new ApiException(
+                    "Missing the required parameter 'registerUserRequest' when calling registerUser(Async)");
+        }
+
+        return registerUserCall(registerUserRequest, _callback);
+
+    }
+
+    /**
+     * Build call for registerUser
+     * @param registerUserRequest  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Успешная регистрация </td><td>  -  </td></tr>
+    <tr><td> 409 </td><td> Пользователь уже существует </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call registerUserCall(@javax.annotation.Nonnull RegisterUserRequest registerUserRequest, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[]{};
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null) {
+            basePath = localCustomBaseUrl;
+        } else if (localBasePaths.length > 0) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = registerUserRequest;
+
+        // create path and map variables
+        String localVarPath = "/accounts";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
         };
         final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
         if (localVarContentType != null) {
@@ -220,97 +346,88 @@ public class AccountsApi {
     }
 
     /**
-     * Аутентификация пользователя (asynchronously)
+     * Регистрация пользователя (asynchronously)
      *
-     * @param authGetRequest  (required)
+     * @param registerUserRequest  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
+     <table border="1">
+       <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Успешная аутентификация </td><td>  -  </td></tr>
-    <tr><td> 404 </td><td> Пользователь не найден </td><td>  -  </td></tr>
-    <tr><td> 403 </td><td> Аккаунт существует, но данные неверны </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Успешная регистрация </td><td>  -  </td></tr>
+    <tr><td> 409 </td><td> Пользователь уже существует </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call authGetAsync(@javax.annotation.Nonnull AuthGetRequest authGetRequest, final ApiCallback<AuthGet200Response> _callback) throws ApiException {
+    public okhttp3.Call registerUserAsync(@javax.annotation.Nonnull RegisterUserRequest registerUserRequest, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = authGetValidateBeforeCall(authGetRequest, _callback);
-        Type localVarReturnType = new TypeToken<AuthGet200Response>() {
-        }.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        okhttp3.Call localVarCall = registerUserValidateBeforeCall(registerUserRequest, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call authGetValidateBeforeCall(@javax.annotation.Nonnull AuthGetRequest authGetRequest, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'authGetRequest' is set
-        if (authGetRequest == null) {
-            throw new ApiException("Missing the required parameter 'authGetRequest' when calling authGet(Async)");
-        }
-
-        return authGetCall(authGetRequest, _callback);
-
-    }
-
     /**
-     * Аутентификация пользователя
+     * Запросить код сброса пароля на email
      *
-     * @param authGetRequest (required)
-     * @return AuthGet200Response
+     * @param email  (required)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Успешная аутентификация </td><td>  -  </td></tr>
-     * <tr><td> 404 </td><td> Пользователь не найден </td><td>  -  </td></tr>
-     * <tr><td> 403 </td><td> Аккаунт существует, но данные неверны </td><td>  -  </td></tr>
-     * </table>
-     */
-    public AuthGet200Response authGet(@javax.annotation.Nonnull AuthGetRequest authGetRequest) throws ApiException {
-        ApiResponse<AuthGet200Response> localVarResp = authGetWithHttpInfo(authGetRequest);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Аутентификация пользователя
-     *
-     * @param authGetRequest (required)
-     * @return ApiResponse&lt;AuthGet200Response&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Успешная аутентификация </td><td>  -  </td></tr>
-     * <tr><td> 404 </td><td> Пользователь не найден </td><td>  -  </td></tr>
-     * <tr><td> 403 </td><td> Аккаунт существует, но данные неверны </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<AuthGet200Response> authGetWithHttpInfo(@javax.annotation.Nonnull AuthGetRequest authGetRequest) throws ApiException {
-        okhttp3.Call localVarCall = authGetValidateBeforeCall(authGetRequest, null);
-        Type localVarReturnType = new TypeToken<AuthGet200Response>() {
-        }.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Build call for authGet
-     * @param authGetRequest  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
      * @http.response.details
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Успешная аутентификация </td><td>  -  </td></tr>
-    <tr><td> 404 </td><td> Пользователь не найден </td><td>  -  </td></tr>
-    <tr><td> 403 </td><td> Аккаунт существует, но данные неверны </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Код отправлен на email </td><td>  -  </td></tr>
+    <tr><td> 404 </td><td> На почту не зарегистрирован ни один аккаунт </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call authGetCall(@javax.annotation.Nonnull AuthGetRequest authGetRequest, final ApiCallback _callback) throws ApiException {
+    public void requestResetCode(@javax.annotation.Nonnull String email) throws ApiException {
+        requestResetCodeWithHttpInfo(email);
+    }
+
+    /**
+     * Запросить код сброса пароля на email
+     *
+     * @param email (required)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Код отправлен на email </td><td>  -  </td></tr>
+     * <tr><td> 404 </td><td> На почту не зарегистрирован ни один аккаунт </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Void> requestResetCodeWithHttpInfo(@javax.annotation.Nonnull String email) throws ApiException {
+        okhttp3.Call localVarCall = requestResetCodeValidateBeforeCall(email, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call requestResetCodeValidateBeforeCall(@javax.annotation.Nonnull String email, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'email' is set
+        if (email == null) {
+            throw new ApiException("Missing the required parameter 'email' when calling requestResetCode(Async)");
+        }
+
+        return requestResetCodeCall(email, _callback);
+
+    }
+
+    /**
+     * Build call for requestResetCode
+     * @param email  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Код отправлен на email </td><td>  -  </td></tr>
+    <tr><td> 404 </td><td> На почту не зарегистрирован ни один аккаунт </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call requestResetCodeCall(@javax.annotation.Nonnull String email, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -318,22 +435,26 @@ public class AccountsApi {
         // Determine Base Path to Use
         if (localCustomBaseUrl != null) {
             basePath = localCustomBaseUrl;
-        } else if (localBasePaths.length > 0) {
+        } else if ( localBasePaths.length > 0) {
             basePath = localBasePaths[localHostIndex];
         } else {
             basePath = null;
         }
 
-        Object localVarPostBody = authGetRequest;
+        Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/auth";
+        String localVarPath = "/reset-code";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (email != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("email", email));
+        }
 
         final String[] localVarAccepts = {
             "application/json"
@@ -344,7 +465,6 @@ public class AccountsApi {
         }
 
         final String[] localVarContentTypes = {
-            "application/json"
         };
         final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
         if (localVarContentType != null) {
@@ -368,63 +488,46 @@ public class AccountsApi {
     }
 
     /**
-     * Обновление аватара аккаунта (asynchronously)
+     * Запросить код сброса пароля на email (asynchronously)
      *
-     * @param id Идентификатор аккаунта (required)
-     * @param avatar  (required)
+     * @param email  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
      <table border="1">
+       <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Код отправлен на email </td><td>  -  </td></tr>
+    <tr><td> 404 </td><td> На почту не зарегистрирован ни один аккаунт </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call requestResetCodeAsync(@javax.annotation.Nonnull String email, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = requestResetCodeValidateBeforeCall(email, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Обновление аватара аккаунта
+     *
+     * @param avatar  (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> Аватар успешно обновлён </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call avatarPutAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File avatar, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = avatarPutValidateBeforeCall(id, avatar, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call avatarPutValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File avatar, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'id' is set
-        if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling avatarPut(Async)");
-        }
-
-        // verify the required parameter 'avatar' is set
-        if (avatar == null) {
-            throw new ApiException("Missing the required parameter 'avatar' when calling avatarPut(Async)");
-        }
-
-        return avatarPutCall(id, avatar, _callback);
-
+    public void updateAvatar(@javax.annotation.Nonnull File avatar) throws ApiException {
+        updateAvatarWithHttpInfo(avatar);
     }
 
     /**
      * Обновление аватара аккаунта
      *
-     * @param id     Идентификатор аккаунта (required)
-     * @param avatar (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Аватар успешно обновлён </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void avatarPut(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File avatar) throws ApiException {
-        avatarPutWithHttpInfo(id, avatar);
-    }
-
-    /**
-     * Обновление аватара аккаунта
-     *
-     * @param id     Идентификатор аккаунта (required)
      * @param avatar (required)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -434,32 +537,42 @@ public class AccountsApi {
      * <tr><td> 200 </td><td> Аватар успешно обновлён </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<Void> avatarPutWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File avatar) throws ApiException {
-        okhttp3.Call localVarCall = avatarPutValidateBeforeCall(id, avatar, null);
+    public ApiResponse<Void> updateAvatarWithHttpInfo(@javax.annotation.Nonnull File avatar) throws ApiException {
+        okhttp3.Call localVarCall = updateAvatarValidateBeforeCall(avatar, null);
         return localVarApiClient.execute(localVarCall);
     }
 
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call updateAvatarValidateBeforeCall(@javax.annotation.Nonnull File avatar, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'avatar' is set
+        if (avatar == null) {
+            throw new ApiException("Missing the required parameter 'avatar' when calling updateAvatar(Async)");
+        }
+
+        return updateAvatarCall(avatar, _callback);
+
+    }
+
     /**
-     * Build call for avatarPut
-     * @param id Идентификатор аккаунта (required)
+     * Build call for updateAvatar
      * @param avatar  (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
+     <table border="1">
+       <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> Аватар успешно обновлён </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call avatarPutCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File avatar, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call updateAvatarCall(@javax.annotation.Nonnull File avatar, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
 
         // Determine Base Path to Use
-        if (localCustomBaseUrl != null) {
+        if (localCustomBaseUrl != null){
             basePath = localCustomBaseUrl;
         } else if ( localBasePaths.length > 0) {
             basePath = localBasePaths[localHostIndex];
@@ -470,8 +583,7 @@ public class AccountsApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/avatar"
-            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+        String localVarPath = "/avatar";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -515,13 +627,31 @@ public class AccountsApi {
     }
 
     /**
-     * Изменение почты аккаунта (asynchronously)
+     * Обновление аватара аккаунта (asynchronously)
      *
-     * @param id Идентификатор аккаунта (required)
-     * @param emailPutRequest  (required)
+     * @param avatar  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Аватар успешно обновлён </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call updateAvatarAsync(@javax.annotation.Nonnull File avatar, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = updateAvatarValidateBeforeCall(avatar, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Изменение почты аккаунта
+     *
+     * @param updateEmailRequest  (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
     <table border="1">
     <caption>Response Details</caption>
@@ -529,50 +659,14 @@ public class AccountsApi {
     <tr><td> 200 </td><td> Почта аккаунта успешно изменена </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call emailPutAsync(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull EmailPutRequest emailPutRequest, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = emailPutValidateBeforeCall(id, emailPutRequest, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call emailPutValidateBeforeCall(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull EmailPutRequest emailPutRequest, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'id' is set
-        if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling emailPut(Async)");
-        }
-
-        // verify the required parameter 'emailPutRequest' is set
-        if (emailPutRequest == null) {
-            throw new ApiException("Missing the required parameter 'emailPutRequest' when calling emailPut(Async)");
-        }
-
-        return emailPutCall(id, emailPutRequest, _callback);
-
+    public void updateEmail(@javax.annotation.Nonnull UpdateEmailRequest updateEmailRequest) throws ApiException {
+        updateEmailWithHttpInfo(updateEmailRequest);
     }
 
     /**
      * Изменение почты аккаунта
      *
-     * @param id              Идентификатор аккаунта (required)
-     * @param emailPutRequest (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Почта аккаунта успешно изменена </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void emailPut(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull EmailPutRequest emailPutRequest) throws ApiException {
-        emailPutWithHttpInfo(id, emailPutRequest);
-    }
-
-    /**
-     * Изменение почты аккаунта
-     *
-     * @param id              Идентификатор аккаунта (required)
-     * @param emailPutRequest (required)
+     * @param updateEmailRequest (required)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details <table border="1">
@@ -581,26 +675,36 @@ public class AccountsApi {
      * <tr><td> 200 </td><td> Почта аккаунта успешно изменена </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<Void> emailPutWithHttpInfo(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull EmailPutRequest emailPutRequest) throws ApiException {
-        okhttp3.Call localVarCall = emailPutValidateBeforeCall(id, emailPutRequest, null);
+    public ApiResponse<Void> updateEmailWithHttpInfo(@javax.annotation.Nonnull UpdateEmailRequest updateEmailRequest) throws ApiException {
+        okhttp3.Call localVarCall = updateEmailValidateBeforeCall(updateEmailRequest, null);
         return localVarApiClient.execute(localVarCall);
     }
 
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call updateEmailValidateBeforeCall(@javax.annotation.Nonnull UpdateEmailRequest updateEmailRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'updateEmailRequest' is set
+        if (updateEmailRequest == null) {
+            throw new ApiException("Missing the required parameter 'updateEmailRequest' when calling updateEmail(Async)");
+        }
+
+        return updateEmailCall(updateEmailRequest, _callback);
+
+    }
+
     /**
-     * Build call for emailPut
-     * @param id Идентификатор аккаунта (required)
-     * @param emailPutRequest  (required)
+     * Build call for updateEmail
+     * @param updateEmailRequest  (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * @http.response.details
      <table border="1">
-    <caption>Response Details</caption>
+       <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> Почта аккаунта успешно изменена </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call emailPutCall(@javax.annotation.Nonnull String id, @javax.annotation.Nonnull EmailPutRequest emailPutRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call updateEmailCall(@javax.annotation.Nonnull UpdateEmailRequest updateEmailRequest, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -614,11 +718,10 @@ public class AccountsApi {
             basePath = null;
         }
 
-        Object localVarPostBody = emailPutRequest;
+        Object localVarPostBody = updateEmailRequest;
 
         // create path and map variables
-        String localVarPath = "/email"
-            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+        String localVarPath = "/email";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -658,56 +761,46 @@ public class AccountsApi {
     }
 
     /**
-     * Обновление пароля аккаунта (asynchronously)
+     * Изменение почты аккаунта (asynchronously)
      *
-     * @param passwordPutRequest  (required)
+     * @param updateEmailRequest  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
      <table border="1">
+       <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Почта аккаунта успешно изменена </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call updateEmailAsync(@javax.annotation.Nonnull UpdateEmailRequest updateEmailRequest, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = updateEmailValidateBeforeCall(updateEmailRequest, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Обновление пароля аккаунта
+     *
+     * @param updatePasswordRequest  (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> Пароль успешно обновлён </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call passwordPutAsync(@javax.annotation.Nonnull PasswordPutRequest passwordPutRequest, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = passwordPutValidateBeforeCall(passwordPutRequest, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call passwordPutValidateBeforeCall(@javax.annotation.Nonnull PasswordPutRequest passwordPutRequest, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'passwordPutRequest' is set
-        if (passwordPutRequest == null) {
-            throw new ApiException("Missing the required parameter 'passwordPutRequest' when calling passwordPut(Async)");
-        }
-
-        return passwordPutCall(passwordPutRequest, _callback);
-
+    public void updatePassword(@javax.annotation.Nonnull UpdatePasswordRequest updatePasswordRequest) throws ApiException {
+        updatePasswordWithHttpInfo(updatePasswordRequest);
     }
 
     /**
      * Обновление пароля аккаунта
      *
-     * @param passwordPutRequest (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Пароль успешно обновлён </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void passwordPut(@javax.annotation.Nonnull PasswordPutRequest passwordPutRequest) throws ApiException {
-        passwordPutWithHttpInfo(passwordPutRequest);
-    }
-
-    /**
-     * Обновление пароля аккаунта
-     *
-     * @param passwordPutRequest (required)
+     * @param updatePasswordRequest (required)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details <table border="1">
@@ -716,39 +809,51 @@ public class AccountsApi {
      * <tr><td> 200 </td><td> Пароль успешно обновлён </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<Void> passwordPutWithHttpInfo(@javax.annotation.Nonnull PasswordPutRequest passwordPutRequest) throws ApiException {
-        okhttp3.Call localVarCall = passwordPutValidateBeforeCall(passwordPutRequest, null);
+    public ApiResponse<Void> updatePasswordWithHttpInfo(@javax.annotation.Nonnull UpdatePasswordRequest updatePasswordRequest) throws ApiException {
+        okhttp3.Call localVarCall = updatePasswordValidateBeforeCall(updatePasswordRequest, null);
         return localVarApiClient.execute(localVarCall);
     }
 
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call updatePasswordValidateBeforeCall(@javax.annotation.Nonnull UpdatePasswordRequest updatePasswordRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'updatePasswordRequest' is set
+        if (updatePasswordRequest == null) {
+            throw new ApiException(
+                    "Missing the required parameter 'updatePasswordRequest' when calling updatePassword(Async)");
+        }
+
+        return updatePasswordCall(updatePasswordRequest, _callback);
+
+    }
+
     /**
-     * Build call for passwordPut
-     * @param passwordPutRequest  (required)
+     * Build call for updatePassword
+     * @param updatePasswordRequest  (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
+     <table border="1">
+       <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> Пароль успешно обновлён </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call passwordPutCall(@javax.annotation.Nonnull PasswordPutRequest passwordPutRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call updatePasswordCall(@javax.annotation.Nonnull UpdatePasswordRequest updatePasswordRequest, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
-        String[] localBasePaths = new String[]{};
+        String[] localBasePaths = new String[] {};
 
         // Determine Base Path to Use
-        if (localCustomBaseUrl != null) {
+        if (localCustomBaseUrl != null){
             basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0) {
+        } else if ( localBasePaths.length > 0 ) {
             basePath = localBasePaths[localHostIndex];
         } else {
             basePath = null;
         }
 
-        Object localVarPostBody = passwordPutRequest;
+        Object localVarPostBody = updatePasswordRequest;
 
         // create path and map variables
         String localVarPath = "/password";
@@ -791,164 +896,24 @@ public class AccountsApi {
     }
 
     /**
-     * Запросить код сброса парроля на email (asynchronously)
+     * Обновление пароля аккаунта (asynchronously)
      *
-     * @param resetCodeGetRequest  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Код отправлен на email </td><td>  -  </td></tr>
-    <tr><td> 404 </td><td> На почту не зарегистрирован ни один аккаунт </td><td>  -  </td></tr>
-    </table>
-     */
-    public okhttp3.Call resetCodeGetAsync(@javax.annotation.Nullable ResetCodeGetRequest resetCodeGetRequest, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = resetCodeGetValidateBeforeCall(resetCodeGetRequest, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call resetCodeGetValidateBeforeCall(@javax.annotation.Nullable ResetCodeGetRequest resetCodeGetRequest, final ApiCallback _callback) throws ApiException {
-        return resetCodeGetCall(resetCodeGetRequest, _callback);
-
-    }
-
-    /**
-     * Запросить код сброса парроля на email
-     *
-     * @param resetCodeGetRequest (optional)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Код отправлен на email </td><td>  -  </td></tr>
-     * <tr><td> 404 </td><td> На почту не зарегистрирован ни один аккаунт </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void resetCodeGet(@javax.annotation.Nullable ResetCodeGetRequest resetCodeGetRequest) throws ApiException {
-        resetCodeGetWithHttpInfo(resetCodeGetRequest);
-    }
-
-    /**
-     * Запросить код сброса парроля на email
-     *
-     * @param resetCodeGetRequest (optional)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Код отправлен на email </td><td>  -  </td></tr>
-     * <tr><td> 404 </td><td> На почту не зарегистрирован ни один аккаунт </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Void> resetCodeGetWithHttpInfo(@javax.annotation.Nullable ResetCodeGetRequest resetCodeGetRequest) throws ApiException {
-        okhttp3.Call localVarCall = resetCodeGetValidateBeforeCall(resetCodeGetRequest, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Build call for resetCodeGet
-     * @param resetCodeGetRequest  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Код отправлен на email </td><td>  -  </td></tr>
-    <tr><td> 404 </td><td> На почту не зарегистрирован ни один аккаунт </td><td>  -  </td></tr>
-    </table>
-     */
-    public okhttp3.Call resetCodeGetCall(@javax.annotation.Nullable ResetCodeGetRequest resetCodeGetRequest, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[]{};
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resetCodeGetRequest;
-
-        // create path and map variables
-        String localVarPath = "/reset-code";
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[]{};
-        return localVarApiClient.buildCall(
-                basePath,
-                localVarPath,
-                "GET",
-                localVarQueryParams,
-                localVarCollectionQueryParams,
-                localVarPostBody,
-                localVarHeaderParams,
-                localVarCookieParams,
-                localVarFormParams,
-                localVarAuthNames,
-                _callback
-        );
-    }
-
-    /**
-     * Получение статуса платного аккаунта (asynchronously)
-     *
+     * @param updatePasswordRequest  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Пользователь уже получил </td><td>  -  </td></tr>
-    <tr><td> 400 </td><td> Платёжный шлюз недоступен </td><td>  -  </td></tr>
-    <tr><td> 502 </td><td> Платёжный шлюз уведомил Систему об неуспешной оплате </td><td>  -  </td></tr>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Пароль успешно обновлён </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call upgradeGetAsync(final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call updatePasswordAsync(@javax.annotation.Nonnull UpdatePasswordRequest updatePasswordRequest, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = upgradeGetValidateBeforeCall(_callback);
+        okhttp3.Call localVarCall = updatePasswordValidateBeforeCall(updatePasswordRequest, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call upgradeGetValidateBeforeCall(final ApiCallback _callback) throws ApiException {
-        return upgradeGetCall(_callback);
-
     }
 
     /**
@@ -963,8 +928,8 @@ public class AccountsApi {
      * <tr><td> 502 </td><td> Платёжный шлюз уведомил Систему об неуспешной оплате </td><td>  -  </td></tr>
      * </table>
      */
-    public void upgradeGet() throws ApiException {
-        upgradeGetWithHttpInfo();
+    public void upgradeAccount() throws ApiException {
+        upgradeAccountWithHttpInfo();
     }
 
     /**
@@ -980,26 +945,32 @@ public class AccountsApi {
      * <tr><td> 502 </td><td> Платёжный шлюз уведомил Систему об неуспешной оплате </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<Void> upgradeGetWithHttpInfo() throws ApiException {
-        okhttp3.Call localVarCall = upgradeGetValidateBeforeCall(null);
+    public ApiResponse<Void> upgradeAccountWithHttpInfo() throws ApiException {
+        okhttp3.Call localVarCall = upgradeAccountValidateBeforeCall(null);
         return localVarApiClient.execute(localVarCall);
     }
 
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call upgradeAccountValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+        return upgradeAccountCall(_callback);
+
+    }
+
     /**
-     * Build call for upgradeGet
+     * Build call for upgradeAccount
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * @http.response.details
      <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> Пользователь уже получил </td><td>  -  </td></tr>
     <tr><td> 400 </td><td> Платёжный шлюз недоступен </td><td>  -  </td></tr>
     <tr><td> 502 </td><td> Платёжный шлюз уведомил Систему об неуспешной оплате </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call upgradeGetCall(final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call upgradeAccountCall(final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -1053,5 +1024,26 @@ public class AccountsApi {
                 localVarAuthNames,
                 _callback
         );
+    }
+
+    /**
+     * Получение статуса платного аккаунта (asynchronously)
+     *
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Пользователь уже получил </td><td>  -  </td></tr>
+     * <tr><td> 400 </td><td> Платёжный шлюз недоступен </td><td>  -  </td></tr>
+     * <tr><td> 502 </td><td> Платёжный шлюз уведомил Систему об неуспешной оплате </td><td>  -  </td></tr>
+     * </table>
+     */
+    public okhttp3.Call upgradeAccountAsync(final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = upgradeAccountValidateBeforeCall(_callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
     }
 }

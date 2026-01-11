@@ -1,6 +1,7 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -10,26 +11,8 @@ import tech.provve.api.server.generated.dto.SkillAddVote;
 import tech.provve.api.server.generated.dto.SkillDelVote;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VotesPostRequest {
+public class CreateVoteRequest {
 
-
-    public enum ActionEnum {
-        DELETE_SKILL("delete_skill"),
-        ADD_SKILL("add_skill"),
-        ADD_EXAM("add_exam");
-
-        private String value;
-
-        ActionEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
-    }
 
     private ActionEnum action;
 
@@ -37,19 +20,19 @@ public class VotesPostRequest {
 
     private String name;
 
-    private String id;
+    private java.util.UUID id;
 
-    private String skillId;
+    private java.util.UUID skillId;
 
     private String desc;
 
     private FileUpload material;
 
-    public VotesPostRequest() {
+    public CreateVoteRequest() {
 
     }
 
-    public VotesPostRequest(ActionEnum action, String arguments, String name, String id, String skillId, String desc, FileUpload material) {
+    public CreateVoteRequest(ActionEnum action, String arguments, String name, java.util.UUID id, java.util.UUID skillId, String desc, FileUpload material) {
         this.action = action;
         this.arguments = arguments;
         this.name = name;
@@ -58,7 +41,6 @@ public class VotesPostRequest {
         this.desc = desc;
         this.material = material;
     }
-
 
     @JsonProperty("action")
     public ActionEnum getAction() {
@@ -69,7 +51,6 @@ public class VotesPostRequest {
         this.action = action;
     }
 
-
     @JsonProperty("arguments")
     public String getArguments() {
         return arguments;
@@ -78,7 +59,6 @@ public class VotesPostRequest {
     public void setArguments(String arguments) {
         this.arguments = arguments;
     }
-
 
     @JsonProperty("name")
     public String getName() {
@@ -89,26 +69,23 @@ public class VotesPostRequest {
         this.name = name;
     }
 
-
     @JsonProperty("id")
-    public String getId() {
+    public java.util.UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(java.util.UUID id) {
         this.id = id;
     }
 
-
     @JsonProperty("skill_id")
-    public String getSkillId() {
+    public java.util.UUID getSkillId() {
         return skillId;
     }
 
-    public void setSkillId(String skillId) {
+    public void setSkillId(java.util.UUID skillId) {
         this.skillId = skillId;
     }
-
 
     @JsonProperty("desc")
     public String getDesc() {
@@ -119,7 +96,6 @@ public class VotesPostRequest {
         this.desc = desc;
     }
 
-
     @JsonProperty("material")
     public FileUpload getMaterial() {
         return material;
@@ -129,7 +105,6 @@ public class VotesPostRequest {
         this.material = material;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -138,14 +113,14 @@ public class VotesPostRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        VotesPostRequest votesPostRequest = (VotesPostRequest) o;
-        return Objects.equals(action, votesPostRequest.action) &&
-                Objects.equals(arguments, votesPostRequest.arguments) &&
-                Objects.equals(name, votesPostRequest.name) &&
-                Objects.equals(id, votesPostRequest.id) &&
-                Objects.equals(skillId, votesPostRequest.skillId) &&
-                Objects.equals(desc, votesPostRequest.desc) &&
-                Objects.equals(material, votesPostRequest.material);
+        CreateVoteRequest createVoteRequest = (CreateVoteRequest) o;
+        return Objects.equals(action, createVoteRequest.action) &&
+                Objects.equals(arguments, createVoteRequest.arguments) &&
+                Objects.equals(name, createVoteRequest.name) &&
+                Objects.equals(id, createVoteRequest.id) &&
+                Objects.equals(skillId, createVoteRequest.skillId) &&
+                Objects.equals(desc, createVoteRequest.desc) &&
+                Objects.equals(material, createVoteRequest.material);
     }
 
     @Override
@@ -156,7 +131,7 @@ public class VotesPostRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class VotesPostRequest {\n");
+        sb.append("class CreateVoteRequest {\n");
 
         sb.append("    action: ")
           .append(toIndentedString(action))
@@ -193,5 +168,23 @@ public class VotesPostRequest {
         }
         return o.toString()
                 .replace("\n", "\n    ");
+    }
+
+    public enum ActionEnum {
+        DELETE_SKILL("delete_skill"),
+        ADD_SKILL("add_skill"),
+        ADD_EXAM("add_exam");
+
+        private String value;
+
+        ActionEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
     }
 }

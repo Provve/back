@@ -1,13 +1,12 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.AccountsPostRequest;
-import tech.provve.api.server.generated.dto.AuthGet200Response;
-import tech.provve.api.server.generated.dto.AuthGetRequest;
-import tech.provve.api.server.generated.dto.EmailPutRequest;
+import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
+import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import io.vertx.ext.web.FileUpload;
 import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.PasswordPutRequest;
-import tech.provve.api.server.generated.dto.ResetCodeGetRequest;
+import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.UpdateEmailRequest;
+import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 
 import tech.provve.api.server.generated.ApiResponse;
 
@@ -19,17 +18,17 @@ import java.util.Map;
 
 public interface AccountsApi {
 
-    Future<ApiResponse<Void>> accountsPost(AccountsPostRequest accountsPostRequest);
+    Future<ApiResponse<AuthenticateUser200Response>> authenticateUser(AuthenticateUserRequest authenticateUserRequest);
 
-    Future<ApiResponse<AuthGet200Response>> authGet(AuthGetRequest authGetRequest);
+    Future<ApiResponse<Void>> registerUser(RegisterUserRequest registerUserRequest);
 
-    Future<ApiResponse<Void>> avatarPut(java.util.UUID id, FileUpload avatar);
+    Future<ApiResponse<Void>> requestResetCode(String email);
 
-    Future<ApiResponse<Void>> emailPut(String id, EmailPutRequest emailPutRequest);
+    Future<ApiResponse<Void>> updateAvatar(FileUpload avatar);
 
-    Future<ApiResponse<Void>> passwordPut(PasswordPutRequest passwordPutRequest);
+    Future<ApiResponse<Void>> updateEmail(UpdateEmailRequest updateEmailRequest);
 
-    Future<ApiResponse<Void>> resetCodeGet(ResetCodeGetRequest resetCodeGetRequest);
+    Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest);
 
-    Future<ApiResponse<Void>> upgradeGet();
+    Future<ApiResponse<Void>> upgradeAccount();
 }

@@ -1,41 +1,24 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VotesIdVotingPostRequest {
+public class CastVoteRequest {
 
-
-    public enum ReactionEnum {
-        _1("1"),
-        _12("-1");
-
-        private String value;
-
-        ReactionEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
-    }
 
     private ReactionEnum reaction;
 
-    public VotesIdVotingPostRequest() {
+    public CastVoteRequest() {
 
     }
 
-    public VotesIdVotingPostRequest(ReactionEnum reaction) {
+    public CastVoteRequest(ReactionEnum reaction) {
         this.reaction = reaction;
     }
-
 
     @JsonProperty("reaction")
     public ReactionEnum getReaction() {
@@ -46,7 +29,6 @@ public class VotesIdVotingPostRequest {
         this.reaction = reaction;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -55,8 +37,8 @@ public class VotesIdVotingPostRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        VotesIdVotingPostRequest votesIdVotingPostRequest = (VotesIdVotingPostRequest) o;
-        return Objects.equals(reaction, votesIdVotingPostRequest.reaction);
+        CastVoteRequest castVoteRequest = (CastVoteRequest) o;
+        return Objects.equals(reaction, castVoteRequest.reaction);
     }
 
     @Override
@@ -67,7 +49,7 @@ public class VotesIdVotingPostRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class VotesIdVotingPostRequest {\n");
+        sb.append("class CastVoteRequest {\n");
 
         sb.append("    reaction: ")
           .append(toIndentedString(reaction))
@@ -86,5 +68,22 @@ public class VotesIdVotingPostRequest {
         }
         return o.toString()
                 .replace("\n", "\n    ");
+    }
+
+    public enum ReactionEnum {
+        _1("+1"),
+        _12("-1");
+
+        private String value;
+
+        ReactionEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
     }
 }

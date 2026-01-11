@@ -1,21 +1,22 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AuthGetRequest {
+public class AuthenticateUserRequest {
 
     private String login;
 
     private String password;
 
-    public AuthGetRequest() {
+    public AuthenticateUserRequest() {
 
     }
 
-    public AuthGetRequest(String login, String password) {
+    public AuthenticateUserRequest(String login, String password) {
         this.login = login;
         this.password = password;
     }
@@ -49,9 +50,9 @@ public class AuthGetRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AuthGetRequest authGetRequest = (AuthGetRequest) o;
-        return Objects.equals(login, authGetRequest.login) &&
-                Objects.equals(password, authGetRequest.password);
+        AuthenticateUserRequest authenticateUserRequest = (AuthenticateUserRequest) o;
+        return Objects.equals(login, authenticateUserRequest.login) &&
+                Objects.equals(password, authenticateUserRequest.password);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class AuthGetRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class AuthGetRequest {\n");
+        sb.append("class AuthenticateUserRequest {\n");
 
         sb.append("    login: ")
           .append(toIndentedString(login))

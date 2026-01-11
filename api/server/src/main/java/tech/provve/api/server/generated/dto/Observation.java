@@ -1,45 +1,28 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ObservationPostRequestObservation {
+public class Observation {
 
-
-    public enum ViolationsEnum {
-        REMOTE_CONTROL("remote_control"),
-        CLIPBOARD("clipboard"),
-        WEB("web");
-
-        private String value;
-
-        ViolationsEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
-    }
 
     private List<ViolationsEnum> violations = new ArrayList<>();
 
-    public ObservationPostRequestObservation() {
+    public Observation() {
 
     }
 
-    public ObservationPostRequestObservation(List<ViolationsEnum> violations) {
+    public Observation(List<ViolationsEnum> violations) {
         this.violations = violations;
     }
-
 
     @JsonProperty("violations")
     public List<ViolationsEnum> getViolations() {
@@ -50,7 +33,6 @@ public class ObservationPostRequestObservation {
         this.violations = violations;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -59,8 +41,8 @@ public class ObservationPostRequestObservation {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ObservationPostRequestObservation observationPostRequestObservation = (ObservationPostRequestObservation) o;
-        return Objects.equals(violations, observationPostRequestObservation.violations);
+        Observation observation = (Observation) o;
+        return Objects.equals(violations, observation.violations);
     }
 
     @Override
@@ -71,7 +53,7 @@ public class ObservationPostRequestObservation {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ObservationPostRequestObservation {\n");
+        sb.append("class Observation {\n");
 
         sb.append("    violations: ")
           .append(toIndentedString(violations))
@@ -90,5 +72,23 @@ public class ObservationPostRequestObservation {
         }
         return o.toString()
                 .replace("\n", "\n    ");
+    }
+
+    public enum ViolationsEnum {
+        REMOTE_CONTROL("remote_control"),
+        CLIPBOARD("clipboard"),
+        WEB("web");
+
+        private String value;
+
+        ViolationsEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
     }
 }

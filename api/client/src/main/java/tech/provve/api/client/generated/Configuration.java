@@ -26,9 +26,6 @@ public class Configuration {
 
     private static volatile Supplier<ApiClient> apiClientFactory = ApiClient::new;
 
-    private Configuration() {
-    }
-
     /**
      * Get the default API client, which would be used when creating API instances without providing an API client.
      *
@@ -62,4 +59,7 @@ public class Configuration {
     public static void setApiClientFactory(Supplier<ApiClient> factory) {
         apiClientFactory = Objects.requireNonNull(factory);
     }
+
+    private Configuration() {
+  }
 }

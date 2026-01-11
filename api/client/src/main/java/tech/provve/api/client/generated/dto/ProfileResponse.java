@@ -219,11 +219,9 @@ public class ProfileResponse {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
                         "The field `%s` in the JSON string is not defined in the `ProfileResponse` properties. JSON: %s",
-                        entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
+                        entry.getKey(), jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if ((jsonObj.get("id") != null && !jsonObj.get("id")
                                                   .isJsonNull()) && !jsonObj.get("id")
@@ -302,10 +300,10 @@ public class ProfileResponse {
 
     /**
      * Convert an instance of ProfileResponse to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
+   *
+   * @return JSON string
+   */
+  public String toJson() {
     return JSON.getGson().toJson(this);
   }
 }

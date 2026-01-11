@@ -1,30 +1,31 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VotesIdCommentsPostRequest {
+public class AuthenticateUser200Response {
 
-    private String comment;
+    private String token;
 
-    public VotesIdCommentsPostRequest() {
+    public AuthenticateUser200Response() {
 
     }
 
-    public VotesIdCommentsPostRequest(String comment) {
-        this.comment = comment;
+    public AuthenticateUser200Response(String token) {
+        this.token = token;
     }
 
 
-    @JsonProperty("comment")
-    public String getComment() {
-        return comment;
+    @JsonProperty("token")
+    public String getToken() {
+        return token;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setToken(String token) {
+        this.token = token;
     }
 
 
@@ -36,22 +37,22 @@ public class VotesIdCommentsPostRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        VotesIdCommentsPostRequest votesIdCommentsPostRequest = (VotesIdCommentsPostRequest) o;
-        return Objects.equals(comment, votesIdCommentsPostRequest.comment);
+        AuthenticateUser200Response authenticateUser200Response = (AuthenticateUser200Response) o;
+        return Objects.equals(token, authenticateUser200Response.token);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(comment);
+        return Objects.hash(token);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class VotesIdCommentsPostRequest {\n");
+        sb.append("class AuthenticateUser200Response {\n");
 
-        sb.append("    comment: ")
-          .append(toIndentedString(comment))
+        sb.append("    token: ")
+          .append(toIndentedString(token))
           .append("\n");
         sb.append("}");
         return sb.toString();

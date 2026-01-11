@@ -1,10 +1,11 @@
 package tech.provve.api.server.generated.api;
 
+import tech.provve.api.server.generated.dto.CreateSessionRequest;
 import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.ObservationPostRequest;
+import tech.provve.api.server.generated.dto.ObservationUpload;
 import tech.provve.api.server.generated.dto.SessionCreatedNotification;
-import tech.provve.api.server.generated.dto.SessionStage2PostRequest;
 
+import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.ext.web.openapi.RouterBuilder;
@@ -19,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-public class SessionsApiHandler {
+public class SessionsApiHandler implements RouteHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionsApiHandler.class);
 
@@ -30,31 +31,31 @@ public class SessionsApiHandler {
     }
 
     public void mount(RouterBuilder builder) {
-        builder.operation("observationPost")
-               .handler(this::observationPost);
-        builder.operation("sessionStage1Get")
-               .handler(this::sessionStage1Get);
-        builder.operation("sessionStage2Post")
-               .handler(this::sessionStage2Post);
+        builder.operation("createSession")
+               .handler(this::createSession);
+        builder.operation("getRandomValueForAntifraud")
+               .handler(this::getRandomValueForAntifraud);
+        builder.operation("uploadObservation")
+               .handler(this::uploadObservation);
     }
 
-    private void observationPost(RoutingContext routingContext) {
-        logger.info("observationPost()");
+    private void createSession(RoutingContext routingContext) {
+        logger.info("createSession()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        ObservationPostRequest observationPostRequest = body != null ? DatabindCodec.mapper()
-                                                                                    .convertValue(
-                                                                                            body.get(),
-                                                                                            new TypeReference<ObservationPostRequest>() {
-                                                                                            }
-                                                                                    ) : null;
+        CreateSessionRequest createSessionRequest = body != null ? DatabindCodec.mapper()
+                                                                                .convertValue(
+                                                                                        body.get(),
+                                                                                        new TypeReference<CreateSessionRequest>() {
+                                                                                        }
+                                                                                ) : null;
 
-        logger.debug("Parameter observationPostRequest is {}", observationPostRequest);
+        logger.debug("Parameter createSessionRequest is {}", createSessionRequest);
 
-        api.observationPost(observationPostRequest)
+        api.createSession(createSessionRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -68,14 +69,14 @@ public class SessionsApiHandler {
            .onFailure(routingContext::fail);
     }
 
-    private void sessionStage1Get(RoutingContext routingContext) {
-        logger.info("sessionStage1Get()");
+    private void getRandomValueForAntifraud(RoutingContext routingContext) {
+        logger.info("getRandomValueForAntifraud()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
 
-        api.sessionStage1Get()
+        api.getRandomValueForAntifraud()
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -89,23 +90,23 @@ public class SessionsApiHandler {
            .onFailure(routingContext::fail);
     }
 
-    private void sessionStage2Post(RoutingContext routingContext) {
-        logger.info("sessionStage2Post()");
+    private void uploadObservation(RoutingContext routingContext) {
+        logger.info("uploadObservation()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        SessionStage2PostRequest sessionStage2PostRequest = body != null ? DatabindCodec.mapper()
-                                                                                        .convertValue(
-                                                                                                body.get(),
-                                                                                                new TypeReference<SessionStage2PostRequest>() {
-                                                                                                }
-                                                                                        ) : null;
+        ObservationUpload observationUpload = body != null ? DatabindCodec.mapper()
+                                                                          .convertValue(
+                                                                                  body.get(),
+                                                                                  new TypeReference<ObservationUpload>() {
+                                                                                  }
+                                                                          ) : null;
 
-        logger.debug("Parameter sessionStage2PostRequest is {}", sessionStage2PostRequest);
+        logger.debug("Parameter observationUpload is {}", observationUpload);
 
-        api.sessionStage2Post(sessionStage2PostRequest)
+        api.uploadObservation(observationUpload)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

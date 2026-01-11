@@ -81,6 +81,6 @@ public class StringUtil {
             out.append(separator)
                .append(iterator.next());
         }
-        return out.toString();
-    }
+    return out.toString();
+  }
 }

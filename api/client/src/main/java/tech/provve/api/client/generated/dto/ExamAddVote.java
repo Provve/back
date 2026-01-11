@@ -274,23 +274,6 @@ public class ExamAddVote {
                 .replace("\n", "\n    ");
     }
 
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList(
-                "action",
-                "arguments",
-                "skill_id",
-                "name",
-                "desc",
-                "material"
-        ));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(Arrays.asList("arguments", "skill_id", "name", "desc", "material"));
-    }
-
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
@@ -328,9 +311,7 @@ public class ExamAddVote {
                            .get(requiredField) == null) {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
-                        "The required field `%s` is not found in the JSON string: %s",
-                        requiredField,
-                        jsonElement.toString()
+                        "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()
                 ));
             }
         }
@@ -388,6 +369,23 @@ public class ExamAddVote {
         }
     }
 
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList(
+                "action",
+                "arguments",
+                "skill_id",
+                "name",
+                "desc",
+                "material"
+        ));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(Arrays.asList("arguments", "skill_id", "name", "desc", "material"));
+    }
+
     /**
      * Create an instance of ExamAddVote given an JSON string
      *
@@ -431,10 +429,10 @@ public class ExamAddVote {
         }
     }
 
-    /**
-     * Convert an instance of ExamAddVote to an JSON string
-     *
-     * @return JSON string
+  /**
+   * Convert an instance of ExamAddVote to an JSON string
+   *
+   * @return JSON string
    */
   public String toJson() {
     return JSON.getGson().toJson(this);

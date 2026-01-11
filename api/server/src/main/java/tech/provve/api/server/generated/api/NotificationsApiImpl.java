@@ -15,11 +15,12 @@ import java.util.Map;
 // Implement this class
 
 public class NotificationsApiImpl implements NotificationsApi {
-    public Future<ApiResponse<Void>> notificationsDelete() {
+
+    public Future<ApiResponse<List<Notification>>> listNotifications(Pagination pagination) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<List<Notification>>> notificationsGet(Pagination pagination) {
+    public Future<ApiResponse<Void>> markNotificationsAsRead() {
         return Future.failedFuture(new HttpException(501));
     }
 

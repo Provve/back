@@ -20,23 +20,24 @@ import java.util.Map;
 // Implement this class
 
 public class SkillsApiImpl implements SkillsApi {
-    public Future<ApiResponse<Void>> examsExamIdResultGet(java.util.UUID examId) {
+
+    public Future<ApiResponse<List<ResultResponse>>> getResultsBySkill(Pagination pagination, Filter filter) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<Notification>> examsIdSolutionPost(java.util.UUID id, FileUpload solution) {
+    public Future<ApiResponse<ExamResponse>> listExamsBySkill(Pagination pagination, Filter filter) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<List<SkillResponse>>> skillsGet(Pagination pagination, Filter filter) {
+    public Future<ApiResponse<List<SkillResponse>>> listSkills(Pagination pagination, Filter filter) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<ExamResponse>> skillsSkillIdExamsGet(Pagination pagination, Filter filter) {
+    public Future<ApiResponse<Notification>> submitExamSolution(java.util.UUID id, FileUpload solution) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<List<ResultResponse>>> skillsSkillIdResultsGet(Pagination pagination, Filter filter) {
+    public Future<ApiResponse<Void>> viewExamResult(java.util.UUID examId) {
         return Future.failedFuture(new HttpException(501));
     }
 

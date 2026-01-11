@@ -17,9 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 public interface SkillsApi {
-    Future<ApiResponse<Void>> examsExamIdResultGet(java.util.UUID examId);
-    Future<ApiResponse<Notification>> examsIdSolutionPost(java.util.UUID id, FileUpload solution);
-    Future<ApiResponse<List<SkillResponse>>> skillsGet(Pagination pagination, Filter filter);
-    Future<ApiResponse<ExamResponse>> skillsSkillIdExamsGet(Pagination pagination, Filter filter);
-    Future<ApiResponse<List<ResultResponse>>> skillsSkillIdResultsGet(Pagination pagination, Filter filter);
+
+    Future<ApiResponse<List<ResultResponse>>> getResultsBySkill(Pagination pagination, Filter filter);
+
+    Future<ApiResponse<ExamResponse>> listExamsBySkill(Pagination pagination, Filter filter);
+
+    Future<ApiResponse<List<SkillResponse>>> listSkills(Pagination pagination, Filter filter);
+
+    Future<ApiResponse<Notification>> submitExamSolution(java.util.UUID id, FileUpload solution);
+
+    Future<ApiResponse<Void>> viewExamResult(java.util.UUID examId);
 }

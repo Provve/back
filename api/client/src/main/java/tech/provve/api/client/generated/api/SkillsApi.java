@@ -80,78 +80,59 @@ public class SkillsApi {
     }
 
     /**
-     * Посмотреть результат (asynchronously)
+     * Получение результатов по экзаменам навыка
      *
-     * @param examId Идентификатор экзамена, результат по которому нужно получить (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @param pagination  (required)
+     * @param filter  (optional)
+     * @return List&lt;ResultResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Результат получен </td><td>  -  </td></tr>
-    <tr><td> 403 </td><td> Уровень аккаунта не позволяет </td><td>  -  </td></tr>
-    <tr><td> 404 </td><td> Результат не найден (был удалён или неверная ссылка) </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Список результатов успешно получен </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call examsExamIdResultGetAsync(@javax.annotation.Nonnull UUID examId, final ApiCallback<Void> _callback) throws ApiException {
+    public List<ResultResponse> getResultsBySkill(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
+        ApiResponse<List<ResultResponse>> localVarResp = getResultsBySkillWithHttpInfo(pagination, filter);
+        return localVarResp.getData();
+    }
 
-        okhttp3.Call localVarCall = examsExamIdResultGetValidateBeforeCall(examId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
+    /**
+     * Получение результатов по экзаменам навыка
+     *
+     * @param pagination (required)
+     * @param filter     (optional)
+     * @return ApiResponse&lt;List&lt;ResultResponse&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Список результатов успешно получен </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<List<ResultResponse>> getResultsBySkillWithHttpInfo(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
+        okhttp3.Call localVarCall = getResultsBySkillValidateBeforeCall(pagination, filter, null);
+        Type localVarReturnType = new TypeToken<List<ResultResponse>>() {
+        }.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call examsExamIdResultGetValidateBeforeCall(@javax.annotation.Nonnull UUID examId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'examId' is set
-        if (examId == null) {
-            throw new ApiException("Missing the required parameter 'examId' when calling examsExamIdResultGet(Async)");
+    private okhttp3.Call getResultsBySkillValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'pagination' is set
+        if (pagination == null) {
+            throw new ApiException("Missing the required parameter 'pagination' when calling getResultsBySkill(Async)");
         }
 
-        return examsExamIdResultGetCall(examId, _callback);
+        return getResultsBySkillCall(pagination, filter, _callback);
 
     }
 
     /**
-     * Посмотреть результат
-     *
-     * @param examId Идентификатор экзамена, результат по которому нужно получить (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Результат получен </td><td>  -  </td></tr>
-     * <tr><td> 403 </td><td> Уровень аккаунта не позволяет </td><td>  -  </td></tr>
-     * <tr><td> 404 </td><td> Результат не найден (был удалён или неверная ссылка) </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void examsExamIdResultGet(@javax.annotation.Nonnull UUID examId) throws ApiException {
-        examsExamIdResultGetWithHttpInfo(examId);
-    }
-
-    /**
-     * Посмотреть результат
-     *
-     * @param examId Идентификатор экзамена, результат по которому нужно получить (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Результат получен </td><td>  -  </td></tr>
-     * <tr><td> 403 </td><td> Уровень аккаунта не позволяет </td><td>  -  </td></tr>
-     * <tr><td> 404 </td><td> Результат не найден (был удалён или неверная ссылка) </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Void> examsExamIdResultGetWithHttpInfo(@javax.annotation.Nonnull UUID examId) throws ApiException {
-        okhttp3.Call localVarCall = examsExamIdResultGetValidateBeforeCall(examId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Build call for examsExamIdResultGet
-     * @param examId Идентификатор экзамена, результат по которому нужно получить (required)
+     * Build call for getResultsBySkill
+     * @param pagination  (required)
+     * @param filter  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -159,12 +140,10 @@ public class SkillsApi {
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Результат получен </td><td>  -  </td></tr>
-    <tr><td> 403 </td><td> Уровень аккаунта не позволяет </td><td>  -  </td></tr>
-    <tr><td> 404 </td><td> Результат не найден (был удалён или неверная ссылка) </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Список результатов успешно получен </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call examsExamIdResultGetCall(@javax.annotation.Nonnull UUID examId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getResultsBySkillCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -181,8 +160,7 @@ public class SkillsApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/exams/{exam_id}/result"
-                .replace("{" + "exam_id" + "}", localVarApiClient.escapeString(examId.toString()));
+        String localVarPath = "/skills/{skill_id}/results";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -190,7 +168,16 @@ public class SkillsApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
+        if (pagination != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("pagination", pagination));
+        }
+
+        if (filter != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("filter", filter));
+        }
+
         final String[] localVarAccepts = {
+                "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -221,10 +208,10 @@ public class SkillsApi {
     }
 
     /**
-     * Отправка решения экамена на проверку (asynchronously)
+     * Получение результатов по экзаменам навыка (asynchronously)
      *
-     * @param id Идентификатор экзамена, для которой отправляется решение (required)
-     * @param solution Архив с решением (загружается как файл) (required)
+     * @param pagination  (required)
+     * @param filter  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -232,82 +219,72 @@ public class SkillsApi {
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 202 </td><td> Решение успешно принято на проверку </td><td>  -  </td></tr>
-    <tr><td> 200 </td><td> Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка. </td><td>  -  </td></tr>
-    <tr><td> 403 </td><td> Нет активной сессии </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Список результатов успешно получен </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call examsIdSolutionPostAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution, final ApiCallback<Notification> _callback) throws ApiException {
+    public okhttp3.Call getResultsBySkillAsync(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback<List<ResultResponse>> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = examsIdSolutionPostValidateBeforeCall(id, solution, _callback);
-        Type localVarReturnType = new TypeToken<Notification>() {
+        okhttp3.Call localVarCall = getResultsBySkillValidateBeforeCall(pagination, filter, _callback);
+        Type localVarReturnType = new TypeToken<List<ResultResponse>>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call examsIdSolutionPostValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'id' is set
-        if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling examsIdSolutionPost(Async)");
-        }
-
-        // verify the required parameter 'solution' is set
-        if (solution == null) {
-            throw new ApiException("Missing the required parameter 'solution' when calling examsIdSolutionPost(Async)");
-        }
-
-        return examsIdSolutionPostCall(id, solution, _callback);
-
-    }
-
     /**
-     * Отправка решения экамена на проверку
+     * Получение списка экзаменов по навыку
      *
-     * @param id       Идентификатор экзамена, для которой отправляется решение (required)
-     * @param solution Архив с решением (загружается как файл) (required)
-     * @return Notification
+     * @param pagination  (required)
+     * @param filter  (optional)
+     * @return ExamResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 202 </td><td> Решение успешно принято на проверку </td><td>  -  </td></tr>
-     * <tr><td> 200 </td><td> Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка. </td><td>  -  </td></tr>
-     * <tr><td> 403 </td><td> Нет активной сессии </td><td>  -  </td></tr>
-     * </table>
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Успешно получен список экзаменов </td><td>  -  </td></tr>
+    </table>
      */
-    public Notification examsIdSolutionPost(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution) throws ApiException {
-        ApiResponse<Notification> localVarResp = examsIdSolutionPostWithHttpInfo(id, solution);
+    public ExamResponse listExamsBySkill(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
+        ApiResponse<ExamResponse> localVarResp = listExamsBySkillWithHttpInfo(pagination, filter);
         return localVarResp.getData();
     }
 
     /**
-     * Отправка решения экамена на проверку
+     * Получение списка экзаменов по навыку
      *
-     * @param id       Идентификатор экзамена, для которой отправляется решение (required)
-     * @param solution Архив с решением (загружается как файл) (required)
-     * @return ApiResponse&lt;Notification&gt;
+     * @param pagination (required)
+     * @param filter     (optional)
+     * @return ApiResponse&lt;ExamResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 202 </td><td> Решение успешно принято на проверку </td><td>  -  </td></tr>
-     * <tr><td> 200 </td><td> Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка. </td><td>  -  </td></tr>
-     * <tr><td> 403 </td><td> Нет активной сессии </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Успешно получен список экзаменов </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<Notification> examsIdSolutionPostWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution) throws ApiException {
-        okhttp3.Call localVarCall = examsIdSolutionPostValidateBeforeCall(id, solution, null);
-        Type localVarReturnType = new TypeToken<Notification>() {
+    public ApiResponse<ExamResponse> listExamsBySkillWithHttpInfo(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
+        okhttp3.Call localVarCall = listExamsBySkillValidateBeforeCall(pagination, filter, null);
+        Type localVarReturnType = new TypeToken<ExamResponse>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call listExamsBySkillValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'pagination' is set
+        if (pagination == null) {
+            throw new ApiException("Missing the required parameter 'pagination' when calling listExamsBySkill(Async)");
+        }
+
+        return listExamsBySkillCall(pagination, filter, _callback);
+
+    }
+
     /**
-     * Build call for examsIdSolutionPost
-     * @param id Идентификатор экзамена, для которой отправляется решение (required)
-     * @param solution Архив с решением (загружается как файл) (required)
+     * Build call for listExamsBySkill
+     * @param pagination  (required)
+     * @param filter  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -315,12 +292,10 @@ public class SkillsApi {
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 202 </td><td> Решение успешно принято на проверку </td><td>  -  </td></tr>
-    <tr><td> 200 </td><td> Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка. </td><td>  -  </td></tr>
-    <tr><td> 403 </td><td> Нет активной сессии </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Успешно получен список экзаменов </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call examsIdSolutionPostCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call listExamsBySkillCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -337,8 +312,7 @@ public class SkillsApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/exams/{id}/solution"
-            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+        String localVarPath = "/skills/{skill_id}/exams";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -346,8 +320,12 @@ public class SkillsApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-        if (solution != null) {
-            localVarFormParams.put("solution", solution);
+        if (pagination != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("pagination", pagination));
+        }
+
+        if (filter != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("filter", filter));
         }
 
         final String[] localVarAccepts = {
@@ -359,18 +337,17 @@ public class SkillsApi {
         }
 
         final String[] localVarContentTypes = {
-            "multipart/form-data"
         };
         final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
-        String[] localVarAuthNames = new String[]{"bearerAuth"};
+        String[] localVarAuthNames = new String[]{};
         return localVarApiClient.buildCall(
                 basePath,
                 localVarPath,
-                "POST",
+                "GET",
                 localVarQueryParams,
                 localVarCollectionQueryParams,
                 localVarPostBody,
@@ -383,7 +360,7 @@ public class SkillsApi {
     }
 
     /**
-     * Получение списка навыков (asynchronously)
+     * Получение списка экзаменов по навыку (asynchronously)
      *
      * @param pagination  (required)
      * @param filter  (optional)
@@ -391,77 +368,47 @@ public class SkillsApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
-    <table border="1">
+     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Успешно получен список навыков </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Успешно получен список экзаменов </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call skillsGetAsync(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback<List<SkillResponse>> _callback) throws ApiException {
+    public okhttp3.Call listExamsBySkillAsync(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback<ExamResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = skillsGetValidateBeforeCall(pagination, filter, _callback);
-        Type localVarReturnType = new TypeToken<List<SkillResponse>>() {
+        okhttp3.Call localVarCall = listExamsBySkillValidateBeforeCall(pagination, filter, _callback);
+        Type localVarReturnType = new TypeToken<ExamResponse>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call skillsGetValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'pagination' is set
-        if (pagination == null) {
-            throw new ApiException("Missing the required parameter 'pagination' when calling skillsGet(Async)");
-        }
-
-        return skillsGetCall(pagination, filter, _callback);
-
-    }
-
     /**
      * Получение списка навыков
      *
-     * @param pagination (required)
-     * @param filter     (optional)
+     * @param pagination  (required)
+     * @param filter  (optional)
      * @return List&lt;SkillResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Успешно получен список навыков </td><td>  -  </td></tr>
-     * </table>
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Успешно получен список навыков </td><td>  -  </td></tr>
+    </table>
      */
-    public List<SkillResponse> skillsGet(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
-        ApiResponse<List<SkillResponse>> localVarResp = skillsGetWithHttpInfo(pagination, filter);
+    public List<SkillResponse> listSkills(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
+        ApiResponse<List<SkillResponse>> localVarResp = listSkillsWithHttpInfo(pagination, filter);
         return localVarResp.getData();
     }
 
     /**
      * Получение списка навыков
      *
-     * @param pagination (required)
-     * @param filter     (optional)
-     * @return ApiResponse&lt;List&lt;SkillResponse&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Успешно получен список навыков </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<List<SkillResponse>> skillsGetWithHttpInfo(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
-        okhttp3.Call localVarCall = skillsGetValidateBeforeCall(pagination, filter, null);
-        Type localVarReturnType = new TypeToken<List<SkillResponse>>() {
-        }.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Build call for skillsGet
      * @param pagination  (required)
      * @param filter  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
+     * @return ApiResponse&lt;List&lt;SkillResponse&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
     <table border="1">
     <caption>Response Details</caption>
@@ -469,7 +416,39 @@ public class SkillsApi {
     <tr><td> 200 </td><td> Успешно получен список навыков </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call skillsGetCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
+    public ApiResponse<List<SkillResponse>> listSkillsWithHttpInfo(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
+        okhttp3.Call localVarCall = listSkillsValidateBeforeCall(pagination, filter, null);
+        Type localVarReturnType = new TypeToken<List<SkillResponse>>() {
+        }.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call listSkillsValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'pagination' is set
+        if (pagination == null) {
+            throw new ApiException("Missing the required parameter 'pagination' when calling listSkills(Async)");
+        }
+
+        return listSkillsCall(pagination, filter, _callback);
+
+    }
+
+    /**
+     * Build call for listSkills
+     * @param pagination  (required)
+     * @param filter  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Успешно получен список навыков </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call listSkillsCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -534,7 +513,7 @@ public class SkillsApi {
     }
 
     /**
-     * Получение списка экзаменов по навыку (asynchronously)
+     * Получение списка навыков (asynchronously)
      *
      * @param pagination  (required)
      * @param filter  (optional)
@@ -542,86 +521,97 @@ public class SkillsApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
-     <table border="1">
+    <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Успешно получен список экзаменов </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Успешно получен список навыков </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call skillsSkillIdExamsGetAsync(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback<ExamResponse> _callback) throws ApiException {
+    public okhttp3.Call listSkillsAsync(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback<List<SkillResponse>> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = skillsSkillIdExamsGetValidateBeforeCall(pagination, filter, _callback);
-        Type localVarReturnType = new TypeToken<ExamResponse>() {
+        okhttp3.Call localVarCall = listSkillsValidateBeforeCall(pagination, filter, _callback);
+        Type localVarReturnType = new TypeToken<List<SkillResponse>>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call skillsSkillIdExamsGetValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'pagination' is set
-        if (pagination == null) {
-            throw new ApiException(
-                    "Missing the required parameter 'pagination' when calling skillsSkillIdExamsGet(Async)");
-        }
-
-        return skillsSkillIdExamsGetCall(pagination, filter, _callback);
-
-    }
-
     /**
-     * Получение списка экзаменов по навыку
+     * Отправка решения экзамена на проверку
      *
-     * @param pagination (required)
-     * @param filter     (optional)
-     * @return ExamResponse
+     * @param id Идентификатор экзамена, для которой отправляется решение (required)
+     * @param solution Архив с решением (загружается как файл) (required)
+     * @return Notification
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Успешно получен список экзаменов </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ExamResponse skillsSkillIdExamsGet(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
-        ApiResponse<ExamResponse> localVarResp = skillsSkillIdExamsGetWithHttpInfo(pagination, filter);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Получение списка экзаменов по навыку
-     *
-     * @param pagination (required)
-     * @param filter     (optional)
-     * @return ApiResponse&lt;ExamResponse&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Успешно получен список экзаменов </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<ExamResponse> skillsSkillIdExamsGetWithHttpInfo(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
-        okhttp3.Call localVarCall = skillsSkillIdExamsGetValidateBeforeCall(pagination, filter, null);
-        Type localVarReturnType = new TypeToken<ExamResponse>() {
-        }.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Build call for skillsSkillIdExamsGet
-     * @param pagination  (required)
-     * @param filter  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
      * @http.response.details
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Успешно получен список экзаменов </td><td>  -  </td></tr>
+    <tr><td> 202 </td><td> Решение успешно принято на проверку </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка. </td><td>  -  </td></tr>
+    <tr><td> 403 </td><td> Нет активной сессии </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call skillsSkillIdExamsGetCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
+    public Notification submitExamSolution(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution) throws ApiException {
+        ApiResponse<Notification> localVarResp = submitExamSolutionWithHttpInfo(id, solution);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Отправка решения экзамена на проверку
+     *
+     * @param id       Идентификатор экзамена, для которой отправляется решение (required)
+     * @param solution Архив с решением (загружается как файл) (required)
+     * @return ApiResponse&lt;Notification&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 202 </td><td> Решение успешно принято на проверку </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка. </td><td>  -  </td></tr>
+     * <tr><td> 403 </td><td> Нет активной сессии </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Notification> submitExamSolutionWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution) throws ApiException {
+        okhttp3.Call localVarCall = submitExamSolutionValidateBeforeCall(id, solution, null);
+        Type localVarReturnType = new TypeToken<Notification>() {
+        }.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call submitExamSolutionValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling submitExamSolution(Async)");
+        }
+
+        // verify the required parameter 'solution' is set
+        if (solution == null) {
+            throw new ApiException("Missing the required parameter 'solution' when calling submitExamSolution(Async)");
+        }
+
+        return submitExamSolutionCall(id, solution, _callback);
+
+    }
+
+    /**
+     * Build call for submitExamSolution
+     * @param id Идентификатор экзамена, для которой отправляется решение (required)
+     * @param solution Архив с решением (загружается как файл) (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 202 </td><td> Решение успешно принято на проверку </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка. </td><td>  -  </td></tr>
+    <tr><td> 403 </td><td> Нет активной сессии </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call submitExamSolutionCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -629,7 +619,7 @@ public class SkillsApi {
         // Determine Base Path to Use
         if (localCustomBaseUrl != null) {
             basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0) {
+        } else if (localBasePaths.length > 0) {
             basePath = localBasePaths[localHostIndex];
         } else {
             basePath = null;
@@ -638,7 +628,8 @@ public class SkillsApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/skills/{skill_id}/exams";
+        String localVarPath = "/exams/{id}/solution"
+                .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -646,12 +637,8 @@ public class SkillsApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-        if (pagination != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("pagination", pagination));
-        }
-
-        if (filter != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("filter", filter));
+        if (solution != null) {
+            localVarFormParams.put("solution", solution);
         }
 
         final String[] localVarAccepts = {
@@ -663,17 +650,18 @@ public class SkillsApi {
         }
 
         final String[] localVarContentTypes = {
+                "multipart/form-data"
         };
         final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
         if (localVarContentType != null) {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
-        String[] localVarAuthNames = new String[]{};
+        String[] localVarAuthNames = new String[]{"bearerAuth"};
         return localVarApiClient.buildCall(
                 basePath,
                 localVarPath,
-                "GET",
+                "POST",
                 localVarQueryParams,
                 localVarCollectionQueryParams,
                 localVarPostBody,
@@ -686,94 +674,94 @@ public class SkillsApi {
     }
 
     /**
-     * Получение результатов по экзаменам навыка (asynchronously)
+     * Отправка решения экзамена на проверку (asynchronously)
      *
-     * @param pagination  (required)
-     * @param filter  (optional)
+     * @param id Идентификатор экзамена, для которой отправляется решение (required)
+     * @param solution Архив с решением (загружается как файл) (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
      <table border="1">
-    <caption>Response Details</caption>
+       <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Список результатов успешно получен </td><td>  -  </td></tr>
+    <tr><td> 202 </td><td> Решение успешно принято на проверку </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка. </td><td>  -  </td></tr>
+    <tr><td> 403 </td><td> Нет активной сессии </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call skillsSkillIdResultsGetAsync(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback<List<ResultResponse>> _callback) throws ApiException {
+    public okhttp3.Call submitExamSolutionAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull File solution, final ApiCallback<Notification> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = skillsSkillIdResultsGetValidateBeforeCall(pagination, filter, _callback);
-        Type localVarReturnType = new TypeToken<List<ResultResponse>>() {
+        okhttp3.Call localVarCall = submitExamSolutionValidateBeforeCall(id, solution, _callback);
+        Type localVarReturnType = new TypeToken<Notification>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
 
+    /**
+     * Посмотреть результат
+     *
+     * @param examId Идентификатор экзамена, результат по которому нужно получить (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Результат получен </td><td>  -  </td></tr>
+     * <tr><td> 403 </td><td> Уровень аккаунта не позволяет </td><td>  -  </td></tr>
+     * <tr><td> 404 </td><td> Результат не найден (был удалён или неверная ссылка) </td><td>  -  </td></tr>
+     * </table>
+     */
+    public void viewExamResult(@javax.annotation.Nonnull UUID examId) throws ApiException {
+        viewExamResultWithHttpInfo(examId);
+    }
+
+    /**
+     * Посмотреть результат
+     *
+     * @param examId Идентификатор экзамена, результат по которому нужно получить (required)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Результат получен </td><td>  -  </td></tr>
+     * <tr><td> 403 </td><td> Уровень аккаунта не позволяет </td><td>  -  </td></tr>
+     * <tr><td> 404 </td><td> Результат не найден (был удалён или неверная ссылка) </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Void> viewExamResultWithHttpInfo(@javax.annotation.Nonnull UUID examId) throws ApiException {
+        okhttp3.Call localVarCall = viewExamResultValidateBeforeCall(examId, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call skillsSkillIdResultsGetValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'pagination' is set
-        if (pagination == null) {
-            throw new ApiException(
-                    "Missing the required parameter 'pagination' when calling skillsSkillIdResultsGet(Async)");
+    private okhttp3.Call viewExamResultValidateBeforeCall(@javax.annotation.Nonnull UUID examId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'examId' is set
+        if (examId == null) {
+            throw new ApiException("Missing the required parameter 'examId' when calling viewExamResult(Async)");
         }
 
-        return skillsSkillIdResultsGetCall(pagination, filter, _callback);
+        return viewExamResultCall(examId, _callback);
 
     }
 
     /**
-     * Получение результатов по экзаменам навыка
-     *
-     * @param pagination (required)
-     * @param filter     (optional)
-     * @return List&lt;ResultResponse&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Список результатов успешно получен </td><td>  -  </td></tr>
-     * </table>
-     */
-    public List<ResultResponse> skillsSkillIdResultsGet(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
-        ApiResponse<List<ResultResponse>> localVarResp = skillsSkillIdResultsGetWithHttpInfo(pagination, filter);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Получение результатов по экзаменам навыка
-     *
-     * @param pagination (required)
-     * @param filter     (optional)
-     * @return ApiResponse&lt;List&lt;ResultResponse&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Список результатов успешно получен </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<List<ResultResponse>> skillsSkillIdResultsGetWithHttpInfo(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
-        okhttp3.Call localVarCall = skillsSkillIdResultsGetValidateBeforeCall(pagination, filter, null);
-        Type localVarReturnType = new TypeToken<List<ResultResponse>>() {
-        }.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Build call for skillsSkillIdResultsGet
-     * @param pagination  (required)
-     * @param filter  (optional)
+     * Build call for viewExamResult
+     * @param examId Идентификатор экзамена, результат по которому нужно получить (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * @http.response.details
      <table border="1">
-    <caption>Response Details</caption>
+       <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Список результатов успешно получен </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Результат получен </td><td>  -  </td></tr>
+    <tr><td> 403 </td><td> Уровень аккаунта не позволяет </td><td>  -  </td></tr>
+    <tr><td> 404 </td><td> Результат не найден (был удалён или неверная ссылка) </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call skillsSkillIdResultsGetCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call viewExamResultCall(@javax.annotation.Nonnull UUID examId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -781,7 +769,7 @@ public class SkillsApi {
         // Determine Base Path to Use
         if (localCustomBaseUrl != null) {
             basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0) {
+        } else if (localBasePaths.length > 0) {
             basePath = localBasePaths[localHostIndex];
         } else {
             basePath = null;
@@ -790,7 +778,8 @@ public class SkillsApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/skills/{skill_id}/results";
+        String localVarPath = "/exams/{exam_id}/result"
+                .replace("{" + "exam_id" + "}", localVarApiClient.escapeString(examId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -798,16 +787,7 @@ public class SkillsApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-        if (pagination != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("pagination", pagination));
-        }
-
-        if (filter != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("filter", filter));
-        }
-
         final String[] localVarAccepts = {
-            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -835,5 +815,27 @@ public class SkillsApi {
                 localVarAuthNames,
                 _callback
         );
+    }
+
+    /**
+     * Посмотреть результат (asynchronously)
+     *
+     * @param examId    Идентификатор экзамена, результат по которому нужно получить (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Результат получен </td><td>  -  </td></tr>
+     * <tr><td> 403 </td><td> Уровень аккаунта не позволяет </td><td>  -  </td></tr>
+     * <tr><td> 404 </td><td> Результат не найден (был удалён или неверная ссылка) </td><td>  -  </td></tr>
+     * </table>
+     */
+    public okhttp3.Call viewExamResultAsync(@javax.annotation.Nonnull UUID examId, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = viewExamResultValidateBeforeCall(examId, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
     }
 }

@@ -27,15 +27,15 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
+import tech.provve.api.client.generated.dto.AddCommentOnVoteRequest;
+import tech.provve.api.client.generated.dto.CastVoteRequest;
 import tech.provve.api.client.generated.dto.CommentResponse;
+import tech.provve.api.client.generated.dto.CreateVoteRequest;
 import tech.provve.api.client.generated.dto.Filter;
 import tech.provve.api.client.generated.dto.Notification;
 import tech.provve.api.client.generated.dto.Pagination;
 import java.util.UUID;
 import tech.provve.api.client.generated.dto.VoteResponse;
-import tech.provve.api.client.generated.dto.VotesIdCommentsPostRequest;
-import tech.provve.api.client.generated.dto.VotesIdVotingPostRequest;
-import tech.provve.api.client.generated.dto.VotesPostRequest;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -81,10 +81,133 @@ public class VotesApi {
     }
 
     /**
-     * Получить список голосований (asynchronously)
+     * Добавление комментария к голосованию
      *
-     * @param pagination  (required)
-     * @param filter  (optional)
+     * @param id Идентификатор голосования (required)
+     * @param addCommentOnVoteRequest  (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Комментарий успешно добавлен </td><td>  -  </td></tr>
+    </table>
+     */
+    public void addCommentOnVote(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddCommentOnVoteRequest addCommentOnVoteRequest) throws ApiException {
+        addCommentOnVoteWithHttpInfo(id, addCommentOnVoteRequest);
+    }
+
+    /**
+     * Добавление комментария к голосованию
+     *
+     * @param id                      Идентификатор голосования (required)
+     * @param addCommentOnVoteRequest (required)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Комментарий успешно добавлен </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Void> addCommentOnVoteWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddCommentOnVoteRequest addCommentOnVoteRequest) throws ApiException {
+        okhttp3.Call localVarCall = addCommentOnVoteValidateBeforeCall(id, addCommentOnVoteRequest, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call addCommentOnVoteValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddCommentOnVoteRequest addCommentOnVoteRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling addCommentOnVote(Async)");
+        }
+
+        // verify the required parameter 'addCommentOnVoteRequest' is set
+        if (addCommentOnVoteRequest == null) {
+            throw new ApiException(
+                    "Missing the required parameter 'addCommentOnVoteRequest' when calling addCommentOnVote(Async)");
+        }
+
+        return addCommentOnVoteCall(id, addCommentOnVoteRequest, _callback);
+
+    }
+
+    /**
+     * Build call for addCommentOnVote
+     * @param id Идентификатор голосования (required)
+     * @param addCommentOnVoteRequest  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Комментарий успешно добавлен </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call addCommentOnVoteCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddCommentOnVoteRequest addCommentOnVoteRequest, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[]{};
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null) {
+            basePath = localCustomBaseUrl;
+        } else if (localBasePaths.length > 0) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = addCommentOnVoteRequest;
+
+        // create path and map variables
+        String localVarPath = "/votes/{id}/comments"
+                .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[]{"bearerAuth"};
+        return localVarApiClient.buildCall(
+                basePath,
+                localVarPath,
+                "POST",
+                localVarQueryParams,
+                localVarCollectionQueryParams,
+                localVarPostBody,
+                localVarHeaderParams,
+                localVarCookieParams,
+                localVarFormParams,
+                localVarAuthNames,
+                _callback
+        );
+    }
+
+    /**
+     * Добавление комментария к голосованию (asynchronously)
+     * 
+     * @param id Идентификатор голосования (required)
+     * @param addCommentOnVoteRequest  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -92,27 +215,737 @@ public class VotesApi {
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Получены голосования </td><td>  -  </td></tr>
-    </table>
+    <tr><td> 200 </td><td> Комментарий успешно добавлен </td><td>  -  </td></tr>
+     </table>
      */
-    public okhttp3.Call votesGetAsync(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback<List<VoteResponse>> _callback) throws ApiException {
+    public okhttp3.Call addCommentOnVoteAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddCommentOnVoteRequest addCommentOnVoteRequest, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = votesGetValidateBeforeCall(pagination, filter, _callback);
-        Type localVarReturnType = new TypeToken<List<VoteResponse>>() {
-        }.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        okhttp3.Call localVarCall = addCommentOnVoteValidateBeforeCall(id, addCommentOnVoteRequest, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
 
+    /**
+     * Проголосовать
+     *
+     * @param id              Идентификатор голоса, за который отдаётся голос (required)
+     * @param castVoteRequest (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Голос учтен </td><td>  -  </td></tr>
+     * <tr><td> 403 </td><td> Авторам запрещено голосовать </td><td>  -  </td></tr>
+     * </table>
+     */
+    public void castVote(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CastVoteRequest castVoteRequest) throws ApiException {
+        castVoteWithHttpInfo(id, castVoteRequest);
+    }
+
+    /**
+     * Проголосовать
+     *
+     * @param id              Идентификатор голоса, за который отдаётся голос (required)
+     * @param castVoteRequest (required)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Голос учтен </td><td>  -  </td></tr>
+     * <tr><td> 403 </td><td> Авторам запрещено голосовать </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Void> castVoteWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CastVoteRequest castVoteRequest) throws ApiException {
+        okhttp3.Call localVarCall = castVoteValidateBeforeCall(id, castVoteRequest, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call votesGetValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'pagination' is set
-        if (pagination == null) {
-            throw new ApiException("Missing the required parameter 'pagination' when calling votesGet(Async)");
+    private okhttp3.Call castVoteValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CastVoteRequest castVoteRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling castVote(Async)");
         }
 
-        return votesGetCall(pagination, filter, _callback);
+        // verify the required parameter 'castVoteRequest' is set
+        if (castVoteRequest == null) {
+            throw new ApiException("Missing the required parameter 'castVoteRequest' when calling castVote(Async)");
+        }
 
+        return castVoteCall(id, castVoteRequest, _callback);
+
+    }
+
+    /**
+     * Build call for castVote
+     * @param id Идентификатор голоса, за который отдаётся голос (required)
+     * @param castVoteRequest  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Голос учтен </td><td>  -  </td></tr>
+    <tr><td> 403 </td><td> Авторам запрещено голосовать </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call castVoteCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CastVoteRequest castVoteRequest, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if (localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = castVoteRequest;
+
+        // create path and map variables
+        String localVarPath = "/votes/{id}/voting"
+                .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+                "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[]{"bearerAuth"};
+        return localVarApiClient.buildCall(
+                basePath,
+                localVarPath,
+                "POST",
+                localVarQueryParams,
+                localVarCollectionQueryParams,
+                localVarPostBody,
+                localVarHeaderParams,
+                localVarCookieParams,
+                localVarFormParams,
+                localVarAuthNames,
+                _callback
+        );
+    }
+
+    /**
+     * Проголосовать (asynchronously)
+     *
+     * @param id Идентификатор голоса, за который отдаётся голос (required)
+     * @param castVoteRequest  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Голос учтен </td><td>  -  </td></tr>
+    <tr><td> 403 </td><td> Авторам запрещено голосовать </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call castVoteAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CastVoteRequest castVoteRequest, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = castVoteValidateBeforeCall(id, castVoteRequest, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Создать голосование
+     *
+     * @param createVoteRequest (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Голосование успешно создано </td><td>  -  </td></tr>
+     * <tr><td> 409 </td><td> Объект голосования уже существует </td><td>  -  </td></tr>
+     * </table>
+     */
+    public void createVote(@javax.annotation.Nonnull CreateVoteRequest createVoteRequest) throws ApiException {
+        createVoteWithHttpInfo(createVoteRequest);
+    }
+
+    /**
+     * Создать голосование
+     *
+     * @param createVoteRequest (required)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Голосование успешно создано </td><td>  -  </td></tr>
+     * <tr><td> 409 </td><td> Объект голосования уже существует </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Void> createVoteWithHttpInfo(@javax.annotation.Nonnull CreateVoteRequest createVoteRequest) throws ApiException {
+        okhttp3.Call localVarCall = createVoteValidateBeforeCall(createVoteRequest, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call createVoteValidateBeforeCall(@javax.annotation.Nonnull CreateVoteRequest createVoteRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'createVoteRequest' is set
+        if (createVoteRequest == null) {
+            throw new ApiException("Missing the required parameter 'createVoteRequest' when calling createVote(Async)");
+        }
+
+        return createVoteCall(createVoteRequest, _callback);
+
+    }
+
+    /**
+     * Build call for createVote
+     * @param createVoteRequest  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Голосование успешно создано </td><td>  -  </td></tr>
+    <tr><td> 409 </td><td> Объект голосования уже существует </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call createVoteCall(@javax.annotation.Nonnull CreateVoteRequest createVoteRequest, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if (localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = createVoteRequest;
+
+        // create path and map variables
+        String localVarPath = "/votes";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[]{"bearerAuth"};
+        return localVarApiClient.buildCall(
+                basePath,
+                localVarPath,
+                "POST",
+                localVarQueryParams,
+                localVarCollectionQueryParams,
+                localVarPostBody,
+                localVarHeaderParams,
+                localVarCookieParams,
+                localVarFormParams,
+                localVarAuthNames,
+                _callback
+        );
+    }
+
+    /**
+     * Создать голосование (asynchronously)
+     *
+     * @param createVoteRequest  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Голосование успешно создано </td><td>  -  </td></tr>
+    <tr><td> 409 </td><td> Объект голосования уже существует </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call createVoteAsync(@javax.annotation.Nonnull CreateVoteRequest createVoteRequest, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = createVoteValidateBeforeCall(createVoteRequest, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Удаление комментария к голосованию
+     *
+     * @param voteId    Идентификатор голосования (required)
+     * @param commentId Идентификатор комментария (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Комментарий успешно удалён </td><td>  -  </td></tr>
+     * <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
+     * </table>
+     */
+    public void deleteCommentOnVote(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId) throws ApiException {
+        deleteCommentOnVoteWithHttpInfo(voteId, commentId);
+    }
+
+    /**
+     * Удаление комментария к голосованию
+     *
+     * @param voteId    Идентификатор голосования (required)
+     * @param commentId Идентификатор комментария (required)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Комментарий успешно удалён </td><td>  -  </td></tr>
+     * <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Void> deleteCommentOnVoteWithHttpInfo(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId) throws ApiException {
+        okhttp3.Call localVarCall = deleteCommentOnVoteValidateBeforeCall(voteId, commentId, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call deleteCommentOnVoteValidateBeforeCall(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'voteId' is set
+        if (voteId == null) {
+            throw new ApiException("Missing the required parameter 'voteId' when calling deleteCommentOnVote(Async)");
+        }
+
+        // verify the required parameter 'commentId' is set
+        if (commentId == null) {
+            throw new ApiException("Missing the required parameter 'commentId' when calling deleteCommentOnVote(Async)");
+        }
+
+        return deleteCommentOnVoteCall(voteId, commentId, _callback);
+
+    }
+
+    /**
+     * Build call for deleteCommentOnVote
+     * @param voteId Идентификатор голосования (required)
+     * @param commentId Идентификатор комментария (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Комментарий успешно удалён </td><td>  -  </td></tr>
+    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call deleteCommentOnVoteCall(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if (localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/votes/{vote_id}/comments/{comment_id}"
+                .replace("{" + "vote_id" + "}", localVarApiClient.escapeString(voteId.toString()))
+                .replace("{" + "comment_id" + "}", localVarApiClient.escapeString(commentId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[]{"bearerAuth"};
+        return localVarApiClient.buildCall(
+                basePath,
+                localVarPath,
+                "DELETE",
+                localVarQueryParams,
+                localVarCollectionQueryParams,
+                localVarPostBody,
+                localVarHeaderParams,
+                localVarCookieParams,
+                localVarFormParams,
+                localVarAuthNames,
+                _callback
+        );
+    }
+
+    /**
+     * Удаление комментария к голосованию (asynchronously)
+     *
+     * @param voteId Идентификатор голосования (required)
+     * @param commentId Идентификатор комментария (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Комментарий успешно удалён </td><td>  -  </td></tr>
+    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call deleteCommentOnVoteAsync(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = deleteCommentOnVoteValidateBeforeCall(voteId, commentId, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Редактирование комментария к голосованию
+     *
+     * @param voteId Идентификатор голосования (required)
+     * @param commentId Идентификатор комментария (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Комментарий успешно отредактирован </td><td>  -  </td></tr>
+    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
+     </table>
+     */
+    public void editCommentOnVote(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId) throws ApiException {
+        editCommentOnVoteWithHttpInfo(voteId, commentId);
+    }
+
+    /**
+     * Редактирование комментария к голосованию
+     *
+     * @param voteId Идентификатор голосования (required)
+     * @param commentId Идентификатор комментария (required)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Комментарий успешно отредактирован </td><td>  -  </td></tr>
+    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
+    </table>
+     */
+    public ApiResponse<Void> editCommentOnVoteWithHttpInfo(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId) throws ApiException {
+        okhttp3.Call localVarCall = editCommentOnVoteValidateBeforeCall(voteId, commentId, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call editCommentOnVoteValidateBeforeCall(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'voteId' is set
+        if (voteId == null) {
+            throw new ApiException("Missing the required parameter 'voteId' when calling editCommentOnVote(Async)");
+        }
+
+        // verify the required parameter 'commentId' is set
+        if (commentId == null) {
+            throw new ApiException("Missing the required parameter 'commentId' when calling editCommentOnVote(Async)");
+        }
+
+        return editCommentOnVoteCall(voteId, commentId, _callback);
+
+    }
+
+    /**
+     * Build call for editCommentOnVote
+     * @param voteId Идентификатор голосования (required)
+     * @param commentId Идентификатор комментария (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Комментарий успешно отредактирован </td><td>  -  </td></tr>
+    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call editCommentOnVoteCall(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[]{};
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/votes/{vote_id}/comments/{comment_id}"
+                .replace("{" + "vote_id" + "}", localVarApiClient.escapeString(voteId.toString()))
+                .replace("{" + "comment_id" + "}", localVarApiClient.escapeString(commentId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[]{"bearerAuth"};
+        return localVarApiClient.buildCall(
+                basePath,
+                localVarPath,
+                "PUT",
+                localVarQueryParams,
+                localVarCollectionQueryParams,
+                localVarPostBody,
+                localVarHeaderParams,
+                localVarCookieParams,
+                localVarFormParams,
+                localVarAuthNames,
+                _callback
+        );
+    }
+
+    /**
+     * Редактирование комментария к голосованию (asynchronously)
+     * 
+     * @param voteId Идентификатор голосования (required)
+     * @param commentId Идентификатор комментария (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Комментарий успешно отредактирован </td><td>  -  </td></tr>
+    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call editCommentOnVoteAsync(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = editCommentOnVoteValidateBeforeCall(voteId, commentId, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Получить комментарии к голосованию
+     *
+     * @param id Идентификатор голосования (required)
+     * @return List&lt;CommentResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Получен список комментариев </td><td>  -  </td></tr>
+    </table>
+     */
+    public List<CommentResponse> listCommentsOnVote(@javax.annotation.Nonnull UUID id) throws ApiException {
+        ApiResponse<List<CommentResponse>> localVarResp = listCommentsOnVoteWithHttpInfo(id);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Получить комментарии к голосованию
+     *
+     * @param id Идентификатор голосования (required)
+     * @return ApiResponse&lt;List&lt;CommentResponse&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Получен список комментариев </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<List<CommentResponse>> listCommentsOnVoteWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
+        okhttp3.Call localVarCall = listCommentsOnVoteValidateBeforeCall(id, null);
+        Type localVarReturnType = new TypeToken<List<CommentResponse>>() {
+        }.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call listCommentsOnVoteValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling listCommentsOnVote(Async)");
+        }
+
+        return listCommentsOnVoteCall(id, _callback);
+
+    }
+
+    /**
+     * Build call for listCommentsOnVote
+     * @param id Идентификатор голосования (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Получен список комментариев </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call listCommentsOnVoteCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if (localBasePaths.length > 0) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/votes/{id}/comments"
+                .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+                "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[]{};
+        return localVarApiClient.buildCall(
+                basePath,
+                localVarPath,
+                "GET",
+                localVarQueryParams,
+                localVarCollectionQueryParams,
+                localVarPostBody,
+                localVarHeaderParams,
+                localVarCookieParams,
+                localVarFormParams,
+                localVarAuthNames,
+                _callback
+        );
+    }
+
+    /**
+     * Получить комментарии к голосованию (asynchronously)
+     *
+     * @param id Идентификатор голосования (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Получен список комментариев </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call listCommentsOnVoteAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<List<CommentResponse>> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = listCommentsOnVoteValidateBeforeCall(id, _callback);
+        Type localVarReturnType = new TypeToken<List<CommentResponse>>() {
+        }.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
     }
 
     /**
@@ -128,8 +961,8 @@ public class VotesApi {
      * <tr><td> 200 </td><td> Получены голосования </td><td>  -  </td></tr>
      * </table>
      */
-    public List<VoteResponse> votesGet(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
-        ApiResponse<List<VoteResponse>> localVarResp = votesGetWithHttpInfo(pagination, filter);
+    public List<VoteResponse> listVotes(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
+        ApiResponse<List<VoteResponse>> localVarResp = listVotesWithHttpInfo(pagination, filter);
         return localVarResp.getData();
     }
 
@@ -146,34 +979,45 @@ public class VotesApi {
      * <tr><td> 200 </td><td> Получены голосования </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<List<VoteResponse>> votesGetWithHttpInfo(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
-        okhttp3.Call localVarCall = votesGetValidateBeforeCall(pagination, filter, null);
+    public ApiResponse<List<VoteResponse>> listVotesWithHttpInfo(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter) throws ApiException {
+        okhttp3.Call localVarCall = listVotesValidateBeforeCall(pagination, filter, null);
         Type localVarReturnType = new TypeToken<List<VoteResponse>>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call listVotesValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'pagination' is set
+        if (pagination == null) {
+            throw new ApiException("Missing the required parameter 'pagination' when calling listVotes(Async)");
+        }
+
+        return listVotesCall(pagination, filter, _callback);
+
+    }
+
     /**
-     * Build call for votesGet
+     * Build call for listVotes
      * @param pagination  (required)
      * @param filter  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * @http.response.details
-    <table border="1">
+     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> Получены голосования </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call votesGetCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call listVotesCall(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
-        String[] localBasePaths = new String[]{};
+        String[] localBasePaths = new String[] {  };
 
         // Determine Base Path to Use
-        if (localCustomBaseUrl != null) {
+        if (localCustomBaseUrl != null){
             basePath = localCustomBaseUrl;
         } else if (localBasePaths.length > 0) {
             basePath = localBasePaths[localHostIndex];
@@ -232,871 +1076,25 @@ public class VotesApi {
     }
 
     /**
-     * Получить комментарии к голосованию (asynchronously)
+     * Получить список голосований (asynchronously)
      *
-     * @param id Идентификатор голосования (required)
-     * @param _callback The callback to be executed when the API call finishes
+     * @param pagination (required)
+     * @param filter     (optional)
+     * @param _callback  The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Получен список комментариев </td><td>  -  </td></tr>
-    </table>
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Получены голосования </td><td>  -  </td></tr>
+     * </table>
      */
-    public okhttp3.Call votesIdCommentsGetAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<List<CommentResponse>> _callback) throws ApiException {
+    public okhttp3.Call listVotesAsync(@javax.annotation.Nonnull Pagination pagination, @javax.annotation.Nullable Filter filter, final ApiCallback<List<VoteResponse>> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = votesIdCommentsGetValidateBeforeCall(id, _callback);
-        Type localVarReturnType = new TypeToken<List<CommentResponse>>() {
+        okhttp3.Call localVarCall = listVotesValidateBeforeCall(pagination, filter, _callback);
+        Type localVarReturnType = new TypeToken<List<VoteResponse>>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call votesIdCommentsGetValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'id' is set
-        if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling votesIdCommentsGet(Async)");
-        }
-
-        return votesIdCommentsGetCall(id, _callback);
-
-    }
-
-    /**
-     * Получить комментарии к голосованию
-     *
-     * @param id Идентификатор голосования (required)
-     * @return List&lt;CommentResponse&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Получен список комментариев </td><td>  -  </td></tr>
-     * </table>
-     */
-    public List<CommentResponse> votesIdCommentsGet(@javax.annotation.Nonnull UUID id) throws ApiException {
-        ApiResponse<List<CommentResponse>> localVarResp = votesIdCommentsGetWithHttpInfo(id);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Получить комментарии к голосованию
-     *
-     * @param id Идентификатор голосования (required)
-     * @return ApiResponse&lt;List&lt;CommentResponse&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Получен список комментариев </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<List<CommentResponse>> votesIdCommentsGetWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
-        okhttp3.Call localVarCall = votesIdCommentsGetValidateBeforeCall(id, null);
-        Type localVarReturnType = new TypeToken<List<CommentResponse>>() {
-        }.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Build call for votesIdCommentsGet
-     * @param id Идентификатор голосования (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Получен список комментариев </td><td>  -  </td></tr>
-    </table>
-     */
-    public okhttp3.Call votesIdCommentsGetCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[]{};
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null) {
-            basePath = localCustomBaseUrl;
-        } else if (localBasePaths.length > 0) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/votes/{id}/comments"
-                .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-                "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[]{};
-        return localVarApiClient.buildCall(
-                basePath,
-                localVarPath,
-                "GET",
-                localVarQueryParams,
-                localVarCollectionQueryParams,
-                localVarPostBody,
-                localVarHeaderParams,
-                localVarCookieParams,
-                localVarFormParams,
-                localVarAuthNames,
-                _callback
-        );
-    }
-
-    /**
-     * Добавление комментария к голосованию (asynchronously)
-     *
-     * @param id Идентификатор голосования (required)
-     * @param votesIdCommentsPostRequest  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Комментарий успешно добавлен </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call votesIdCommentsPostAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdCommentsPostRequest votesIdCommentsPostRequest, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = votesIdCommentsPostValidateBeforeCall(id, votesIdCommentsPostRequest, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call votesIdCommentsPostValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdCommentsPostRequest votesIdCommentsPostRequest, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'id' is set
-        if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling votesIdCommentsPost(Async)");
-        }
-
-        // verify the required parameter 'votesIdCommentsPostRequest' is set
-        if (votesIdCommentsPostRequest == null) {
-            throw new ApiException(
-                    "Missing the required parameter 'votesIdCommentsPostRequest' when calling votesIdCommentsPost(Async)");
-        }
-
-        return votesIdCommentsPostCall(id, votesIdCommentsPostRequest, _callback);
-
-    }
-
-    /**
-     * Добавление комментария к голосованию
-     *
-     * @param id                         Идентификатор голосования (required)
-     * @param votesIdCommentsPostRequest (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Комментарий успешно добавлен </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void votesIdCommentsPost(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdCommentsPostRequest votesIdCommentsPostRequest) throws ApiException {
-        votesIdCommentsPostWithHttpInfo(id, votesIdCommentsPostRequest);
-    }
-
-    /**
-     * Добавление комментария к голосованию
-     *
-     * @param id                         Идентификатор голосования (required)
-     * @param votesIdCommentsPostRequest (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Комментарий успешно добавлен </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Void> votesIdCommentsPostWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdCommentsPostRequest votesIdCommentsPostRequest) throws ApiException {
-        okhttp3.Call localVarCall = votesIdCommentsPostValidateBeforeCall(id, votesIdCommentsPostRequest, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Build call for votesIdCommentsPost
-     * @param id Идентификатор голосования (required)
-     * @param votesIdCommentsPostRequest  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Комментарий успешно добавлен </td><td>  -  </td></tr>
-    </table>
-     */
-    public okhttp3.Call votesIdCommentsPostCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdCommentsPostRequest votesIdCommentsPostRequest, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[]{};
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null) {
-            basePath = localCustomBaseUrl;
-        } else if (localBasePaths.length > 0) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = votesIdCommentsPostRequest;
-
-        // create path and map variables
-        String localVarPath = "/votes/{id}/comments"
-            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[]{"bearerAuth"};
-        return localVarApiClient.buildCall(
-                basePath,
-                localVarPath,
-                "POST",
-                localVarQueryParams,
-                localVarCollectionQueryParams,
-                localVarPostBody,
-                localVarHeaderParams,
-                localVarCookieParams,
-                localVarFormParams,
-                localVarAuthNames,
-                _callback
-        );
-    }
-
-    /**
-     * Проголосовать (asynchronously)
-     *
-     * @param id Идентификатор голоса, за который отдаётся голос (required)
-     * @param votesIdVotingPostRequest  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Голос учтен </td><td>  -  </td></tr>
-    <tr><td> 403 </td><td> Авторам запрещено голосовать </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call votesIdVotingPostAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdVotingPostRequest votesIdVotingPostRequest, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = votesIdVotingPostValidateBeforeCall(id, votesIdVotingPostRequest, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call votesIdVotingPostValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdVotingPostRequest votesIdVotingPostRequest, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'id' is set
-        if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling votesIdVotingPost(Async)");
-        }
-
-        // verify the required parameter 'votesIdVotingPostRequest' is set
-        if (votesIdVotingPostRequest == null) {
-            throw new ApiException(
-                    "Missing the required parameter 'votesIdVotingPostRequest' when calling votesIdVotingPost(Async)");
-        }
-
-        return votesIdVotingPostCall(id, votesIdVotingPostRequest, _callback);
-
-    }
-
-    /**
-     * Проголосовать
-     *
-     * @param id                       Идентификатор голоса, за который отдаётся голос (required)
-     * @param votesIdVotingPostRequest (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Голос учтен </td><td>  -  </td></tr>
-     * <tr><td> 403 </td><td> Авторам запрещено голосовать </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void votesIdVotingPost(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdVotingPostRequest votesIdVotingPostRequest) throws ApiException {
-        votesIdVotingPostWithHttpInfo(id, votesIdVotingPostRequest);
-    }
-
-    /**
-     * Проголосовать
-     *
-     * @param id                       Идентификатор голоса, за который отдаётся голос (required)
-     * @param votesIdVotingPostRequest (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Голос учтен </td><td>  -  </td></tr>
-     * <tr><td> 403 </td><td> Авторам запрещено голосовать </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Void> votesIdVotingPostWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdVotingPostRequest votesIdVotingPostRequest) throws ApiException {
-        okhttp3.Call localVarCall = votesIdVotingPostValidateBeforeCall(id, votesIdVotingPostRequest, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Build call for votesIdVotingPost
-     * @param id Идентификатор голоса, за который отдаётся голос (required)
-     * @param votesIdVotingPostRequest  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Голос учтен </td><td>  -  </td></tr>
-    <tr><td> 403 </td><td> Авторам запрещено голосовать </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call votesIdVotingPostCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull VotesIdVotingPostRequest votesIdVotingPostRequest, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if (localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = votesIdVotingPostRequest;
-
-        // create path and map variables
-        String localVarPath = "/votes/{id}/voting"
-                .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-                "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-                "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[]{"bearerAuth"};
-        return localVarApiClient.buildCall(
-                basePath,
-                localVarPath,
-                "POST",
-                localVarQueryParams,
-                localVarCollectionQueryParams,
-                localVarPostBody,
-                localVarHeaderParams,
-                localVarCookieParams,
-                localVarFormParams,
-                localVarAuthNames,
-                _callback
-        );
-    }
-
-    /**
-     * Создать голосование (asynchronously)
-     *
-     * @param votesPostRequest  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Голосование успешно создано </td><td>  -  </td></tr>
-    <tr><td> 409 </td><td> Объект голосования уже существует </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call votesPostAsync(@javax.annotation.Nonnull VotesPostRequest votesPostRequest, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = votesPostValidateBeforeCall(votesPostRequest, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call votesPostValidateBeforeCall(@javax.annotation.Nonnull VotesPostRequest votesPostRequest, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'votesPostRequest' is set
-        if (votesPostRequest == null) {
-            throw new ApiException("Missing the required parameter 'votesPostRequest' when calling votesPost(Async)");
-        }
-
-        return votesPostCall(votesPostRequest, _callback);
-
-    }
-
-    /**
-     * Создать голосование
-     *
-     * @param votesPostRequest (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Голосование успешно создано </td><td>  -  </td></tr>
-     * <tr><td> 409 </td><td> Объект голосования уже существует </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void votesPost(@javax.annotation.Nonnull VotesPostRequest votesPostRequest) throws ApiException {
-        votesPostWithHttpInfo(votesPostRequest);
-    }
-
-    /**
-     * Создать голосование
-     *
-     * @param votesPostRequest (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Голосование успешно создано </td><td>  -  </td></tr>
-     * <tr><td> 409 </td><td> Объект голосования уже существует </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Void> votesPostWithHttpInfo(@javax.annotation.Nonnull VotesPostRequest votesPostRequest) throws ApiException {
-        okhttp3.Call localVarCall = votesPostValidateBeforeCall(votesPostRequest, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Build call for votesPost
-     * @param votesPostRequest  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Голосование успешно создано </td><td>  -  </td></tr>
-    <tr><td> 409 </td><td> Объект голосования уже существует </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call votesPostCall(@javax.annotation.Nonnull VotesPostRequest votesPostRequest, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {};
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = votesPostRequest;
-
-        // create path and map variables
-        String localVarPath = "/votes";
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[]{"bearerAuth"};
-        return localVarApiClient.buildCall(
-                basePath,
-                localVarPath,
-                "POST",
-                localVarQueryParams,
-                localVarCollectionQueryParams,
-                localVarPostBody,
-                localVarHeaderParams,
-                localVarCookieParams,
-                localVarFormParams,
-                localVarAuthNames,
-                _callback
-        );
-    }
-
-    /**
-     * Удаление комментария к голосованию (asynchronously)
-     *
-     * @param voteId Идентификатор голосования (required)
-     * @param commentId Идентификатор комментария (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Комментарий успешно удалён </td><td>  -  </td></tr>
-    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call votesVoteIdCommentsCommentIdDeleteAsync(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = votesVoteIdCommentsCommentIdDeleteValidateBeforeCall(voteId, commentId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call votesVoteIdCommentsCommentIdDeleteValidateBeforeCall(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'voteId' is set
-        if (voteId == null) {
-            throw new ApiException(
-                    "Missing the required parameter 'voteId' when calling votesVoteIdCommentsCommentIdDelete(Async)");
-        }
-
-        // verify the required parameter 'commentId' is set
-        if (commentId == null) {
-            throw new ApiException(
-                    "Missing the required parameter 'commentId' when calling votesVoteIdCommentsCommentIdDelete(Async)");
-        }
-
-        return votesVoteIdCommentsCommentIdDeleteCall(voteId, commentId, _callback);
-
-    }
-
-    /**
-     * Удаление комментария к голосованию
-     *
-     * @param voteId    Идентификатор голосования (required)
-     * @param commentId Идентификатор комментария (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Комментарий успешно удалён </td><td>  -  </td></tr>
-     * <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void votesVoteIdCommentsCommentIdDelete(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId) throws ApiException {
-        votesVoteIdCommentsCommentIdDeleteWithHttpInfo(voteId, commentId);
-    }
-
-    /**
-     * Удаление комментария к голосованию
-     *
-     * @param voteId    Идентификатор голосования (required)
-     * @param commentId Идентификатор комментария (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Комментарий успешно удалён </td><td>  -  </td></tr>
-     * <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Void> votesVoteIdCommentsCommentIdDeleteWithHttpInfo(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId) throws ApiException {
-        okhttp3.Call localVarCall = votesVoteIdCommentsCommentIdDeleteValidateBeforeCall(voteId, commentId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Build call for votesVoteIdCommentsCommentIdDelete
-     * @param voteId Идентификатор голосования (required)
-     * @param commentId Идентификатор комментария (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Комментарий успешно удалён </td><td>  -  </td></tr>
-    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call votesVoteIdCommentsCommentIdDeleteCall(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if (localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/votes/{vote_id}/comments/{comment_id}"
-                .replace("{" + "vote_id" + "}", localVarApiClient.escapeString(voteId.toString()))
-                .replace("{" + "comment_id" + "}", localVarApiClient.escapeString(commentId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[]{"bearerAuth"};
-        return localVarApiClient.buildCall(
-                basePath,
-                localVarPath,
-                "DELETE",
-                localVarQueryParams,
-                localVarCollectionQueryParams,
-                localVarPostBody,
-                localVarHeaderParams,
-                localVarCookieParams,
-                localVarFormParams,
-                localVarAuthNames,
-                _callback
-        );
-    }
-
-    /**
-     * Редактирование комментария к голосованию (asynchronously)
-     *
-     * @param voteId Идентификатор голосования (required)
-     * @param commentId Идентификатор комментария (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Комментарий успешно отредактирован </td><td>  -  </td></tr>
-    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
-    </table>
-     */
-    public okhttp3.Call votesVoteIdCommentsCommentIdPutAsync(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = votesVoteIdCommentsCommentIdPutValidateBeforeCall(voteId, commentId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call votesVoteIdCommentsCommentIdPutValidateBeforeCall(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'voteId' is set
-        if (voteId == null) {
-            throw new ApiException(
-                    "Missing the required parameter 'voteId' when calling votesVoteIdCommentsCommentIdPut(Async)");
-        }
-
-        // verify the required parameter 'commentId' is set
-        if (commentId == null) {
-            throw new ApiException(
-                    "Missing the required parameter 'commentId' when calling votesVoteIdCommentsCommentIdPut(Async)");
-        }
-
-        return votesVoteIdCommentsCommentIdPutCall(voteId, commentId, _callback);
-
-    }
-
-    /**
-     * Редактирование комментария к голосованию
-     *
-     * @param voteId    Идентификатор голосования (required)
-     * @param commentId Идентификатор комментария (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Комментарий успешно отредактирован </td><td>  -  </td></tr>
-     * <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void votesVoteIdCommentsCommentIdPut(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId) throws ApiException {
-        votesVoteIdCommentsCommentIdPutWithHttpInfo(voteId, commentId);
-    }
-
-    /**
-     * Редактирование комментария к голосованию
-     *
-     * @param voteId    Идентификатор голосования (required)
-     * @param commentId Идентификатор комментария (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Комментарий успешно отредактирован </td><td>  -  </td></tr>
-     * <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Void> votesVoteIdCommentsCommentIdPutWithHttpInfo(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId) throws ApiException {
-        okhttp3.Call localVarCall = votesVoteIdCommentsCommentIdPutValidateBeforeCall(voteId, commentId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Build call for votesVoteIdCommentsCommentIdPut
-     * @param voteId Идентификатор голосования (required)
-     * @param commentId Идентификатор комментария (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Комментарий успешно отредактирован </td><td>  -  </td></tr>
-    <tr><td> 401 </td><td> Вы не автор комментария! </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call votesVoteIdCommentsCommentIdPutCall(@javax.annotation.Nonnull UUID voteId, @javax.annotation.Nonnull UUID commentId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if (localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/votes/{vote_id}/comments/{comment_id}"
-                .replace("{" + "vote_id" + "}", localVarApiClient.escapeString(voteId.toString()))
-                .replace("{" + "comment_id" + "}", localVarApiClient.escapeString(commentId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[]{"bearerAuth"};
-        return localVarApiClient.buildCall(
-                basePath,
-                localVarPath,
-                "PUT",
-                localVarQueryParams,
-                localVarCollectionQueryParams,
-                localVarPostBody,
-                localVarHeaderParams,
-                localVarCookieParams,
-                localVarFormParams,
-                localVarAuthNames,
-                _callback
-        );
     }
 }

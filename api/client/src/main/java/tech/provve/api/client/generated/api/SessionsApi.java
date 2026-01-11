@@ -27,10 +27,10 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
+import tech.provve.api.client.generated.dto.CreateSessionRequest;
 import tech.provve.api.client.generated.dto.Notification;
-import tech.provve.api.client.generated.dto.ObservationPostRequest;
+import tech.provve.api.client.generated.dto.ObservationUpload;
 import tech.provve.api.client.generated.dto.SessionCreatedNotification;
-import tech.provve.api.client.generated.dto.SessionStage2PostRequest;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -76,46 +76,61 @@ public class SessionsApi {
     }
 
     /**
-     * Загрузить результат наблюдения
+     * Создать сессию
      *
-     * @param observationPostRequest (optional)
+     * @param createSessionRequest  (required)
+     * @return Notification
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Данные наблюдения загружены </td><td>  -  </td></tr>
-     * </table>
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 201 </td><td> Сессия успешно создана для пользователя </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск. </td><td>  -  </td></tr>
+    <tr><td> 409 </td><td> Дважды пройти экзамен нельзя </td><td>  -  </td></tr>
+    </table>
      */
-    public void observationPost(@javax.annotation.Nullable ObservationPostRequest observationPostRequest) throws ApiException {
-        observationPostWithHttpInfo(observationPostRequest);
+    public Notification createSession(@javax.annotation.Nonnull CreateSessionRequest createSessionRequest) throws ApiException {
+        ApiResponse<Notification> localVarResp = createSessionWithHttpInfo(createSessionRequest);
+        return localVarResp.getData();
     }
 
     /**
-     * Загрузить результат наблюдения
+     * Создать сессию
      *
-     * @param observationPostRequest (optional)
-     * @return ApiResponse&lt;Void&gt;
+     * @param createSessionRequest (required)
+     * @return ApiResponse&lt;Notification&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details <table border="1">
      * <caption>Response Details</caption>
      * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Данные наблюдения загружены </td><td>  -  </td></tr>
+     * <tr><td> 201 </td><td> Сессия успешно создана для пользователя </td><td>  -  </td></tr>
+     * <tr><td> 200 </td><td> Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск. </td><td>  -  </td></tr>
+     * <tr><td> 409 </td><td> Дважды пройти экзамен нельзя </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<Void> observationPostWithHttpInfo(@javax.annotation.Nullable ObservationPostRequest observationPostRequest) throws ApiException {
-        okhttp3.Call localVarCall = observationPostValidateBeforeCall(observationPostRequest, null);
-        return localVarApiClient.execute(localVarCall);
+    public ApiResponse<Notification> createSessionWithHttpInfo(@javax.annotation.Nonnull CreateSessionRequest createSessionRequest) throws ApiException {
+        okhttp3.Call localVarCall = createSessionValidateBeforeCall(createSessionRequest, null);
+        Type localVarReturnType = new TypeToken<Notification>() {
+        }.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call observationPostValidateBeforeCall(@javax.annotation.Nullable ObservationPostRequest observationPostRequest, final ApiCallback _callback) throws ApiException {
-        return observationPostCall(observationPostRequest, _callback);
+    private okhttp3.Call createSessionValidateBeforeCall(@javax.annotation.Nonnull CreateSessionRequest createSessionRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'createSessionRequest' is set
+        if (createSessionRequest == null) {
+            throw new ApiException(
+                    "Missing the required parameter 'createSessionRequest' when calling createSession(Async)");
+        }
+
+        return createSessionCall(createSessionRequest, _callback);
 
     }
 
     /**
-     * Build call for observationPost
-     * @param observationPostRequest  (optional)
+     * Build call for createSession
+     * @param createSessionRequest  (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -123,10 +138,12 @@ public class SessionsApi {
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Данные наблюдения загружены </td><td>  -  </td></tr>
+    <tr><td> 201 </td><td> Сессия успешно создана для пользователя </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск. </td><td>  -  </td></tr>
+    <tr><td> 409 </td><td> Дважды пройти экзамен нельзя </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call observationPostCall(@javax.annotation.Nullable ObservationPostRequest observationPostRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call createSessionCall(@javax.annotation.Nonnull CreateSessionRequest createSessionRequest, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -140,10 +157,10 @@ public class SessionsApi {
             basePath = null;
         }
 
-        Object localVarPostBody = observationPostRequest;
+        Object localVarPostBody = createSessionRequest;
 
         // create path and map variables
-        String localVarPath = "/observation";
+        String localVarPath = "/session/stage-2";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -152,6 +169,7 @@ public class SessionsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
+                "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -183,23 +201,27 @@ public class SessionsApi {
     }
 
     /**
-     * Загрузить результат наблюдения (asynchronously)
-     * 
-     * @param observationPostRequest  (optional)
+     * Создать сессию (asynchronously)
+     *
+     * @param createSessionRequest  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
-    <table border="1">
+     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Данные наблюдения загружены </td><td>  -  </td></tr>
+    <tr><td> 201 </td><td> Сессия успешно создана для пользователя </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск. </td><td>  -  </td></tr>
+    <tr><td> 409 </td><td> Дважды пройти экзамен нельзя </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call observationPostAsync(@javax.annotation.Nullable ObservationPostRequest observationPostRequest, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call createSessionAsync(@javax.annotation.Nonnull CreateSessionRequest createSessionRequest, final ApiCallback<Notification> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = observationPostValidateBeforeCall(observationPostRequest, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
+        okhttp3.Call localVarCall = createSessionValidateBeforeCall(createSessionRequest, _callback);
+        Type localVarReturnType = new TypeToken<Notification>() {
+        }.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
 
@@ -215,8 +237,8 @@ public class SessionsApi {
      * <tr><td> 200 </td><td> Случайное число, которое нужно зашифровать </td><td>  -  </td></tr>
      * </table>
      */
-    public Integer sessionStage1Get() throws ApiException {
-        ApiResponse<Integer> localVarResp = sessionStage1GetWithHttpInfo();
+    public Integer getRandomValueForAntifraud() throws ApiException {
+        ApiResponse<Integer> localVarResp = getRandomValueForAntifraudWithHttpInfo();
         return localVarResp.getData();
     }
 
@@ -232,32 +254,32 @@ public class SessionsApi {
      * <tr><td> 200 </td><td> Случайное число, которое нужно зашифровать </td><td>  -  </td></tr>
      * </table>
      */
-    public ApiResponse<Integer> sessionStage1GetWithHttpInfo() throws ApiException {
-        okhttp3.Call localVarCall = sessionStage1GetValidateBeforeCall(null);
+    public ApiResponse<Integer> getRandomValueForAntifraudWithHttpInfo() throws ApiException {
+        okhttp3.Call localVarCall = getRandomValueForAntifraudValidateBeforeCall(null);
         Type localVarReturnType = new TypeToken<Integer>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call sessionStage1GetValidateBeforeCall(final ApiCallback _callback) throws ApiException {
-        return sessionStage1GetCall(_callback);
+    private okhttp3.Call getRandomValueForAntifraudValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+        return getRandomValueForAntifraudCall(_callback);
 
     }
 
     /**
-     * Build call for sessionStage1Get
+     * Build call for getRandomValueForAntifraud
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      * @http.response.details
-    <table border="1">
+     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> Случайное число, которое нужно зашифровать </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call sessionStage1GetCall(final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getRandomValueForAntifraudCall(final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -320,15 +342,15 @@ public class SessionsApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
-    <table border="1">
+     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
     <tr><td> 200 </td><td> Случайное число, которое нужно зашифровать </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call sessionStage1GetAsync(final ApiCallback<Integer> _callback) throws ApiException {
+    public okhttp3.Call getRandomValueForAntifraudAsync(final ApiCallback<Integer> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = sessionStage1GetValidateBeforeCall(_callback);
+        okhttp3.Call localVarCall = getRandomValueForAntifraudValidateBeforeCall(_callback);
         Type localVarReturnType = new TypeToken<Integer>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
@@ -336,73 +358,58 @@ public class SessionsApi {
     }
 
     /**
-     * Создать сессию
+     * Загрузить результат наблюдения
      *
-     * @param sessionStage2PostRequest (required)
-     * @return Notification
+     * @param observationUpload  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Сессия успешно создана для пользователя </td><td>  -  </td></tr>
-     * <tr><td> 200 </td><td> Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск. </td><td>  -  </td></tr>
-     * <tr><td> 409 </td><td> Дважды пройти экзамен нельзя </td><td>  -  </td></tr>
-     * </table>
-     */
-    public Notification sessionStage2Post(@javax.annotation.Nonnull SessionStage2PostRequest sessionStage2PostRequest) throws ApiException {
-        ApiResponse<Notification> localVarResp = sessionStage2PostWithHttpInfo(sessionStage2PostRequest);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Создать сессию
-     *
-     * @param sessionStage2PostRequest (required)
-     * @return ApiResponse&lt;Notification&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 201 </td><td> Сессия успешно создана для пользователя </td><td>  -  </td></tr>
-     * <tr><td> 200 </td><td> Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск. </td><td>  -  </td></tr>
-     * <tr><td> 409 </td><td> Дважды пройти экзамен нельзя </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Notification> sessionStage2PostWithHttpInfo(@javax.annotation.Nonnull SessionStage2PostRequest sessionStage2PostRequest) throws ApiException {
-        okhttp3.Call localVarCall = sessionStage2PostValidateBeforeCall(sessionStage2PostRequest, null);
-        Type localVarReturnType = new TypeToken<Notification>() {
-        }.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call sessionStage2PostValidateBeforeCall(@javax.annotation.Nonnull SessionStage2PostRequest sessionStage2PostRequest, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'sessionStage2PostRequest' is set
-        if (sessionStage2PostRequest == null) {
-            throw new ApiException(
-                    "Missing the required parameter 'sessionStage2PostRequest' when calling sessionStage2Post(Async)");
-        }
-
-        return sessionStage2PostCall(sessionStage2PostRequest, _callback);
-
-    }
-
-    /**
-     * Build call for sessionStage2Post
-     * @param sessionStage2PostRequest  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
      * @http.response.details
     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 201 </td><td> Сессия успешно создана для пользователя </td><td>  -  </td></tr>
-    <tr><td> 200 </td><td> Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск. </td><td>  -  </td></tr>
-    <tr><td> 409 </td><td> Дважды пройти экзамен нельзя </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Данные наблюдения загружены </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call sessionStage2PostCall(@javax.annotation.Nonnull SessionStage2PostRequest sessionStage2PostRequest, final ApiCallback _callback) throws ApiException {
+    public void uploadObservation(@javax.annotation.Nullable ObservationUpload observationUpload) throws ApiException {
+        uploadObservationWithHttpInfo(observationUpload);
+    }
+
+    /**
+     * Загрузить результат наблюдения
+     *
+     * @param observationUpload (optional)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Данные наблюдения загружены </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Void> uploadObservationWithHttpInfo(@javax.annotation.Nullable ObservationUpload observationUpload) throws ApiException {
+        okhttp3.Call localVarCall = uploadObservationValidateBeforeCall(observationUpload, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call uploadObservationValidateBeforeCall(@javax.annotation.Nullable ObservationUpload observationUpload, final ApiCallback _callback) throws ApiException {
+        return uploadObservationCall(observationUpload, _callback);
+
+    }
+
+    /**
+     * Build call for uploadObservation
+     * @param observationUpload  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Данные наблюдения загружены </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call uploadObservationCall(@javax.annotation.Nullable ObservationUpload observationUpload, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -416,10 +423,10 @@ public class SessionsApi {
             basePath = null;
         }
 
-        Object localVarPostBody = sessionStage2PostRequest;
+        Object localVarPostBody = observationUpload;
 
         // create path and map variables
-        String localVarPath = "/session/stage-2";
+        String localVarPath = "/observation";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -428,7 +435,6 @@ public class SessionsApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
-                "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -460,27 +466,23 @@ public class SessionsApi {
     }
 
     /**
-     * Создать сессию (asynchronously)
-     * 
-     * @param sessionStage2PostRequest  (required)
+     * Загрузить результат наблюдения (asynchronously)
+     *
+     * @param observationUpload  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      * @http.response.details
-    <table border="1">
+     <table border="1">
     <caption>Response Details</caption>
     <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 201 </td><td> Сессия успешно создана для пользователя </td><td>  -  </td></tr>
-    <tr><td> 200 </td><td> Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск. </td><td>  -  </td></tr>
-    <tr><td> 409 </td><td> Дважды пройти экзамен нельзя </td><td>  -  </td></tr>
+    <tr><td> 200 </td><td> Данные наблюдения загружены </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call sessionStage2PostAsync(@javax.annotation.Nonnull SessionStage2PostRequest sessionStage2PostRequest, final ApiCallback<Notification> _callback) throws ApiException {
+    public okhttp3.Call uploadObservationAsync(@javax.annotation.Nullable ObservationUpload observationUpload, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = sessionStage2PostValidateBeforeCall(sessionStage2PostRequest, _callback);
-        Type localVarReturnType = new TypeToken<Notification>() {
-        }.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        okhttp3.Call localVarCall = uploadObservationValidateBeforeCall(observationUpload, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
 }

@@ -74,177 +74,56 @@ public class NotificationsApi {
     }
 
     /**
-     * Пометить уведомления прочитанными
-     *
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Уведомления удалены </td><td>  -  </td></tr>
-     * </table>
-     */
-    public void notificationsDelete() throws ApiException {
-        notificationsDeleteWithHttpInfo();
-    }
-
-    /**
-     * Пометить уведомления прочитанными
-     *
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Уведомления удалены </td><td>  -  </td></tr>
-     * </table>
-     */
-    public ApiResponse<Void> notificationsDeleteWithHttpInfo() throws ApiException {
-        okhttp3.Call localVarCall = notificationsDeleteValidateBeforeCall(null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call notificationsDeleteValidateBeforeCall(final ApiCallback _callback) throws ApiException {
-        return notificationsDeleteCall(_callback);
-
-    }
-
-    /**
-     * Build call for notificationsDelete
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Уведомления удалены </td><td>  -  </td></tr>
-    </table>
-     */
-    public okhttp3.Call notificationsDeleteCall(final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[]{};
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null) {
-            basePath = localCustomBaseUrl;
-        } else if (localBasePaths.length > 0) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/notifications";
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[]{"bearerAuth"};
-        return localVarApiClient.buildCall(
-                basePath,
-                localVarPath,
-                "DELETE",
-                localVarQueryParams,
-                localVarCollectionQueryParams,
-                localVarPostBody,
-                localVarHeaderParams,
-                localVarCookieParams,
-                localVarFormParams,
-                localVarAuthNames,
-                _callback
-        );
-    }
-
-    /**
-     * Пометить уведомления прочитанными (asynchronously)
-     *
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-    <table border="1">
-    <caption>Response Details</caption>
-    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-    <tr><td> 200 </td><td> Уведомления удалены </td><td>  -  </td></tr>
-    </table>
-     */
-    public okhttp3.Call notificationsDeleteAsync(final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = notificationsDeleteValidateBeforeCall(_callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-
-    /**
      * Получение уведомлений
      *
-     * @param pagination (required)
+     * @param pagination  (required)
      * @return List&lt;Notification&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Список уведомлений успешно получен </td><td>  -  </td></tr>
-     * </table>
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Список уведомлений успешно получен </td><td>  -  </td></tr>
+    </table>
      */
-    public List<Notification> notificationsGet(@javax.annotation.Nonnull Pagination pagination) throws ApiException {
-        ApiResponse<List<Notification>> localVarResp = notificationsGetWithHttpInfo(pagination);
+    public List<Notification> listNotifications(@javax.annotation.Nonnull Pagination pagination) throws ApiException {
+        ApiResponse<List<Notification>> localVarResp = listNotificationsWithHttpInfo(pagination);
         return localVarResp.getData();
     }
 
     /**
      * Получение уведомлений
      *
-     * @param pagination (required)
+     * @param pagination  (required)
      * @return ApiResponse&lt;List&lt;Notification&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details <table border="1">
-     * <caption>Response Details</caption>
-     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-     * <tr><td> 200 </td><td> Список уведомлений успешно получен </td><td>  -  </td></tr>
-     * </table>
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Список уведомлений успешно получен </td><td>  -  </td></tr>
+    </table>
      */
-    public ApiResponse<List<Notification>> notificationsGetWithHttpInfo(@javax.annotation.Nonnull Pagination pagination) throws ApiException {
-        okhttp3.Call localVarCall = notificationsGetValidateBeforeCall(pagination, null);
+    public ApiResponse<List<Notification>> listNotificationsWithHttpInfo(@javax.annotation.Nonnull Pagination pagination) throws ApiException {
+        okhttp3.Call localVarCall = listNotificationsValidateBeforeCall(pagination, null);
         Type localVarReturnType = new TypeToken<List<Notification>>() {
         }.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call notificationsGetValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call listNotificationsValidateBeforeCall(@javax.annotation.Nonnull Pagination pagination, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'pagination' is set
         if (pagination == null) {
-            throw new ApiException("Missing the required parameter 'pagination' when calling notificationsGet(Async)");
+            throw new ApiException("Missing the required parameter 'pagination' when calling listNotifications(Async)");
         }
 
-        return notificationsGetCall(pagination, _callback);
+        return listNotificationsCall(pagination, _callback);
 
     }
 
     /**
-     * Build call for notificationsGet
+     * Build call for listNotifications
      * @param pagination  (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -256,7 +135,7 @@ public class NotificationsApi {
     <tr><td> 200 </td><td> Список уведомлений успешно получен </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call notificationsGetCall(@javax.annotation.Nonnull Pagination pagination, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call listNotificationsCall(@javax.annotation.Nonnull Pagination pagination, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[]{};
@@ -330,12 +209,136 @@ public class NotificationsApi {
     <tr><td> 200 </td><td> Список уведомлений успешно получен </td><td>  -  </td></tr>
     </table>
      */
-    public okhttp3.Call notificationsGetAsync(@javax.annotation.Nonnull Pagination pagination, final ApiCallback<List<Notification>> _callback) throws ApiException {
+    public okhttp3.Call listNotificationsAsync(@javax.annotation.Nonnull Pagination pagination, final ApiCallback<List<Notification>> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = notificationsGetValidateBeforeCall(pagination, _callback);
+        okhttp3.Call localVarCall = listNotificationsValidateBeforeCall(pagination, _callback);
         Type localVarReturnType = new TypeToken<List<Notification>>() {
         }.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+
+    /**
+     * Пометить уведомления прочитанными
+     *
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Уведомления удалены </td><td>  -  </td></tr>
+    </table>
+     */
+    public void markNotificationsAsRead() throws ApiException {
+        markNotificationsAsReadWithHttpInfo();
+    }
+
+    /**
+     * Пометить уведомления прочитанными
+     *
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details <table border="1">
+     * <caption>Response Details</caption>
+     * <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+     * <tr><td> 200 </td><td> Уведомления удалены </td><td>  -  </td></tr>
+     * </table>
+     */
+    public ApiResponse<Void> markNotificationsAsReadWithHttpInfo() throws ApiException {
+        okhttp3.Call localVarCall = markNotificationsAsReadValidateBeforeCall(null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call markNotificationsAsReadValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+        return markNotificationsAsReadCall(_callback);
+
+    }
+
+    /**
+     * Build call for markNotificationsAsRead
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+    <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Уведомления удалены </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call markNotificationsAsReadCall(final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[]{};
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null) {
+            basePath = localCustomBaseUrl;
+        } else if (localBasePaths.length > 0) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/notifications";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[]{"bearerAuth"};
+        return localVarApiClient.buildCall(
+                basePath,
+                localVarPath,
+                "DELETE",
+                localVarQueryParams,
+                localVarCollectionQueryParams,
+                localVarPostBody,
+                localVarHeaderParams,
+                localVarCookieParams,
+                localVarFormParams,
+                localVarAuthNames,
+                _callback
+        );
+    }
+
+    /**
+     * Пометить уведомления прочитанными (asynchronously)
+     * 
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+    <caption>Response Details</caption>
+    <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+    <tr><td> 200 </td><td> Уведомления удалены </td><td>  -  </td></tr>
+    </table>
+     */
+    public okhttp3.Call markNotificationsAsReadAsync(final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = markNotificationsAsReadValidateBeforeCall(_callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
 }

@@ -3,6 +3,7 @@ package {{package}};
 {{#imports}}import {{import}};
 {{/imports}}
 
+import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.ext.web.openapi.RouterBuilder;
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-public class {{classname}}Handler {
+public class {{classname}}Handler implements RouteHandler {
 
 private static final Logger logger = LoggerFactory.getLogger({{classname}}Handler.class);
 

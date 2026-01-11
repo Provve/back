@@ -3,6 +3,7 @@ package tech.provve.api.server.generated.api;
 import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.api.server.generated.dto.Pagination;
 
+import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.ext.web.openapi.RouterBuilder;
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-public class NotificationsApiHandler {
+public class NotificationsApiHandler implements RouteHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(NotificationsApiHandler.class);
 
@@ -28,35 +29,14 @@ public class NotificationsApiHandler {
     }
 
     public void mount(RouterBuilder builder) {
-        builder.operation("notificationsDelete")
-               .handler(this::notificationsDelete);
-        builder.operation("notificationsGet")
-               .handler(this::notificationsGet);
+        builder.operation("listNotifications")
+               .handler(this::listNotifications);
+        builder.operation("markNotificationsAsRead")
+               .handler(this::markNotificationsAsRead);
     }
 
-    private void notificationsDelete(RoutingContext routingContext) {
-        logger.info("notificationsDelete()");
-
-        // Param extraction
-        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
-
-
-        api.notificationsDelete()
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
-
-    private void notificationsGet(RoutingContext routingContext) {
-        logger.info("notificationsGet()");
+    private void listNotifications(RoutingContext routingContext) {
+        logger.info("listNotifications()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
@@ -72,7 +52,28 @@ public class NotificationsApiHandler {
 
         logger.debug("Parameter pagination is {}", pagination);
 
-        api.notificationsGet(pagination)
+        api.listNotifications(pagination)
+           .onSuccess(apiResponse -> {
+               routingContext.response()
+                             .setStatusCode(apiResponse.getStatusCode());
+               if (apiResponse.hasData()) {
+                   routingContext.json(apiResponse.getData());
+               } else {
+                   routingContext.response()
+                                 .end();
+               }
+           })
+           .onFailure(routingContext::fail);
+    }
+
+    private void markNotificationsAsRead(RoutingContext routingContext) {
+        logger.info("markNotificationsAsRead()");
+
+        // Param extraction
+        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
+
+
+        api.markNotificationsAsRead()
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

@@ -190,10 +190,9 @@ public class SessionCreatedNotification {
                         java.util.Locale.ROOT,
                         "The field `%s` in the JSON string is not defined in the `SessionCreatedNotification` properties. JSON: %s",
                         entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
+                        jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         // validate the optional field `notification`
         if (jsonObj.get("notification") != null && !jsonObj.get("notification")
@@ -261,7 +260,7 @@ public class SessionCreatedNotification {
      * @return JSON string
      */
     public String toJson() {
-        return JSON.getGson().toJson(this);
+    return JSON.getGson().toJson(this);
   }
 }
 

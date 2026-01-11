@@ -182,16 +182,6 @@ public class SkillAddVote {
                 .replace("\n", "\n    ");
     }
 
-    public static HashSet<String> openapiRequiredFields;
-
-    static {
-        // a set of all properties/fields (JSON key names)
-        openapiFields = new HashSet<String>(Arrays.asList("action", "arguments", "name"));
-
-        // a set of required properties/fields (JSON key names)
-        openapiRequiredFields = new HashSet<String>(0);
-    }
-
     /**
      * Validates the JSON Element and throws an exception if issues found
      *
@@ -217,11 +207,9 @@ public class SkillAddVote {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
                         "The field `%s` in the JSON string is not defined in the `SkillAddVote` properties. JSON: %s",
-                        entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
+                        entry.getKey(), jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if ((jsonObj.get("action") != null && !jsonObj.get("action")
                                                       .isJsonNull()) && !jsonObj.get("action")
@@ -258,6 +246,16 @@ public class SkillAddVote {
                            .toString()
             ));
         }
+    }
+
+    public static HashSet<String> openapiRequiredFields;
+
+    static {
+        // a set of all properties/fields (JSON key names)
+        openapiFields = new HashSet<String>(Arrays.asList("action", "arguments", "name"));
+
+        // a set of required properties/fields (JSON key names)
+        openapiRequiredFields = new HashSet<String>(0);
     }
 
     /**
@@ -306,9 +304,9 @@ public class SkillAddVote {
     /**
      * Convert an instance of SkillAddVote to an JSON string
      *
-     * @return JSON string
-     */
-    public String toJson() {
+   * @return JSON string
+   */
+  public String toJson() {
     return JSON.getGson().toJson(this);
   }
 

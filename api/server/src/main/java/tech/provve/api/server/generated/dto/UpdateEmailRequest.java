@@ -1,19 +1,20 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResetCodeGetRequest {
+public class UpdateEmailRequest {
 
     private String email;
 
-    public ResetCodeGetRequest() {
+    public UpdateEmailRequest() {
 
     }
 
-    public ResetCodeGetRequest(String email) {
+    public UpdateEmailRequest(String email) {
         this.email = email;
     }
 
@@ -36,8 +37,8 @@ public class ResetCodeGetRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ResetCodeGetRequest resetCodeGetRequest = (ResetCodeGetRequest) o;
-        return Objects.equals(email, resetCodeGetRequest.email);
+        UpdateEmailRequest updateEmailRequest = (UpdateEmailRequest) o;
+        return Objects.equals(email, updateEmailRequest.email);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class ResetCodeGetRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ResetCodeGetRequest {\n");
+        sb.append("class UpdateEmailRequest {\n");
 
         sb.append("    email: ")
           .append(toIndentedString(email))

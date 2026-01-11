@@ -61,10 +61,10 @@ import tech.provve.api.client.generated.auth.ApiKeyAuth;
  */
 public class ApiClient {
 
-    protected String basePath = "http://localhost/api/v1";
+    protected String basePath = "http://localhost:8080/api/v1";
     protected List<ServerConfiguration> servers = new ArrayList<ServerConfiguration>(Arrays.asList(
             new ServerConfiguration(
-                    "http://localhost/api/v1",
+                    "http://localhost:8080/api/v1",
                     "No description provided",
                     new HashMap<String, ServerVariable>()
             ),
@@ -164,7 +164,7 @@ public class ApiClient {
     /**
      * Set base path
      *
-     * @param basePath Base path of the URL (e.g http://localhost/api/v1)
+     * @param basePath Base path of the URL (e.g http://localhost:8080/api/v1)
      * @return An instance of ApiClient
      */
     public ApiClient setBasePath(String basePath) {
@@ -545,7 +545,7 @@ public class ApiClient {
     /**
      * Add a default header.
      *
-     * @param key   The header's key
+     * @param key The header's key
      * @param value The header's value
      * @return ApiClient
      */
@@ -726,10 +726,10 @@ public class ApiClient {
 
     /**
      * Formats the specified query parameter to a list containing a single {@code Pair} object.
-     * <p>
+     *
      * Note that {@code value} must not be a collection.
      *
-     * @param name  The name of the parameter.
+     * @param name The name of the parameter.
      * @param value The value of the parameter.
      * @return A list containing a single {@code Pair} object.
      */
@@ -796,21 +796,6 @@ public class ApiClient {
     }
 
     /**
-     * Escape the given string to be used as URL query value.
-     *
-     * @param str String to be escaped
-     * @return Escaped string
-     */
-    public String escapeString(String str) {
-        try {
-            return URLEncoder.encode(str, "utf8")
-                             .replaceAll("\\+", "%20");
-        } catch (UnsupportedEncodingException e) {
-            return str;
-        }
-    }
-
-    /**
      * Formats the specified free-form query parameters to a list of {@code Pair} objects.
      *
      * @param value The free-form query parameters.
@@ -832,6 +817,7 @@ public class ApiClient {
 
         return params;
     }
+
 
     /**
      * Formats the specified collection path parameter to a string value.
@@ -868,6 +854,29 @@ public class ApiClient {
     }
 
     /**
+     * Sanitize filename by removing path.
+     * e.g. ../../sun.gif becomes sun.gif
+     *
+     * @param filename The filename to be sanitized
+     * @return The sanitized filename
+     */
+    public String sanitizeFilename(String filename) {
+        return filename.replaceFirst("^.*[/\\\\]", "");
+    }
+
+    /**
+     * {@link #execute(Call, Type)}
+     *
+     * @param <T>  Type
+     * @param call An instance of the Call object
+     * @return ApiResponse&lt;T&gt;
+     * @throws tech.provve.api.client.generated.ApiException If fail to execute the call
+     */
+    public <T> ApiResponse<T> execute(Call call) throws ApiException {
+        return execute(call, null);
+    }
+
+    /**
      * Select the Accept header's value from the given accepts array:
      *   if JSON exists in the given array, use it;
      *   otherwise use all of them (joining into a string)
@@ -886,23 +895,6 @@ public class ApiClient {
             }
         }
         return StringUtil.join(accepts, ",");
-    }
-
-    /**
-     * Check if the given MIME is a JSON MIME.
-     * JSON MIME examples:
-     * application/json
-     * application/json; charset=UTF8
-     * APPLICATION/JSON
-     * application/vnd.company+json
-     * "* / *" is also default to JSON
-     *
-     * @param mime MIME (Multipurpose Internet Mail Extensions)
-     * @return True if the given MIME is JSON, false otherwise.
-     */
-    public boolean isJsonMime(String mime) {
-        String jsonMime = "(?i)^(application/json|[^;/ \t]+/[^;/ \t]+[+]json)[ \t]*(;.*)?$";
-        return mime != null && (mime.matches(jsonMime) || mime.equals("*/*"));
     }
 
     /**
@@ -930,18 +922,6 @@ public class ApiClient {
         }
 
         return contentTypes[0];
-    }
-
-    /**
-     * {@link #execute(Call, Type)}
-     *
-     * @param <T>  Type
-     * @param call An instance of the Call object
-     * @return ApiResponse&lt;T&gt;
-     * @throws tech.provve.api.client.generated.ApiException If fail to execute the call
-     */
-    public <T> ApiResponse<T> execute(Call call) throws ApiException {
-        return execute(call, null);
     }
 
     /**
@@ -1097,7 +1077,8 @@ public class ApiClient {
                         response.headers()
                                 .toMultimap(),
                         response.body()
-                                .string());
+                                .string()
+                );
             }
         } catch (IOException e) {
             throw new ApiException(e);
@@ -1168,25 +1149,20 @@ public class ApiClient {
     }
 
     /**
-     * Sanitize filename by removing path.
-     * e.g. ../../sun.gif becomes sun.gif
+     * Check if the given MIME is a JSON MIME.
+     * JSON MIME examples:
+     * application/json
+     * application/json; charset=UTF8
+     * APPLICATION/JSON
+     * application/vnd.company+json
+     * "* / *" is also default to JSON
      *
-     * @param filename The filename to be sanitized
-     * @return The sanitized filename
+     * @param mime MIME (Multipurpose Internet Mail Extensions)
+     * @return True if the given MIME is JSON, false otherwise.
      */
-    public String sanitizeFilename(String filename) {
-        return filename.replaceFirst("^.*[/\\\\]", "");
-    }
-
-    /**
-     * {@link #executeAsync(Call, Type, ApiCallback)}
-     *
-     * @param <T> Type
-     * @param call An instance of the Call object
-     * @param callback ApiCallback&lt;T&gt;
-     */
-    public <T> void executeAsync(Call call, ApiCallback<T> callback) {
-        executeAsync(call, null, callback);
+    public boolean isJsonMime(String mime) {
+        String jsonMime = "(?i)^(application/json|[^;/ \t]+/[^;/ \t]+[+]json)[ \t]*(;.*)?$";
+        return mime != null && (mime.matches(jsonMime) || mime.equals("*/*"));
     }
 
     /**
@@ -1215,51 +1191,35 @@ public class ApiClient {
                     callback.onFailure(
                             e,
                             response.code(),
-                            response.headers().toMultimap());
+                            response.headers()
+                                    .toMultimap());
                     return;
                 } catch (Exception e) {
                     callback.onFailure(
                             new ApiException(e),
                             response.code(),
-                            response.headers().toMultimap());
+                            response.headers()
+                                    .toMultimap());
                     return;
                 }
                 callback.onSuccess(
                         result,
                         response.code(),
-                        response.headers().toMultimap());
+                        response.headers()
+                                .toMultimap());
             }
         });
     }
 
     /**
-     * Build HTTP call with the given options.
+     * {@link #executeAsync(Call, Type, ApiCallback)}
      *
-     * @param baseUrl The base URL
-     * @param path The sub-path of the HTTP URL
-     * @param method The request method, one of "GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH" and "DELETE"
-     * @param queryParams The query parameters
-     * @param collectionQueryParams The collection query parameters
-     * @param body The request body object
-     * @param headerParams The header parameters
-     * @param cookieParams The cookie parameters
-     * @param formParams The form parameters
-     * @param authNames The authentications to apply
-     * @param callback Callback for upload/download progress
-     * @return The HTTP call
-     * @throws tech.provve.api.client.generated.ApiException If fail to serialize the request body object
+     * @param <T> Type
+     * @param call An instance of the Call object
+     * @param callback ApiCallback&lt;T&gt;
      */
-    public Call buildCall(String baseUrl, String path, String method, List<Pair> queryParams, List<Pair> collectionQueryParams, Object body, Map<String, String> headerParams, Map<String, String> cookieParams, Map<String, Object> formParams, String[] authNames, ApiCallback callback) throws ApiException {
-        Request request = buildRequest(
-                baseUrl,
-                path,
-                method,
-                queryParams,
-                collectionQueryParams,
-                body,
-                headerParams, cookieParams, formParams, authNames, callback);
-
-        return httpClient.newCall(request);
+    public <T> void executeAsync(Call call, ApiCallback<T> callback) {
+        executeAsync(call, null, callback);
     }
 
     /**
@@ -1315,10 +1275,7 @@ public class ApiClient {
                 updatedQueryParams,
                 headerParams,
                 cookieParams,
-                requestBodyToString(reqBody),
-                method,
-                URI.create(url)
-        );
+                requestBodyToString(reqBody), method, URI.create(url));
 
         final Request.Builder reqBuilder = new Request.Builder().url(buildUrl(baseUrl, path, updatedQueryParams, collectionQueryParams));
         processHeaderParams(headerParams, reqBuilder);
@@ -1332,8 +1289,7 @@ public class ApiClient {
 
         if (callback != null && reqBody != null) {
             ProgressRequestBody progressRequestBody = new ProgressRequestBody(reqBody, callback);
-            request = reqBuilder.method(method, progressRequestBody)
-                                .build();
+            request = reqBuilder.method(method, progressRequestBody).build();
         } else {
             request = reqBuilder.method(method, reqBody).build();
         }
@@ -1375,6 +1331,36 @@ public class ApiClient {
     }
 
     /**
+     * Build HTTP call with the given options.
+     *
+     * @param baseUrl The base URL
+     * @param path The sub-path of the HTTP URL
+     * @param method The request method, one of "GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH" and "DELETE"
+     * @param queryParams The query parameters
+     * @param collectionQueryParams The collection query parameters
+     * @param body The request body object
+     * @param headerParams The header parameters
+     * @param cookieParams The cookie parameters
+     * @param formParams The form parameters
+     * @param authNames The authentications to apply
+     * @param callback Callback for upload/download progress
+     * @return The HTTP call
+     * @throws tech.provve.api.client.generated.ApiException If fail to serialize the request body object
+     */
+    public Call buildCall(String baseUrl, String path, String method, List<Pair> queryParams, List<Pair> collectionQueryParams, Object body, Map<String, String> headerParams, Map<String, String> cookieParams, Map<String, Object> formParams, String[] authNames, ApiCallback callback) throws ApiException {
+        Request request = buildRequest(
+                baseUrl,
+                path,
+                method,
+                queryParams,
+                collectionQueryParams,
+                body,
+                headerParams, cookieParams, formParams, authNames, callback);
+
+        return httpClient.newCall(request);
+    }
+
+    /**
      * Build full URL by concatenating base path, the given sub path and query parameters.
      *
      * @param baseUrl The base URL
@@ -1393,8 +1379,7 @@ public class ApiClient {
                 if (serverIndex < 0 || serverIndex >= servers.size()) {
                     throw new ArrayIndexOutOfBoundsException(String.format(
                             java.util.Locale.ROOT,
-                            "Invalid index %d when selecting the host settings. Must be less than %d", serverIndex,
-                            servers.size()
+                            "Invalid index %d when selecting the host settings. Must be less than %d", serverIndex, servers.size()
                     ));
                 }
                 baseURL = servers.get(serverIndex).URL(serverVariables);
@@ -1439,6 +1424,21 @@ public class ApiClient {
         }
 
         return url.toString();
+    }
+
+    /**
+     * Escape the given string to be used as URL query value.
+     *
+     * @param str String to be escaped
+     * @return Escaped string
+     */
+    public String escapeString(String str) {
+        try {
+            return URLEncoder.encode(str, "utf8")
+                             .replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            return str;
+        }
     }
 
     /**
@@ -1546,6 +1546,44 @@ public class ApiClient {
     }
 
     /**
+     * Convert the HTTP request body to a string.
+     *
+     * @param requestBody The HTTP request object
+     * @return The string representation of the HTTP request body
+     * @throws tech.provve.api.client.generated.ApiException If fail to serialize the request body object into a string
+     */
+    protected String requestBodyToString(RequestBody requestBody) throws ApiException {
+        if (requestBody != null) {
+            try {
+                final Buffer buffer = new Buffer();
+                requestBody.writeTo(buffer);
+                return buffer.readUtf8();
+            } catch (final IOException e) {
+                throw new ApiException(e);
+            }
+        }
+
+        // empty http request body
+        return "";
+    }
+
+    /**
+     * Add a Content-Disposition Header for the given key and file to the MultipartBody Builder.
+     *
+     * @param mpBuilder MultipartBody.Builder
+     * @param key       The key of the Header element
+     * @param file      The file to add to the Header
+     */
+    protected void addPartToMultiPartBuilder(MultipartBody.Builder mpBuilder, String key, File file) {
+        Headers partHeaders = Headers.of(
+                "Content-Disposition",
+                "form-data; name=\"" + key + "\"; filename=\"" + file.getName() + "\""
+        );
+        MediaType mediaType = MediaType.parse(guessContentTypeFromFile(file));
+        mpBuilder.addPart(partHeaders, RequestBody.create(file, mediaType));
+    }
+
+    /**
      * Add a Content-Disposition Header for the given key and complex object to the MultipartBody Builder.
      *
      * @param mpBuilder MultipartBody.Builder
@@ -1568,44 +1606,6 @@ public class ApiClient {
 
         Headers partHeaders = Headers.of("Content-Disposition", "form-data; name=\"" + key + "\"");
         mpBuilder.addPart(partHeaders, requestBody);
-    }
-
-    /**
-     * Add a Content-Disposition Header for the given key and file to the MultipartBody Builder.
-     *
-     * @param mpBuilder MultipartBody.Builder
-     * @param key       The key of the Header element
-     * @param file      The file to add to the Header
-     */
-    protected void addPartToMultiPartBuilder(MultipartBody.Builder mpBuilder, String key, File file) {
-        Headers partHeaders = Headers.of(
-                "Content-Disposition",
-                "form-data; name=\"" + key + "\"; filename=\"" + file.getName() + "\""
-        );
-        MediaType mediaType = MediaType.parse(guessContentTypeFromFile(file));
-        mpBuilder.addPart(partHeaders, RequestBody.create(file, mediaType));
-    }
-
-    /**
-     * Convert the HTTP request body to a string.
-     *
-     * @param requestBody The HTTP request object
-     * @return The string representation of the HTTP request body
-     * @throws tech.provve.api.client.generated.ApiException If fail to serialize the request body object into a string
-     */
-    protected String requestBodyToString(RequestBody requestBody) throws ApiException {
-        if (requestBody != null) {
-            try {
-                final Buffer buffer = new Buffer();
-                requestBody.writeTo(buffer);
-                return buffer.readUtf8();
-            } catch (final IOException e) {
-                throw new ApiException(e);
-            }
-        }
-
-        // empty http request body
-        return "";
     }
 
     /**
@@ -1637,11 +1637,21 @@ public class ApiClient {
                     final ApiCallback callback = (ApiCallback) request.tag();
                     return originalResponse.newBuilder()
                                            .body(new ProgressResponseBody(originalResponse.body(), callback))
-                                           .build();
+                        .build();
                 }
                 return originalResponse;
             }
         };
+    }
+
+    protected KeyStore newEmptyKeyStore(char[] password) throws GeneralSecurityException {
+        try {
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null, password);
+            return keyStore;
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
     }
 
     /**
@@ -1714,19 +1724,9 @@ public class ApiClient {
             httpClient = httpClient.newBuilder()
                                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustManagers[0])
                                    .hostnameVerifier(hostnameVerifier)
-                                   .build();
+                            .build();
         } catch (GeneralSecurityException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    protected KeyStore newEmptyKeyStore(char[] password) throws GeneralSecurityException {
-        try {
-            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            keyStore.load(null, password);
-            return keyStore;
-        } catch (IOException e) {
-            throw new AssertionError(e);
         }
     }
 }

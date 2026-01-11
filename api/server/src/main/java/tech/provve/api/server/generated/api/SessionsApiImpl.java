@@ -1,9 +1,9 @@
 package tech.provve.api.server.generated.api;
 
+import tech.provve.api.server.generated.dto.CreateSessionRequest;
 import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.ObservationPostRequest;
+import tech.provve.api.server.generated.dto.ObservationUpload;
 import tech.provve.api.server.generated.dto.SessionCreatedNotification;
-import tech.provve.api.server.generated.dto.SessionStage2PostRequest;
 
 import tech.provve.api.server.generated.ApiResponse;
 
@@ -17,15 +17,16 @@ import java.util.Map;
 // Implement this class
 
 public class SessionsApiImpl implements SessionsApi {
-    public Future<ApiResponse<Void>> observationPost(ObservationPostRequest observationPostRequest) {
+
+    public Future<ApiResponse<Notification>> createSession(CreateSessionRequest createSessionRequest) {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<Integer>> sessionStage1Get() {
+    public Future<ApiResponse<Integer>> getRandomValueForAntifraud() {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<Notification>> sessionStage2Post(SessionStage2PostRequest sessionStage2PostRequest) {
+    public Future<ApiResponse<Void>> uploadObservation(ObservationUpload observationUpload) {
         return Future.failedFuture(new HttpException(501));
     }
 

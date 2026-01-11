@@ -219,11 +219,9 @@ public class ExamResponse {
                 throw new IllegalArgumentException(String.format(
                         java.util.Locale.ROOT,
                         "The field `%s` in the JSON string is not defined in the `ExamResponse` properties. JSON: %s",
-                        entry.getKey(),
-                        jsonElement.toString()
-                ));
-            }
+                        entry.getKey(), jsonElement.toString()));
         }
+      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         if ((jsonObj.get("name") != null && !jsonObj.get("name")
                                                     .isJsonNull()) && !jsonObj.get("name")
@@ -302,10 +300,10 @@ public class ExamResponse {
 
     /**
      * Convert an instance of ExamResponse to an JSON string
-     *
-     * @return JSON string
-     */
-    public String toJson() {
+   *
+   * @return JSON string
+   */
+  public String toJson() {
     return JSON.getGson().toJson(this);
   }
 }
