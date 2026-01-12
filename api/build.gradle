@@ -3,11 +3,7 @@ import java.nio.file.Files
 
 plugins {
     id 'java'
-}
-
-repositories {
-    mavenCentral()
-    mavenLocal()
+    id 'idea'
 }
 
 configurations {
@@ -18,15 +14,12 @@ configurations {
     }
 }
 
-dependencies {
-    spec 'provve.tech.specs:antifraud-api:beta'
-
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+repositories {
+    mavenLocal()
 }
 
-test {
-    useJUnitPlatform()
+dependencies {
+    spec libs.antifraud.api
 }
 
 // run 'build' task to get specs

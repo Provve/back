@@ -1,0 +1,23 @@
+package {{invokerPackage}};
+
+import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.api.*;
+{{#apiInfo}}{{#apis}}
+    import {{apiPackage}}.{{classname}}Handler;
+    import {{apiPackage}}.{{classname}}Impl;
+{{/apis}}{{/apiInfo}}
+
+// костыль для динамического подтягивания всех гененрируемых api handler`ов
+public class HttpServerVerticle extends AbstractModule {
+
+@Override
+protected void configure() {
+Multibinder
+<RouteHandler> binder = Multibinder.newSetBinder(binder(), RouteHandler.class);
+    {{#apiInfo}}{{#apis}}
+        binder.addBinding().toInstance(new {{classname}}Handler(new {{classname}}Impl()));
+    {{/apis}}{{/apiInfo}}
+    }
+    }

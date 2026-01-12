@@ -4,9 +4,15 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+api/**/.openapi-generator/
+**/bin/
 
 ### IntelliJ IDEA ###
 .idea/
 *.iws
 *.iml
 *.ipr
+
+.clj-kondo
+.lsp
+.vscode

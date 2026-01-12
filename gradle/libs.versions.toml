@@ -1,0 +1,29 @@
+[versions]
+junit = '6.0.2'
+vertx = '4.5.23'
+
+[libraries]
+antifraud-api = { group = 'tech.provve.specs', name = 'antifraud-api', version = 'beta' }
+vertx-core = { module = 'io.vertx:vertx-core', version.ref = 'vertx' }
+vertx-web = { module = 'io.vertx:vertx-web', version.ref = 'vertx' }
+vertx-web-open-api = { module = 'io.vertx:vertx-web-openapi', version.ref = 'vertx' }
+jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind', version = '2.20.1' }
+findbugs-jsr305 = { module = 'com.google.code.findbugs:jsr305', version = '3.0.2' }
+
+guice = { module = 'com.google.inject:guice', version = '7.0.0' }
+lombok = { group = 'org.projectlombok', name = 'lombok', version = '1.18.42' }
+slf4j = { group = 'org.slf4j', name = 'slf4j-api', version = '2.1.0-alpha1' }
+
+junit-jupiter = { module = 'org.junit.jupiter:junit-jupiter', version.ref = 'junit' }
+junit-platform-launcher = { module = 'org.junit.platform:junit-platform-launcher', version.ref = 'junit' }
+
+[bundles]
+testing = ['junit-jupiter', 'junit-platform-launcher']
+vertx = [
+    'vertx-core',
+    'vertx-web',
+    'vertx-web-open-api'
+]
+
+[plugins]
+openapi-generator = { id = 'org.openapi.generator', version = '7.18.0' }

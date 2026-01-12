@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.openapitools:openapi-generator:7.18.0")
+}
+
+publishing {
+    publications {
+        apiSpec(MavenPublication) {
+            group = 'tech.provve.openapi-generators'
+            version = '1.0'
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}

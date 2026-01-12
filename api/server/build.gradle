@@ -1,0 +1,60 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        // добавить мой генератор в список доступных
+        classpath "tech.provve.openapi-generators:java-vertx-web-with-uuid:1.0"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'application'
+    alias(libs.plugins.openapi.generator)
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation libs.bundles.vertx
+    implementation libs.jackson.databind
+    implementation libs.slf4j
+    implementation libs.guice
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+}
+
+tasks.openApiGenerate {
+    dependsOn(build)
+
+    generatorName = 'java-vertx-web-uuid'
+    inputSpec = "${rootProject.layout.projectDirectory}/provve-api.yaml"
+    outputDir = "${layout.projectDirectory}"
+    configOptions = [
+            invokerPackage: "tech.provve.api.server.generated",
+            apiPackage    : "tech.provve.api.server.generated.api",
+            modelPackage           : "tech.provve.api.server.generated.dto",
+            hideGenerationTimestamp: "true"
+    ]
+    templateDir = "${layout.projectDirectory}/src/main/resources/templates"
+}
+
+processResources {
+    from("$rootProject.layout.projectDirectory") {
+        include 'provve-api.yaml'
+    }
+    from(rootProject.layout.buildDirectory.file('/specs')) {
+        include 'antifraud-api.yaml'
+        into('build/specs')
+    }
+}
+
+run {
+    mainClass = 'io.vertx.core.Launcher'
+    args = ['run', 'tech.provve.api.server.ApiServer']
+}

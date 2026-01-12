@@ -1,0 +1,13 @@
+rootProject.name = 'api'
+
+includeBuild('..')
+include 'java-vertx-web-with-uuid',
+        'server'
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
+}
