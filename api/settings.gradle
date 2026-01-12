@@ -2,8 +2,7 @@ rootProject.name = 'api'
 
 includeBuild('..')
 include 'java-vertx-web-with-uuid',
-        'server',
-        'client'
+        'server'
 
 dependencyResolutionManagement {
     versionCatalogs {
