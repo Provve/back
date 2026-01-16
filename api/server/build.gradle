@@ -11,6 +11,7 @@ buildscript {
 plugins {
     id 'java'
     id 'application'
+    id 'maven-publish'
     alias(libs.plugins.openapi.generator)
 }
 
@@ -57,4 +58,24 @@ processResources {
 run {
     mainClass = 'io.vertx.core.Launcher'
     args = ['run', 'tech.provve.api.server.ApiServer']
+}
+
+tasks.register('buildDto', org.gradle.jvm.tasks.Jar) {
+    from(sourceSets.main.output.classesDirs) {
+        include '**/dto/**'
+    }
+}
+
+publishing {
+    publications {
+        onlyDto(MavenPublication) {
+            group = 'tech.provve.api'
+            artifactId = 'server-dto'
+            version = '0.0.1'
+            artifact(tasks.named('buildDto'))
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
 }

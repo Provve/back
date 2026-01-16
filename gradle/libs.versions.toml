@@ -1,6 +1,8 @@
 [versions]
 junit = '6.0.2'
 vertx = '4.5.23'
+flyway = '11.20.2'
+jooq = '3.20.10'
 
 [libraries]
 antifraud-api = { group = 'tech.provve.specs', name = 'antifraud-api', version = 'beta' }
@@ -16,6 +18,9 @@ slf4j = { group = 'org.slf4j', name = 'slf4j-api', version = '2.1.0-alpha1' }
 
 junit-jupiter = { module = 'org.junit.jupiter:junit-jupiter', version.ref = 'junit' }
 junit-platform-launcher = { module = 'org.junit.platform:junit-platform-launcher', version.ref = 'junit' }
+flyway-postgres = { module = 'org.flywaydb:flyway-database-postgresql', version.ref = 'flyway' }
+jooq-postgres = { group = 'org.jooq', name = 'jooq-postgres-extensions', version.ref = 'jooq' }
+jooq-codegen = { group = 'org.jooq', name = 'jooq-codegen', version.ref = 'jooq' }
 
 [bundles]
 testing = ['junit-jupiter', 'junit-platform-launcher']
@@ -25,5 +30,8 @@ vertx = [
     'vertx-web-open-api'
 ]
 
+
 [plugins]
 openapi-generator = { id = 'org.openapi.generator', version = '7.18.0' }
+flyway = { id = 'org.flywaydb.flyway', version.ref = 'flyway' }
+jooq = { id = 'org.jooq.jooq-codegen-gradle', version.ref = 'jooq' }
