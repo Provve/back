@@ -1,34 +1,16 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
-import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
-import io.vertx.ext.web.FileUpload;
-import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.RegisterUserRequest;
-import tech.provve.api.server.generated.dto.UpdateEmailRequest;
-import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
-
-import tech.provve.api.server.generated.ApiResponse;
-
 import io.vertx.core.Future;
-import io.vertx.core.json.JsonObject;
-
-import java.util.List;
-import java.util.Map;
+import io.vertx.ext.web.FileUpload;
+import tech.provve.api.server.generated.ApiResponse;
+import tech.provve.api.server.generated.dto.*;
 
 public interface AccountsApi {
-
     Future<ApiResponse<AuthenticateUser200Response>> authenticateUser(AuthenticateUserRequest authenticateUserRequest);
-
     Future<ApiResponse<Void>> registerUser(RegisterUserRequest registerUserRequest);
-
     Future<ApiResponse<Void>> requestResetCode(String email);
-
     Future<ApiResponse<Void>> updateAvatar(FileUpload avatar);
-
     Future<ApiResponse<Void>> updateEmail(UpdateEmailRequest updateEmailRequest);
-
     Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest);
-
     Future<ApiResponse<Void>> upgradeAccount();
 }

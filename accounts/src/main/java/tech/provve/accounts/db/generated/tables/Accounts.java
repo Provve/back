@@ -12,7 +12,6 @@ import org.jooq.impl.TableImpl;
 import tech.provve.accounts.db.generated.tables.records.AccountsRecord;
 
 import java.util.Collection;
-import java.util.UUID;
 
 
 /**
@@ -21,22 +20,25 @@ import java.util.UUID;
 @SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class Accounts extends TableImpl<AccountsRecord> {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The reference instance of <code>accounts.accounts</code>
      */
     public static final Accounts ACCOUNTS_ = new Accounts();
 
-    private static final long serialVersionUID = 1L;
-
     /**
-     * The column <code>accounts.accounts.id</code>. Уникальный идентификатор
-     * пользователя
+     * The column <code>accounts.accounts.premium</code>. Является ли
+     * пользователь платным
      */
-    public final TableField<AccountsRecord, UUID> ID = createField(
-            DSL.name("id"),
-            SQLDataType.UUID.nullable(false),
+    public final TableField<AccountsRecord, Boolean> PREMIUM = createField(
+            DSL.name("premium"),
+            SQLDataType.BOOLEAN.defaultValue(DSL.field(
+                    DSL.raw("false"),
+                    SQLDataType.BOOLEAN
+            )),
             this,
-            "Уникальный идентификатор пользователя"
+            "Является ли пользователь платным"
     );
 
     /**
@@ -70,6 +72,13 @@ public class Accounts extends TableImpl<AccountsRecord> {
             this,
             "Ссылка на аватар пользователя"
     );
+
+    /**
+     * Create an aliased <code>accounts.accounts</code> table reference
+     */
+    public Accounts(String alias) {
+        this(DSL.name(alias), ACCOUNTS_);
+    }
 
     /**
      * The column <code>accounts.accounts.password_hash</code>. Хэшированный
@@ -108,13 +117,6 @@ public class Accounts extends TableImpl<AccountsRecord> {
             "Отображаемое имя пользователя"
     );
 
-    /**
-     * Create an aliased <code>accounts.accounts</code> table reference
-     */
-    public Accounts(String alias) {
-        this(DSL.name(alias), ACCOUNTS_);
-    }
-
     private Accounts(Name alias, Table<AccountsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
@@ -132,6 +134,14 @@ public class Accounts extends TableImpl<AccountsRecord> {
     }
 
     /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<AccountsRecord> getRecordType() {
+        return AccountsRecord.class;
+    }
+
+    /**
      * Create an aliased <code>accounts.accounts</code> table reference
      */
     public Accounts(Name alias) {
@@ -145,14 +155,6 @@ public class Accounts extends TableImpl<AccountsRecord> {
         this(DSL.name("accounts"), null);
     }
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<AccountsRecord> getRecordType() {
-        return AccountsRecord.class;
-    }
-
     @Override
     public Schema getSchema() {
         return aliased() ? null : tech.provve.accounts.db.generated.Accounts.ACCOUNTS;
@@ -163,7 +165,7 @@ public class Accounts extends TableImpl<AccountsRecord> {
         return Internal.createUniqueKey(
                 Accounts.ACCOUNTS_,
                 DSL.name("accounts_pkey"),
-                new TableField[]{Accounts.ACCOUNTS_.ID},
+                new TableField[]{Accounts.ACCOUNTS_.LOGIN},
                 true
         );
     }
@@ -211,16 +213,16 @@ public class Accounts extends TableImpl<AccountsRecord> {
      * Create an inline derived table from this table
      */
     @Override
-    public Accounts where(Collection<? extends Condition> conditions) {
-        return where(DSL.and(conditions));
+    public Accounts where(Condition condition) {
+        return new Accounts(getQualifiedName(), aliased() ? this : null, null, condition);
     }
 
     /**
      * Create an inline derived table from this table
      */
     @Override
-    public Accounts where(Condition condition) {
-        return new Accounts(getQualifiedName(), aliased() ? this : null, null, condition);
+    public Accounts where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
     }
 
     /**

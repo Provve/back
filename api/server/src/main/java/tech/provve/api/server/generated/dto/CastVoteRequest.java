@@ -1,14 +1,31 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.util.Objects;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CastVoteRequest {
 
+
+    public enum ReactionEnum {
+        _1("+1"),
+        _12("-1");
+
+        private String value;
+
+        ReactionEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
+    }
 
     private ReactionEnum reaction;
 
@@ -20,6 +37,7 @@ public class CastVoteRequest {
         this.reaction = reaction;
     }
 
+
     @JsonProperty("reaction")
     public ReactionEnum getReaction() {
         return reaction;
@@ -28,6 +46,7 @@ public class CastVoteRequest {
     public void setReaction(ReactionEnum reaction) {
         this.reaction = reaction;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -68,22 +87,5 @@ public class CastVoteRequest {
         }
         return o.toString()
                 .replace("\n", "\n    ");
-    }
-
-    public enum ReactionEnum {
-        _1("+1"),
-        _12("-1");
-
-        private String value;
-
-        ReactionEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
     }
 }

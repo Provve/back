@@ -6,6 +6,8 @@ docs/**
 src/test/**
 src/main/AndroidManifest.xml
 src/main/resources/**
+**/*Impl.java
+**/HttpServerVerticle.java
 .gitignore
 .travis.yml
 git_push.sh

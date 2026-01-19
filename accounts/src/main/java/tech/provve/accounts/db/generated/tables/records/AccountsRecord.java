@@ -8,8 +8,6 @@ import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
 import tech.provve.accounts.db.generated.tables.Accounts;
 
-import java.util.UUID;
-
 
 /**
  * Таблица для хранения учетных записей пользователей
@@ -29,13 +27,13 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
     /**
      * Create a detached, initialised AccountsRecord
      */
-    public AccountsRecord(UUID id, String login, String email, String avatarUrl, String passwordHash, Boolean consentPersonalData, String username) {
+    public AccountsRecord(String login, String email, String avatarUrl, Boolean premium, String passwordHash, Boolean consentPersonalData, String username) {
         super(Accounts.ACCOUNTS_);
 
-        setId(id);
         setLogin(login);
         setEmail(email);
         setAvatarUrl(avatarUrl);
+        setPremium(premium);
         setPasswordHash(passwordHash);
         setConsentPersonalData(consentPersonalData);
         setUsername(username);
@@ -43,19 +41,11 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
     }
 
     /**
-     * Getter for <code>accounts.accounts.id</code>. Уникальный идентификатор
+     * Setter for <code>accounts.accounts.username</code>. Отображаемое имя
      * пользователя
      */
-    public UUID getId() {
-        return (UUID) get(0);
-    }
-
-    /**
-     * Setter for <code>accounts.accounts.id</code>. Уникальный идентификатор
-     * пользователя
-     */
-    public AccountsRecord setId(UUID value) {
-        set(0, value);
+    public AccountsRecord setUsername(String value) {
+        set(6, value);
         return this;
     }
 
@@ -63,14 +53,14 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
      * Getter for <code>accounts.accounts.login</code>. Логин пользователя
      */
     public String getLogin() {
-        return (String) get(1);
+        return (String) get(0);
     }
 
     /**
      * Setter for <code>accounts.accounts.login</code>. Логин пользователя
      */
     public AccountsRecord setLogin(String value) {
-        set(1, value);
+        set(0, value);
         return this;
     }
 
@@ -79,7 +69,7 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
      * (может быть NULL, если не получено согласие)
      */
     public String getEmail() {
-        return (String) get(2);
+        return (String) get(1);
     }
 
     /**
@@ -87,7 +77,7 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
      * (может быть NULL, если не получено согласие)
      */
     public AccountsRecord setEmail(String value) {
-        set(2, value);
+        set(1, value);
         return this;
     }
 
@@ -96,24 +86,7 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
      * пользователя
      */
     public String getAvatarUrl() {
-        return (String) get(3);
-    }
-
-    /**
-     * Setter for <code>accounts.accounts.avatar_url</code>. Ссылка на аватар
-     * пользователя
-     */
-    public AccountsRecord setAvatarUrl(String value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>accounts.accounts.password_hash</code>. Хэшированный
-     * пароль пользователя
-     */
-    public String getPasswordHash() {
-        return (String) get(4);
+        return (String) get(2);
     }
 
     /**
@@ -126,11 +99,12 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
     }
 
     /**
-     * Getter for <code>accounts.accounts.consent_personal_data</code>. Флаг
-     * согласия пользователя на обработку персональных данных
+     * Setter for <code>accounts.accounts.avatar_url</code>. Ссылка на аватар
+     * пользователя
      */
-    public Boolean getConsentPersonalData() {
-        return (Boolean) get(5);
+    public AccountsRecord setAvatarUrl(String value) {
+        set(2, value);
+        return this;
     }
 
     /**
@@ -142,9 +116,22 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+    /**
+     * Getter for <code>accounts.accounts.premium</code>. Является ли
+     * пользователь платным
+     */
+    public Boolean getPremium() {
+        return (Boolean) get(3);
+    }
+
+    /**
+     * Setter for <code>accounts.accounts.premium</code>. Является ли
+     * пользователь платным
+     */
+    public AccountsRecord setPremium(Boolean value) {
+        set(3, value);
+        return this;
+    }
 
     /**
      * Getter for <code>accounts.accounts.username</code>. Отображаемое имя
@@ -155,20 +142,31 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
     }
 
     // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>accounts.accounts.password_hash</code>. Хэшированный
+     * пароль пользователя
+     */
+    public String getPasswordHash() {
+        return (String) get(4);
+    }
+
+    // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
     /**
-     * Setter for <code>accounts.accounts.username</code>. Отображаемое имя
-     * пользователя
+     * Getter for <code>accounts.accounts.consent_personal_data</code>. Флаг
+     * согласия пользователя на обработку персональных данных
      */
-    public AccountsRecord setUsername(String value) {
-        set(6, value);
-        return this;
+    public Boolean getConsentPersonalData() {
+        return (Boolean) get(5);
     }
 
     @Override
-    public Record1<UUID> key() {
+    public Record1<String> key() {
         return (Record1) super.key();
     }
 }

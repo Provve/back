@@ -1,24 +1,24 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthenticateUserRequest {
 
     private String login;
 
-    private String password;
+    private String passwordHash;
 
     public AuthenticateUserRequest() {
 
     }
 
-    public AuthenticateUserRequest(String login, String password) {
+    public AuthenticateUserRequest(String login, String passwordHash) {
         this.login = login;
-        this.password = password;
+        this.passwordHash = passwordHash;
     }
 
 
@@ -32,13 +32,13 @@ public class AuthenticateUserRequest {
     }
 
 
-    @JsonProperty("password")
-    public String getPassword() {
-        return password;
+    @JsonProperty("password_hash")
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
 
@@ -52,12 +52,12 @@ public class AuthenticateUserRequest {
         }
         AuthenticateUserRequest authenticateUserRequest = (AuthenticateUserRequest) o;
         return Objects.equals(login, authenticateUserRequest.login) &&
-                Objects.equals(password, authenticateUserRequest.password);
+                Objects.equals(passwordHash, authenticateUserRequest.passwordHash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password);
+        return Objects.hash(login, passwordHash);
     }
 
     @Override
@@ -68,8 +68,8 @@ public class AuthenticateUserRequest {
         sb.append("    login: ")
           .append(toIndentedString(login))
           .append("\n");
-        sb.append("    password: ")
-          .append(toIndentedString(password))
+        sb.append("    passwordHash: ")
+          .append(toIndentedString(passwordHash))
           .append("\n");
         sb.append("}");
         return sb.toString();

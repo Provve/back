@@ -1,19 +1,13 @@
 package tech.provve.api.server.generated.api;
 
+import io.vertx.core.Future;
+import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.api.server.generated.dto.Pagination;
 
-import tech.provve.api.server.generated.ApiResponse;
-
-import io.vertx.core.Future;
-import io.vertx.core.json.JsonObject;
-
 import java.util.List;
-import java.util.Map;
 
 public interface NotificationsApi {
-
     Future<ApiResponse<List<Notification>>> listNotifications(Pagination pagination);
-
     Future<ApiResponse<Void>> markNotificationsAsRead();
 }

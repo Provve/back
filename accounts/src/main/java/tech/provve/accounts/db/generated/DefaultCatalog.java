@@ -14,12 +14,19 @@ import org.jooq.impl.CatalogImpl;
 @SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class DefaultCatalog extends CatalogImpl {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The reference instance of <code>DEFAULT_CATALOG</code>
      */
     public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * No further instances allowed
+     */
+    private DefaultCatalog() {
+        super("");
+    }
 
     /**
      * A reference to the 3.20 minor release of the code generator. If this
@@ -28,11 +35,4 @@ public class DefaultCatalog extends CatalogImpl {
      * by specifying /configuration/generator/generate/jooqVersionReference
      */
     private static final String REQUIRE_RUNTIME_JOOQ_VERSION = Constants.VERSION_3_20;
-
-    /**
-     * No further instances allowed
-     */
-    private DefaultCatalog() {
-        super("");
-    }
 }

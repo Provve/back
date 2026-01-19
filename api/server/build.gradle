@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 buildscript {
     repositories {
         mavenLocal()
@@ -13,6 +15,7 @@ plugins {
     id 'application'
     id 'maven-publish'
     alias(libs.plugins.openapi.generator)
+    alias(libs.plugins.shadow)
 }
 
 repositories {
@@ -21,6 +24,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'provve-backend:accounts'
+
     implementation libs.bundles.vertx
     implementation libs.jackson.databind
     implementation libs.slf4j
@@ -78,4 +83,18 @@ publishing {
     repositories {
         mavenLocal()
     }
+}
+
+jar.enabled = false // чтобы не генерить второй jar
+
+def version = libs.versions.provve.backend.get()
+tasks.named('shadowJar', ShadowJar) {
+    archiveVersion.set(version)
+    archiveClassifier.set(null)
+    includes = [
+            'tech/provve/**',
+            '**/*.yaml'
+    ]
+
+//    minimize()
 }

@@ -1,7 +1,7 @@
 openapi: "3.0.4" # такая версия из-за неподдерживаемости vertx web openapi
 info:
   title: Provve API
-  version: "beta"
+  version: "0.0.1"
   description: Операции, требующие идентификатор аккаунта, извлекают идентификатор из токена авторизации.
 servers:
   - url: http://localhost:8080/api/v1
@@ -31,6 +31,12 @@ paths:
           description: Успешная регистрация
         '409':
           description: Пользователь уже существует
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+        '400':
+          description: Данные не прошли валидацию
           content:
             application/json:
               schema:
@@ -784,6 +790,7 @@ components:
       properties:
         login:
           type: string
+          description: Уникальный логин пользователя
         email:
           type: string
           description: Для восстановления пароля и рассылок

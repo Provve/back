@@ -19,12 +19,12 @@ import java.util.List;
 @SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class Accounts extends SchemaImpl {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The reference instance of <code>accounts</code>
      */
     public static final Accounts ACCOUNTS = new Accounts();
-
-    private static final long serialVersionUID = 1L;
 
     /**
      * No further instances allowed

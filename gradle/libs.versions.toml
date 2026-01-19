@@ -3,24 +3,36 @@ junit = '6.0.2'
 vertx = '4.5.23'
 flyway = '11.20.2'
 jooq = '3.20.10'
+mapstruct = '1.6.3'
+provve-backend = '0.0.1'
+testcontainers = '2.0.2'
+jwt = '0.13.0'
 
 [libraries]
-antifraud-api = { group = 'tech.provve.specs', name = 'antifraud-api', version = 'beta' }
+antifraud-api = { group = 'tech.provve.specs', name = 'antifraud-api', version.ref = 'provve-backend' }
 vertx-core = { module = 'io.vertx:vertx-core', version.ref = 'vertx' }
 vertx-web = { module = 'io.vertx:vertx-web', version.ref = 'vertx' }
 vertx-web-open-api = { module = 'io.vertx:vertx-web-openapi', version.ref = 'vertx' }
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind', version = '2.20.1' }
 findbugs-jsr305 = { module = 'com.google.code.findbugs:jsr305', version = '3.0.2' }
-
+jwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jwt" }
+jwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jwt" }
+jwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jwt" }
 guice = { module = 'com.google.inject:guice', version = '7.0.0' }
 lombok = { group = 'org.projectlombok', name = 'lombok', version = '1.18.42' }
 slf4j = { group = 'org.slf4j', name = 'slf4j-api', version = '2.1.0-alpha1' }
 
+guice-junit = { module = "name.falgout.jeffrey.testing.junit5:guice-extension", version = "1.2.1" }
 junit-jupiter = { module = 'org.junit.jupiter:junit-jupiter', version.ref = 'junit' }
 junit-platform-launcher = { module = 'org.junit.platform:junit-platform-launcher', version.ref = 'junit' }
+testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
+testcontainers-junit = { module = "org.testcontainers:testcontainers-junit-jupiter", version.ref = "testcontainers" }
+
 flyway-postgres = { module = 'org.flywaydb:flyway-database-postgresql', version.ref = 'flyway' }
 jooq-postgres = { group = 'org.jooq', name = 'jooq-postgres-extensions', version.ref = 'jooq' }
-jooq-codegen = { group = 'org.jooq', name = 'jooq-codegen', version.ref = 'jooq' }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+
 
 [bundles]
 testing = ['junit-jupiter', 'junit-platform-launcher']
@@ -33,5 +45,6 @@ vertx = [
 
 [plugins]
 openapi-generator = { id = 'org.openapi.generator', version = '7.18.0' }
+shadow = { id = "com.gradleup.shadow", version = "9.3.1" }
 flyway = { id = 'org.flywaydb.flyway', version.ref = 'flyway' }
 jooq = { id = 'org.jooq.jooq-codegen-gradle', version.ref = 'jooq' }

@@ -17,11 +17,23 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'tech.provve.api:server-dto:0.0.1'
+    implementation 'tech.provve.api:server-dto:0.0.1'
+
     implementation libs.jooq.postgres
-    compileOnly libs.jooq.codegen
+    implementation libs.guice
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.jwt.api
+    runtimeOnly libs.jwt.impl
+    runtimeOnly libs.jwt.jackson
 
     testImplementation libs.bundles.testing
+    testImplementation libs.guice.junit
+    testImplementation libs.testcontainers.postgresql
+    testImplementation libs.testcontainers.junit
 }
 
 flyway {
@@ -66,3 +78,12 @@ tasks.named("jooqCodegen") {
     inputs.files(fileTree("src/main/resources/db/migration"))
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}

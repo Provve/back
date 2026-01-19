@@ -1,21 +1,13 @@
-package tech.provve.api.server.generated.api;
-
-import tech.provve.api.server.generated.dto.ExamResponse;
-import io.vertx.ext.web.FileUpload;
-import tech.provve.api.server.generated.dto.Filter;
-import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.Pagination;
-import tech.provve.api.server.generated.dto.ResultResponse;
-import tech.provve.api.server.generated.dto.SkillResponse;
-
-import tech.provve.api.server.generated.ApiResponse;
+package tech.provve.api.server.controller;
 
 import io.vertx.core.Future;
-import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.handler.HttpException;
+import tech.provve.api.server.generated.ApiResponse;
+import tech.provve.api.server.generated.api.SkillsApi;
+import tech.provve.api.server.generated.dto.*;
 
 import java.util.List;
-import java.util.Map;
 
 // Implement this class
 
