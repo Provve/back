@@ -1,18 +1,33 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.vertx.ext.web.FileUpload;
-import tech.provve.api.server.generated.dto.ExamAddVote;
-import tech.provve.api.server.generated.dto.SkillAddVote;
-import tech.provve.api.server.generated.dto.SkillDelVote;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateVoteRequest {
 
+
+    public enum ActionEnum {
+        DELETE_SKILL("delete_skill"),
+        ADD_SKILL("add_skill"),
+        ADD_EXAM("add_exam");
+
+        private String value;
+
+        ActionEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return value;
+        }
+    }
 
     private ActionEnum action;
 
@@ -42,6 +57,7 @@ public class CreateVoteRequest {
         this.material = material;
     }
 
+
     @JsonProperty("action")
     public ActionEnum getAction() {
         return action;
@@ -50,6 +66,7 @@ public class CreateVoteRequest {
     public void setAction(ActionEnum action) {
         this.action = action;
     }
+
 
     @JsonProperty("arguments")
     public String getArguments() {
@@ -60,6 +77,7 @@ public class CreateVoteRequest {
         this.arguments = arguments;
     }
 
+
     @JsonProperty("name")
     public String getName() {
         return name;
@@ -68,6 +86,7 @@ public class CreateVoteRequest {
     public void setName(String name) {
         this.name = name;
     }
+
 
     @JsonProperty("id")
     public java.util.UUID getId() {
@@ -78,6 +97,7 @@ public class CreateVoteRequest {
         this.id = id;
     }
 
+
     @JsonProperty("skill_id")
     public java.util.UUID getSkillId() {
         return skillId;
@@ -86,6 +106,7 @@ public class CreateVoteRequest {
     public void setSkillId(java.util.UUID skillId) {
         this.skillId = skillId;
     }
+
 
     @JsonProperty("desc")
     public String getDesc() {
@@ -96,6 +117,7 @@ public class CreateVoteRequest {
         this.desc = desc;
     }
 
+
     @JsonProperty("material")
     public FileUpload getMaterial() {
         return material;
@@ -104,6 +126,7 @@ public class CreateVoteRequest {
     public void setMaterial(FileUpload material) {
         this.material = material;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -168,23 +191,5 @@ public class CreateVoteRequest {
         }
         return o.toString()
                 .replace("\n", "\n    ");
-    }
-
-    public enum ActionEnum {
-        DELETE_SKILL("delete_skill"),
-        ADD_SKILL("add_skill"),
-        ADD_EXAM("add_exam");
-
-        private String value;
-
-        ActionEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
     }
 }

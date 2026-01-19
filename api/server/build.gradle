@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 buildscript {
     repositories {
         mavenLocal()
@@ -11,7 +13,9 @@ buildscript {
 plugins {
     id 'java'
     id 'application'
+    id 'maven-publish'
     alias(libs.plugins.openapi.generator)
+    alias(libs.plugins.shadow)
 }
 
 repositories {
@@ -20,6 +24,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'provve-backend:accounts'
+
     implementation libs.bundles.vertx
     implementation libs.jackson.databind
     implementation libs.slf4j
@@ -57,4 +63,38 @@ processResources {
 run {
     mainClass = 'io.vertx.core.Launcher'
     args = ['run', 'tech.provve.api.server.ApiServer']
+}
+
+tasks.register('buildDto', org.gradle.jvm.tasks.Jar) {
+    from(sourceSets.main.output.classesDirs) {
+        include '**/dto/**'
+    }
+}
+
+publishing {
+    publications {
+        onlyDto(MavenPublication) {
+            group = 'tech.provve.api'
+            artifactId = 'server-dto'
+            version = '0.0.1'
+            artifact(tasks.named('buildDto'))
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+jar.enabled = false // чтобы не генерить второй jar
+
+def version = libs.versions.provve.backend.get()
+tasks.named('shadowJar', ShadowJar) {
+    archiveVersion.set(version)
+    archiveClassifier.set(null)
+    includes = [
+            'tech/provve/**',
+            '**/*.yaml'
+    ]
+
+//    minimize()
 }

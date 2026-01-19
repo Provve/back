@@ -1,22 +1,16 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.Pagination;
-
-import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.inject.Inject;
 import io.vertx.core.json.jackson.DatabindCodec;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
 import io.vertx.ext.web.validation.ValidationHandler;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Map;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.dto.Pagination;
 
 public class NotificationsApiHandler implements RouteHandler {
 
@@ -24,6 +18,7 @@ public class NotificationsApiHandler implements RouteHandler {
 
     private final NotificationsApi api;
 
+    @Inject
     public NotificationsApiHandler(NotificationsApi api) {
         this.api = api;
     }

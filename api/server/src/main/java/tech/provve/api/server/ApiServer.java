@@ -10,7 +10,10 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.openapi.RouterBuilderOptions;
 import lombok.extern.slf4j.Slf4j;
-import tech.provve.api.server.generated.HttpServerVerticle;
+import tech.provve.accounts.configuration.AccountsGuiceConfiguration;
+import tech.provve.api.server.configuration.JdbcConnectionGuiceConfiguration;
+import tech.provve.api.server.configuration.RouteHandlersGuiceConfiguration;
+import tech.provve.api.server.exception.HttpException;
 
 import java.util.Set;
 
@@ -24,7 +27,12 @@ public class ApiServer extends AbstractVerticle {
 
     @SuppressWarnings("unused")
     public ApiServer() {
-        var injector = Guice.createInjector(new HttpServerVerticle());
+        var injector = Guice.createInjector(
+                new RouteHandlersGuiceConfiguration(),
+                new JdbcConnectionGuiceConfiguration(),
+                new AccountsGuiceConfiguration()
+        );
+
         handlers = injector.getInstance(Key.get(new TypeLiteral<>() {
         }));
     }
@@ -41,8 +49,11 @@ public class ApiServer extends AbstractVerticle {
                          handlers.forEach(handler -> handler.mount(builder));
 
                          Router router = builder.createRouter();
-                         router.errorHandler(400, this::validationFailureHandler);
                          var rootRouter = builder.createRouter();
+
+                         rootRouter.errorHandler(500, this::handlerStatus500);
+                         rootRouter.errorHandler(400, this::handlerStatus400);
+
                          rootRouter.route("/api/v1/*")
                                    .subRouter(router);
 
@@ -57,10 +68,26 @@ public class ApiServer extends AbstractVerticle {
                      .onComplete(startPromise);
     }
 
-    private void validationFailureHandler(RoutingContext rc) {
+    private void handlerStatus500(RoutingContext rc) {
+        var failure = rc.failure();
+        int status = 500;
+
+        if (failure instanceof HttpException e) {
+            status = e.getStatusCode();
+        }
+
+        rc.response()
+          .setStatusCode(status)
+          .end("Error: " + rc.failure()
+                             .getMessage()
+          );
+    }
+
+    private void handlerStatus400(RoutingContext rc) {
         rc.response()
           .setStatusCode(400)
-          .end("Bad Request : " + rc.failure()
-                                    .getMessage());
+          .end("Error: " + rc.failure()
+                             .getMessage()
+          );
     }
 }

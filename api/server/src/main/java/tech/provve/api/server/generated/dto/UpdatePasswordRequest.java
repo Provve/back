@@ -1,16 +1,16 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdatePasswordRequest {
 
     private String resetCode;
 
-    private String newPassword;
+    private String newPasswordHash;
 
     private String login;
 
@@ -18,9 +18,9 @@ public class UpdatePasswordRequest {
 
     }
 
-    public UpdatePasswordRequest(String resetCode, String newPassword, String login) {
+    public UpdatePasswordRequest(String resetCode, String newPasswordHash, String login) {
         this.resetCode = resetCode;
-        this.newPassword = newPassword;
+        this.newPasswordHash = newPasswordHash;
         this.login = login;
     }
 
@@ -35,13 +35,13 @@ public class UpdatePasswordRequest {
     }
 
 
-    @JsonProperty("new_password")
-    public String getNewPassword() {
-        return newPassword;
+    @JsonProperty("new_password_hash")
+    public String getNewPasswordHash() {
+        return newPasswordHash;
     }
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
+    public void setNewPasswordHash(String newPasswordHash) {
+        this.newPasswordHash = newPasswordHash;
     }
 
 
@@ -65,13 +65,13 @@ public class UpdatePasswordRequest {
         }
         UpdatePasswordRequest updatePasswordRequest = (UpdatePasswordRequest) o;
         return Objects.equals(resetCode, updatePasswordRequest.resetCode) &&
-                Objects.equals(newPassword, updatePasswordRequest.newPassword) &&
+                Objects.equals(newPasswordHash, updatePasswordRequest.newPasswordHash) &&
                 Objects.equals(login, updatePasswordRequest.login);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(resetCode, newPassword, login);
+        return Objects.hash(resetCode, newPasswordHash, login);
     }
 
     @Override
@@ -82,8 +82,8 @@ public class UpdatePasswordRequest {
         sb.append("    resetCode: ")
           .append(toIndentedString(resetCode))
           .append("\n");
-        sb.append("    newPassword: ")
-          .append(toIndentedString(newPassword))
+        sb.append("    newPasswordHash: ")
+          .append(toIndentedString(newPasswordHash))
           .append("\n");
         sb.append("    login: ")
           .append(toIndentedString(login))

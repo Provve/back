@@ -1,0 +1,89 @@
+buildscript {
+    dependencies {
+        classpath 'org.postgresql:postgresql:42.7.2'
+        classpath libs.flyway.postgres
+    }
+}
+
+plugins {
+    id 'java'
+    alias(libs.plugins.jooq)
+    alias(libs.plugins.flyway)
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'tech.provve.api:server-dto:0.0.1'
+
+    implementation libs.jooq.postgres
+    implementation libs.guice
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.jwt.api
+    runtimeOnly libs.jwt.impl
+    runtimeOnly libs.jwt.jackson
+
+    testImplementation libs.bundles.testing
+    testImplementation libs.guice.junit
+    testImplementation libs.testcontainers.postgresql
+    testImplementation libs.testcontainers.junit
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/provve'
+    user = 'postgres'
+    password = '1'
+}
+
+jooq {
+    configuration {
+        jdbc {
+            driver = "org.postgresql.Driver"
+            url = 'jdbc:postgresql://localhost:5432/provve'
+            user = 'postgres'
+            password = '1'
+        }
+        generator {
+            database {
+                inputSchema = "accounts"
+            }
+            generate {
+                fluentSetters = true
+                javaTimeTypes = true
+                globalObjectReferences = false // выключить артефакты кроме...
+                globalTableReferences = true
+                globalKeyReferences = true
+            }
+            target {
+                packageName = "tech.provve.accounts.db.generated"
+                locale = 'ru'
+                directory = "/src/main/java/"
+            }
+        }
+    }
+}
+
+tasks.named("jooqCodegen") {
+    dependsOn(tasks.named("flywayMigrate"))
+
+    // Use Flyway migration scripts as input to code generation, to avoid
+    // task execution when unnecessary
+    inputs.files(fileTree("src/main/resources/db/migration"))
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}

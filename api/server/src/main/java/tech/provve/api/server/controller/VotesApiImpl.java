@@ -1,22 +1,12 @@
-package tech.provve.api.server.generated.api;
-
-import tech.provve.api.server.generated.dto.AddCommentOnVoteRequest;
-import tech.provve.api.server.generated.dto.CastVoteRequest;
-import tech.provve.api.server.generated.dto.CommentResponse;
-import tech.provve.api.server.generated.dto.CreateVoteRequest;
-import tech.provve.api.server.generated.dto.Filter;
-import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.Pagination;
-import tech.provve.api.server.generated.dto.VoteResponse;
-
-import tech.provve.api.server.generated.ApiResponse;
+package tech.provve.api.server.controller;
 
 import io.vertx.core.Future;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.handler.HttpException;
+import tech.provve.api.server.generated.ApiResponse;
+import tech.provve.api.server.generated.api.VotesApi;
+import tech.provve.api.server.generated.dto.*;
 
 import java.util.List;
-import java.util.Map;
 
 // Implement this class
 

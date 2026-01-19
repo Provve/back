@@ -1,9 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RegisterUserRequest {
@@ -12,7 +12,7 @@ public class RegisterUserRequest {
 
     private String email;
 
-    private String password;
+    private String passwordHash;
 
     private Boolean consentPersonalData;
 
@@ -22,10 +22,10 @@ public class RegisterUserRequest {
 
     }
 
-    public RegisterUserRequest(String login, String email, String password, Boolean consentPersonalData, String username) {
+    public RegisterUserRequest(String login, String email, String passwordHash, Boolean consentPersonalData, String username) {
         this.login = login;
         this.email = email;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.consentPersonalData = consentPersonalData;
         this.username = username;
     }
@@ -51,13 +51,13 @@ public class RegisterUserRequest {
     }
 
 
-    @JsonProperty("password")
-    public String getPassword() {
-        return password;
+    @JsonProperty("password_hash")
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
 
@@ -92,14 +92,14 @@ public class RegisterUserRequest {
         RegisterUserRequest registerUserRequest = (RegisterUserRequest) o;
         return Objects.equals(login, registerUserRequest.login) &&
                 Objects.equals(email, registerUserRequest.email) &&
-                Objects.equals(password, registerUserRequest.password) &&
+                Objects.equals(passwordHash, registerUserRequest.passwordHash) &&
                 Objects.equals(consentPersonalData, registerUserRequest.consentPersonalData) &&
                 Objects.equals(username, registerUserRequest.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, email, password, consentPersonalData, username);
+        return Objects.hash(login, email, passwordHash, consentPersonalData, username);
     }
 
     @Override
@@ -113,8 +113,8 @@ public class RegisterUserRequest {
         sb.append("    email: ")
           .append(toIndentedString(email))
           .append("\n");
-        sb.append("    password: ")
-          .append(toIndentedString(password))
+        sb.append("    passwordHash: ")
+          .append(toIndentedString(passwordHash))
           .append("\n");
         sb.append("    consentPersonalData: ")
           .append(toIndentedString(consentPersonalData))
