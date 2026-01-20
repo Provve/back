@@ -7,6 +7,7 @@ mapstruct = '1.6.3'
 provve-backend = '0.0.1'
 testcontainers = '2.0.2'
 jwt = '0.13.0'
+avaje = '12.2'
 
 [libraries]
 antifraud-api = { group = 'tech.provve.specs', name = 'antifraud-api', version.ref = 'provve-backend' }
@@ -18,11 +19,13 @@ findbugs-jsr305 = { module = 'com.google.code.findbugs:jsr305', version = '3.0.2
 jwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jwt" }
 jwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jwt" }
 jwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jwt" }
-guice = { module = 'com.google.inject:guice', version = '7.0.0' }
 lombok = { group = 'org.projectlombok', name = 'lombok', version = '1.18.42' }
 slf4j = { group = 'org.slf4j', name = 'slf4j-api', version = '2.1.0-alpha1' }
 
-guice-junit = { module = "name.falgout.jeffrey.testing.junit5:guice-extension", version = "1.2.1" }
+avaje = { module = "io.avaje:avaje-inject", version.ref = "avaje" }
+avaje-generator = { module = "io.avaje:avaje-inject-generator", version.ref = "avaje" }
+avaje-test = { module = "io.avaje:avaje-inject-test", version.ref = "avaje" }
+
 junit-jupiter = { module = 'org.junit.jupiter:junit-jupiter', version.ref = 'junit' }
 junit-platform-launcher = { module = 'org.junit.platform:junit-platform-launcher', version.ref = 'junit' }
 testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }

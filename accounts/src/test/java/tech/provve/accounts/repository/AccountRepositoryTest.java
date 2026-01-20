@@ -1,17 +1,14 @@
 package tech.provve.accounts.repository;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import name.falgout.jeffrey.testing.junit.guice.GuiceExtension;
-import name.falgout.jeffrey.testing.junit.guice.IncludeModule;
+import io.avaje.inject.BeanScopeBuilder;
+import io.avaje.inject.test.InjectTest;
+import io.avaje.inject.test.Setup;
+import jakarta.inject.Inject;
 import org.jooq.exception.IntegrityConstraintViolationException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
-import tech.provve.accounts.configuration.AccountsGuiceConfiguration;
 import tech.provve.accounts.domain.model.Account;
 
 import java.sql.Connection;
@@ -19,14 +16,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(GuiceExtension.class)
+@InjectTest
 @Testcontainers
-
-@IncludeModule(AccountsGuiceConfiguration.class)
-@IncludeModule(AccountRepositoryTest.TestConnection.class)
 class AccountRepositoryTest {
 
     @Container
@@ -37,6 +30,23 @@ class AccountRepositoryTest {
 
     @Inject
     AccountRepository repository;
+
+    @Setup
+    void setup(BeanScopeBuilder builder) {
+        builder.bean(Connection.class, testConn());
+    }
+
+    Connection testConn() {
+        Properties props = new Properties();
+        props.setProperty("user", "postgres");
+        props.setProperty("password", "1");
+
+        try {
+            return DriverManager.getConnection(postgres.getJdbcUrl(), props);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     void save_allValuesSet_savedWithoutExceptions() {
@@ -56,11 +66,32 @@ class AccountRepositoryTest {
     }
 
     @Test
+    void findByLogin_savedCorrectly_returnedSame() {
+        // arrange
+        var account = new Account(
+                "b",
+                "b@c.d",
+                "h",
+                true,
+                "n",
+                "p",
+                true
+        );
+        repository.save(account);
+
+        // act
+        var returned = repository.findByLogin(account.login());
+
+        // assert
+        assertEquals(account, returned.get());
+    }
+
+    @Test
     void save_missingRequiredValues_throwsException() {
         // arrange
         var account = new Account(
-                null,
-                "b@c.d",
+                "a",
+                "",
                 "h",
                 true,
                 "n",
@@ -70,19 +101,6 @@ class AccountRepositoryTest {
 
         // act assert
         assertThrows(IntegrityConstraintViolationException.class, () -> repository.save(account));
-    }
-
-    static class TestConnection extends AbstractModule {
-
-        @Provides
-        Connection connection() throws SQLException {
-            Properties props = new Properties();
-            props.setProperty("user", "postgres");
-            props.setProperty("password", "1");
-
-            return DriverManager.getConnection(postgres.getJdbcUrl(), props);
-        }
-
     }
 
 }

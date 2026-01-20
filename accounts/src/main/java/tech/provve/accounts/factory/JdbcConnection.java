@@ -1,17 +1,18 @@
-package tech.provve.api.server.configuration;
+package tech.provve.accounts.factory;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
+import io.avaje.inject.Bean;
+import io.avaje.inject.Factory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class JdbcConnectionGuiceConfiguration extends AbstractModule {
+@Factory
+public class JdbcConnection {
 
-    @Provides
-    Connection connection() throws SQLException {
+    @Bean
+    public Connection connection() throws SQLException {
         Properties props = new Properties();
         props.setProperty("user", "postgres");
         props.setProperty("password", "1");

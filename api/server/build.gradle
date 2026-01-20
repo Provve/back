@@ -29,7 +29,9 @@ dependencies {
     implementation libs.bundles.vertx
     implementation libs.jackson.databind
     implementation libs.slf4j
-    implementation libs.guice
+
+    implementation libs.avaje
+    annotationProcessor libs.avaje.generator
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok
@@ -95,6 +97,7 @@ tasks.named('shadowJar', ShadowJar) {
             'tech/provve/**',
             '**/*.yaml'
     ]
+    mergeServiceFiles()
 
 //    minimize()
 }

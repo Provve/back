@@ -1,7 +1,6 @@
 package tech.provve.api.server.generated.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.inject.Inject;
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.RoutingContext;
@@ -9,6 +8,7 @@ import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.validation.RequestParameter;
 import io.vertx.ext.web.validation.RequestParameters;
 import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.provve.api.server.RouteHandler;
@@ -17,13 +17,13 @@ import tech.provve.api.server.generated.dto.RegisterUserRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 
+@Singleton
 public class AccountsApiHandler implements RouteHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(AccountsApiHandler.class);
 
     private final AccountsApi api;
 
-    @Inject
     public AccountsApiHandler(AccountsApi api) {
         this.api = api;
     }

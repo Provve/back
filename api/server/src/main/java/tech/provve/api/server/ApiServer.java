@@ -1,8 +1,6 @@
 package tech.provve.api.server;
 
-import com.google.inject.Guice;
-import com.google.inject.Key;
-import com.google.inject.TypeLiteral;
+import io.avaje.inject.BeanScope;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.ext.web.Router;
@@ -10,12 +8,9 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.openapi.RouterBuilderOptions;
 import lombok.extern.slf4j.Slf4j;
-import tech.provve.accounts.configuration.AccountsGuiceConfiguration;
-import tech.provve.api.server.configuration.JdbcConnectionGuiceConfiguration;
-import tech.provve.api.server.configuration.RouteHandlersGuiceConfiguration;
 import tech.provve.api.server.exception.HttpException;
 
-import java.util.Set;
+import java.util.List;
 
 @Slf4j
 @SuppressWarnings("unused")
@@ -23,18 +18,13 @@ public class ApiServer extends AbstractVerticle {
 
     private static final String SPEC_FILE = "provve-api.yaml";
 
-    private final Set<RouteHandler> handlers;
+    private final List<RouteHandler> handlers;
 
     @SuppressWarnings("unused")
     public ApiServer() {
-        var injector = Guice.createInjector(
-                new RouteHandlersGuiceConfiguration(),
-                new JdbcConnectionGuiceConfiguration(),
-                new AccountsGuiceConfiguration()
-        );
-
-        handlers = injector.getInstance(Key.get(new TypeLiteral<>() {
-        }));
+        BeanScope beanScope = BeanScope.builder()
+                                       .build();
+        this.handlers = beanScope.list(RouteHandler.class);
     }
 
     @Override

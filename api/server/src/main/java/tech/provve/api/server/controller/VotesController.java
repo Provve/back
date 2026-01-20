@@ -2,15 +2,15 @@ package tech.provve.api.server.controller;
 
 import io.vertx.core.Future;
 import io.vertx.ext.web.handler.HttpException;
+import jakarta.inject.Singleton;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.VotesApi;
 import tech.provve.api.server.generated.dto.*;
 
 import java.util.List;
 
-// Implement this class
-
-public class VotesApiImpl implements VotesApi {
+@Singleton
+public class VotesController implements VotesApi {
 
     public Future<ApiResponse<Void>> addCommentOnVote(java.util.UUID id, AddCommentOnVoteRequest addCommentOnVoteRequest) {
         return Future.failedFuture(new HttpException(501));

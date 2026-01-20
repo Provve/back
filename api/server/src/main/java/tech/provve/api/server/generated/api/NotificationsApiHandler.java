@@ -1,24 +1,24 @@
 package tech.provve.api.server.generated.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.inject.Inject;
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.validation.RequestParameters;
 import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.provve.api.server.RouteHandler;
 import tech.provve.api.server.generated.dto.Pagination;
 
+@Singleton
 public class NotificationsApiHandler implements RouteHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(NotificationsApiHandler.class);
 
     private final NotificationsApi api;
 
-    @Inject
     public NotificationsApiHandler(NotificationsApi api) {
         this.api = api;
     }

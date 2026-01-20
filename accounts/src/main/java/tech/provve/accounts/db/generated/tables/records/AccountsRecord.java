@@ -18,6 +18,136 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
+     * Setter for <code>accounts.accounts.login</code>. Логин пользователя
+     */
+    public AccountsRecord setLogin(String value) {
+        set(0, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>accounts.accounts.login</code>. Логин пользователя
+     */
+    public String getLogin() {
+        return (String) get(0);
+    }
+
+    /**
+     * Setter for <code>accounts.accounts.email</code>. Email пользователя
+     * (может быть NULL, если не получено согласие)
+     */
+    public AccountsRecord setEmail(String value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>accounts.accounts.email</code>. Email пользователя
+     * (может быть NULL, если не получено согласие)
+     */
+    public String getEmail() {
+        return (String) get(1);
+    }
+
+    /**
+     * Setter for <code>accounts.accounts.avatar_url</code>. Ссылка на аватар
+     * пользователя
+     */
+    public AccountsRecord setAvatarUrl(String value) {
+        set(2, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>accounts.accounts.avatar_url</code>. Ссылка на аватар
+     * пользователя
+     */
+    public String getAvatarUrl() {
+        return (String) get(2);
+    }
+
+    /**
+     * Setter for <code>accounts.accounts.premium</code>. Является ли
+     * пользователь платным
+     */
+    public AccountsRecord setPremium(Boolean value) {
+        set(3, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>accounts.accounts.premium</code>. Является ли
+     * пользователь платным
+     */
+    public Boolean getPremium() {
+        return (Boolean) get(3);
+    }
+
+    /**
+     * Setter for <code>accounts.accounts.password_hash</code>. Хэшированный
+     * пароль пользователя
+     */
+    public AccountsRecord setPasswordHash(String value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>accounts.accounts.password_hash</code>. Хэшированный
+     * пароль пользователя
+     */
+    public String getPasswordHash() {
+        return (String) get(4);
+    }
+
+    /**
+     * Setter for <code>accounts.accounts.consent_personal_data</code>. Флаг
+     * согласия пользователя на обработку персональных данных
+     */
+    public AccountsRecord setConsentPersonalData(Boolean value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>accounts.accounts.consent_personal_data</code>. Флаг
+     * согласия пользователя на обработку персональных данных
+     */
+    public Boolean getConsentPersonalData() {
+        return (Boolean) get(5);
+    }
+
+    /**
+     * Setter for <code>accounts.accounts.username</code>. Отображаемое имя
+     * пользователя
+     */
+    public AccountsRecord setUsername(String value) {
+        set(6, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>accounts.accounts.username</code>. Отображаемое имя
+     * пользователя
+     */
+    public String getUsername() {
+        return (String) get(6);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Record1<String> key() {
+        return (Record1) super.key();
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
      * Create a detached AccountsRecord
      */
     public AccountsRecord() {
@@ -38,135 +168,5 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
         setConsentPersonalData(consentPersonalData);
         setUsername(username);
         resetTouchedOnNotNull();
-    }
-
-    /**
-     * Setter for <code>accounts.accounts.username</code>. Отображаемое имя
-     * пользователя
-     */
-    public AccountsRecord setUsername(String value) {
-        set(6, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>accounts.accounts.login</code>. Логин пользователя
-     */
-    public String getLogin() {
-        return (String) get(0);
-    }
-
-    /**
-     * Setter for <code>accounts.accounts.login</code>. Логин пользователя
-     */
-    public AccountsRecord setLogin(String value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>accounts.accounts.email</code>. Email пользователя
-     * (может быть NULL, если не получено согласие)
-     */
-    public String getEmail() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>accounts.accounts.email</code>. Email пользователя
-     * (может быть NULL, если не получено согласие)
-     */
-    public AccountsRecord setEmail(String value) {
-        set(1, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>accounts.accounts.avatar_url</code>. Ссылка на аватар
-     * пользователя
-     */
-    public String getAvatarUrl() {
-        return (String) get(2);
-    }
-
-    /**
-     * Setter for <code>accounts.accounts.password_hash</code>. Хэшированный
-     * пароль пользователя
-     */
-    public AccountsRecord setPasswordHash(String value) {
-        set(4, value);
-        return this;
-    }
-
-    /**
-     * Setter for <code>accounts.accounts.avatar_url</code>. Ссылка на аватар
-     * пользователя
-     */
-    public AccountsRecord setAvatarUrl(String value) {
-        set(2, value);
-        return this;
-    }
-
-    /**
-     * Setter for <code>accounts.accounts.consent_personal_data</code>. Флаг
-     * согласия пользователя на обработку персональных данных
-     */
-    public AccountsRecord setConsentPersonalData(Boolean value) {
-        set(5, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>accounts.accounts.premium</code>. Является ли
-     * пользователь платным
-     */
-    public Boolean getPremium() {
-        return (Boolean) get(3);
-    }
-
-    /**
-     * Setter for <code>accounts.accounts.premium</code>. Является ли
-     * пользователь платным
-     */
-    public AccountsRecord setPremium(Boolean value) {
-        set(3, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>accounts.accounts.username</code>. Отображаемое имя
-     * пользователя
-     */
-    public String getUsername() {
-        return (String) get(6);
-    }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
-    /**
-     * Getter for <code>accounts.accounts.password_hash</code>. Хэшированный
-     * пароль пользователя
-     */
-    public String getPasswordHash() {
-        return (String) get(4);
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Getter for <code>accounts.accounts.consent_personal_data</code>. Флаг
-     * согласия пользователя на обработку персональных данных
-     */
-    public Boolean getConsentPersonalData() {
-        return (Boolean) get(5);
-    }
-
-    @Override
-    public Record1<String> key() {
-        return (Record1) super.key();
     }
 }

@@ -28,18 +28,12 @@ public class Accounts extends TableImpl<AccountsRecord> {
     public static final Accounts ACCOUNTS_ = new Accounts();
 
     /**
-     * The column <code>accounts.accounts.premium</code>. Является ли
-     * пользователь платным
+     * The class holding records for this type
      */
-    public final TableField<AccountsRecord, Boolean> PREMIUM = createField(
-            DSL.name("premium"),
-            SQLDataType.BOOLEAN.defaultValue(DSL.field(
-                    DSL.raw("false"),
-                    SQLDataType.BOOLEAN
-            )),
-            this,
-            "Является ли пользователь платным"
-    );
+    @Override
+    public Class<AccountsRecord> getRecordType() {
+        return AccountsRecord.class;
+    }
 
     /**
      * The column <code>accounts.accounts.login</code>. Логин пользователя
@@ -74,11 +68,18 @@ public class Accounts extends TableImpl<AccountsRecord> {
     );
 
     /**
-     * Create an aliased <code>accounts.accounts</code> table reference
+     * The column <code>accounts.accounts.premium</code>. Является ли
+     * пользователь платным
      */
-    public Accounts(String alias) {
-        this(DSL.name(alias), ACCOUNTS_);
-    }
+    public final TableField<AccountsRecord, Boolean> PREMIUM = createField(
+            DSL.name("premium"),
+            SQLDataType.BOOLEAN.defaultValue(DSL.field(
+                    DSL.raw("false"),
+                    SQLDataType.BOOLEAN
+            )),
+            this,
+            "Является ли пользователь платным"
+    );
 
     /**
      * The column <code>accounts.accounts.password_hash</code>. Хэшированный
@@ -134,11 +135,10 @@ public class Accounts extends TableImpl<AccountsRecord> {
     }
 
     /**
-     * The class holding records for this type
+     * Create an aliased <code>accounts.accounts</code> table reference
      */
-    @Override
-    public Class<AccountsRecord> getRecordType() {
-        return AccountsRecord.class;
+    public Accounts(String alias) {
+        this(DSL.name(alias), ACCOUNTS_);
     }
 
     /**

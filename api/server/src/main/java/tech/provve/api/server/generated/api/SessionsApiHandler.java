@@ -1,26 +1,26 @@
 package tech.provve.api.server.generated.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.inject.Inject;
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.validation.RequestParameter;
 import io.vertx.ext.web.validation.RequestParameters;
 import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.provve.api.server.RouteHandler;
 import tech.provve.api.server.generated.dto.CreateSessionRequest;
 import tech.provve.api.server.generated.dto.ObservationUpload;
 
+@Singleton
 public class SessionsApiHandler implements RouteHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionsApiHandler.class);
 
     private final SessionsApi api;
 
-    @Inject
     public SessionsApiHandler(SessionsApi api) {
         this.api = api;
     }

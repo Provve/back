@@ -20,7 +20,6 @@ dependencies {
     implementation 'tech.provve.api:server-dto:0.0.1'
 
     implementation libs.jooq.postgres
-    implementation libs.guice
     implementation libs.mapstruct
     annotationProcessor libs.mapstruct.processor
     compileOnly libs.lombok
@@ -30,8 +29,12 @@ dependencies {
     runtimeOnly libs.jwt.impl
     runtimeOnly libs.jwt.jackson
 
+    implementation libs.avaje
+    annotationProcessor libs.avaje.generator
+
     testImplementation libs.bundles.testing
-    testImplementation libs.guice.junit
+    testImplementation(libs.avaje.test)
+    testAnnotationProcessor(libs.avaje.generator)
     testImplementation libs.testcontainers.postgresql
     testImplementation libs.testcontainers.junit
 }

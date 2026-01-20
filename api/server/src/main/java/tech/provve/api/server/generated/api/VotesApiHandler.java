@@ -1,38 +1,27 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.AddCommentOnVoteRequest;
-import tech.provve.api.server.generated.dto.CastVoteRequest;
-import tech.provve.api.server.generated.dto.CommentResponse;
-import tech.provve.api.server.generated.dto.CreateVoteRequest;
-import tech.provve.api.server.generated.dto.Filter;
-import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.Pagination;
-import tech.provve.api.server.generated.dto.VoteResponse;
-
-import tech.provve.api.server.RouteHandler;
-import com.google.inject.Inject;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.ValidationHandler;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.dto.*;
 
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
+@Singleton
 public class VotesApiHandler implements RouteHandler {
 
         private static final Logger logger = LoggerFactory.getLogger(VotesApiHandler.class);
 
         private final VotesApi api;
 
-        @Inject
         public VotesApiHandler(VotesApi api) {
                 this.api = api;
         }

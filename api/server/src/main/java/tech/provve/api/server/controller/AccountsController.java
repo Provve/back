@@ -1,6 +1,5 @@
 package tech.provve.api.server.controller;
 
-import com.google.inject.Inject;
 import io.vertx.core.Future;
 import io.vertx.ext.web.FileUpload;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +11,8 @@ import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.AccountsApi;
 import tech.provve.api.server.generated.dto.*;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
-public class AccountsApiImpl implements AccountsApi {
+@RequiredArgsConstructor
+public class AccountsController implements AccountsApi {
 
     private final AccountService accountService;
 
