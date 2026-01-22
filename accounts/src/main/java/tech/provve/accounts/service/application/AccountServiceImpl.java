@@ -5,11 +5,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.jooq.exception.IntegrityConstraintViolationException;
 import org.postgresql.util.PSQLException;
+import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.exception.AccountAlreadyExists;
+import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.accounts.mapper.AccountMapper;
 import tech.provve.accounts.repository.AccountRepository;
+import tech.provve.accounts.service.JwtIssuingService;
+import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
+
+import static tech.provve.accounts.predicate.StringPredicate.isBlank;
+import static tech.provve.accounts.predicate.StringPredicate.isNotBlank;
 
 @Log
 @Singleton
@@ -18,10 +25,12 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository repository;
 
+    private final JwtIssuingService jwtIssuingService;
+
     @Override
-    public void registerUser(RegisterUserRequest registerUserRequest) {
+    public void register(RegisterUserRequest registerUserRequest) {
         try {
-            validate(registerUserRequest);
+            validateRegister(registerUserRequest);
 
             repository.save(AccountMapper.INSTANCE.map(registerUserRequest));
 
@@ -42,27 +51,47 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    private void validate(RegisterUserRequest registerUserRequest) {
-        boolean emailSetIllegally = !registerUserRequest.getConsentPersonalData()
-                && (registerUserRequest.getEmail() != null
-                && !registerUserRequest.getEmail()
-                                       .isEmpty());
+    private void validateRegister(RegisterUserRequest registerUserRequest) {
+        boolean emailSetIllegally = !registerUserRequest.getConsentPersonalData() && isNotBlank(registerUserRequest.getEmail());
         if (emailSetIllegally) {
             throw new DataNotValid("Email cannot be set before an user personal data consent.");
         }
+        validateLogin(registerUserRequest.getLogin());
+        validatePasswordHash(registerUserRequest.getPasswordHash());
+    }
 
-        boolean loginEmpty = registerUserRequest.getLogin() == null
-                || registerUserRequest.getLogin()
-                                      .isEmpty();
-        if (loginEmpty) {
-            throw new DataNotValid("Login required to be not empty");
+    @Override
+    public String authenticate(AuthenticateUserRequest authenticateUserRequest) {
+        validateLogin(authenticateUserRequest.getLogin());
+        validatePasswordHash(authenticateUserRequest.getPasswordHash());
+
+        Account account = repository.findByLogin(authenticateUserRequest.getLogin())
+                                    .orElseThrow(() -> new AccountNotFound(String.format(
+                                            "Account with login '%s' not found",
+                                            authenticateUserRequest.getLogin()
+                                    )));
+
+        boolean invalidPasswordHash = !(account.passwordHash()
+                                               .equals(authenticateUserRequest.getPasswordHash()));
+        if (invalidPasswordHash) {
+            throw new DataNotValid(String.format(
+                    "Invalid password hash for '%s' account",
+                    authenticateUserRequest.getLogin()
+            ));
         }
 
-        boolean passwordHashEmpty = registerUserRequest.getPasswordHash() == null
-                || registerUserRequest.getPasswordHash()
-                                      .isEmpty();
-        if (passwordHashEmpty) {
-            throw new DataNotValid("Password Hash required to be not empty");
+        return jwtIssuingService.issue(account.login(), account.isPremium());
+    }
+
+    private void validateLogin(String login) {
+        if (isBlank(login)) {
+            throw new DataNotValid("Login must be provided");
+        }
+    }
+
+    private void validatePasswordHash(String passwordHash) {
+        if (isBlank(passwordHash)) {
+            throw new DataNotValid("Password hash must be provided");
         }
     }
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import tech.provve.accounts.exception.DataNotValid;
+import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,9 +19,9 @@ class AccountServiceTest {
     AccountService service;
 
     @Test
-    void registerUser_nonEmptyEmail_falsePersonalDataConsent_exception() {
+    void register_nonEmptyEmail_falsePersonalDataConsent_exception() {
         // arrange
-        var registerRequest = new RegisterUserRequest(
+        var request = new RegisterUserRequest(
                 "a",
                 "b",
                 "h",
@@ -29,15 +30,15 @@ class AccountServiceTest {
         );
 
         // act assert
-        assertThrows(DataNotValid.class, () -> service.registerUser(registerRequest));
+        assertThrows(DataNotValid.class, () -> service.register(request));
     }
 
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = "")
-    void registerUser_emptyLogin_exception(String login) {
+    void register_emptyLogin_exception(String login) {
         // arrange
-        var registerRequest = new RegisterUserRequest(
+        var request = new RegisterUserRequest(
                 login,
                 "",
                 "h",
@@ -46,15 +47,15 @@ class AccountServiceTest {
         );
 
         // act assert
-        assertThrows(DataNotValid.class, () -> service.registerUser(registerRequest));
+        assertThrows(DataNotValid.class, () -> service.register(request));
     }
 
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = "")
-    void registerUser_emptyPasswordHash_exception(String passwordHash) {
+    void register_emptyPasswordHash_exception(String passwordHash) {
         // arrange
-        var registerRequest = new RegisterUserRequest(
+        var request = new RegisterUserRequest(
                 "a",
                 "",
                 passwordHash,
@@ -63,7 +64,35 @@ class AccountServiceTest {
         );
 
         // act assert
-        assertThrows(DataNotValid.class, () -> service.registerUser(registerRequest));
+        assertThrows(DataNotValid.class, () -> service.register(request));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = "")
+    void authenticate_emptyLogin_exception(String login) {
+        // arrange
+        var request = new AuthenticateUserRequest(
+                login,
+                "1"
+        );
+
+        // act assert
+        assertThrows(DataNotValid.class, () -> service.authenticate(request));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = "")
+    void authenticate_emptyPasswordHash_exception(String passwordHash) {
+        // arrange
+        var request = new AuthenticateUserRequest(
+                "a",
+                passwordHash
+        );
+
+        // act assert
+        assertThrows(DataNotValid.class, () -> service.authenticate(request));
     }
 
 }
