@@ -1,0 +1,4 @@
+security:
+  jwt:
+    secret: ${secret}
+    expires-in-seconds: 86_400 # сутки

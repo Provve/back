@@ -19,22 +19,21 @@ repositories {
 dependencies {
     implementation 'tech.provve.api:server-dto:0.0.1'
 
+    implementation libs.vertx.auth.jwt
+
     implementation libs.jooq.postgres
     implementation libs.mapstruct
     annotationProcessor libs.mapstruct.processor
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
-    implementation libs.jwt.api
-    runtimeOnly libs.jwt.impl
-    runtimeOnly libs.jwt.jackson
-
     implementation libs.avaje
+    implementation libs.avaje.config
     annotationProcessor libs.avaje.generator
 
     testImplementation libs.bundles.testing
-    testImplementation(libs.avaje.test)
-    testAnnotationProcessor(libs.avaje.generator)
+    testImplementation libs.avaje.test
+    testAnnotationProcessor libs.avaje.generator
     testImplementation libs.testcontainers.postgresql
     testImplementation libs.testcontainers.junit
 }
@@ -89,4 +88,12 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+}
+
+processResources {
+    filesMatching("application.yaml") {
+        expand([
+                secret: System.getenv('JWT_SECRET'),
+        ])
+    }
 }

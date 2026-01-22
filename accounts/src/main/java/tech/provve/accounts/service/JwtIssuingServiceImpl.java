@@ -1,33 +1,29 @@
 package tech.provve.accounts.service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.avaje.config.Config;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.JWTOptions;
+import io.vertx.ext.auth.jwt.JWTAuth;
+import io.vertx.ext.auth.jwt.JWTAuthOptions;
+import jakarta.inject.Singleton;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-
+@Singleton
 public class JwtIssuingServiceImpl implements JwtIssuingService {
 
+    private final JWTAuth jwtAuth;
+
+    public JwtIssuingServiceImpl(JWTAuthOptions options) {
+        jwtAuth = JWTAuth.create(Vertx.vertx(), options);
+    }
+
     @Override
-    public String issue(Object user_data) {
-        Key hmacKey = new SecretKeySpec(
-                "TOP_LOCAL_SECRET".getBytes(StandardCharsets.UTF_8),
-                SignatureAlgorithm.HS256.getJcaName()
+    public String issue(String login, boolean premium) {
+        int expirationSeconds = Config.getInt("security.jwt.expires-in-seconds");
+        return jwtAuth.generateToken(
+                JsonObject.of("premium", premium),
+                new JWTOptions().setSubject(login)
+                                .setExpiresInSeconds(expirationSeconds)
         );
-
-//        log.info("Token was generated for {}", username);
-        var expirationDate = Date.from(Instant.now()
-                                              .plus(500, ChronoUnit.SECONDS));
-
-        return Jwts.builder()
-                   .setSubject("")
-                   .setId("")
-                   .setExpiration(expirationDate)
-                   .signWith(hmacKey)
-                   .compact();
     }
 }

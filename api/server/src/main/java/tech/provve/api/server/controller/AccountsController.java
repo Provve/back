@@ -4,6 +4,7 @@ import io.vertx.core.Future;
 import io.vertx.ext.web.FileUpload;
 import lombok.RequiredArgsConstructor;
 import tech.provve.accounts.exception.AccountAlreadyExists;
+import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.api.server.exception.HttpException;
@@ -17,12 +18,21 @@ public class AccountsController implements AccountsApi {
     private final AccountService accountService;
 
     public Future<ApiResponse<AuthenticateUser200Response>> authenticateUser(AuthenticateUserRequest authenticateUserRequest) {
-        return Future.failedFuture(new HttpException(500)); // todo call application service
+        try {
+            var token = accountService.authenticate(authenticateUserRequest);
+            return Future.succeededFuture(new ApiResponse<>(
+                    new AuthenticateUser200Response(token)
+            ));
+        } catch (DataNotValid e) {
+            return Future.failedFuture(new HttpException(e, 403));
+        } catch (AccountNotFound e) {
+            return Future.failedFuture(new HttpException(e, 404));
+        }
     }
 
     public Future<ApiResponse<Void>> registerUser(RegisterUserRequest registerUserRequest) {
         try {
-            accountService.registerUser(registerUserRequest);
+            accountService.register(registerUserRequest);
             return Future.succeededFuture(new ApiResponse<>(200));
         } catch (AccountAlreadyExists e) {
             return Future.failedFuture(new HttpException(e, 409));

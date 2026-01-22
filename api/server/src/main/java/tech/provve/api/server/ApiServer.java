@@ -3,8 +3,11 @@ package tech.provve.api.server;
 import io.avaje.inject.BeanScope;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.ext.auth.jwt.JWTAuth;
+import io.vertx.ext.auth.jwt.JWTAuthOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.JWTAuthHandler;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.openapi.RouterBuilderOptions;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +21,18 @@ public class ApiServer extends AbstractVerticle {
 
     private static final String SPEC_FILE = "provve-api.yaml";
 
+    private static final String SPEC_SECURITY_SCHEME_NAME = "bearerAuth";
+
     private final List<RouteHandler> handlers;
+
+    private final JWTAuthOptions authOptions;
 
     @SuppressWarnings("unused")
     public ApiServer() {
         BeanScope beanScope = BeanScope.builder()
                                        .build();
         this.handlers = beanScope.list(RouteHandler.class);
+        this.authOptions = beanScope.get(JWTAuthOptions.class);
     }
 
     @Override
@@ -32,22 +40,24 @@ public class ApiServer extends AbstractVerticle {
         RouterBuilder.create(vertx, SPEC_FILE)
                      .map(builder -> {
                          builder.setOptions(new RouterBuilderOptions()
-                                                    // For production use case, you need to enable this flag and provide the proper security handler
-                                                    .setRequireSecurityHandlers(false)
-                         );
+                                                    .setRequireSecurityHandlers(true))
+                                .securityHandler(
+                                        SPEC_SECURITY_SCHEME_NAME,
+                                        JWTAuthHandler.create(JWTAuth.create(vertx, authOptions))
+                                );
 
                          handlers.forEach(handler -> handler.mount(builder));
 
-                         Router router = builder.createRouter();
-                         var rootRouter = builder.createRouter();
+                         return builder.createRouter();
+                     })
+                     .map(api -> {
+                         var root = Router.router(vertx);
+                         root.errorHandler(500, this::handlerStatus500);
+                         root.errorHandler(400, this::handlerStatus400);
+                         root.route("/api/v1/*")
+                             .subRouter(api);
 
-                         rootRouter.errorHandler(500, this::handlerStatus500);
-                         rootRouter.errorHandler(400, this::handlerStatus400);
-
-                         rootRouter.route("/api/v1/*")
-                                   .subRouter(router);
-
-                         return rootRouter;
+                         return root;
                      })
                      .compose(router -> vertx.createHttpServer()
                                              .requestHandler(router)
