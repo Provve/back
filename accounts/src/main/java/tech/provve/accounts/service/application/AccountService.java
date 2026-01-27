@@ -18,4 +18,10 @@ public interface AccountService {
      */
     String authenticate(AuthenticateUserRequest authenticateUserRequest) throws DataNotValid, AccountNotFound;
 
+    /**
+     *
+     * @param email of owner to send the code
+     */
+    void requestResetCode(String email);
+
 }

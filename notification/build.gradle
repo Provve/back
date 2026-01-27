@@ -1,17 +1,101 @@
-plugins {
-    id 'java'
+buildscript {
+    dependencies {
+        classpath 'org.postgresql:postgresql:42.7.2'
+        classpath libs.flyway.postgres
+    }
 }
 
-group = 'tech.provve'
-version = 'unspecified'
+plugins {
+    id 'java'
+    alias(libs.plugins.flyway)
+    alias(libs.plugins.jooq)
+}
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation libs.provve.api.dto
+    implementation libs.simple.mail
+    implementation libs.jooq.postgres
+
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.avaje
+    implementation libs.avaje.config
+    annotationProcessor libs.avaje.generator
+
+
+    testImplementation libs.bundles.testing
+    testImplementation libs.avaje.test
+    testAnnotationProcessor libs.avaje.generator
+    testImplementation libs.testcontainers.postgresql
+    testImplementation libs.testcontainers.junit
+    testImplementation libs.testcontainers.mailpit
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/provve'
+    user = 'postgres'
+    password = local_db_password
+    schemas = ['notifications_history', 'notifications']
+}
+
+jooq {
+    configuration {
+        jdbc {
+            driver = "org.postgresql.Driver"
+            url = 'jdbc:postgresql://localhost:5432/provve'
+            user = 'postgres'
+            password = local_db_password
+        }
+        generator {
+            database {
+                inputSchema = "notifications"
+            }
+            generate {
+                fluentSetters = true
+                javaTimeTypes = true
+                globalObjectReferences = false // выключить артефакты кроме...
+                globalTableReferences = true
+                globalKeyReferences = true
+            }
+            target {
+                packageName = "tech.provve.notification.db.generated"
+                locale = 'ru'
+                directory = "/src/main/java/"
+            }
+        }
+    }
+}
+
+tasks.named("jooqCodegen") {
+    dependsOn(tasks.named("flywayMigrate"))
+
+    // Use Flyway migration scripts as input to code generation, to avoid
+    // task execution when unnecessary
+    inputs.files(fileTree("src/main/resources/db/migration"))
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
+}
+
+processResources {
+    filesMatching("application.yaml") {
+        expand([
+                mail_password: System.getenv('MAIL_PASSWORD')
+        ])
+    }
 }
 
 test {

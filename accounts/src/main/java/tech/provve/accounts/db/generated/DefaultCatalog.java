@@ -29,7 +29,7 @@ public class DefaultCatalog extends CatalogImpl {
     }
 
     /**
-     * A reference to the 3.20 minor release of the code generator. If this
+     * Templatable reference to the 3.20 minor release of the code generator. If this
      * doesn't compile, it's because the runtime library uses an older minor
      * release, namely: 3.20. You can turn off the generation of this reference
      * by specifying /configuration/generator/generate/jooqVersionReference

@@ -8,30 +8,14 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdatePasswordRequest {
 
-    private String resetCode;
-
     private String newPasswordHash;
-
-    private String login;
 
     public UpdatePasswordRequest() {
 
     }
 
-    public UpdatePasswordRequest(String resetCode, String newPasswordHash, String login) {
-        this.resetCode = resetCode;
+    public UpdatePasswordRequest(String newPasswordHash) {
         this.newPasswordHash = newPasswordHash;
-        this.login = login;
-    }
-
-
-    @JsonProperty("reset_code")
-    public String getResetCode() {
-        return resetCode;
-    }
-
-    public void setResetCode(String resetCode) {
-        this.resetCode = resetCode;
     }
 
 
@@ -45,16 +29,6 @@ public class UpdatePasswordRequest {
     }
 
 
-    @JsonProperty("login")
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -64,14 +38,12 @@ public class UpdatePasswordRequest {
             return false;
         }
         UpdatePasswordRequest updatePasswordRequest = (UpdatePasswordRequest) o;
-        return Objects.equals(resetCode, updatePasswordRequest.resetCode) &&
-                Objects.equals(newPasswordHash, updatePasswordRequest.newPasswordHash) &&
-                Objects.equals(login, updatePasswordRequest.login);
+        return Objects.equals(newPasswordHash, updatePasswordRequest.newPasswordHash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(resetCode, newPasswordHash, login);
+        return Objects.hash(newPasswordHash);
     }
 
     @Override
@@ -79,14 +51,8 @@ public class UpdatePasswordRequest {
         StringBuilder sb = new StringBuilder();
         sb.append("class UpdatePasswordRequest {\n");
 
-        sb.append("    resetCode: ")
-          .append(toIndentedString(resetCode))
-          .append("\n");
         sb.append("    newPasswordHash: ")
           .append(toIndentedString(newPasswordHash))
-          .append("\n");
-        sb.append("    login: ")
-          .append(toIndentedString(login))
           .append("\n");
         sb.append("}");
         return sb.toString();

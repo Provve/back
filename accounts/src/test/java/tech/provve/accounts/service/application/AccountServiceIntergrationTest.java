@@ -1,8 +1,9 @@
 package tech.provve.accounts.service.application;
 
+import io.avaje.inject.test.InjectTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import tech.provve.accounts.IntegrationTest;
+import tech.provve.accounts.PostgresIntegrationTest;
 import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
@@ -10,8 +11,8 @@ import tech.provve.api.server.generated.dto.RegisterUserRequest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
-class AccountServiceIntergrationTest extends IntegrationTest {
+@InjectTest
+class AccountServiceIntergrationTest extends PostgresIntegrationTest {
 
     @Inject
     AccountService service;

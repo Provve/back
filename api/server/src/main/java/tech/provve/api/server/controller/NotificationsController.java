@@ -13,7 +13,7 @@ import java.util.List;
 @Singleton
 public class NotificationsController implements NotificationsApi {
 
-    public Future<ApiResponse<List<Notification>>> listNotifications(Pagination pagination) {
+    public Future<ApiResponse<List<Notification>>> listNotifications(Pagination pagination) { //todo передать login
         return Future.failedFuture(new HttpException(501));
     }
 

@@ -1,14 +1,16 @@
 package tech.provve.accounts.repository;
 
+import io.avaje.inject.test.InjectTest;
 import jakarta.inject.Inject;
 import org.jooq.exception.IntegrityConstraintViolationException;
 import org.junit.jupiter.api.Test;
-import tech.provve.accounts.IntegrationTest;
+import tech.provve.accounts.PostgresIntegrationTest;
 import tech.provve.accounts.domain.model.Account;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AccountRepositoryTest extends IntegrationTest {
+@InjectTest
+class AccountRepositoryTest extends PostgresIntegrationTest {
 
     @Inject
     AccountRepository repository;

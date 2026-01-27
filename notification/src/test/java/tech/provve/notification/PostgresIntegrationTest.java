@@ -1,8 +1,8 @@
-package tech.provve.accounts;
+package tech.provve.notification;
 
-import io.avaje.inject.BeanScopeBuilder;
-import io.avaje.inject.test.InjectTest;
-import io.avaje.inject.test.Setup;
+import io.avaje.inject.Bean;
+import io.avaje.inject.Factory;
+import io.avaje.inject.test.TestScope;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
@@ -12,25 +12,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-/**
- * Тесты, которые проверяют аглоритм взаимодействия двух и более компонент.
- */
-@InjectTest
+@Factory
+@TestScope
 @Testcontainers
-public abstract class IntegrationTest {
+@SuppressWarnings("all")
+public class PostgresIntegrationTest {
 
     @Container
-    static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:latest")
-            .withInitScripts("db/migration/V1__Init.sql")
+    public static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:latest")
+            .withInitScripts("db/migration/V1_accounts__Init.sql", "db/migration/V1__Init.sql")
             .withUsername("postgres")
             .withPassword("1");
 
-    @Setup
-    void setup(BeanScopeBuilder builder) {
-        builder.bean(Connection.class, testConn());
-    }
-
-    Connection testConn() {
+    @Bean
+    Connection connection() {
         Properties props = new Properties();
         props.setProperty("user", "postgres");
         props.setProperty("password", "1");
@@ -41,5 +36,4 @@ public abstract class IntegrationTest {
             throw new RuntimeException(e);
         }
     }
-
 }

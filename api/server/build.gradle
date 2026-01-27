@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer
 
 buildscript {
     repositories {
@@ -25,16 +26,20 @@ repositories {
 
 dependencies {
     implementation 'provve-backend:accounts'
+    compileOnly 'provve-backend:notification'
 
     implementation libs.bundles.vertx
     implementation libs.jackson.databind
     implementation libs.slf4j
-
-    implementation libs.avaje
-    annotationProcessor libs.avaje.generator
+    compileOnly libs.simple.mail
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok
+
+    implementation libs.avaje
+    implementation libs.avaje.config
+    annotationProcessor libs.avaje.generator
+    runtimeOnly libs.mockito.core // для avaje
 }
 
 tasks.openApiGenerate {
@@ -62,9 +67,10 @@ processResources {
     }
 }
 
+def mainVerticle = 'tech.provve.api.server.ApiServer'
 run {
     mainClass = 'io.vertx.core.Launcher'
-    args = ['run', 'tech.provve.api.server.ApiServer']
+    args = ['run', mainVerticle]
 }
 
 tasks.register('buildDto', org.gradle.jvm.tasks.Jar) {
@@ -93,11 +99,25 @@ def version = libs.versions.provve.backend.get()
 tasks.named('shadowJar', ShadowJar) {
     archiveVersion.set(version)
     archiveClassifier.set(null)
-    includes = [
-            'tech/provve/**',
-            '**/*.yaml'
+    excludes = [
+            'templates/*.mustache',
+            'db/migration/**',
+            '/*.txt'
     ]
     mergeServiceFiles()
 
+    // так как модули собираются в монолит, их конфиги также нужно объдинять
+    transform(AppendingTransformer) {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        resource = 'application.yaml'
+    }
+
 //    minimize()
+
+    manifest {
+        attributes(
+                'Main-Class': 'io.vertx.core.Launcher',
+                'Main-Verticle': mainVerticle
+        )
+    }
 }

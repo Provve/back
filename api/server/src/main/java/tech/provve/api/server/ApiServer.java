@@ -3,8 +3,8 @@ package tech.provve.api.server;
 import io.avaje.inject.BeanScope;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
 import io.vertx.ext.auth.jwt.JWTAuth;
-import io.vertx.ext.auth.jwt.JWTAuthOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.JWTAuthHandler;
@@ -21,34 +21,37 @@ public class ApiServer extends AbstractVerticle {
 
     private static final String SPEC_FILE = "provve-api.yaml";
 
-    private static final String SPEC_SECURITY_SCHEME_NAME = "bearerAuth";
+    private static final String AUTH_SECURITY_SCHEME = "auth";
+
+    private static final String RESET_SECURITY_SCHEME = "reset";
 
     private final List<RouteHandler> handlers;
 
-    private final JWTAuthOptions authOptions;
+    private final JWTAuthHandler jwtAuthHandler;
+
+    private final JWTAuthHandler jwtResetHandler;
 
     @SuppressWarnings("unused")
     public ApiServer() {
         BeanScope beanScope = BeanScope.builder()
+                                       .bean(Vertx.class, vertx)
                                        .build();
         this.handlers = beanScope.list(RouteHandler.class);
-        this.authOptions = beanScope.get(JWTAuthOptions.class);
+        this.jwtAuthHandler = JWTAuthHandler.create(beanScope.get(JWTAuth.class, AUTH_SECURITY_SCHEME));
+        this.jwtResetHandler = JWTAuthHandler.create(beanScope.get(JWTAuth.class, RESET_SECURITY_SCHEME));
     }
 
     @Override
     public void start(Promise<Void> startPromise) {
         RouterBuilder.create(vertx, SPEC_FILE)
                      .map(builder -> {
-                         builder.setOptions(new RouterBuilderOptions()
-                                                    .setRequireSecurityHandlers(true))
-                                .securityHandler(
-                                        SPEC_SECURITY_SCHEME_NAME,
-                                        JWTAuthHandler.create(JWTAuth.create(vertx, authOptions))
-                                );
-
                          handlers.forEach(handler -> handler.mount(builder));
 
-                         return builder.createRouter();
+                         return builder.setOptions(new RouterBuilderOptions()
+                                                           .setRequireSecurityHandlers(true))
+                                       .securityHandler(AUTH_SECURITY_SCHEME, jwtAuthHandler)
+                                       .securityHandler(RESET_SECURITY_SCHEME, jwtResetHandler)
+                                       .createRouter();
                      })
                      .map(api -> {
                          var root = Router.router(vertx);

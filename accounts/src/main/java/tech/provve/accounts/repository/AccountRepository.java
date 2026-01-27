@@ -1,7 +1,10 @@
 package tech.provve.accounts.repository;
 
+import io.avaje.inject.External;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import org.jooq.Record;
+import org.jooq.RecordMapper;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import tech.provve.accounts.domain.model.Account;
@@ -16,7 +19,19 @@ import static tech.provve.accounts.db.generated.tables.Accounts.ACCOUNTS_;
 @RequiredArgsConstructor
 public class AccountRepository {
 
+    @External
     private final Connection connection;
+
+    private final RecordMapper<Record, Account> accountRecordMapper = result ->
+            new Account(
+                    result.get(ACCOUNTS_.LOGIN),
+                    result.get(ACCOUNTS_.EMAIL),
+                    result.get(ACCOUNTS_.PASSWORD_HASH),
+                    result.get(ACCOUNTS_.CONSENT_PERSONAL_DATA),
+                    result.get(ACCOUNTS_.USERNAME),
+                    result.get(ACCOUNTS_.AVATAR_URL),
+                    result.get(ACCOUNTS_.PREMIUM)
+            );
 
     /**
      * Save completely new account.
@@ -33,15 +48,14 @@ public class AccountRepository {
                   .select()
                   .from(ACCOUNTS_)
                   .where(ACCOUNTS_.LOGIN.eq(login))
-                  .fetchOptional(result -> result.map(result1 ->
-                                                              new Account(
-                                                                      result1.get(ACCOUNTS_.LOGIN),
-                                                                      result1.get(ACCOUNTS_.EMAIL),
-                                                                      result1.get(ACCOUNTS_.PASSWORD_HASH),
-                                                                      result1.get(ACCOUNTS_.CONSENT_PERSONAL_DATA),
-                                                                      result1.get(ACCOUNTS_.USERNAME),
-                                                                      result1.get(ACCOUNTS_.AVATAR_URL),
-                                                                      result1.get(ACCOUNTS_.PREMIUM)
-                                                              )));
+                  .fetchOptional(accountRecordMapper);
+    }
+
+    public Optional<Account> findByEmail(String email) {
+        return DSL.using(connection, SQLDialect.POSTGRES)
+                  .select()
+                  .from(ACCOUNTS_)
+                  .where(ACCOUNTS_.EMAIL.eq(email))
+                  .fetchOptional(accountRecordMapper);
     }
 }

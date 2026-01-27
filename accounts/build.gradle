@@ -17,19 +17,22 @@ repositories {
 }
 
 dependencies {
-    implementation 'tech.provve.api:server-dto:0.0.1'
-
+    implementation libs.provve.api.dto
+    implementation 'provve-backend:notification'
     implementation libs.vertx.auth.jwt
-
     implementation libs.jooq.postgres
+
+
     implementation libs.mapstruct
     annotationProcessor libs.mapstruct.processor
+
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
     implementation libs.avaje
-    implementation libs.avaje.config
+    compileOnly libs.avaje.config
     annotationProcessor libs.avaje.generator
+
 
     testImplementation libs.bundles.testing
     testImplementation libs.avaje.test
@@ -42,6 +45,7 @@ flyway {
     url = 'jdbc:postgresql://localhost:5432/provve'
     user = 'postgres'
     password = '1'
+    schemas = ['accounts_history', 'accounts']
 }
 
 jooq {
@@ -93,7 +97,8 @@ tasks.withType(Test).configureEach {
 processResources {
     filesMatching("application.yaml") {
         expand([
-                secret: System.getenv('JWT_SECRET'),
+                auth_secret : System.getenv('AUTH_JWT_SECRET'),
+                reset_secret: System.getenv('RESET_JWT_SECRET')
         ])
     }
 }
