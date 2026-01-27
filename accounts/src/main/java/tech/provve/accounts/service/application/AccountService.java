@@ -5,6 +5,7 @@ import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 
 /**
  * Прикладной сервис управления базой аккаунтов.
@@ -17,5 +18,13 @@ public interface AccountService {
      * @return JWT
      */
     String authenticate(AuthenticateUserRequest authenticateUserRequest) throws DataNotValid, AccountNotFound;
+
+    /**
+     *
+     * @param email of owner to send the code
+     */
+    void requestResetCode(String email);
+
+    void updatePassword(UpdatePasswordRequest updatePasswordRequest);
 
 }

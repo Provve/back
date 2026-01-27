@@ -2,6 +2,7 @@ package tech.provve.api.server.controller;
 
 import io.vertx.core.Future;
 import io.vertx.ext.web.FileUpload;
+import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import tech.provve.accounts.exception.AccountAlreadyExists;
 import tech.provve.accounts.exception.AccountNotFound;
@@ -12,6 +13,7 @@ import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.AccountsApi;
 import tech.provve.api.server.generated.dto.*;
 
+@Singleton
 @RequiredArgsConstructor
 public class AccountsController implements AccountsApi {
 
@@ -42,7 +44,12 @@ public class AccountsController implements AccountsApi {
     }
 
     public Future<ApiResponse<Void>> requestResetCode(String email) {
-        return Future.failedFuture(new HttpException(500));
+        try {
+            accountService.requestResetCode(email);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (AccountNotFound e) {
+            return Future.failedFuture(new HttpException(e, 404));
+        }
     }
 
     public Future<ApiResponse<Void>> updateAvatar(FileUpload avatar) {
@@ -54,7 +61,8 @@ public class AccountsController implements AccountsApi {
     }
 
     public Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest) {
-        return Future.failedFuture(new HttpException(500));
+        accountService.updatePassword(updatePasswordRequest);
+        return Future.succeededFuture(new ApiResponse<>(200));
     }
 
     public Future<ApiResponse<Void>> upgradeAccount() {

@@ -12,16 +12,13 @@ public class UpdatePasswordRequest {
 
     private String newPasswordHash;
 
-    private String login;
-
     public UpdatePasswordRequest() {
 
     }
 
-    public UpdatePasswordRequest(String resetCode, String newPasswordHash, String login) {
+    public UpdatePasswordRequest(String resetCode, String newPasswordHash) {
         this.resetCode = resetCode;
         this.newPasswordHash = newPasswordHash;
-        this.login = login;
     }
 
 
@@ -45,16 +42,6 @@ public class UpdatePasswordRequest {
     }
 
 
-    @JsonProperty("login")
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -65,13 +52,12 @@ public class UpdatePasswordRequest {
         }
         UpdatePasswordRequest updatePasswordRequest = (UpdatePasswordRequest) o;
         return Objects.equals(resetCode, updatePasswordRequest.resetCode) &&
-                Objects.equals(newPasswordHash, updatePasswordRequest.newPasswordHash) &&
-                Objects.equals(login, updatePasswordRequest.login);
+                Objects.equals(newPasswordHash, updatePasswordRequest.newPasswordHash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(resetCode, newPasswordHash, login);
+        return Objects.hash(resetCode, newPasswordHash);
     }
 
     @Override
@@ -84,9 +70,6 @@ public class UpdatePasswordRequest {
           .append("\n");
         sb.append("    newPasswordHash: ")
           .append(toIndentedString(newPasswordHash))
-          .append("\n");
-        sb.append("    login: ")
-          .append(toIndentedString(login))
           .append("\n");
         sb.append("}");
         return sb.toString();

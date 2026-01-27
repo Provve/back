@@ -6,12 +6,20 @@ package tech.provve.accounts.service;
 public interface JwtIssuingService {
 
     /**
-     * Issue new token for an account.
+     * Issue new authentication token.
      *
      * @param login   login of an account
      * @param premium is account has premium access?
      * @return JWT
      */
-    String issue(String login, boolean premium);
+    String issueAuth(String login, boolean premium);
+
+    /**
+     * Issue new reset token.
+     *
+     * @param login the account for what reset token is issuing
+     * @return JWT
+     */
+    String issueReset(String login);
 
 }

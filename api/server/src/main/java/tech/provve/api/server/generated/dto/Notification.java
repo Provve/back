@@ -1,16 +1,19 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
  * Уведомление о событии в системе
  **/
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Notification {
+
+    private Integer id;
 
 
     public enum LevelEnum {
@@ -41,10 +44,21 @@ public class Notification {
 
     }
 
-    public Notification(LevelEnum level, String message, OffsetDateTime createdAt) {
+    public Notification(Integer id, LevelEnum level, String message, OffsetDateTime createdAt) {
+        this.id = id;
         this.level = level;
         this.message = message;
         this.createdAt = createdAt;
+    }
+
+
+    @JsonProperty("id")
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 
@@ -87,14 +101,15 @@ public class Notification {
             return false;
         }
         Notification notification = (Notification) o;
-        return Objects.equals(level, notification.level) &&
+        return Objects.equals(id, notification.id) &&
+                Objects.equals(level, notification.level) &&
                 Objects.equals(message, notification.message) &&
                 Objects.equals(createdAt, notification.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(level, message, createdAt);
+        return Objects.hash(id, level, message, createdAt);
     }
 
     @Override
@@ -102,6 +117,9 @@ public class Notification {
         StringBuilder sb = new StringBuilder();
         sb.append("class Notification {\n");
 
+        sb.append("    id: ")
+          .append(toIndentedString(id))
+          .append("\n");
         sb.append("    level: ")
           .append(toIndentedString(level))
           .append("\n");

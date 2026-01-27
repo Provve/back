@@ -1,4 +1,4 @@
-package tech.provve.accounts.factory;
+package tech.provve.api.server.factory;
 
 import io.avaje.inject.Bean;
 import io.avaje.inject.Factory;

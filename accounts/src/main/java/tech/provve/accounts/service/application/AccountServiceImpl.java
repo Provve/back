@@ -1,8 +1,8 @@
 package tech.provve.accounts.service.application;
 
+import io.avaje.inject.External;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.jooq.exception.IntegrityConstraintViolationException;
 import org.postgresql.util.PSQLException;
 import tech.provve.accounts.domain.model.Account;
@@ -11,21 +11,36 @@ import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.accounts.mapper.AccountMapper;
 import tech.provve.accounts.repository.AccountRepository;
+import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
+import tech.provve.notification.domain.value.RecipientRequisites;
+import tech.provve.notification.domain.value.ResetCode;
+import tech.provve.notification.service.NotificationSendingService;
+
+import java.util.logging.Logger;
 
 import static tech.provve.accounts.predicate.StringPredicate.isBlank;
 import static tech.provve.accounts.predicate.StringPredicate.isNotBlank;
 
-@Log
 @Singleton
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
+    private static final String JWT_SUBJECT = "sub";
+
+    private static final Logger log = Logger.getLogger(AccountServiceImpl.class.getName());
+
     private final AccountRepository repository;
 
     private final JwtIssuingService jwtIssuingService;
+
+    private final JwsParsingService jwsParsingService;
+
+    @External
+    private final NotificationSendingService notificationService;
 
     @Override
     public void register(RegisterUserRequest registerUserRequest) {
@@ -80,7 +95,7 @@ public class AccountServiceImpl implements AccountService {
             ));
         }
 
-        return jwtIssuingService.issue(account.login(), account.isPremium());
+        return jwtIssuingService.issueAuth(account.login(), account.isPremium());
     }
 
     private void validateLogin(String login) {
@@ -93,5 +108,28 @@ public class AccountServiceImpl implements AccountService {
         if (isBlank(passwordHash)) {
             throw new DataNotValid("Password hash must be provided");
         }
+    }
+
+    @Override
+    public void requestResetCode(String email) {
+        var account = repository.findByEmail(email)
+                                .orElseThrow(() -> new AccountNotFound(String.format(
+                                        "Account with email '%s' not found",
+                                        email
+                                )));
+        var resetToken = jwtIssuingService.issueReset(account.login());
+
+        notificationService.send(
+                new ResetCode(
+                        new RecipientRequisites(account.login(), email),
+                        resetToken
+                ));
+    }
+
+    @Override
+    public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
+        var jwtPayload = jwsParsingService.parseReset(updatePasswordRequest.getResetCode());
+        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        repository.updatePasswordHash(updatePasswordRequest.getNewPasswordHash(), login);
     }
 }
