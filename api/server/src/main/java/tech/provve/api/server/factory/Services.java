@@ -6,6 +6,8 @@ import io.vertx.ext.auth.jwt.JWTAuth;
 import jakarta.inject.Named;
 import org.simplejavamail.api.mailer.Mailer;
 import tech.provve.accounts.repository.AccountRepository;
+import tech.provve.accounts.service.JwsParsingService;
+import tech.provve.accounts.service.JwsParsingServiceImpl;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.accounts.service.JwtIssuingServiceImpl;
 import tech.provve.accounts.service.application.AccountService;
@@ -22,8 +24,9 @@ public class Services {
     @Bean
     public AccountService accountService(AccountRepository repository,
                                          JwtIssuingService jwtIssuingService,
+                                         JwsParsingService jwsParsingService,
                                          NotificationSendingService notificationSendingService) {
-        return new AccountServiceImpl(repository, jwtIssuingService, notificationSendingService);
+        return new AccountServiceImpl(repository, jwtIssuingService, jwsParsingService, notificationSendingService);
     }
 
     @Bean
@@ -35,6 +38,11 @@ public class Services {
     public JwtIssuingService jwtIssuingService(@Named("auth") JWTAuth jwtAuth,
                                                @Named("reset") JWTAuth jwtReset) {
         return new JwtIssuingServiceImpl(jwtAuth, jwtReset);
+    }
+
+    @Bean
+    public JwsParsingService jwsParsingService() {
+        return new JwsParsingServiceImpl();
     }
 
     @Bean

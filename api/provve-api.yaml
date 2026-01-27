@@ -832,6 +832,9 @@ components:
       required:
         - new_password_hash
       properties:
+        reset_code:
+          type: string
+          description: Токен для сброса пароля, отправленный пользователю на почту. Используется для извлечения логина
         new_password_hash:
           type: string
           description: Хеш нового пароля

@@ -8,14 +8,27 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdatePasswordRequest {
 
+    private String resetCode;
+
     private String newPasswordHash;
 
     public UpdatePasswordRequest() {
 
     }
 
-    public UpdatePasswordRequest(String newPasswordHash) {
+    public UpdatePasswordRequest(String resetCode, String newPasswordHash) {
+        this.resetCode = resetCode;
         this.newPasswordHash = newPasswordHash;
+    }
+
+
+    @JsonProperty("reset_code")
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
     }
 
 
@@ -38,12 +51,13 @@ public class UpdatePasswordRequest {
             return false;
         }
         UpdatePasswordRequest updatePasswordRequest = (UpdatePasswordRequest) o;
-        return Objects.equals(newPasswordHash, updatePasswordRequest.newPasswordHash);
+        return Objects.equals(resetCode, updatePasswordRequest.resetCode) &&
+                Objects.equals(newPasswordHash, updatePasswordRequest.newPasswordHash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(newPasswordHash);
+        return Objects.hash(resetCode, newPasswordHash);
     }
 
     @Override
@@ -51,6 +65,9 @@ public class UpdatePasswordRequest {
         StringBuilder sb = new StringBuilder();
         sb.append("class UpdatePasswordRequest {\n");
 
+        sb.append("    resetCode: ")
+          .append(toIndentedString(resetCode))
+          .append("\n");
         sb.append("    newPasswordHash: ")
           .append(toIndentedString(newPasswordHash))
           .append("\n");

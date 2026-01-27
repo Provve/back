@@ -1,39 +1,40 @@
 package tech.provve.notification.service;
 
 import ch.martinelli.oss.testcontainers.mailpit.MailpitClient;
-import ch.martinelli.oss.testcontainers.mailpit.MailpitContainer;
-import io.avaje.inject.BeanScopeBuilder;
+import io.avaje.inject.Bean;
+import io.avaje.inject.Factory;
 import io.avaje.inject.test.InjectTest;
-import io.avaje.inject.test.Setup;
+import io.avaje.inject.test.TestScope;
 import jakarta.inject.Inject;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.mailer.MailerBuilder;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import tech.provve.notification.MailIntegrationTest;
 import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
+import tech.provve.notification.repository.NotificationRepository;
 
+@Factory
+@TestScope
 @InjectTest
-@Testcontainers
-class InputNotificationSendingServiceIntegrationTest {
-
-    @Container
-    static MailpitContainer mailpit = new MailpitContainer();
-
-    Mailer mailer = MailerBuilder.withSMTPServer(mailpit.getSmtpHost(), mailpit.getSmtpPort())
-                                 .buildMailer();
+class InputNotificationSendingService_Mail_IntegrationTest extends MailIntegrationTest {
 
     static final String TARGET_EMAIL = "z@y.z";
 
-    @Setup
-    void setup(BeanScopeBuilder builder) {
-        builder.bean(Mailer.class, mailer);
-    }
-
     @Inject
     NotificationSendingService notificationSendingService;
+
+    @Bean
+    NotificationSendingService notificationSendingService(NotificationRepository repository, Mailer mailer) {
+        return new NotificationSendingServiceImpl(repository, mailer);
+    }
+
+    @Bean
+    Mailer mailer() {
+        return MailerBuilder.withSMTPServer(mailpit.getSmtpHost(), mailpit.getSmtpPort())
+                            .buildMailer();
+    }
 
     @Test
     void send_resetCodeEmail_receiverGetsResetCode() {

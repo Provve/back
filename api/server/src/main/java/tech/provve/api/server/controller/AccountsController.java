@@ -1,6 +1,5 @@
 package tech.provve.api.server.controller;
 
-import io.avaje.inject.External;
 import io.vertx.core.Future;
 import io.vertx.ext.web.FileUpload;
 import jakarta.inject.Singleton;
@@ -62,7 +61,8 @@ public class AccountsController implements AccountsApi {
     }
 
     public Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest) {
-        return Future.failedFuture(new HttpException(500));
+        accountService.updatePassword(updatePasswordRequest);
+        return Future.succeededFuture(new ApiResponse<>(200));
     }
 
     public Future<ApiResponse<Void>> upgradeAccount() {

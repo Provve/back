@@ -58,4 +58,12 @@ public class AccountRepository {
                   .where(ACCOUNTS_.EMAIL.eq(email))
                   .fetchOptional(accountRecordMapper);
     }
+
+    public void updatePasswordHash(String passwordHash, String login) {
+        DSL.using(connection, SQLDialect.POSTGRES)
+           .update(ACCOUNTS_)
+           .set(ACCOUNTS_.PASSWORD_HASH, passwordHash)
+           .where(ACCOUNTS_.LOGIN.eq(login))
+           .execute();
+    }
 }

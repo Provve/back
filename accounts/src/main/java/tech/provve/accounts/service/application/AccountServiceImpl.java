@@ -11,9 +11,11 @@ import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.accounts.mapper.AccountMapper;
 import tech.provve.accounts.repository.AccountRepository;
+import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
 import tech.provve.notification.service.NotificationSendingService;
@@ -27,11 +29,15 @@ import static tech.provve.accounts.predicate.StringPredicate.isNotBlank;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
+    private static final String JWT_SUBJECT = "sub";
+
     private static final Logger log = Logger.getLogger(AccountServiceImpl.class.getName());
 
     private final AccountRepository repository;
 
     private final JwtIssuingService jwtIssuingService;
+
+    private final JwsParsingService jwsParsingService;
 
     @External
     private final NotificationSendingService notificationService;
@@ -118,5 +124,12 @@ public class AccountServiceImpl implements AccountService {
                         new RecipientRequisites(account.login(), email),
                         resetToken
                 ));
+    }
+
+    @Override
+    public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
+        var jwtPayload = jwsParsingService.parseReset(updatePasswordRequest.getResetCode());
+        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        repository.updatePasswordHash(updatePasswordRequest.getNewPasswordHash(), login);
     }
 }

@@ -8,8 +8,9 @@ provve-backend = '0.0.1'
 testcontainers = '2.0.2'
 avaje = '12.3'
 avaje-config = '5.0'
-simple-java-mail = "8.12.6"
+simple-java-mail = '8.12.6'
 testcontainers-mailpit = '1.2.0'
+jjwt = '0.13.0'
 
 [libraries]
 antifraud-api = { group = 'tech.provve.specs', name = 'antifraud-api', version.ref = 'provve-backend' }
@@ -20,14 +21,18 @@ vertx-web-open-api = { module = 'io.vertx:vertx-web-openapi', version.ref = 'ver
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind', version = '2.20.1' }
 lombok = { group = 'org.projectlombok', name = 'lombok', version = '1.18.42' }
 slf4j = { group = 'org.slf4j', name = 'slf4j-api', version = '2.1.0-alpha1' }
-simple-mail = { module = "org.simplejavamail:simple-java-mail", version.ref = "simple-java-mail" }
+simple-mail = { module = 'org.simplejavamail:simple-java-mail', version.ref = 'simple-java-mail' }
+
+jjwt-api = { module = 'io.jsonwebtoken:jjwt-api', version.ref = 'jjwt' }
+jjwt-impl = { module = 'io.jsonwebtoken:jjwt-impl', version.ref = 'jjwt' }
+jjwt-jackson = { module = 'io.jsonwebtoken:jjwt-jackson', version.ref = 'jjwt' }
 
 avaje = { module = 'io.avaje:avaje-inject', version.ref = 'avaje' }
 avaje-generator = { module = 'io.avaje:avaje-inject-generator', version.ref = 'avaje' }
 avaje-test = { module = 'io.avaje:avaje-inject-test', version.ref = 'avaje' }
 avaje-config = { module = 'io.avaje:avaje-config', version.ref = 'avaje-config' }
 
-mockito-core = { module = "org.mockito:mockito-core", version = '5.21.0' }
+mockito-core = { module = 'org.mockito:mockito-core', version = '5.21.0' }
 assertj = { module = 'org.assertj:assertj-core', version = '3.27.6' }
 junit-jupiter = { module = 'org.junit.jupiter:junit-jupiter', version.ref = 'junit' }
 junit-platform-launcher = { module = 'org.junit.platform:junit-platform-launcher', version.ref = 'junit' }
@@ -54,6 +59,11 @@ vertx = [
     'vertx-core',
     'vertx-auth-jwt',
     'vertx-web-open-api'
+]
+jjwt = [
+    'jjwt-api',
+    'jjwt-impl',
+    'jjwt-jackson'
 ]
 
 
