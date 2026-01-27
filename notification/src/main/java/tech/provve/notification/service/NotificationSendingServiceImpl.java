@@ -25,6 +25,8 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
 
     private static final String TEMPLATES_PATH = "templates/";
 
+    private static final String GENERAL_TEMPLATE = "email-general.html";
+
     private final NotificationRepository repository;
 
     @External
@@ -34,8 +36,11 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
 
     @Override
     public void send(NotifyCommand notifyCommand) {
-        var notificationTemplate = loadTemplateFor(notifyCommand);
+        var notificationTemplate = loadTemplate(notifyCommand.templateName());
         var notification = notifyCommand.fillTemplate(notificationTemplate);
+
+        var generalTemplate = loadTemplate(GENERAL_TEMPLATE);
+        var finalNotification = generalTemplate.replace("{{content}}", notification);
 
         var addresses = notifyCommand.addresses();
         var receipeeEmail = notifyCommand.requisites()
@@ -44,7 +49,7 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
             var email = EmailBuilder.startingBlank()
                                     .from(mailServerUsername)
                                     .to(receipeeEmail)
-                                    .withHTMLText(notification)
+                                    .withHTMLText(finalNotification)
                                     .buildEmail();
             mailer.sendMail(email);
         }
@@ -60,10 +65,13 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
     }
 
     @SneakyThrows
-    public String loadTemplateFor(NotifyCommand notifyCommand) {
+    public String loadTemplate(String templateName) {
         try (var templateStream = getClass().getClassLoader()
-                                            .getResourceAsStream(TEMPLATES_PATH + notifyCommand.templateName())) {
-            return new String(Objects.requireNonNull(templateStream)
+                                            .getResourceAsStream(TEMPLATES_PATH + templateName)) {
+            return new String(Objects.requireNonNull(
+                                             templateStream,
+                                             "Template " + templateName + " not found"
+                                     )
                                      .readAllBytes());
         }
     }
