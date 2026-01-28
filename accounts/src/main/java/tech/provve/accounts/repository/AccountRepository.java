@@ -66,4 +66,12 @@ public class AccountRepository {
            .where(ACCOUNTS_.LOGIN.eq(login))
            .execute();
     }
+
+    public void updatePremium(String login, boolean premium) {
+        DSL.using(connection, SQLDialect.POSTGRES)
+           .update(ACCOUNTS_)
+           .set(ACCOUNTS_.PREMIUM, premium)
+           .where(ACCOUNTS_.LOGIN.eq(login))
+           .execute();
+    }
 }

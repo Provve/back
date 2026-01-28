@@ -5,6 +5,7 @@ import io.vertx.ext.web.FileUpload;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import tech.provve.accounts.exception.AccountAlreadyExists;
+import tech.provve.accounts.exception.AccountAlreadyUpgraded;
 import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.accounts.service.application.AccountService;
@@ -12,6 +13,7 @@ import tech.provve.api.server.exception.HttpException;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.AccountsApi;
 import tech.provve.api.server.generated.dto.*;
+import tech.provve.payment.exception.PaymentGatewayNotAccessible;
 
 @Singleton
 @RequiredArgsConstructor
@@ -65,8 +67,18 @@ public class AccountsController implements AccountsApi {
         return Future.succeededFuture(new ApiResponse<>(200));
     }
 
-    public Future<ApiResponse<Void>> upgradeAccount() {
-        return Future.failedFuture(new HttpException(500));
+    @Override
+    public Future<ApiResponse<Void>> upgradeAccount(String login) {
+        try {
+            accountService.upgrade(login);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (AccountNotFound e) {
+            return Future.failedFuture(new HttpException(e, 404));
+        } catch (AccountAlreadyUpgraded e) {
+            return Future.failedFuture(new HttpException(e, 409));
+        } catch (PaymentGatewayNotAccessible e) {
+            return Future.failedFuture(new HttpException(e, 504));
+        }
     }
 
 }

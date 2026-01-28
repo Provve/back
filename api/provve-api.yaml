@@ -83,23 +83,34 @@ paths:
         - accounts
       summary: Получение статуса платного аккаунта
       operationId: upgradeAccount
+      parameters:
+        - name: login
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Логин повышаемого аккаунта
       responses:
         '200':
-          description: Пользователь уже получил
-        '400':
+          description: Пользователь получил
+        '404':
+          description: Пользователя не существует
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+        '409':
+          description: Пользователь уже повысил аккаунт
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+        '504':
           description: Платёжный шлюз недоступен
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Notification"
-        '502':
-          description: Платёжный шлюз уведомил Систему об неуспешной оплате
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
-      security:
-        - auth: [ ]
 
   /email:
     put:

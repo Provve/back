@@ -2,16 +2,22 @@ plugins {
     id 'java'
 }
 
-group = 'tech.provve'
-version = 'unspecified'
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.avaje
+    compileOnly libs.avaje.config
+    annotationProcessor libs.avaje.generator
+
+
+    testImplementation libs.bundles.testing
+    testImplementation libs.avaje.test
+    testAnnotationProcessor libs.avaje.generator
 }
 
 test {

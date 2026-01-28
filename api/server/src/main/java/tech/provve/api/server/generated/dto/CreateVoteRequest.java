@@ -1,11 +1,13 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.vertx.ext.web.FileUpload;
-
-import java.util.Objects;
+import tech.provve.api.server.generated.dto.ExamAddVote;
+import tech.provve.api.server.generated.dto.SkillAddVote;
+import tech.provve.api.server.generated.dto.SkillDelVote;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateVoteRequest {

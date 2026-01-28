@@ -1,0 +1,93 @@
+{
+  "root": {
+    "type": "EmailLayout",
+    "data": {
+      "backdropColor": "#F2F5F7",
+      "borderRadius": 0,
+      "canvasColor": "#FFFFFF",
+      "textColor": "#242424",
+      "fontFamily": "MODERN_SANS",
+      "childrenIds": [
+        "block_BjpQ7DGTtvaEuYRMd7VE7w",
+        "block-1769349585372",
+        "block-1769591984512"
+      ]
+    }
+  },
+  "block_BjpQ7DGTtvaEuYRMd7VE7w": {
+    "type": "Heading",
+    "data": {
+      "props": {
+        "text": "🤌Аккаунт {{login}} теперь премиум",
+        "level": "h3"
+      },
+      "style": {
+        "color": null,
+        "backgroundColor": null,
+        "fontFamily": null,
+        "fontWeight": "bold",
+        "textAlign": "left",
+        "padding": {
+          "top": 32,
+          "bottom": 0,
+          "right": 24,
+          "left": 24
+        }
+      }
+    }
+  },
+  "block-1769349585372": {
+    "type": "Text",
+    "data": {
+      "style": {
+        "fontWeight": "normal",
+        "padding": {
+          "top": 16,
+          "bottom": 16,
+          "right": 24,
+          "left": 24
+        }
+      },
+      "props": {
+        "markdown": false,
+        "text": "Недавно Вы купили премиум-статус для своего аккаунта Provve. Ааккаунт уже обновился и Вам доступны премиум-фичи!"
+      }
+    }
+  },
+  "block-1769591922208": {
+    "type": "Button",
+    "data": {
+      "style": {
+        "padding": {
+          "top": 16,
+          "bottom": 16,
+          "right": 24,
+          "left": 24
+        }
+      },
+      "props": {
+        "buttonBackgroundColor": "#5687f5",
+        "text": "Подробнее о фичах",
+        "url": "https://www.usewaypoint.com"
+      }
+    }
+  },
+  "block-1769591984512": {
+    "type": "Button",
+    "data": {
+      "style": {
+        "padding": {
+          "top": 16,
+          "bottom": 16,
+          "right": 24,
+          "left": 24
+        }
+      },
+      "props": {
+        "buttonBackgroundColor": "#5c8eff",
+        "text": "Подробнее о фичах",
+        "url": "https://provve.tech/docs"
+      }
+    }
+  }
+}
