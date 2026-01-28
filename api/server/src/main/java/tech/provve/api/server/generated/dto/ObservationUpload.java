@@ -1,9 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
+import tech.provve.api.server.generated.dto.Observation;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ObservationUpload {

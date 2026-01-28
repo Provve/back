@@ -1,6 +1,7 @@
 package tech.provve.accounts.service.application;
 
 import tech.provve.accounts.exception.AccountAlreadyExists;
+import tech.provve.accounts.exception.AccountAlreadyUpgraded;
 import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
@@ -26,5 +27,10 @@ public interface AccountService {
     void requestResetCode(String email);
 
     void updatePassword(UpdatePasswordRequest updatePasswordRequest);
+
+    /**
+     * Выдать премиум-статус
+     */
+    void upgrade(String login) throws AccountNotFound, AccountAlreadyUpgraded;
 
 }

@@ -36,16 +36,24 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
 
     @Override
     public void send(NotifyCommand notifyCommand) {
+        var receipeeEmail = notifyCommand.requisites()
+                                         .email();
+        boolean canSkipProcessing = receipeeEmail == null
+                && notifyCommand.addresses()
+                                .size() == 1
+                && notifyCommand.addresses()
+                                .contains(EMAIL);
+        if (canSkipProcessing) {
+            return;
+        }
+
         var notificationTemplate = loadTemplate(notifyCommand.templateName());
         var notification = notifyCommand.fillTemplate(notificationTemplate);
-
         var generalTemplate = loadTemplate(GENERAL_TEMPLATE);
         var finalNotification = generalTemplate.replace("{{content}}", notification);
 
         var addresses = notifyCommand.addresses();
-        var receipeeEmail = notifyCommand.requisites()
-                                         .email();
-        if (addresses.contains(EMAIL)) {
+        if (addresses.contains(EMAIL) && receipeeEmail != null) {
             var email = EmailBuilder.startingBlank()
                                     .from(mailServerUsername)
                                     .to(receipeeEmail)
