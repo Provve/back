@@ -4,7 +4,7 @@ import io.avaje.inject.BeanScopeBuilder;
 import io.avaje.inject.test.InjectTest;
 import io.avaje.inject.test.Setup;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import tech.provve.accounts.PostgresIntegrationTest;
@@ -17,8 +17,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import static org.mockito.Mockito.when;
 
 @InjectTest
 class AccountService_PaymentService__IntergrationTest extends PostgresIntegrationTest {
@@ -65,14 +63,15 @@ class AccountService_PaymentService__IntergrationTest extends PostgresIntegratio
                 false
         );
         repository.save(account);
-        var returned = repository.findByLogin(account.login())
-                                 .get();
 
         // act
-        service.upgrade(returned.login());
+        service.upgrade(account.login());
 
         // assert
-        Assertions.assertNotNull(repository);
+        var returned = repository.findByLogin(account.login())
+                                 .get();
+        Assertions.assertThat(returned.isPremium())
+                  .isTrue();
     }
 
 }
