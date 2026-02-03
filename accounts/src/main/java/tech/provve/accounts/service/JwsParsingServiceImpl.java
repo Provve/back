@@ -14,8 +14,22 @@ public class JwsParsingServiceImpl implements JwsParsingService {
 
     @Override
     public Map<String, Object> parseReset(String jws) {
-        var key = Keys.hmacShaKeyFor(Config.get("security.jwt.reset.secret")
-                                           .getBytes());
+        return parse(
+                jws, Config.get("security.jwt.reset.secret")
+                           .getBytes()
+        );
+    }
+
+    @Override
+    public Map<String, Object> parseAuth(String jws) {
+        return parse(
+                jws, Config.get("security.jwt.auth.secret")
+                           .getBytes()
+        );
+    }
+
+    private Map<String, Object> parse(String jws, byte[] secret) {
+        var key = Keys.hmacShaKeyFor(secret);
         return Jwts.parser()
                    .verifyWith(key)
                    .build()

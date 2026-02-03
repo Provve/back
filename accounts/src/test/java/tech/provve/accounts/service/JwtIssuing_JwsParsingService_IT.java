@@ -19,7 +19,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException
 @TestScope
 @Factory
 @InjectTest
-class JwtIssuing_JwsParsingService_IntegrationTest {
+class JwtIssuing_JwsParsingService_IT {
 
     private static final String JWS_SECRET = "AxSOx5szljMmgLbnbhZ94rUz9CZcDqub68yPQtZhOzwlwfFe6ULpXx0eCIjv0mKgjB8JBBbXEBumi2XjhCwEeCnXPIjebrJfme5pHvp1EKcfYy37BLc8T4Lj5ljths0CcFeuntR3rUM0J2pIEPZz5mGvrOe65oqBThEzy8Gl3ROHVMdCIxHlp1104sOdeZB7Gv2ZUR1Env9CU0N92cQz2QPBYSZRnCaTlsyWXfrAdHZmNIcOtcT2OQ8nouMIz1cT";
 

@@ -1,0 +1,4 @@
+premium-price: 20000 # в рублях
+robokassa:
+  merchant-login: ${merchant_login}
+  jwt-secret: ${merchant_login}:${shop_password_1}

@@ -16,6 +16,7 @@ import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
+import tech.provve.notification.domain.value.AccountUpgraded;
 import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
 import tech.provve.notification.service.NotificationSendingService;
@@ -131,5 +132,19 @@ public class AccountServiceImpl implements AccountService {
         var jwtPayload = jwsParsingService.parseReset(updatePasswordRequest.getResetCode());
         var login = ((String) jwtPayload.get(JWT_SUBJECT));
         repository.updatePasswordHash(updatePasswordRequest.getNewPasswordHash(), login);
+    }
+
+    @Override
+    public void upgrade(String login) {
+        var account = repository.findByLogin(login)
+                                .orElseThrow(() -> new AccountNotFound(String.format(
+                                        "Account with login '%s' not found",
+                                        login
+                                )));
+        repository.updatePremium(login, true);
+
+        notificationService.send(new AccountUpgraded(
+                new RecipientRequisites(login, account.email())
+        ));
     }
 }

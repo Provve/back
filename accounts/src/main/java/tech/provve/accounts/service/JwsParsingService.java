@@ -11,4 +11,11 @@ public interface JwsParsingService {
      */
     Map<String, Object> parseReset(String jws);
 
+    /**
+     * Parse Auth Token generated in {@link JwtIssuingService}
+     *
+     * @return payload properties
+     */
+    Map<String, Object> parseAuth(String jws);
+
 }

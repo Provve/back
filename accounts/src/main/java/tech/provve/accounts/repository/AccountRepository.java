@@ -22,7 +22,7 @@ public class AccountRepository {
     @External
     private final Connection connection;
 
-    private final RecordMapper<Record, Account> accountRecordMapper = result ->
+    private final RecordMapper<Record, Account> outputMapper = result ->
             new Account(
                     result.get(ACCOUNTS_.LOGIN),
                     result.get(ACCOUNTS_.EMAIL),
@@ -48,7 +48,7 @@ public class AccountRepository {
                   .select()
                   .from(ACCOUNTS_)
                   .where(ACCOUNTS_.LOGIN.eq(login))
-                  .fetchOptional(accountRecordMapper);
+                  .fetchOptional(outputMapper);
     }
 
     public Optional<Account> findByEmail(String email) {
@@ -56,13 +56,21 @@ public class AccountRepository {
                   .select()
                   .from(ACCOUNTS_)
                   .where(ACCOUNTS_.EMAIL.eq(email))
-                  .fetchOptional(accountRecordMapper);
+                  .fetchOptional(outputMapper);
     }
 
     public void updatePasswordHash(String passwordHash, String login) {
         DSL.using(connection, SQLDialect.POSTGRES)
            .update(ACCOUNTS_)
            .set(ACCOUNTS_.PASSWORD_HASH, passwordHash)
+           .where(ACCOUNTS_.LOGIN.eq(login))
+           .execute();
+    }
+
+    public void updatePremium(String login, boolean premium) {
+        DSL.using(connection, SQLDialect.POSTGRES)
+           .update(ACCOUNTS_)
+           .set(ACCOUNTS_.PREMIUM, premium)
            .where(ACCOUNTS_.LOGIN.eq(login))
            .execute();
     }

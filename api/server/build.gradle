@@ -27,6 +27,7 @@ repositories {
 dependencies {
     implementation 'provve-backend:accounts'
     compileOnly 'provve-backend:notification'
+    compileOnly 'provve-backend:payment'
 
     implementation libs.bundles.vertx
     implementation libs.jackson.databind

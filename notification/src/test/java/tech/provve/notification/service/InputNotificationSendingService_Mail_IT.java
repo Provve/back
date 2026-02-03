@@ -18,7 +18,7 @@ import tech.provve.notification.repository.NotificationRepository;
 @Factory
 @TestScope
 @InjectTest
-class InputNotificationSendingService_Mail_IntegrationTest extends MailIntegrationTest {
+class InputNotificationSendingService_Mail_IT extends MailIntegrationTest {
 
     static final String TARGET_EMAIL = "z@y.z";
 

@@ -1,6 +1,7 @@
 package tech.provve.api.server.factory;
 
 import io.avaje.inject.Bean;
+import io.avaje.inject.External;
 import io.avaje.inject.Factory;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import jakarta.inject.Named;
@@ -15,6 +16,10 @@ import tech.provve.accounts.service.application.AccountServiceImpl;
 import tech.provve.notification.repository.NotificationRepository;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.notification.service.NotificationSendingServiceImpl;
+import tech.provve.payment.gateway.robokassa.ApiClient;
+import tech.provve.payment.repository.RobokassaInvoiceRepository;
+import tech.provve.payment.service.application.PaymentService;
+import tech.provve.payment.service.application.PaymentServiceImpl;
 
 import java.sql.Connection;
 
@@ -22,11 +27,21 @@ import java.sql.Connection;
 public class Services {
 
     @Bean
+    public PaymentService paymentService(@External ApiClient apiClient, @External RobokassaInvoiceRepository invoiceRepository, @External AccountRepository accountRepository) {
+        return new PaymentServiceImpl(apiClient, invoiceRepository, accountRepository);
+    }
+
+    @Bean
     public AccountService accountService(AccountRepository repository,
                                          JwtIssuingService jwtIssuingService,
                                          JwsParsingService jwsParsingService,
                                          NotificationSendingService notificationSendingService) {
-        return new AccountServiceImpl(repository, jwtIssuingService, jwsParsingService, notificationSendingService);
+        return new AccountServiceImpl(
+                repository,
+                jwtIssuingService,
+                jwsParsingService,
+                notificationSendingService
+        );
     }
 
     @Bean

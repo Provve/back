@@ -4,12 +4,17 @@ import io.avaje.inject.BeanScopeBuilder;
 import io.avaje.inject.test.InjectTest;
 import io.avaje.inject.test.Setup;
 import jakarta.inject.Inject;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import tech.provve.accounts.PostgresIntegrationTest;
+import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
+import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.notification.service.NotificationSendingService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,10 +24,16 @@ import java.util.Properties;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @InjectTest
-class AccountService_AccountRepository__IntergrationTest extends PostgresIntegrationTest {
+class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
 
     @Inject
     AccountService service;
+
+    @Inject
+    AccountRepository repository;
+
+    @Mock
+    NotificationSendingService notificationSendingService;
 
     @Setup
     void set(BeanScopeBuilder b) {
@@ -72,6 +83,30 @@ class AccountService_AccountRepository__IntergrationTest extends PostgresIntegra
 
         // act assert
         assertThrows(DataNotValid.class, () -> service.authenticate(authRequest));
+    }
+
+    @Test
+    void upgrade_paymentConfirmed_accountNowPremium() {
+        // arrange
+        var account = new Account(
+                "b",
+                "b@c.d",
+                "",
+                true,
+                "n",
+                null,
+                false
+        );
+        repository.save(account);
+
+        // act
+        service.upgrade(account.login());
+
+        // assert
+        var returned = repository.findByLogin(account.login())
+                                 .get();
+        Assertions.assertThat(returned.isPremium())
+                  .isTrue();
     }
 
 }
