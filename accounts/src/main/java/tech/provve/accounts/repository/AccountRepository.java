@@ -11,6 +11,8 @@ import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.domain.model.value.PremiumExpiration;
 import tech.provve.accounts.mapper.AccountMapper;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +81,12 @@ public class AccountRepository {
     public List<Account> findPremiumExpired() {
         return expirePremiumAccounts(dsl.configuration())
                 .map(outputMapper);
+    }
+
+    public void clearPremiumExpired() {
+        dsl.deleteFrom(PREMIUM_EXPIRATION)
+           .where(PREMIUM_EXPIRATION.EXPIRY.lessOrEqual(OffsetDateTime.now(ZoneId.of("UTC"))))
+           .execute();
     }
 
     public void save(PremiumExpiration premiumExpiration) {

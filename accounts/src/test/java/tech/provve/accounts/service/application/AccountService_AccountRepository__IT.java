@@ -44,6 +44,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
     @Mock
     NotificationSendingService notificationSendingService;
 
+
     @Setup
     void set(BeanScopeBuilder b) {
         b.bean(DSLContext.class, DSL.using(connection(), SQLDialect.POSTGRES));

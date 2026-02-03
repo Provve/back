@@ -34,6 +34,8 @@ public interface NotificationsMapper {
 
     @Mapping(target = "level", source = "level")
     @Mapping(target = "notifiedAccount", source = "receiver")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     NotificationsRecord map(InputNotification from);
 
 }

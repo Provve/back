@@ -156,10 +156,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void downgradeAllExpired() {
         repository.findPremiumExpired()
-                  .forEach(account ->
-                                   notificationService.send(new AccountDowngraded(new RecipientRequisites(
-                                           account.login(),
-                                           account.email()
-                                   ))));
+                  .forEach(account -> {
+                      notificationService.send(new AccountDowngraded(new RecipientRequisites(
+                              account.login(),
+                              account.email()
+                      )));
+                      repository.clearPremiumExpired();
+                  });
     }
 }
