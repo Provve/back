@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.exception.IntegrityConstraintViolationException;
 import org.postgresql.util.PSQLException;
 import tech.provve.accounts.domain.model.Account;
+import tech.provve.accounts.domain.model.value.PremiumExpiration;
 import tech.provve.accounts.exception.AccountAlreadyExists;
 import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
@@ -16,11 +17,14 @@ import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
+import tech.provve.notification.domain.value.AccountDowngraded;
 import tech.provve.notification.domain.value.AccountUpgraded;
 import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
 import tech.provve.notification.service.NotificationSendingService;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.logging.Logger;
 
 import static tech.provve.accounts.predicate.StringPredicate.isBlank;
@@ -142,9 +146,20 @@ public class AccountServiceImpl implements AccountService {
                                         login
                                 )));
         repository.updatePremium(login, true);
+        repository.save(new PremiumExpiration(login, OffsetDateTime.now(ZoneId.of("UTC"))));
 
         notificationService.send(new AccountUpgraded(
                 new RecipientRequisites(login, account.email())
         ));
+    }
+
+    @Override
+    public void downgradeAllExpired() {
+        repository.findPremiumExpired()
+                  .forEach(account ->
+                                   notificationService.send(new AccountDowngraded(new RecipientRequisites(
+                                           account.login(),
+                                           account.email()
+                                   ))));
     }
 }

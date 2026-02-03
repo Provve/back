@@ -4,7 +4,10 @@ import io.avaje.inject.BeanScopeBuilder;
 import io.avaje.inject.test.InjectTest;
 import io.avaje.inject.test.Setup;
 import jakarta.inject.Inject;
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
 import org.jooq.exception.IntegrityConstraintViolationException;
+import org.jooq.impl.DSL;
 import org.junit.jupiter.api.Test;
 import tech.provve.accounts.PostgresIntegrationTest;
 import tech.provve.accounts.domain.model.Account;
@@ -21,7 +24,7 @@ class AccountRepositoryTest extends PostgresIntegrationTest {
 
     @Setup
     void set(BeanScopeBuilder b) {
-        b.bean(Connection.class, connection());
+        b.bean(DSLContext.class, DSL.using(connection(), SQLDialect.POSTGRES));
     }
 
     Connection connection() {

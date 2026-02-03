@@ -5,6 +5,7 @@ import io.avaje.inject.External;
 import io.avaje.inject.Factory;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import jakarta.inject.Named;
+import org.jooq.DSLContext;
 import org.simplejavamail.api.mailer.Mailer;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
@@ -21,13 +22,32 @@ import tech.provve.payment.repository.RobokassaInvoiceRepository;
 import tech.provve.payment.service.application.PaymentService;
 import tech.provve.payment.service.application.PaymentServiceImpl;
 
-import java.sql.Connection;
+import java.net.URI;
+import java.net.http.HttpRequest;
+
+import static tech.provve.payment.factory.HttpClientFactory.GET_PAYMENT_LINK_URL;
 
 @Factory
 public class Services {
 
     @Bean
-    public PaymentService paymentService(@External ApiClient apiClient, @External RobokassaInvoiceRepository invoiceRepository, @External AccountRepository accountRepository) {
+    public RobokassaInvoiceRepository robokassaInvoiceRepository(@External DSLContext dsl) {
+        return new RobokassaInvoiceRepository(dsl);
+    }
+
+    @Bean
+    public HttpRequest.Builder getPaymentLinkBuilder() {
+        return HttpRequest.newBuilder()
+                          .uri(URI.create(GET_PAYMENT_LINK_URL));
+    }
+
+    @Bean
+    public ApiClient apiClient(@External HttpRequest.Builder getPaymentLinkBuilder) {
+        return new ApiClient(getPaymentLinkBuilder);
+    }
+
+    @Bean
+    public PaymentService paymentService(ApiClient apiClient, @External RobokassaInvoiceRepository invoiceRepository, @External AccountRepository accountRepository) {
         return new PaymentServiceImpl(apiClient, invoiceRepository, accountRepository);
     }
 
@@ -45,8 +65,8 @@ public class Services {
     }
 
     @Bean
-    public AccountRepository accountRepository(Connection connection) {
-        return new AccountRepository(connection);
+    public AccountRepository accountRepository(DSLContext dsl) {
+        return new AccountRepository(dsl);
     }
 
     @Bean
@@ -66,7 +86,7 @@ public class Services {
     }
 
     @Bean
-    public NotificationRepository notificationRepository(Connection connection) {
-        return new NotificationRepository(connection);
+    public NotificationRepository notificationRepository(DSLContext dsl) {
+        return new NotificationRepository(dsl);
     }
 }

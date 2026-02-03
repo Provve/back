@@ -3,15 +3,13 @@ package tech.provve.notification.repository;
 import io.avaje.inject.External;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
 import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.notification.domain.entity.InputNotification;
 import tech.provve.notification.mapper.NotificationsMapper;
 
-import java.sql.Connection;
 import java.util.List;
 
 import static tech.provve.notification.db.generated.tables.Notifications.NOTIFICATIONS_;
@@ -21,7 +19,7 @@ import static tech.provve.notification.db.generated.tables.Notifications.NOTIFIC
 public class NotificationRepository {
 
     @External
-    private final Connection connection;
+    private final DSLContext dsl;
 
     private final RecordMapper<Record, Notification> outputMapper = result ->
             new Notification(
@@ -32,8 +30,7 @@ public class NotificationRepository {
             );
 
     public void save(InputNotification inputNotification) {
-        DSL.using(connection, SQLDialect.POSTGRES)
-           .insertInto(NOTIFICATIONS_)
+        dsl.insertInto(NOTIFICATIONS_)
            .set(NotificationsMapper.INSTANCE.map(inputNotification))
            .execute();
     }
@@ -43,7 +40,6 @@ public class NotificationRepository {
      */
     @SuppressWarnings("all")
     public List<Notification> findAllBy(String login) {
-        var dsl = DSL.using(connection, SQLDialect.POSTGRES);
         var select = dsl.select()
                         .from(NOTIFICATIONS_)
                         .where(NOTIFICATIONS_.NOTIFIED_ACCOUNT.eq(login));

@@ -11,7 +11,9 @@ import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 import tech.provve.accounts.db.generated.tables.records.AccountsRecord;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -40,7 +42,8 @@ public class Accounts extends TableImpl<AccountsRecord> {
      */
     public final TableField<AccountsRecord, String> LOGIN = createField(
             DSL.name("login"),
-            SQLDataType.VARCHAR.nullable(false),
+            SQLDataType.VARCHAR(50)
+                       .nullable(false),
             this,
             "Логин пользователя"
     );
@@ -51,7 +54,7 @@ public class Accounts extends TableImpl<AccountsRecord> {
      */
     public final TableField<AccountsRecord, String> EMAIL = createField(
             DSL.name("email"),
-            SQLDataType.VARCHAR,
+            SQLDataType.VARCHAR(254),
             this,
             "Email пользователя (может быть NULL, если не получено согласие)"
     );
@@ -113,7 +116,8 @@ public class Accounts extends TableImpl<AccountsRecord> {
      */
     public final TableField<AccountsRecord, String> USERNAME = createField(
             DSL.name("username"),
-            SQLDataType.VARCHAR.nullable(false),
+            SQLDataType.VARCHAR(30)
+                       .nullable(false),
             this,
             "Отображаемое имя пользователя"
     );
@@ -158,6 +162,18 @@ public class Accounts extends TableImpl<AccountsRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : tech.provve.accounts.db.generated.Accounts.ACCOUNTS;
+    }
+
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(
+                Internal.createIndex(
+                        DSL.name("idx_accounts_email"),
+                        Accounts.ACCOUNTS_,
+                        new OrderField[]{Accounts.ACCOUNTS_.EMAIL},
+                        false
+                )
+        );
     }
 
     @Override

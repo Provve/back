@@ -3,14 +3,12 @@ package tech.provve.payment.repository;
 import io.avaje.inject.External;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
 import tech.provve.payment.db.generated.tables.records.InvoicesRobokassaRecord;
 import tech.provve.payment.domain.value.Invoice;
 
-import java.sql.Connection;
 import java.util.Optional;
 
 import static tech.provve.payment.db.generated.tables.InvoicesRobokassa.INVOICES_ROBOKASSA;
@@ -20,7 +18,7 @@ import static tech.provve.payment.db.generated.tables.InvoicesRobokassa.INVOICES
 public class RobokassaInvoiceRepository {
 
     @External
-    private final Connection connection;
+    private final DSLContext dsl;
 
     private final RecordMapper<Record, Invoice> outputMapper = result ->
             new Invoice(
@@ -29,15 +27,13 @@ public class RobokassaInvoiceRepository {
             );
 
     public void save(Invoice invoice) {
-        DSL.using(connection, SQLDialect.POSTGRES)
-           .insertInto(INVOICES_ROBOKASSA)
+        dsl.insertInto(INVOICES_ROBOKASSA)
            .set(new InvoicesRobokassaRecord(invoice.accountLogin(), invoice.signature()))
            .execute();
     }
 
     public Optional<Invoice> findBy(String accountLogin) {
-        return DSL.using(connection, SQLDialect.POSTGRES)
-                  .select()
+        return dsl.select()
                   .from(INVOICES_ROBOKASSA)
                   .where(INVOICES_ROBOKASSA.ACCOUNT_LOGIN.eq(accountLogin))
                   .fetchOptional(outputMapper);
