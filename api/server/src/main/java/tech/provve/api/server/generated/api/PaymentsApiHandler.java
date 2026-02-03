@@ -1,18 +1,17 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.RobokassaConfirmPaymentRequest;
-
-import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.ValidationHandler;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import jakarta.inject.Singleton;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.dto.RobokassaConfirmPaymentRequest;
 
 @Singleton
 public class PaymentsApiHandler implements RouteHandler {
@@ -26,7 +25,7 @@ public class PaymentsApiHandler implements RouteHandler {
     }
 
     public void mount(RouterBuilder builder) {
-        builder.operation("notifySuccessfulPayment")
+        builder.operation("confirmPayment")
                .handler(this::notifySuccessfulPayment);
     }
 

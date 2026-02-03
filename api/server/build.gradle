@@ -26,13 +26,14 @@ repositories {
 
 dependencies {
     implementation 'provve-backend:accounts'
-    compileOnly 'provve-backend:notification'
-    compileOnly 'provve-backend:payment'
+    implementation 'provve-backend:notification'
+    implementation 'provve-backend:payment'
 
     implementation libs.bundles.vertx
     implementation libs.jackson.databind
     implementation libs.slf4j
     compileOnly libs.simple.mail
+    compileOnly libs.jooq
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok

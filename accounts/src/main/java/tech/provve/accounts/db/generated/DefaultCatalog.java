@@ -5,7 +5,11 @@ package tech.provve.accounts.db.generated;
 
 
 import org.jooq.Constants;
+import org.jooq.Schema;
 import org.jooq.impl.CatalogImpl;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -22,14 +26,26 @@ public class DefaultCatalog extends CatalogImpl {
     public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
 
     /**
+     * The schema <code>accounts</code>.
+     */
+    public final Accounts ACCOUNTS = Accounts.ACCOUNTS;
+
+    /**
      * No further instances allowed
      */
     private DefaultCatalog() {
         super("");
     }
 
+    @Override
+    public final List<Schema> getSchemas() {
+        return Arrays.asList(
+                Accounts.ACCOUNTS
+        );
+    }
+
     /**
-     * Templatable reference to the 3.20 minor release of the code generator. If this
+     * A reference to the 3.20 minor release of the code generator. If this
      * doesn't compile, it's because the runtime library uses an older minor
      * release, namely: 3.20. You can turn off the generation of this reference
      * by specifying /configuration/generator/generate/jooqVersionReference

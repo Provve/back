@@ -1,6 +1,9 @@
 import io.avaje.inject.Bean;
 import io.avaje.inject.Factory;
 import io.avaje.inject.test.TestScope;
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 import org.mockito.Mockito;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwsParsingServiceImpl;
@@ -42,7 +45,11 @@ public class Stubs {
     }
 
     @Bean
-    public Connection connection() {
+    public DSLContext dslContext() {
+        return DSL.using(connection(), SQLDialect.POSTGRES);
+    }
+
+    private Connection connection() {
         return new Connection() {
             @Override
             public Statement createStatement() throws SQLException {

@@ -66,9 +66,9 @@ jooq {
             generate {
                 fluentSetters = true
                 javaTimeTypes = true
-                globalObjectReferences = false // выключить артефакты кроме...
-                globalTableReferences = true
-                globalKeyReferences = true
+                globalKeyReferences = false
+                globalTableReferences = false
+                globalIndexReferences = false
             }
             target {
                 packageName = "tech.provve.accounts.db.generated"
