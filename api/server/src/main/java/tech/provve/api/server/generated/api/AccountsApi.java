@@ -24,5 +24,5 @@ public interface AccountsApi {
     Future<ApiResponse<Void>> updateEmail(UpdateEmailRequest updateEmailRequest);
     Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest);
 
-    Future<ApiResponse<Void>> upgradeAccount(String login);
+    Future<ApiResponse<String>> upgradeAccount(String login);
 }

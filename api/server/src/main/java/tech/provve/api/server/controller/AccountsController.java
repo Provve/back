@@ -14,12 +14,15 @@ import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.AccountsApi;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.payment.exception.PaymentGatewayNotAccessible;
+import tech.provve.payment.service.application.PaymentService;
 
 @Singleton
 @RequiredArgsConstructor
 public class AccountsController implements AccountsApi {
 
     private final AccountService accountService;
+
+    private final PaymentService paymentService;
 
     public Future<ApiResponse<AuthenticateUser200Response>> authenticateUser(AuthenticateUserRequest authenticateUserRequest) {
         try {
@@ -68,10 +71,9 @@ public class AccountsController implements AccountsApi {
     }
 
     @Override
-    public Future<ApiResponse<Void>> upgradeAccount(String login) {
+    public Future<ApiResponse<String>> upgradeAccount(String login) {
         try {
-            accountService.upgrade(login);
-            return Future.succeededFuture(new ApiResponse<>(200));
+            return Future.succeededFuture(new ApiResponse<>(paymentService.createInvoice(login)));
         } catch (AccountNotFound e) {
             return Future.failedFuture(new HttpException(e, 404));
         } catch (AccountAlreadyUpgraded e) {

@@ -12,6 +12,7 @@ tags:
   - name: skills
   - name: votes
   - name: sessions
+  - name: payments
 
 paths:
   /accounts:
@@ -81,7 +82,7 @@ paths:
     get:
       tags:
         - accounts
-      summary: Получение статуса платного аккаунта
+      summary: Запустить процесс получения статуса платного аккаунта
       operationId: upgradeAccount
       parameters:
         - name: login
@@ -92,7 +93,12 @@ paths:
           description: Логин повышаемого аккаунта
       responses:
         '200':
-          description: Пользователь получил
+          description: Транзакция создана
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: URL на оплату
         '404':
           description: Пользователя не существует
           content:
@@ -111,6 +117,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Notification"
+
+  /robokassa-payment-confirm:
+    post:
+      summary: Подтвердить успешную оплату для Robokassa
+      tags:
+        - payments
+      operationId: confirmPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RobokassaConfirmPayment.request"
+      responses:
+        '200':
+          description: Подписи совпали
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: https://docs.robokassa.ru/ru/notifications-and-redirects#resulturl
+                example: |
+                  OK{InvId}
+                  OK5
+        '400':
+          description: Подписи не совпали
 
   /email:
     put:
@@ -912,6 +944,41 @@ components:
         comment:
           type: string
           description: Содержимое комментария
+
+    RobokassaConfirmPayment.request:
+      type: object
+      properties:
+        OutSum:
+          type: string
+          description: Сумма платежа.
+        InvId:
+          type: integer
+          description: Номер счета в магазине.
+        Fee:
+          type: number
+          description: Комиссия Robokassa за совершение операции. Удерживается согласно тарифу клиента.
+        EMail:
+          type: string
+          format: email
+          description: Email, указанный покупателем при оплате.
+        SignatureValue:
+          type: string
+          description: Контрольная сумма — хэш, число в 16-ричной форме (0–9, A–F), рассчитанное методом, указанным в технических настройках магазина.
+        PaymentMethod:
+          type: string
+          description: Способ оплаты, использованный пользователем.
+        IncCurrLabel:
+          type: string
+          description: Валюта, которой платил клиент.
+        Shp_:
+          type: object
+          additionalProperties: true
+          description: Пользовательские параметры, возвращаются, если были переданы при старте платежа.
+      required:
+        - OutSum
+        - InvId
+        - SignatureValue
+
   securitySchemes:
     auth:
       type: http

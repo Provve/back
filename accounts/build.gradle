@@ -19,7 +19,6 @@ repositories {
 dependencies {
     implementation libs.provve.api.dto
     implementation 'provve-backend:notification'
-    implementation 'provve-backend:payment'
 
     implementation libs.vertx.auth.jwt
     implementation libs.jooq.postgres

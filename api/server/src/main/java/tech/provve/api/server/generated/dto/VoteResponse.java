@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
-
 import tech.provve.api.server.generated.dto.VoteResponseAllOfVotes;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
