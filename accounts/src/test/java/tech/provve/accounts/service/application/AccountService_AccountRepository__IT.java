@@ -124,6 +124,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
         // arrange
         var login1 = "c";
         var login2 = "d";
+
         var premiumAccounts = List.of(
                 new Account(
                         login1,
@@ -144,24 +145,30 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
                         true
                 )
         );
+        var nowUtc = LocalDateTime.now(ZoneId.of("UTC"));
+        var past = nowUtc.minusHours(1);
+        var future = OffsetDateTime.of(
+                past,
+                ZoneOffset.ofHours(7) // сдвиг в будущее
+        );
         premiumAccounts.forEach(account -> {
             repository.save(account);
-            var past = LocalDateTime.now(ZoneId.of("UTC"))
-                                    .minusHours(1);
             repository.save(new PremiumExpiration(
                     account.login(),
-                    OffsetDateTime.of(past, ZoneOffset.ofHours(7)) // сдвиг в будущее
+                    future
             ));
         });
 
         // act
-        List<Account> premiumExpiredAccounts = repository.findPremiumExpired();
+        service.downgradeAllExpired();
 
         // assert
-        assertThat(premiumExpiredAccounts).extracting(Account::login)
-                                          .containsExactly(login1, login2);
-        assertThat(premiumExpiredAccounts).extracting(Account::isPremium)
-                                          .allMatch(premium -> false == premium);
+        var account1 = repository.findByLogin(login1)
+                                 .get();
+        var account2 = repository.findByLogin(login2)
+                                 .get();
+        assertThat(account1.isPremium()).isFalse();
+        assertThat(account2.isPremium()).isFalse();
     }
 
 }

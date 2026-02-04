@@ -23,8 +23,10 @@ import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
 import tech.provve.notification.service.NotificationSendingService;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.logging.Logger;
 
 import static tech.provve.accounts.predicate.StringPredicate.isBlank;
@@ -146,7 +148,13 @@ public class AccountServiceImpl implements AccountService {
                                         login
                                 )));
         repository.updatePremium(login, true);
-        repository.save(new PremiumExpiration(login, OffsetDateTime.now(ZoneId.of("UTC"))));
+
+        var future = LocalDateTime.now(ZoneId.of("UTC"))
+                                  .plusMonths(1);
+        repository.save(new PremiumExpiration(
+                login,
+                OffsetDateTime.of(future, ZoneOffset.UTC)
+        ));
 
         notificationService.send(new AccountUpgraded(
                 new RecipientRequisites(login, account.email())
