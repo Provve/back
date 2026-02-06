@@ -3,3 +3,6 @@ mail:
   port: 1
   username: a.b@c
   password: 1
+s3:
+  access-key: test
+  secret-key: test

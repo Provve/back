@@ -1,9 +1,11 @@
 import io.avaje.inject.Bean;
 import io.avaje.inject.Factory;
 import io.avaje.inject.test.TestScope;
+import io.vertx.core.Vertx;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import org.junit.jupiter.api.BeforeEach;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.notification.service.NotificationSendingServiceImpl;
@@ -16,6 +18,11 @@ import java.util.concurrent.Executor;
 @Factory
 @TestScope
 public class Stubs {
+
+    @Bean
+    public Vertx vertx() {
+        return Vertx.vertx();
+    }
 
     @Bean
     public JwtIssuingService jwtIssuingService() {

@@ -29,6 +29,7 @@ dependencies {
     implementation 'provve-backend:notification'
     implementation 'provve-backend:payment'
 
+    implementation libs.amazon.s3
     implementation libs.bundles.vertx
     implementation libs.jackson.databind
     implementation libs.slf4j

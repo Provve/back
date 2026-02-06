@@ -2,9 +2,9 @@ package tech.provve.api.server.generated.api;
 
 import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
-import io.vertx.ext.web.FileUpload;
 import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 
@@ -143,13 +143,17 @@ public class AccountsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            FileUpload avatar = routingContext.fileUploads()
-                                              .iterator()
-                                              .next();
+            RequestParameter body = requestParameters.body();
+            UpdateAvatarRequest updateAvatarRequest = body != null ? DatabindCodec.mapper()
+                                                                                  .convertValue(
+                                                                                          body.get(),
+                                                                                          new TypeReference<UpdateAvatarRequest>() {
+                                                                                          }
+                                                                                  ) : null;
 
-            logger.debug("Parameter avatar is {}", avatar);
+            logger.debug("Parameter updateAvatarRequest is {}", updateAvatarRequest);
 
-            api.updateAvatar(avatar)
+            api.updateAvatar(updateAvatarRequest)
                .onSuccess(apiResponse -> {
                    routingContext.response()
                                  .setStatusCode(apiResponse.getStatusCode());

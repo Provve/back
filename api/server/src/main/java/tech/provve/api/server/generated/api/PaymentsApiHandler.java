@@ -1,17 +1,22 @@
 package tech.provve.api.server.generated.api;
 
+import tech.provve.api.server.generated.dto.RobokassaConfirmPaymentRequest;
+
+import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameter;
 import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.RequestParameter;
 import io.vertx.ext.web.validation.ValidationHandler;
-import jakarta.inject.Singleton;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.provve.api.server.RouteHandler;
-import tech.provve.api.server.generated.dto.RobokassaConfirmPaymentRequest;
+import jakarta.inject.Singleton;
+
+import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class PaymentsApiHandler implements RouteHandler {
@@ -26,11 +31,11 @@ public class PaymentsApiHandler implements RouteHandler {
 
     public void mount(RouterBuilder builder) {
         builder.operation("confirmPayment")
-               .handler(this::notifySuccessfulPayment);
+               .handler(this::confirmPayment);
     }
 
-    private void notifySuccessfulPayment(RoutingContext routingContext) {
-        logger.info("notifySuccessfulPayment()");
+    private void confirmPayment(RoutingContext routingContext) {
+        logger.info("confirmPayment()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);

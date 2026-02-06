@@ -68,6 +68,20 @@ public class AccountRepository {
            .execute();
     }
 
+    public void updateEmail(String login, String email) {
+        dsl.update(ACCOUNTS_)
+           .set(ACCOUNTS_.EMAIL, email)
+           .where(ACCOUNTS_.LOGIN.eq(login))
+           .execute();
+    }
+
+    public void updateAvatarUrl(String login, String avatarUrl) {
+        dsl.update(ACCOUNTS_)
+           .set(ACCOUNTS_.AVATAR_URL, avatarUrl)
+           .where(ACCOUNTS_.LOGIN.eq(login))
+           .execute();
+    }
+
     public void updatePremium(String login, boolean premium) {
         dsl.update(ACCOUNTS_)
            .set(ACCOUNTS_.PREMIUM, premium)

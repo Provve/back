@@ -5,4 +5,17 @@ security:
       expires-in-seconds: 86_400 # сутки
     reset:
       secret: ${reset_secret}
-      expires-in-seconds: 300
+      expires-in-seconds: 300 # 5 минут
+s3:
+  url: http://localhost:19000
+  access-key: 1
+  secret-key: 1
+  region: ru-msk
+  # where objects are stored
+  buckets:
+    # public read
+    images: i4s
+    # archives with exams, private
+    exams: e3s
+    # archives with solutions, private
+    solutions: s7s
