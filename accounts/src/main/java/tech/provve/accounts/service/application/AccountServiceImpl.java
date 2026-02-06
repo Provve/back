@@ -1,22 +1,20 @@
 package tech.provve.accounts.service.application;
 
+import io.avaje.config.Config;
 import io.avaje.inject.External;
+import io.vertx.core.Vertx;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import org.jooq.exception.IntegrityConstraintViolationException;
-import org.postgresql.util.PSQLException;
+import software.amazon.awssdk.services.s3.S3Client;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.domain.model.value.PremiumExpiration;
-import tech.provve.accounts.exception.AccountAlreadyExists;
-import tech.provve.accounts.exception.AccountNotFound;
-import tech.provve.accounts.exception.DataNotValid;
+import tech.provve.accounts.exception.*;
 import tech.provve.accounts.mapper.AccountMapper;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwtIssuingService;
-import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
-import tech.provve.api.server.generated.dto.RegisterUserRequest;
-import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
+import tech.provve.accounts.service.S3Service;
+import tech.provve.api.server.generated.dto.*;
 import tech.provve.notification.domain.value.AccountDowngraded;
 import tech.provve.notification.domain.value.AccountUpgraded;
 import tech.provve.notification.domain.value.RecipientRequisites;
@@ -47,28 +45,29 @@ public class AccountServiceImpl implements AccountService {
     @External
     private final NotificationSendingService notificationService;
 
+    @External
+    private final Vertx vertx;
+
+    private final S3Service s3Service;
+
     @Override
     public void register(RegisterUserRequest registerUserRequest) {
-        try {
-            validateRegister(registerUserRequest);
+        validateRegister(registerUserRequest);
 
-            repository.save(AccountMapper.INSTANCE.map(registerUserRequest));
+        repository.findByLogin(registerUserRequest.getLogin())
+                  .ifPresent(_ -> {
+                      throw new AccountAlreadyExists("Account with login '%s' is already exists.".formatted(
+                              registerUserRequest.getLogin()));
+                  });
+        repository.findByEmail(registerUserRequest.getEmail())
+                  .ifPresent(_ -> {
+                      throw new AccountAlreadyExists("Account with email '%s' is already exists.".formatted(
+                              registerUserRequest.getEmail()));
+                  });
 
-            log.info("Account " + registerUserRequest.getLogin() + " just registered.");
-        } catch (IntegrityConstraintViolationException e) {
-            var psqlException = ((PSQLException) e.getCause());
-            var error = psqlException.getServerErrorMessage();
-            boolean loginColumnError = error != null
-                    && error.getDetail() != null
-                    && error.getDetail()
-                            .contains("login");
-            if (loginColumnError) {
-                throw new AccountAlreadyExists(String.format(
-                        "Account with login '%s' is already exists.",
-                        registerUserRequest.getLogin()
-                ));
-            }
-        }
+        repository.save(AccountMapper.INSTANCE.map(registerUserRequest));
+
+        log.info("Account " + registerUserRequest.getLogin() + " just registered.");
     }
 
     private void validateRegister(RegisterUserRequest registerUserRequest) {
@@ -133,9 +132,50 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
-        var jwtPayload = jwsParsingService.parseReset(updatePasswordRequest.getResetCode());
+        var jwtPayload = jwsParsingService.parseReset(updatePasswordRequest.getResetToken());
         var login = ((String) jwtPayload.get(JWT_SUBJECT));
         repository.updatePasswordHash(updatePasswordRequest.getNewPasswordHash(), login);
+    }
+
+    @Override
+    public void updateEmail(UpdateEmailRequest updateEmailRequest) {
+        var jwtPayload = jwsParsingService.parseAuth(updateEmailRequest.getAuthToken());
+        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+
+        repository.findByEmail(updateEmailRequest.getEmail())
+                  .ifPresent(_ -> {
+                      throw new DataNotUnique("Email '%s' is not unique!".formatted(updateEmailRequest.getEmail()));
+                  });
+        repository.findByLogin(login)
+                  .ifPresent(account -> {
+                      if (!account.isConsentPersonalData()) {
+                          throw new NoPersonalDataConsent();
+                      }
+                      repository.updateEmail(login, updateEmailRequest.getEmail());
+                  });
+    }
+
+    @Override
+    public void updateAvatar(UpdateAvatarRequest updateAvatarRequest) {
+        var jwtPayload = jwsParsingService.parseAuth(updateAvatarRequest.getAuthToken());
+        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        String avatarFile = updateAvatarRequest.getAvatar()
+                                               .uploadedFileName();
+
+        vertx.fileSystem()
+             .readFile(
+                     avatarFile, ar -> {
+                         if (ar.failed()) return;
+
+                         String bucket = Config.get("s3.buckets.images");
+                         String avatarUrl = s3Service.uploadToS3(
+                                 bucket,
+                                 ar.result()
+                                   .getBytes()
+                         );
+                         repository.updateAvatarUrl(login, avatarUrl);
+                     }
+             );
     }
 
     @Override

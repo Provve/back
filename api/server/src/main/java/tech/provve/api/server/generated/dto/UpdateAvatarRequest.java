@@ -1,33 +1,35 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.ext.web.FileUpload;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UpdateEmailRequest {
+public class UpdateAvatarRequest {
 
-    private String email;
+    private FileUpload avatar;
 
     private String authToken;
 
-    public UpdateEmailRequest() {
+    public UpdateAvatarRequest() {
 
     }
 
-    public UpdateEmailRequest(String email, String authToken) {
-        this.email = email;
+    public UpdateAvatarRequest(FileUpload avatar, String authToken) {
+        this.avatar = avatar;
         this.authToken = authToken;
     }
 
 
-    @JsonProperty("email")
-    public String getEmail() {
-        return email;
+    @JsonProperty("avatar")
+    public FileUpload getAvatar() {
+        return avatar;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAvatar(FileUpload avatar) {
+        this.avatar = avatar;
     }
 
 
@@ -49,23 +51,23 @@ public class UpdateEmailRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UpdateEmailRequest updateEmailRequest = (UpdateEmailRequest) o;
-        return Objects.equals(email, updateEmailRequest.email) &&
-                Objects.equals(authToken, updateEmailRequest.authToken);
+        UpdateAvatarRequest updateAvatarRequest = (UpdateAvatarRequest) o;
+        return Objects.equals(avatar, updateAvatarRequest.avatar) &&
+                Objects.equals(authToken, updateAvatarRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, authToken);
+        return Objects.hash(avatar, authToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class UpdateEmailRequest {\n");
+        sb.append("class UpdateAvatarRequest {\n");
 
-        sb.append("    email: ")
-          .append(toIndentedString(email))
+        sb.append("    avatar: ")
+          .append(toIndentedString(avatar))
           .append("\n");
         sb.append("    authToken: ")
           .append(toIndentedString(authToken))

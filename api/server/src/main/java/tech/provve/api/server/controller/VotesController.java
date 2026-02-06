@@ -21,6 +21,7 @@ public class VotesController implements VotesApi {
     }
 
     public Future<ApiResponse<Void>> createVote(CreateVoteRequest createVoteRequest) {
+        // использовать метод multipart для загрузки архива в s3 и клиент AWS CRT-based
         return Future.failedFuture(new HttpException(501));
     }
 

@@ -13,10 +13,14 @@ import tech.provve.accounts.PostgresIntegrationTest;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.domain.model.value.PremiumExpiration;
 import tech.provve.accounts.exception.AccountNotFound;
+import tech.provve.accounts.exception.DataNotUnique;
 import tech.provve.accounts.exception.DataNotValid;
+import tech.provve.accounts.exception.NoPersonalDataConsent;
 import tech.provve.accounts.repository.AccountRepository;
+import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.UpdateEmailRequest;
 import tech.provve.notification.service.NotificationSendingService;
 
 import java.sql.Connection;
@@ -27,10 +31,12 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @InjectTest
 class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
@@ -43,6 +49,9 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
 
     @Mock
     NotificationSendingService notificationSendingService;
+
+    @Mock
+    JwsParsingService jwsParsingService;
 
 
     @Setup
@@ -100,7 +109,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
         // arrange
         var account = new Account(
                 "b",
-                "b@c.d",
+                "b@b.b",
                 "",
                 true,
                 "n",
@@ -127,7 +136,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
         var premiumAccounts = List.of(
                 new Account(
                         login1,
-                        "b@c.d",
+                        "c@c.c",
                         "",
                         true,
                         "n",
@@ -136,7 +145,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
                 ),
                 new Account(
                         login2,
-                        "b@c.d",
+                        "d@d.d",
                         "",
                         true,
                         "n",
@@ -162,6 +171,51 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
                                           .containsExactly(login1, login2);
         assertThat(premiumExpiredAccounts).extracting(Account::isPremium)
                                           .allMatch(premium -> false == premium);
+    }
+
+    @Test
+    void updateEmail_noPersonalDataConsent_exception() {
+        // arrange
+        var account = new Account(
+                "w",
+                "w@w.w",
+                "",
+                false,
+                "n",
+                null,
+                true
+        );
+        repository.save(account);
+
+        var authToken = "a";
+        UpdateEmailRequest request = new UpdateEmailRequest("new@email.com", authToken);
+        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", account.login()));
+
+        // act assert
+        assertThrows(NoPersonalDataConsent.class, () -> service.updateEmail(request));
+    }
+
+    @Test
+    void updateEmail_emailPresentInSystem_exception() {
+        // arrange
+        var account = new Account(
+                "v",
+                "v@v.v",
+                "",
+                true,
+                "n",
+                null,
+                true
+        );
+        repository.save(account);
+
+        var completelyUnknownEmail = account.email();
+        var authToken = "a";
+        UpdateEmailRequest request = new UpdateEmailRequest(completelyUnknownEmail, authToken);
+        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", account.login()));
+
+        // act assert
+        assertThrows(DataNotUnique.class, () -> service.updateEmail(request));
     }
 
 }

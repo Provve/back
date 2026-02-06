@@ -26,6 +26,7 @@ public class SkillsController implements SkillsApi {
     }
 
     public Future<ApiResponse<Notification>> submitExamSolution(java.util.UUID id, FileUpload solution) {
+        // использовать метод multipart для загрузки архива в s3 и клиент AWS CRT-based
         return Future.failedFuture(new HttpException(501));
     }
 

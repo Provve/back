@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdatePasswordRequest {
 
-    private String resetCode;
+    private String resetToken;
 
     private String newPasswordHash;
 
@@ -15,19 +15,19 @@ public class UpdatePasswordRequest {
 
     }
 
-    public UpdatePasswordRequest(String resetCode, String newPasswordHash) {
-        this.resetCode = resetCode;
+    public UpdatePasswordRequest(String resetToken, String newPasswordHash) {
+        this.resetToken = resetToken;
         this.newPasswordHash = newPasswordHash;
     }
 
 
-    @JsonProperty("reset_code")
-    public String getResetCode() {
-        return resetCode;
+    @JsonProperty("reset_token")
+    public String getResetToken() {
+        return resetToken;
     }
 
-    public void setResetCode(String resetCode) {
-        this.resetCode = resetCode;
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
     }
 
 
@@ -50,13 +50,13 @@ public class UpdatePasswordRequest {
             return false;
         }
         UpdatePasswordRequest updatePasswordRequest = (UpdatePasswordRequest) o;
-        return Objects.equals(resetCode, updatePasswordRequest.resetCode) &&
+        return Objects.equals(resetToken, updatePasswordRequest.resetToken) &&
                 Objects.equals(newPasswordHash, updatePasswordRequest.newPasswordHash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(resetCode, newPasswordHash);
+        return Objects.hash(resetToken, newPasswordHash);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class UpdatePasswordRequest {
         StringBuilder sb = new StringBuilder();
         sb.append("class UpdatePasswordRequest {\n");
 
-        sb.append("    resetCode: ")
-          .append(toIndentedString(resetCode))
+        sb.append("    resetToken: ")
+          .append(toIndentedString(resetToken))
           .append("\n");
         sb.append("    newPasswordHash: ")
           .append(toIndentedString(newPasswordHash))

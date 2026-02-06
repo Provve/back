@@ -4,9 +4,7 @@ import tech.provve.accounts.exception.AccountAlreadyExists;
 import tech.provve.accounts.exception.AccountAlreadyUpgraded;
 import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotValid;
-import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
-import tech.provve.api.server.generated.dto.RegisterUserRequest;
-import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
+import tech.provve.api.server.generated.dto.*;
 
 /**
  * Прикладной сервис управления базой аккаунтов.
@@ -27,6 +25,10 @@ public interface AccountService {
     void requestResetCode(String email);
 
     void updatePassword(UpdatePasswordRequest updatePasswordRequest);
+
+    void updateEmail(UpdateEmailRequest updateEmailRequest);
+
+    void updateAvatar(UpdateAvatarRequest updateAvatarRequest);
 
     /**
      * Выдать премиум-статус

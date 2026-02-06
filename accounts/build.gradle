@@ -20,7 +20,9 @@ dependencies {
     implementation libs.provve.api.dto
     implementation 'provve-backend:notification'
 
+    implementation libs.amazon.s3
     implementation libs.vertx.auth.jwt
+    implementation libs.vertx.web
     implementation libs.jooq.postgres
     implementation libs.bundles.jjwt
 
@@ -31,7 +33,7 @@ dependencies {
     annotationProcessor libs.lombok
 
     implementation libs.avaje
-    compileOnly libs.avaje.config
+    implementation libs.avaje.config
     annotationProcessor libs.avaje.generator
 
 
@@ -40,6 +42,8 @@ dependencies {
     testAnnotationProcessor libs.avaje.generator
     testImplementation libs.testcontainers.postgresql
     testImplementation libs.testcontainers.junit
+    testImplementation libs.local.s3.rest
+    testImplementation libs.local.s3.jupiter
 
     testCompileOnly libs.simple.mail
 }

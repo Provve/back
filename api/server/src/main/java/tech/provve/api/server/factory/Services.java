@@ -3,15 +3,14 @@ package tech.provve.api.server.factory;
 import io.avaje.inject.Bean;
 import io.avaje.inject.External;
 import io.avaje.inject.Factory;
+import io.vertx.core.Vertx;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import jakarta.inject.Named;
 import org.jooq.DSLContext;
 import org.simplejavamail.api.mailer.Mailer;
+import software.amazon.awssdk.services.s3.S3Client;
 import tech.provve.accounts.repository.AccountRepository;
-import tech.provve.accounts.service.JwsParsingService;
-import tech.provve.accounts.service.JwsParsingServiceImpl;
-import tech.provve.accounts.service.JwtIssuingService;
-import tech.provve.accounts.service.JwtIssuingServiceImpl;
+import tech.provve.accounts.service.*;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.accounts.service.application.AccountServiceImpl;
 import tech.provve.notification.repository.NotificationRepository;
@@ -29,6 +28,11 @@ import static tech.provve.payment.factory.HttpClientFactory.GET_PAYMENT_LINK_URL
 
 @Factory
 public class Services {
+
+    @Bean
+    public S3Service s3Service(S3Client s3Client) {
+        return new S3Service(s3Client);
+    }
 
     @Bean
     public RobokassaInvoiceRepository robokassaInvoiceRepository(@External DSLContext dsl) {
@@ -55,12 +59,16 @@ public class Services {
     public AccountService accountService(AccountRepository repository,
                                          JwtIssuingService jwtIssuingService,
                                          JwsParsingService jwsParsingService,
-                                         NotificationSendingService notificationSendingService) {
+                                         NotificationSendingService notificationSendingService,
+                                         Vertx vertx,
+                                         S3Service s3Service) {
         return new AccountServiceImpl(
                 repository,
                 jwtIssuingService,
                 jwsParsingService,
-                notificationSendingService
+                notificationSendingService,
+                vertx,
+                s3Service
         );
     }
 
