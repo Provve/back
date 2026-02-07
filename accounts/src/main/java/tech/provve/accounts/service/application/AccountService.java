@@ -11,7 +11,12 @@ import tech.provve.api.server.generated.dto.*;
  */
 public interface AccountService {
 
-    void register(RegisterUserRequest registerUserRequest) throws DataNotValid, AccountAlreadyExists;
+    void register(RegisterAccountRequest registerAccountRequest) throws DataNotValid, AccountAlreadyExists;
+
+    /**
+     * Delete all account`s data
+     */
+    void delete(DeleteAccountRequest deleteAccountRequest);
 
     /**
      * @return JWT

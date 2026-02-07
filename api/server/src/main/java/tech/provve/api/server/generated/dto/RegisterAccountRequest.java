@@ -1,11 +1,12 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RegisterUserRequest {
+public class RegisterAccountRequest {
 
     private String login;
 
@@ -17,11 +18,11 @@ public class RegisterUserRequest {
 
     private String username;
 
-    public RegisterUserRequest() {
+    public RegisterAccountRequest() {
 
     }
 
-    public RegisterUserRequest(String login, String email, String passwordHash, Boolean consentPersonalData, String username) {
+    public RegisterAccountRequest(String login, String email, String passwordHash, Boolean consentPersonalData, String username) {
         this.login = login;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -88,12 +89,12 @@ public class RegisterUserRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        RegisterUserRequest registerUserRequest = (RegisterUserRequest) o;
-        return Objects.equals(login, registerUserRequest.login) &&
-                Objects.equals(email, registerUserRequest.email) &&
-                Objects.equals(passwordHash, registerUserRequest.passwordHash) &&
-                Objects.equals(consentPersonalData, registerUserRequest.consentPersonalData) &&
-                Objects.equals(username, registerUserRequest.username);
+        RegisterAccountRequest registerAccountRequest = (RegisterAccountRequest) o;
+        return Objects.equals(login, registerAccountRequest.login) &&
+                Objects.equals(email, registerAccountRequest.email) &&
+                Objects.equals(passwordHash, registerAccountRequest.passwordHash) &&
+                Objects.equals(consentPersonalData, registerAccountRequest.consentPersonalData) &&
+                Objects.equals(username, registerAccountRequest.username);
     }
 
     @Override
@@ -104,7 +105,7 @@ public class RegisterUserRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class RegisterUserRequest {\n");
+        sb.append("class RegisterAccountRequest {\n");
 
         sb.append("    login: ")
           .append(toIndentedString(login))

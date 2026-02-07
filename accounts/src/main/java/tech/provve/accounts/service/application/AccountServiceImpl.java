@@ -36,8 +36,6 @@ public class AccountServiceImpl implements AccountService {
 
     private static final String JWT_SUBJECT = "sub";
 
-    private static final Logger log = Logger.getLogger(AccountServiceImpl.class.getName());
-
     private final AccountRepository repository;
 
     private final JwtIssuingService jwtIssuingService;
@@ -53,32 +51,38 @@ public class AccountServiceImpl implements AccountService {
     private final S3Service s3Service;
 
     @Override
-    public void register(RegisterUserRequest registerUserRequest) {
-        validateRegister(registerUserRequest);
+    public void register(RegisterAccountRequest registerAccountRequest) {
+        validateRegister(registerAccountRequest);
 
-        repository.findByLogin(registerUserRequest.getLogin())
+        repository.findByLogin(registerAccountRequest.getLogin())
                   .ifPresent(_ -> {
                       throw new AccountAlreadyExists("Account with login '%s' is already exists.".formatted(
-                              registerUserRequest.getLogin()));
+                              registerAccountRequest.getLogin()));
                   });
-        repository.findByEmail(registerUserRequest.getEmail())
+        repository.findByEmail(registerAccountRequest.getEmail())
                   .ifPresent(_ -> {
                       throw new AccountAlreadyExists("Account with email '%s' is already exists.".formatted(
-                              registerUserRequest.getEmail()));
+                              registerAccountRequest.getEmail()));
                   });
 
-        repository.save(AccountMapper.INSTANCE.map(registerUserRequest));
-
-        log.info("Account " + registerUserRequest.getLogin() + " just registered.");
+        repository.save(AccountMapper.INSTANCE.map(registerAccountRequest));
     }
 
-    private void validateRegister(RegisterUserRequest registerUserRequest) {
-        boolean emailSetIllegally = !registerUserRequest.getConsentPersonalData() && isNotBlank(registerUserRequest.getEmail());
+    private void validateRegister(RegisterAccountRequest registerAccountRequest) {
+        boolean emailSetIllegally = !registerAccountRequest.getConsentPersonalData() && isNotBlank(
+                registerAccountRequest.getEmail());
         if (emailSetIllegally) {
             throw new DataNotValid("Email cannot be set before an user personal data consent.");
         }
-        validateLogin(registerUserRequest.getLogin());
-        validatePasswordHash(registerUserRequest.getPasswordHash());
+        validateLogin(registerAccountRequest.getLogin());
+        validatePasswordHash(registerAccountRequest.getPasswordHash());
+    }
+
+    @Override
+    public void delete(DeleteAccountRequest deleteAccountRequest) {
+        var jwtPayload = jwsParsingService.parseAuth(deleteAccountRequest.getAuthToken());
+        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        repository.delete(login);
     }
 
     @Override

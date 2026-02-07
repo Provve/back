@@ -2,8 +2,9 @@ package tech.provve.api.server.generated.api;
 
 import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
+import tech.provve.api.server.generated.dto.DeleteAccountRequest;
 import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
@@ -39,8 +40,10 @@ public class AccountsApiHandler implements RouteHandler {
     public void mount(RouterBuilder builder) {
         builder.operation("authenticateUser")
                .handler(this::authenticateUser);
-        builder.operation("registerUser")
-               .handler(this::registerUser);
+        builder.operation("deleteAccount")
+               .handler(this::deleteAccount);
+        builder.operation("registerAccount")
+               .handler(this::registerAccount);
         builder.operation("requestResetCode")
                .handler(this::requestResetCode);
         builder.operation("updateAvatar")
@@ -85,34 +88,64 @@ public class AccountsApiHandler implements RouteHandler {
                .onFailure(routingContext::fail);
         }
 
-        private void registerUser(RoutingContext routingContext) {
-            logger.info("registerUser()");
+    private void deleteAccount(RoutingContext routingContext) {
+        logger.info("deleteAccount()");
+
+        // Param extraction
+        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
+
+        RequestParameter body = requestParameters.body();
+        DeleteAccountRequest deleteAccountRequest = body != null ? DatabindCodec.mapper()
+                                                                                .convertValue(
+                                                                                        body.get(),
+                                                                                        new TypeReference<DeleteAccountRequest>() {
+                                                                                        }
+                                                                                ) : null;
+
+        logger.debug("Parameter deleteAccountRequest is {}", deleteAccountRequest);
+
+        api.deleteAccount(deleteAccountRequest)
+           .onSuccess(apiResponse -> {
+               routingContext.response()
+                             .setStatusCode(apiResponse.getStatusCode());
+               if (apiResponse.hasData()) {
+                   routingContext.json(apiResponse.getData());
+               } else {
+                   routingContext.response()
+                                 .end();
+               }
+           })
+           .onFailure(routingContext::fail);
+        }
+
+    private void registerAccount(RoutingContext routingContext) {
+        logger.info("registerAccount()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
                 RequestParameter body = requestParameters.body();
-            RegisterUserRequest registerUserRequest = body != null ? DatabindCodec.mapper()
-                                                                                  .convertValue(
-                                                                                          body.get(),
-                                                                                          new TypeReference<RegisterUserRequest>() {
-                                                                                          }
-                                                                                  ) : null;
+        RegisterAccountRequest registerAccountRequest = body != null ? DatabindCodec.mapper()
+                                                                                    .convertValue(
+                                                                                            body.get(),
+                                                                                            new TypeReference<RegisterAccountRequest>() {
+                                                                                            }
+                                                                                    ) : null;
 
-            logger.debug("Parameter registerUserRequest is {}", registerUserRequest);
+        logger.debug("Parameter registerAccountRequest is {}", registerAccountRequest);
 
-            api.registerUser(registerUserRequest)
-               .onSuccess(apiResponse -> {
+        api.registerAccount(registerAccountRequest)
+           .onSuccess(apiResponse -> {
+               routingContext.response()
+                             .setStatusCode(apiResponse.getStatusCode());
+               if (apiResponse.hasData()) {
+                   routingContext.json(apiResponse.getData());
+               } else {
                    routingContext.response()
-                                 .setStatusCode(apiResponse.getStatusCode());
-                   if (apiResponse.hasData()) {
-                       routingContext.json(apiResponse.getData());
-                   } else {
-                       routingContext.response()
-                                     .end();
-                   }
-               })
-               .onFailure(routingContext::fail);
+                                 .end();
+               }
+           })
+           .onFailure(routingContext::fail);
         }
 
         private void requestResetCode(RoutingContext routingContext) {

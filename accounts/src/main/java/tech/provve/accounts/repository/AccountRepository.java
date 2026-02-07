@@ -47,6 +47,15 @@ public class AccountRepository {
            .execute();
     }
 
+    /**
+     * Delete row and all cascade tables, possibly
+     */
+    public void delete(String login) {
+        dsl.deleteFrom(ACCOUNTS_)
+           .where(ACCOUNTS_.LOGIN.eq(login))
+           .execute();
+    }
+
     public Optional<Account> findByLogin(String login) {
         return dsl.select()
                   .from(ACCOUNTS_)

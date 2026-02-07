@@ -33,15 +33,22 @@ public class AccountsController implements AccountsApi {
         }
     }
 
-    public Future<ApiResponse<Void>> registerUser(RegisterUserRequest registerUserRequest) {
+    @Override
+    public Future<ApiResponse<Void>> registerAccount(RegisterAccountRequest registerAccountRequest) {
         try {
-            accountService.register(registerUserRequest);
+            accountService.register(registerAccountRequest);
             return Future.succeededFuture(new ApiResponse<>(200));
         } catch (AccountAlreadyExists e) {
             return Future.failedFuture(new HttpException(e, 409));
         } catch (DataNotValid e) {
             return Future.failedFuture(new HttpException(e, 400));
         }
+    }
+
+    @Override
+    public Future<ApiResponse<Void>> deleteAccount(DeleteAccountRequest deleteAccountRequest) {
+        accountService.delete(deleteAccountRequest);
+        return Future.succeededFuture(new ApiResponse<>(200));
     }
 
     public Future<ApiResponse<Void>> requestResetCode(String email) {

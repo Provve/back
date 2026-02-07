@@ -19,7 +19,8 @@ import tech.provve.accounts.exception.NoPersonalDataConsent;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
-import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.DeleteAccountRequest;
+import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
 import tech.provve.notification.service.NotificationSendingService;
 
@@ -86,7 +87,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
     @Test
     void authenticate_invalidPasswordHash_exception() {
         // arrange
-        var regRequest = new RegisterUserRequest(
+        var regRequest = new RegisterAccountRequest(
                 "a",
                 "",
                 "1",
@@ -223,6 +224,31 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
 
         // act assert
         assertThrows(DataNotUnique.class, () -> service.updateEmail(request));
+    }
+
+    @Test
+    void delete_existingAccount_doesntExistNoMore() {
+        // arrange
+        var login = "h";
+        var account = new Account(
+                login,
+                "h@h.h",
+                "",
+                true,
+                "n",
+                null,
+                true
+        );
+        repository.save(account);
+
+        var request = new DeleteAccountRequest(login);
+        when(jwsParsingService.parseAuth(login)).thenReturn(Map.of("sub", account.login()));
+
+        // act
+        service.delete(request);
+
+        // assert
+        assertThat(repository.findByLogin(login)).isNotPresent();
     }
 
 }
