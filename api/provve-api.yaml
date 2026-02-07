@@ -183,28 +183,6 @@ paths:
       security:
         - reset: [ ]
 
-  /reset-code:
-    get:
-      summary: Запросить код сброса пароля на email
-      tags:
-        - accounts
-      operationId: requestResetCode
-      parameters:
-        - name: email
-          in: query
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Код отправлен на email
-        '404':
-          description: На почту не зарегистрирован ни один аккаунт
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
-
   /avatar:
     put:
       summary: Обновление аватара аккаунта
@@ -226,6 +204,46 @@ paths:
           $ref: "#/components/responses/DataNotUnique"
       security:
         - auth: [ ]
+
+  /pd-consent:
+    put:
+      summary: Согласие с Политикой обработки персональных данных (ПД)
+      tags:
+        - accounts
+      operationId: updatePersonalDataConsent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePersonalDataConsent.request'
+      responses:
+        '200':
+          $ref: "#/components/responses/DataWritten"
+      security:
+        - auth: [ ]
+
+  /reset-code:
+    get:
+      summary: Запросить код сброса пароля на email
+      tags:
+        - accounts
+      operationId: requestResetCode
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Код отправлен на email
+        '404':
+          description: На почту не зарегистрирован ни один аккаунт
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
 
   /session/stage-1:
     get:
@@ -917,6 +935,18 @@ components:
         avatar:
           type: string
           format: binary
+        auth_token:
+          type: string
+          description: Токен аутентификации
+
+    UpdatePersonalDataConsent.request:
+      type: object
+      required:
+        - auth_token
+        - consent_personal_data
+      properties:
+        consent_personal_data:
+          type: boolean
         auth_token:
           type: string
           description: Токен аутентификации

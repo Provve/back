@@ -1,34 +1,34 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.vertx.ext.web.FileUpload;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UpdateAvatarRequest {
+public class UpdatePersonalDataConsentRequest {
 
-    private FileUpload avatar;
+    private Boolean consentPersonalData;
 
     private String authToken;
 
-    public UpdateAvatarRequest() {
+    public UpdatePersonalDataConsentRequest() {
 
     }
 
-    public UpdateAvatarRequest(FileUpload avatar, String authToken) {
-        this.avatar = avatar;
+    public UpdatePersonalDataConsentRequest(Boolean consentPersonalData, String authToken) {
+        this.consentPersonalData = consentPersonalData;
         this.authToken = authToken;
     }
 
 
-    @JsonProperty("avatar")
-    public FileUpload getAvatar() {
-        return avatar;
+    @JsonProperty("consent_personal_data")
+    public Boolean getConsentPersonalData() {
+        return consentPersonalData;
     }
 
-    public void setAvatar(FileUpload avatar) {
-        this.avatar = avatar;
+    public void setConsentPersonalData(Boolean consentPersonalData) {
+        this.consentPersonalData = consentPersonalData;
     }
 
 
@@ -50,23 +50,23 @@ public class UpdateAvatarRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UpdateAvatarRequest updateAvatarRequest = (UpdateAvatarRequest) o;
-        return Objects.equals(avatar, updateAvatarRequest.avatar) &&
-                Objects.equals(authToken, updateAvatarRequest.authToken);
+        UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest = (UpdatePersonalDataConsentRequest) o;
+        return Objects.equals(consentPersonalData, updatePersonalDataConsentRequest.consentPersonalData) &&
+                Objects.equals(authToken, updatePersonalDataConsentRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(avatar, authToken);
+        return Objects.hash(consentPersonalData, authToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class UpdateAvatarRequest {\n");
+        sb.append("class UpdatePersonalDataConsentRequest {\n");
 
-        sb.append("    avatar: ")
-          .append(toIndentedString(avatar))
+        sb.append("    consentPersonalData: ")
+          .append(toIndentedString(consentPersonalData))
           .append("\n");
         sb.append("    authToken: ")
           .append(toIndentedString(authToken))
