@@ -19,202 +19,203 @@ import java.util.UUID;
 @Singleton
 public class SkillsApiHandler implements RouteHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(SkillsApiHandler.class);
+        private static final Logger logger = LoggerFactory.getLogger(SkillsApiHandler.class);
 
-    private final SkillsApi api;
+        private final SkillsApi api;
 
-    public SkillsApiHandler(SkillsApi api) {
-        this.api = api;
-    }
+        public SkillsApiHandler(SkillsApi api) {
+                this.api = api;
+        }
 
-    public void mount(RouterBuilder builder) {
-        builder.operation("getResultsBySkill")
-               .handler(this::getResultsBySkill);
-        builder.operation("listExamsBySkill")
-               .handler(this::listExamsBySkill);
-        builder.operation("listSkills")
-               .handler(this::listSkills);
-        builder.operation("submitExamSolution")
-               .handler(this::submitExamSolution);
-        builder.operation("viewExamResult")
-               .handler(this::viewExamResult);
-    }
+        public void mount(RouterBuilder builder) {
+                builder.operation("getResultsBySkill")
+                       .handler(this::getResultsBySkill);
+                builder.operation("listExamsBySkill")
+                       .handler(this::listExamsBySkill);
+                builder.operation("listSkills")
+                       .handler(this::listSkills);
+                builder.operation("submitExamSolution")
+                       .handler(this::submitExamSolution);
+                builder.operation("viewExamResult")
+                       .handler(this::viewExamResult);
+        }
 
         private void getResultsBySkill(RoutingContext routingContext) {
-            logger.info("getResultsBySkill()");
+                logger.info("getResultsBySkill()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                          .convertValue(
-                                                                                                                  requestParameters.queryParameter(
-                                                                                                                                           "pagination")
-                                                                                                                                   .get(),
-                                                                                                                  new TypeReference<Pagination>() {
-                                                                                                                  }
-                                                                                                          ) : null;
-            Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                              .convertValue(
-                                                                                                      requestParameters.queryParameter(
-                                                                                                                               "filter")
-                                                                                                                       .get(),
-                                                                                                      new TypeReference<Filter>() {
-                                                                                                      }
-                                                                                              ) : null;
+                Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
+                                                                                                              .convertValue(
+                                                                                                                      requestParameters.queryParameter(
+                                                                                                                                               "pagination")
+                                                                                                                                       .get(),
+                                                                                                                      new TypeReference<Pagination>() {
+                                                                                                                      }
+                                                                                                              ) : null;
+                Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
+                                                                                                  .convertValue(
+                                                                                                          requestParameters.queryParameter(
+                                                                                                                                   "filter")
+                                                                                                                           .get(),
+                                                                                                          new TypeReference<Filter>() {
+                                                                                                          }
+                                                                                                  ) : null;
 
             logger.debug("Parameter pagination is {}", pagination);
             logger.debug("Parameter filter is {}", filter);
 
-            api.getResultsBySkill(pagination, filter)
-               .onSuccess(apiResponse -> {
-                   routingContext.response()
-                                 .setStatusCode(apiResponse.getStatusCode());
-                   if (apiResponse.hasData()) {
-                       routingContext.json(apiResponse.getData());
-                   } else {
-                       routingContext.response()
-                                     .end();
-                   }
-               })
-               .onFailure(routingContext::fail);
+                api.getResultsBySkill(pagination, filter)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
         }
 
         private void listExamsBySkill(RoutingContext routingContext) {
-            logger.info("listExamsBySkill()");
+                logger.info("listExamsBySkill()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                          .convertValue(
-                                                                                                                  requestParameters.queryParameter(
-                                                                                                                                           "pagination")
-                                                                                                                                   .get(),
-                                                                                                                  new TypeReference<Pagination>() {
-                                                                                                                  }
-                                                                                                          ) : null;
-            Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                              .convertValue(
-                                                                                                      requestParameters.queryParameter(
-                                                                                                                               "filter")
-                                                                                                                       .get(),
-                                                                                                      new TypeReference<Filter>() {
-                                                                                                      }
-                                                                                              ) : null;
+                Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
+                                                                                                              .convertValue(
+                                                                                                                      requestParameters.queryParameter(
+                                                                                                                                               "pagination")
+                                                                                                                                       .get(),
+                                                                                                                      new TypeReference<Pagination>() {
+                                                                                                                      }
+                                                                                                              ) : null;
+                Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
+                                                                                                  .convertValue(
+                                                                                                          requestParameters.queryParameter(
+                                                                                                                                   "filter")
+                                                                                                                           .get(),
+                                                                                                          new TypeReference<Filter>() {
+                                                                                                          }
+                                                                                                  ) : null;
 
             logger.debug("Parameter pagination is {}", pagination);
             logger.debug("Parameter filter is {}", filter);
 
-            api.listExamsBySkill(pagination, filter)
-               .onSuccess(apiResponse -> {
-                   routingContext.response()
-                                 .setStatusCode(apiResponse.getStatusCode());
-                   if (apiResponse.hasData()) {
-                       routingContext.json(apiResponse.getData());
-                   } else {
-                       routingContext.response()
-                                     .end();
-                   }
-               })
-               .onFailure(routingContext::fail);
+                api.listExamsBySkill(pagination, filter)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
         }
 
         private void listSkills(RoutingContext routingContext) {
-            logger.info("listSkills()");
+                logger.info("listSkills()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                          .convertValue(
-                                                                                                                  requestParameters.queryParameter(
-                                                                                                                                           "pagination")
-                                                                                                                                   .get(),
-                                                                                                                  new TypeReference<Pagination>() {
-                                                                                                                  }
-                                                                                                          ) : null;
-            Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                              .convertValue(
-                                                                                                      requestParameters.queryParameter(
-                                                                                                                               "filter")
-                                                                                                                       .get(),
-                                                                                                      new TypeReference<Filter>() {
-                                                                                                      }
-                                                                                              ) : null;
+                Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
+                                                                                                              .convertValue(
+                                                                                                                      requestParameters.queryParameter(
+                                                                                                                                               "pagination")
+                                                                                                                                       .get(),
+                                                                                                                      new TypeReference<Pagination>() {
+                                                                                                                      }
+                                                                                                              ) : null;
+                Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
+                                                                                                  .convertValue(
+                                                                                                          requestParameters.queryParameter(
+                                                                                                                                   "filter")
+                                                                                                                           .get(),
+                                                                                                          new TypeReference<Filter>() {
+                                                                                                          }
+                                                                                                  ) : null;
 
             logger.debug("Parameter pagination is {}", pagination);
             logger.debug("Parameter filter is {}", filter);
 
-            api.listSkills(pagination, filter)
-               .onSuccess(apiResponse -> {
-                   routingContext.response()
-                                 .setStatusCode(apiResponse.getStatusCode());
-                   if (apiResponse.hasData()) {
-                       routingContext.json(apiResponse.getData());
-                   } else {
-                       routingContext.response()
-                                     .end();
-                   }
-               })
-               .onFailure(routingContext::fail);
+                api.listSkills(pagination, filter)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
         }
 
         private void submitExamSolution(RoutingContext routingContext) {
-            logger.info("submitExamSolution()");
+                logger.info("submitExamSolution()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            UUID id = requestParameters.pathParameter("id") != null ? UUID.fromString(requestParameters.pathParameter(
-                                                                                                               "id")
-                                                                                                       .getString())
-                    : null;
-            FileUpload solution = routingContext.fileUploads()
-                                                .iterator()
-                                                .next();
+                UUID id =
+                        requestParameters.pathParameter("id") != null ? UUID.fromString(requestParameters.pathParameter(
+                                                                                                                 "id")
+                                                                                                         .getString())
+                                : null;
+                FileUpload solution = routingContext.fileUploads()
+                                                    .iterator()
+                                                    .next();
 
             logger.debug("Parameter id is {}", id);
             logger.debug("Parameter solution is {}", solution);
 
-            api.submitExamSolution(id, solution)
-               .onSuccess(apiResponse -> {
-                   routingContext.response()
-                                 .setStatusCode(apiResponse.getStatusCode());
-                   if (apiResponse.hasData()) {
-                       routingContext.json(apiResponse.getData());
-                   } else {
-                       routingContext.response()
-                                     .end();
-                   }
-               })
-               .onFailure(routingContext::fail);
+                api.submitExamSolution(id, solution)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
         }
 
         private void viewExamResult(RoutingContext routingContext) {
-            logger.info("viewExamResult()");
+                logger.info("viewExamResult()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            UUID examId = requestParameters.pathParameter("exam_id") != null
-                    ? UUID.fromString(requestParameters.pathParameter("exam_id")
-                                                       .getString()) : null;
+                UUID examId = requestParameters.pathParameter("exam_id") != null
+                        ? UUID.fromString(requestParameters.pathParameter("exam_id")
+                                                           .getString()) : null;
 
             logger.debug("Parameter examId is {}", examId);
 
-            api.viewExamResult(examId)
-               .onSuccess(apiResponse -> {
-                   routingContext.response()
-                                 .setStatusCode(apiResponse.getStatusCode());
-                   if (apiResponse.hasData()) {
-                       routingContext.json(apiResponse.getData());
-                   } else {
-                       routingContext.response()
-                                     .end();
-                   }
-               })
-               .onFailure(routingContext::fail);
+                api.viewExamResult(examId)
+                   .onSuccess(apiResponse -> {
+                           routingContext.response()
+                                         .setStatusCode(apiResponse.getStatusCode());
+                           if (apiResponse.hasData()) {
+                                   routingContext.json(apiResponse.getData());
+                           } else {
+                                   routingContext.response()
+                                                 .end();
+                           }
+                   })
+                   .onFailure(routingContext::fail);
         }
 
 }

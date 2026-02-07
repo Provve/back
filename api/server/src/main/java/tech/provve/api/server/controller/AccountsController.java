@@ -81,6 +81,12 @@ public class AccountsController implements AccountsApi {
     }
 
     @Override
+    public Future<ApiResponse<Void>> updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest) {
+        accountService.updatePersonalDataConsent(updatePersonalDataConsentRequest);
+        return Future.succeededFuture(new ApiResponse<>(200));
+    }
+
+    @Override
     public Future<ApiResponse<String>> upgradeAccount(String login) {
         try {
             return Future.succeededFuture(new ApiResponse<>(paymentService.createInvoice(login)));

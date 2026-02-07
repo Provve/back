@@ -7,6 +7,7 @@ import tech.provve.api.server.generated.dto.RegisterUserRequest;
 import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
+import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
 
 import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -48,6 +49,8 @@ public class AccountsApiHandler implements RouteHandler {
                .handler(this::updateEmail);
         builder.operation("updatePassword")
                .handler(this::updatePassword);
+        builder.operation("updatePersonalDataConsent")
+               .handler(this::updatePersonalDataConsent);
         builder.operation("upgradeAccount")
                .handler(this::upgradeAccount);
     }
@@ -225,6 +228,36 @@ public class AccountsApiHandler implements RouteHandler {
                    }
                })
                .onFailure(routingContext::fail);
+        }
+
+    private void updatePersonalDataConsent(RoutingContext routingContext) {
+        logger.info("updatePersonalDataConsent()");
+
+        // Param extraction
+        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
+
+        RequestParameter body = requestParameters.body();
+        UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest = body != null ? DatabindCodec.mapper()
+                                                                                                        .convertValue(
+                                                                                                                body.get(),
+                                                                                                                new TypeReference<UpdatePersonalDataConsentRequest>() {
+                                                                                                                }
+                                                                                                        ) : null;
+
+        logger.debug("Parameter updatePersonalDataConsentRequest is {}", updatePersonalDataConsentRequest);
+
+        api.updatePersonalDataConsent(updatePersonalDataConsentRequest)
+           .onSuccess(apiResponse -> {
+               routingContext.response()
+                             .setStatusCode(apiResponse.getStatusCode());
+               if (apiResponse.hasData()) {
+                   routingContext.json(apiResponse.getData());
+               } else {
+                   routingContext.response()
+                                 .end();
+               }
+           })
+           .onFailure(routingContext::fail);
         }
 
         private void upgradeAccount(RoutingContext routingContext) {

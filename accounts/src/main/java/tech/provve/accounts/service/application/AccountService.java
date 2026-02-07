@@ -30,6 +30,8 @@ public interface AccountService {
 
     void updateAvatar(UpdateAvatarRequest updateAvatarRequest);
 
+    void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest);
+
     /**
      * Выдать премиум-статус
      */

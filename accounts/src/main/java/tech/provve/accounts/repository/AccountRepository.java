@@ -89,6 +89,13 @@ public class AccountRepository {
            .execute();
     }
 
+    public void updatePersonalDataConsent(String login, boolean personalDataConsent) {
+        dsl.update(ACCOUNTS_)
+           .set(ACCOUNTS_.CONSENT_PERSONAL_DATA, personalDataConsent)
+           .where(ACCOUNTS_.LOGIN.eq(login))
+           .execute();
+    }
+
     /**
      * @return аккаунты с просроченным и уже (!) отключенным premium
      */

@@ -5,7 +5,6 @@ import io.avaje.inject.External;
 import io.vertx.core.Vertx;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import software.amazon.awssdk.services.s3.S3Client;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.domain.model.value.PremiumExpiration;
 import tech.provve.accounts.exception.*;
@@ -178,6 +177,13 @@ public class AccountServiceImpl implements AccountService {
                          repository.updateAvatarUrl(login, avatarUrl);
                      }
              );
+    }
+
+    @Override
+    public void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest) {
+        var jwtPayload = jwsParsingService.parseAuth(updatePersonalDataConsentRequest.getAuthToken());
+        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        repository.updatePersonalDataConsent(login, updatePersonalDataConsentRequest.getConsentPersonalData());
     }
 
     @Override
