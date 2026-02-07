@@ -5,7 +5,7 @@ import io.vertx.core.Vertx;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.junit.jupiter.api.BeforeEach;
+import software.amazon.awssdk.services.s3.S3Client;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.notification.service.NotificationSendingServiceImpl;
@@ -18,6 +18,21 @@ import java.util.concurrent.Executor;
 @Factory
 @TestScope
 public class Stubs {
+
+    @Bean
+    public S3Client s3Client() {
+        return new S3Client() {
+            @Override
+            public String serviceName() {
+                return "";
+            }
+
+            @Override
+            public void close() {
+
+            }
+        };
+    }
 
     @Bean
     public Vertx vertx() {
