@@ -6,17 +6,30 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
 import tech.provve.accounts.exception.DataNotValid;
+import tech.provve.accounts.repository.AccountRepository;
+import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @InjectTest
 class AccountServiceTest {
 
     @Inject
     AccountService service;
+
+    @Mock
+    AccountRepository accountRepository;
+
+    @Mock
+    JwsParsingService jwsParsingService;
 
     @Test
     void register_nonEmptyEmail_falsePersonalDataConsent_exception() {
@@ -93,6 +106,38 @@ class AccountServiceTest {
 
         // act assert
         assertThrows(DataNotValid.class, () -> service.authenticate(request));
+    }
+
+    @Test
+    void updatePersonalDataConsent_truePdConsent_saved() {
+        // arrange
+        var login = "w";
+        var authToken = "a";
+        var request = new UpdatePersonalDataConsentRequest(true, authToken);
+        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", login));
+
+        // act
+        service.updatePersonalDataConsent(request);
+
+        // assert
+        verify(accountRepository).updatePersonalDataConsent(login, true);
+        verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
+    void updatePersonalDataConsent_falsePdConsent_removedEmail_savedPdConsent() {
+        // arrange
+        var login = "w";
+        var authToken = "a";
+        var request = new UpdatePersonalDataConsentRequest(false, authToken);
+        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", login));
+
+        // act
+        service.updatePersonalDataConsent(request);
+
+        // assert
+        verify(accountRepository).updatePersonalDataConsent(login, false);
+        verify(accountRepository).updateEmail(login, null);
     }
 
 }

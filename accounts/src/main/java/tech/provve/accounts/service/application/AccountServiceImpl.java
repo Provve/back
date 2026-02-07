@@ -26,6 +26,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.logging.Logger;
 
+import static java.lang.Boolean.FALSE;
 import static tech.provve.accounts.predicate.StringPredicate.isBlank;
 import static tech.provve.accounts.predicate.StringPredicate.isNotBlank;
 
@@ -183,7 +184,13 @@ public class AccountServiceImpl implements AccountService {
     public void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest) {
         var jwtPayload = jwsParsingService.parseAuth(updatePersonalDataConsentRequest.getAuthToken());
         var login = ((String) jwtPayload.get(JWT_SUBJECT));
-        repository.updatePersonalDataConsent(login, updatePersonalDataConsentRequest.getConsentPersonalData());
+
+        if (FALSE.equals(updatePersonalDataConsentRequest.getConsentPersonalData())) {
+            repository.updatePersonalDataConsent(login, updatePersonalDataConsentRequest.getConsentPersonalData());
+            repository.updateEmail(login, null);
+        } else {
+            repository.updatePersonalDataConsent(login, updatePersonalDataConsentRequest.getConsentPersonalData());
+        }
     }
 
     @Override
