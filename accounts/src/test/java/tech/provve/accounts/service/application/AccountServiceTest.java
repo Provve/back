@@ -11,7 +11,7 @@ import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
-import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
 
 import java.util.Map;
@@ -34,7 +34,7 @@ class AccountServiceTest {
     @Test
     void register_nonEmptyEmail_falsePersonalDataConsent_exception() {
         // arrange
-        var request = new RegisterUserRequest(
+        var request = new RegisterAccountRequest(
                 "a",
                 "b",
                 "h",
@@ -51,7 +51,7 @@ class AccountServiceTest {
     @ValueSource(strings = "")
     void register_emptyLogin_exception(String login) {
         // arrange
-        var request = new RegisterUserRequest(
+        var request = new RegisterAccountRequest(
                 login,
                 "",
                 "h",
@@ -68,7 +68,7 @@ class AccountServiceTest {
     @ValueSource(strings = "")
     void register_emptyPasswordHash_exception(String passwordHash) {
         // arrange
-        var request = new RegisterUserRequest(
+        var request = new RegisterAccountRequest(
                 "a",
                 "",
                 passwordHash,

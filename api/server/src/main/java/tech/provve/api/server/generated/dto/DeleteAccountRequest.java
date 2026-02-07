@@ -1,33 +1,21 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UpdatePersonalDataConsentRequest {
-
-    private Boolean consentPersonalData;
+public class DeleteAccountRequest {
 
     private String authToken;
 
-    public UpdatePersonalDataConsentRequest() {
+    public DeleteAccountRequest() {
 
     }
 
-    public UpdatePersonalDataConsentRequest(Boolean consentPersonalData, String authToken) {
-        this.consentPersonalData = consentPersonalData;
+    public DeleteAccountRequest(String authToken) {
         this.authToken = authToken;
-    }
-
-
-    @JsonProperty("consent_personal_data")
-    public Boolean getConsentPersonalData() {
-        return consentPersonalData;
-    }
-
-    public void setConsentPersonalData(Boolean consentPersonalData) {
-        this.consentPersonalData = consentPersonalData;
     }
 
 
@@ -49,24 +37,20 @@ public class UpdatePersonalDataConsentRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest = (UpdatePersonalDataConsentRequest) o;
-        return Objects.equals(consentPersonalData, updatePersonalDataConsentRequest.consentPersonalData) &&
-                Objects.equals(authToken, updatePersonalDataConsentRequest.authToken);
+        DeleteAccountRequest deleteAccountRequest = (DeleteAccountRequest) o;
+        return Objects.equals(authToken, deleteAccountRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(consentPersonalData, authToken);
+        return Objects.hash(authToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class UpdatePersonalDataConsentRequest {\n");
+        sb.append("class DeleteAccountRequest {\n");
 
-        sb.append("    consentPersonalData: ")
-          .append(toIndentedString(consentPersonalData))
-          .append("\n");
         sb.append("    authToken: ")
           .append(toIndentedString(authToken))
           .append("\n");

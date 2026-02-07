@@ -19,13 +19,13 @@ paths:
       tags:
         - accounts
       summary: Регистрация пользователя
-      operationId: registerUser
+      operationId: registerAccount
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterUser.request'
+              $ref: '#/components/schemas/RegisterAccount.request'
       responses:
         '200':
           description: Успешная регистрация
@@ -41,6 +41,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Notification"
+    delete:
+      tags:
+        - accounts
+      summary: Удаление аккаунта и связанных персональных данных
+      operationId: deleteAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAccount.request'
+      responses:
+        '200':
+          description: Аккаунт удален
 
   /auth:
     post:
@@ -873,7 +887,7 @@ components:
           type: string
           description: hash(notification)
 
-    RegisterUser.request:
+    RegisterAccount.request:
       type: object
       properties:
         login:
@@ -890,7 +904,16 @@ components:
           description: Согласен ли пользователь на обработку персональных данных
         username:
           type: string
-          description: Отображаемое имя профиля
+          description: Отображаемое имя аккаунта
+
+    DeleteAccount.request:
+      type: object
+      required:
+        - token
+      properties:
+        auth_token:
+          type: string
+          description: Токен аутентификации
 
     AuthenticateUser.request:
       type: object

@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import tech.provve.accounts.db.generated.tables.records.AccountsRecord;
 import tech.provve.accounts.domain.model.Account;
-import tech.provve.api.server.generated.dto.RegisterUserRequest;
+import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 
 @Mapper
 public interface AccountMapper {
@@ -19,6 +19,6 @@ public interface AccountMapper {
     @Mapping(target = "isConsentPersonalData", source = "consentPersonalData")
     @Mapping(target = "isPremium", expression = "java(Boolean.FALSE)")
     @Mapping(target = "avatarUrl", expression = "java(null)")
-    Account map(RegisterUserRequest from);
+    Account map(RegisterAccountRequest from);
 
 }
