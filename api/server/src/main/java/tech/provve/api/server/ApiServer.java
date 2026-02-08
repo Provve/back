@@ -4,7 +4,6 @@ import io.avaje.inject.BeanScope;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
-import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.JWTAuthHandler;
@@ -14,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.provve.accounts.task.DowngradeExpiredPremium;
 import tech.provve.accounts.task.InitS3Buckets;
 import tech.provve.api.server.exception.HttpException;
+import tech.provve.api.server.factory.Security;
 
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -47,8 +47,8 @@ public class ApiServer extends AbstractVerticle {
                                        .bean(Vertx.class, vertx)
                                        .build();
         this.handlers = beanScope.list(RouteHandler.class);
-        this.jwtAuthHandler = JWTAuthHandler.create(beanScope.get(JWTAuth.class, AUTH_SECURITY_SCHEME));
-        this.jwtResetHandler = JWTAuthHandler.create(beanScope.get(JWTAuth.class, RESET_SECURITY_SCHEME));
+        this.jwtAuthHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_AUTH);
+        this.jwtResetHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_RESET);
 
         this.scheduledExecutorService = beanScope.get(ScheduledExecutorService.class);
         this.downgradeExpiredPremium = beanScope.get(DowngradeExpiredPremium.class);
