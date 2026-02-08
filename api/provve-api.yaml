@@ -31,16 +31,8 @@ paths:
           description: Успешная регистрация
         '409':
           description: Пользователь уже существует
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
         '400':
           description: Данные не прошли валидацию
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
     delete:
       tags:
         - accounts
@@ -80,16 +72,8 @@ paths:
                     type: string
         '404':
           description: Пользователь не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
         '403':
           description: Аккаунт существует, но данные неверны
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
 
   /upgrade:
     get:
@@ -114,22 +98,10 @@ paths:
                 description: URL на оплату
         '404':
           description: Пользователя не существует
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
         '409':
           description: Пользователь уже повысил аккаунт
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
         '504':
           description: Платёжный шлюз недоступен
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
 
   /robokassa-payment-confirm:
     post:
@@ -262,10 +234,6 @@ paths:
           description: Код отправлен на email
         '404':
           description: На почту не зарегистрирован ни один аккаунт
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
 
   /session/stage-1:
     get:
@@ -302,18 +270,10 @@ paths:
                 $ref: "#/components/schemas/SessionCreatedNotification"
         '200':
           description: Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '409':
           description: Дважды пройти экзамен нельзя
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
       security:
         - auth: [ ]
 
@@ -397,18 +357,10 @@ paths:
           description: Решение успешно принято на проверку
         '200':
           description: Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '403':
           description: Нет активной сессии
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
       security:
         - auth: [ ]
 
@@ -501,10 +453,6 @@ paths:
           $ref: "#/components/responses/Unauthenticated"
         '409':
           description: Объект голосования уже существует
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
       security:
         - auth: [ ]
 
@@ -535,10 +483,6 @@ paths:
           $ref: "#/components/responses/Unauthenticated"
         '403':
           description: Авторам запрещено голосовать
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Notification"
       security:
         - auth: [ ]
 
@@ -706,16 +650,8 @@ components:
       description: Данные успешно обновлены
     NoPersonalDataConsent:
       description: Эти данные нельзя записывать без согласия пользователя на обработку ПД
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Notification"
     DataNotUnique:
       description: Данные не удовлетворяют требованию уникальности
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Notification"
     Unauthenticated:
       description: Следует пройти аутентификацию
   schemas:
