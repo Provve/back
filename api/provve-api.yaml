@@ -452,6 +452,10 @@ paths:
       responses:
         '200':
           description: Результат получен
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Result.response"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '403':
@@ -782,11 +786,11 @@ components:
         exam_id:
           type: string
           format: uuid
-          description: ID экзамена, по которой получен результат
+          description: ID экзамена, по которому получен результат
         exam_name:
           type: string
           format: uuid
-          description: Название экзамена, по которой получен результат
+          description: Название экзамена, по которому получен результат
 
     Vote:
       type: object
