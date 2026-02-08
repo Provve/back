@@ -172,6 +172,8 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/DataWritten"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
         '403':
           $ref: "#/components/responses/NoPersonalDataConsent"
         '409':
@@ -194,6 +196,8 @@ paths:
       responses:
         '200':
           description: Пароль успешно обновлён
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
       security:
         - reset: [ ]
 
@@ -212,6 +216,8 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/DataWritten"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
         '403':
           $ref: "#/components/responses/NoPersonalDataConsent"
         '409':
@@ -234,6 +240,8 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/DataWritten"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
 
@@ -298,6 +306,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Notification"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
         '409':
           description: Дважды пройти экзамен нельзя
           content:
@@ -321,6 +331,8 @@ paths:
       responses:
         '200':
           description: Данные наблюдения загружены
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
 
@@ -389,6 +401,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Notification"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
         '403':
           description: Нет активной сессии
           content:
@@ -416,6 +430,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Result.response"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
 
@@ -436,6 +452,8 @@ paths:
       responses:
         '200':
           description: Результат получен
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
         '403':
           description: Уровень аккаунта не позволяет
         '404':
@@ -475,6 +493,8 @@ paths:
       responses:
         '200':
           description: Голосование успешно создано
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
         '409':
           description: Объект голосования уже существует
           content:
@@ -507,6 +527,8 @@ paths:
       responses:
         '200':
           description: Голос учтен
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
         '403':
           description: Авторам запрещено голосовать
           content:
@@ -561,6 +583,8 @@ paths:
       responses:
         '200':
           description: Комментарий успешно добавлен
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
 
@@ -589,6 +613,8 @@ paths:
         '200':
           description: Комментарий успешно отредактирован
         '401':
+          $ref: "#/components/responses/Unauthenticated"
+        '403':
           description: Вы не автор комментария!
       security:
         - auth: [ ]
@@ -616,6 +642,8 @@ paths:
         '200':
           description: Комментарий успешно удалён
         '401':
+          $ref: "#/components/responses/Unauthenticated"
+        '403':
           description: Вы не автор комментария!
       security:
         - auth: [ ]
@@ -637,6 +665,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Notification"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
     delete:
@@ -647,6 +677,8 @@ paths:
       responses:
         '200':
           description: Уведомления удалены
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
 
@@ -680,6 +712,8 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Notification"
+    Unauthenticated:
+      description: Следует пройти аутентификацию
   schemas:
     Filter:
       type: object
@@ -794,7 +828,7 @@ components:
               description: Название экзамена работы
             arguments:
               type: string
-              description: Пояснение для людей, почему эта экзамен важен
+              description: Пояснение для людей, почему экзамен важен
             desc:
               type: string
               description: Финальная постановка задания для экзаменуемых
