@@ -59,6 +59,7 @@ public class Services {
     public AccountService accountService(AccountRepository repository,
                                          JwtIssuingService jwtIssuingService,
                                          JwsParsingService jwsParsingService,
+                                         PasswordHashingService passwordHashingService,
                                          NotificationSendingService notificationSendingService,
                                          Vertx vertx,
                                          S3Service s3Service) {
@@ -66,10 +67,16 @@ public class Services {
                 repository,
                 jwtIssuingService,
                 jwsParsingService,
+                passwordHashingService,
                 notificationSendingService,
                 vertx,
                 s3Service
         );
+    }
+
+    @Bean
+    public PasswordHashingService passwordHashingService() {
+        return new PasswordHashingService();
     }
 
     @Bean

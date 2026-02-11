@@ -9,15 +9,15 @@ public class UpdatePasswordRequest {
 
     private String resetToken;
 
-    private String newPasswordHash;
+    private String newPassword;
 
     public UpdatePasswordRequest() {
 
     }
 
-    public UpdatePasswordRequest(String resetToken, String newPasswordHash) {
+    public UpdatePasswordRequest(String resetToken, String newPassword) {
         this.resetToken = resetToken;
-        this.newPasswordHash = newPasswordHash;
+        this.newPassword = newPassword;
     }
 
 
@@ -31,13 +31,13 @@ public class UpdatePasswordRequest {
     }
 
 
-    @JsonProperty("new_password_hash")
-    public String getNewPasswordHash() {
-        return newPasswordHash;
+    @JsonProperty("new_password")
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    public void setNewPasswordHash(String newPasswordHash) {
-        this.newPasswordHash = newPasswordHash;
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
 
@@ -51,12 +51,12 @@ public class UpdatePasswordRequest {
         }
         UpdatePasswordRequest updatePasswordRequest = (UpdatePasswordRequest) o;
         return Objects.equals(resetToken, updatePasswordRequest.resetToken) &&
-                Objects.equals(newPasswordHash, updatePasswordRequest.newPasswordHash);
+                Objects.equals(newPassword, updatePasswordRequest.newPassword);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(resetToken, newPasswordHash);
+        return Objects.hash(resetToken, newPassword);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class UpdatePasswordRequest {
         sb.append("    resetToken: ")
           .append(toIndentedString(resetToken))
           .append("\n");
-        sb.append("    newPasswordHash: ")
-          .append(toIndentedString(newPasswordHash))
+        sb.append("    newPassword: ")
+          .append(toIndentedString(newPassword))
           .append("\n");
         sb.append("}");
         return sb.toString();

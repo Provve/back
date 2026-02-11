@@ -85,7 +85,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
     }
 
     @Test
-    void authenticate_invalidPasswordHash_exception() {
+    void authenticate_invalidPassword_exception() {
         // arrange
         var regRequest = new RegisterAccountRequest(
                 "a",

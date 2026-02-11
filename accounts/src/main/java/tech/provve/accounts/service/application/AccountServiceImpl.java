@@ -12,6 +12,7 @@ import tech.provve.accounts.mapper.AccountMapper;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwtIssuingService;
+import tech.provve.accounts.service.PasswordHashingService;
 import tech.provve.accounts.service.S3Service;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.notification.domain.value.AccountDowngraded;
@@ -24,7 +25,6 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.logging.Logger;
 
 import static java.lang.Boolean.FALSE;
 import static tech.provve.accounts.predicate.StringPredicate.isBlank;
@@ -41,6 +41,8 @@ public class AccountServiceImpl implements AccountService {
     private final JwtIssuingService jwtIssuingService;
 
     private final JwsParsingService jwsParsingService;
+
+    private final PasswordHashingService passwordHashingService;
 
     @External
     private final NotificationSendingService notificationService;
@@ -65,7 +67,10 @@ public class AccountServiceImpl implements AccountService {
                               registerAccountRequest.getEmail()));
                   });
 
-        repository.save(AccountMapper.INSTANCE.map(registerAccountRequest));
+        repository.save(AccountMapper.INSTANCE.map(
+                registerAccountRequest, passwordHashingService.hash(
+                        registerAccountRequest.getPassword())
+        ));
     }
 
     private void validateRegister(RegisterAccountRequest registerAccountRequest) {
@@ -75,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
             throw new DataNotValid("Email cannot be set before an user personal data consent.");
         }
         validateLogin(registerAccountRequest.getLogin());
-        validatePasswordHash(registerAccountRequest.getPasswordHash());
+        validatePassword(registerAccountRequest.getPassword());
     }
 
     @Override
@@ -88,7 +93,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public String authenticate(AuthenticateUserRequest authenticateUserRequest) {
         validateLogin(authenticateUserRequest.getLogin());
-        validatePasswordHash(authenticateUserRequest.getPasswordHash());
+        validatePassword(authenticateUserRequest.getPassword());
 
         Account account = repository.findByLogin(authenticateUserRequest.getLogin())
                                     .orElseThrow(() -> new AccountNotFound(String.format(
@@ -96,8 +101,10 @@ public class AccountServiceImpl implements AccountService {
                                             authenticateUserRequest.getLogin()
                                     )));
 
-        boolean invalidPasswordHash = !(account.passwordHash()
-                                               .equals(authenticateUserRequest.getPasswordHash()));
+        boolean invalidPasswordHash = !(passwordHashingService.verify(
+                authenticateUserRequest.getPassword(),
+                account.passwordHash()
+        ));
         if (invalidPasswordHash) {
             throw new DataNotValid(String.format(
                     "Invalid password hash for '%s' account",
@@ -114,8 +121,8 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    private void validatePasswordHash(String passwordHash) {
-        if (isBlank(passwordHash)) {
+    private void validatePassword(String password) {
+        if (isBlank(password)) {
             throw new DataNotValid("Password hash must be provided");
         }
     }
@@ -140,7 +147,10 @@ public class AccountServiceImpl implements AccountService {
     public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         var jwtPayload = jwsParsingService.parseReset(updatePasswordRequest.getResetToken());
         var login = ((String) jwtPayload.get(JWT_SUBJECT));
-        repository.updatePasswordHash(updatePasswordRequest.getNewPasswordHash(), login);
+        repository.updatePasswordHash(
+                passwordHashingService.hash(updatePasswordRequest.getNewPassword()),
+                login
+        );
     }
 
     @Override

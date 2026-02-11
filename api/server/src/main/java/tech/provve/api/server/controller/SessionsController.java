@@ -12,8 +12,9 @@ import tech.provve.api.server.generated.dto.ObservationUpload;
 @Singleton
 public class SessionsController implements SessionsApi {
 
-    public Future<ApiResponse<Notification>> createSession(CreateSessionRequest createSessionRequest) {
-        return Future.failedFuture(new HttpException(501));
+    @Override
+    public Future<ApiResponse<Void>> createSession(CreateSessionRequest createSessionRequest) {
+        return null;
     }
 
     public Future<ApiResponse<Integer>> getRandomValueForAntifraud() {

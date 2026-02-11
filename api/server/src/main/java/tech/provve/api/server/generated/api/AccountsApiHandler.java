@@ -3,7 +3,6 @@ package tech.provve.api.server.generated.api;
 import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.DeleteAccountRequest;
-import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
