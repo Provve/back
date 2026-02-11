@@ -20,6 +20,7 @@ dependencies {
     implementation libs.provve.api.dto
     implementation 'provve-backend:notification'
 
+    implementation libs.argon2
     implementation libs.amazon.s3
     implementation libs.vertx.auth.jwt
     implementation libs.vertx.web
@@ -99,6 +100,7 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+    jvmArgs("--enable-native-access=ALL-UNNAMED")
 }
 
 processResources {

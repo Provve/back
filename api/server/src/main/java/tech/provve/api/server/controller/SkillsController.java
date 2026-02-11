@@ -25,12 +25,12 @@ public class SkillsController implements SkillsApi {
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<Notification>> submitExamSolution(java.util.UUID id, FileUpload solution) {
+    public Future<ApiResponse<Void>> submitExamSolution(java.util.UUID id, FileUpload solution) {
         // использовать метод multipart для загрузки архива в s3 и клиент AWS CRT-based
         return Future.failedFuture(new HttpException(501));
     }
 
-    public Future<ApiResponse<Void>> viewExamResult(java.util.UUID examId) {
+    public Future<ApiResponse<ResultResponse>> viewExamResult(java.util.UUID examId) {
         return Future.failedFuture(new HttpException(501));
     }
 

@@ -2,9 +2,13 @@ package tech.provve.accounts.service.application;
 
 import com.robothy.s3.jupiter.LocalS3;
 import io.avaje.config.Config;
+import io.avaje.inject.Bean;
 import io.avaje.inject.BeanScopeBuilder;
+import io.avaje.inject.Factory;
+import io.avaje.inject.Primary;
 import io.avaje.inject.test.InjectTest;
 import io.avaje.inject.test.Setup;
+import io.avaje.inject.test.TestScope;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -13,10 +17,14 @@ import jakarta.inject.Inject;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.model.BucketCannedACL;
 import tech.provve.accounts.PostgresIntegrationTest;
 import tech.provve.accounts.domain.model.Account;
@@ -52,7 +60,7 @@ class AccountService_S3Service__IT extends PostgresIntegrationTest {
     AccountRepository repository;
 
     @Inject
-    S3Client s3Client;
+    static S3Client s3Client;
 
     @Setup
     void f(BeanScopeBuilder b) {
@@ -60,8 +68,8 @@ class AccountService_S3Service__IT extends PostgresIntegrationTest {
         b.bean(DSLContext.class, DSL.using(connection(), SQLDialect.POSTGRES));
     }
 
-    @BeforeEach
-    void all() {
+    @BeforeAll
+    static void all() {
         s3Client.createBucket(builder -> builder.bucket(Config.get("s3.buckets.images"))
                                                 .acl(BucketCannedACL.PUBLIC_READ));
     }

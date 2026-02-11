@@ -1,7 +1,6 @@
 package tech.provve.api.server.generated.api;
 
 import tech.provve.api.server.generated.dto.CreateSessionRequest;
-import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.api.server.generated.dto.ObservationUpload;
 import tech.provve.api.server.generated.dto.SessionCreatedNotification;
 
@@ -14,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface SessionsApi {
-    Future<ApiResponse<Notification>> createSession(CreateSessionRequest createSessionRequest);
+
+    Future<ApiResponse<Void>> createSession(CreateSessionRequest createSessionRequest);
     Future<ApiResponse<Integer>> getRandomValueForAntifraud();
     Future<ApiResponse<Void>> uploadObservation(ObservationUpload observationUpload);
 }

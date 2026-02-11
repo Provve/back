@@ -1,7 +1,6 @@
 package tech.provve.api.server.generated.api;
 
 import tech.provve.api.server.generated.dto.CreateSessionRequest;
-import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.api.server.generated.dto.ObservationUpload;
 import tech.provve.api.server.generated.dto.SessionCreatedNotification;
 

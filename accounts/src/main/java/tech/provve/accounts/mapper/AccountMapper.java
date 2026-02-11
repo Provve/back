@@ -16,9 +16,10 @@ public interface AccountMapper {
     @Mapping(target = "premium", source = "isPremium")
     AccountsRecord map(Account from);
 
-    @Mapping(target = "isConsentPersonalData", source = "consentPersonalData")
+    @Mapping(target = "isConsentPersonalData", source = "from.consentPersonalData")
     @Mapping(target = "isPremium", expression = "java(Boolean.FALSE)")
     @Mapping(target = "avatarUrl", expression = "java(null)")
-    Account map(RegisterAccountRequest from);
+    @Mapping(target = "passwordHash", source = "passwordHash")
+    Account map(RegisterAccountRequest from, String passwordHash);
 
 }

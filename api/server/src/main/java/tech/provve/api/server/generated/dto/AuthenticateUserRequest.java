@@ -9,15 +9,15 @@ public class AuthenticateUserRequest {
 
     private String login;
 
-    private String passwordHash;
+    private String password;
 
     public AuthenticateUserRequest() {
 
     }
 
-    public AuthenticateUserRequest(String login, String passwordHash) {
+    public AuthenticateUserRequest(String login, String password) {
         this.login = login;
-        this.passwordHash = passwordHash;
+        this.password = password;
     }
 
 
@@ -31,13 +31,13 @@ public class AuthenticateUserRequest {
     }
 
 
-    @JsonProperty("password_hash")
-    public String getPasswordHash() {
-        return passwordHash;
+    @JsonProperty("password")
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 
@@ -51,12 +51,12 @@ public class AuthenticateUserRequest {
         }
         AuthenticateUserRequest authenticateUserRequest = (AuthenticateUserRequest) o;
         return Objects.equals(login, authenticateUserRequest.login) &&
-                Objects.equals(passwordHash, authenticateUserRequest.passwordHash);
+                Objects.equals(password, authenticateUserRequest.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, passwordHash);
+        return Objects.hash(login, password);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class AuthenticateUserRequest {
         sb.append("    login: ")
           .append(toIndentedString(login))
           .append("\n");
-        sb.append("    passwordHash: ")
-          .append(toIndentedString(passwordHash))
+        sb.append("    password: ")
+          .append(toIndentedString(password))
           .append("\n");
         sb.append("}");
         return sb.toString();

@@ -870,9 +870,9 @@ components:
         email:
           type: string
           description: Для восстановления пароля и рассылок
-        password_hash:
+        password:
           type: string
-          description: Хеш пароля
+          description: Пароль
         consent_personal_data:
           type: boolean
           description: Согласен ли пользователь на обработку персональных данных
@@ -894,9 +894,9 @@ components:
       properties:
         login:
           type: string
-        password_hash:
+        password:
           type: string
-      required: [ login, password_hash ]
+      required: [ login, password ]
 
     UpdateEmail.request:
       type: object
@@ -914,14 +914,14 @@ components:
     UpdatePassword.request:
       type: object
       required:
-        - new_password_hash
+        - new_password
       properties:
         reset_token:
           type: string
           description: Токен для сброса пароля, отправленный пользователю на почту. Используется для извлечения логина
-        new_password_hash:
+        new_password:
           type: string
-          description: Хеш нового пароля
+          description: Новый пароль
 
     UpdateAvatar.request:
       type: object

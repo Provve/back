@@ -15,10 +15,13 @@ jjwt = '0.13.0'
 
 [libraries]
 antifraud-api = { group = 'tech.provve.specs', name = 'antifraud-api', version.ref = 'provve-backend' }
+argon2 = { module = 'de.mkammerer:argon2-jvm', version = '2.12' }
+
 vertx-core = { module = 'io.vertx:vertx-core', version.ref = 'vertx' }
 vertx-auth-jwt = { module = 'io.vertx:vertx-auth-jwt', version.ref = 'vertx' }
 vertx-web = { module = 'io.vertx:vertx-web', version.ref = 'vertx' }
 vertx-web-open-api = { module = 'io.vertx:vertx-web-openapi', version.ref = 'vertx' }
+
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind', version = '2.20.1' }
 lombok = { group = 'org.projectlombok', name = 'lombok', version = '1.18.42' }
 slf4j = { group = 'org.slf4j', name = 'slf4j-api', version = '2.1.0-alpha1' }
