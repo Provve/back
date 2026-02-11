@@ -1,9 +1,12 @@
+import org.owasp.dependencycheck.gradle.tasks.Aggregate
+
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 
 plugins {
     id 'java'
     id 'idea'
+    alias(libs.plugins.dependencycheck)
 }
 
 configurations {
@@ -31,4 +34,10 @@ configurations.spec.resolvedConfiguration.resolvedArtifacts.each {
             .asFile
     Files.createDirectories(destination.parentFile.toPath())
     destination.write(specContent)
+}
+
+tasks.withType(Aggregate).configureEach {
+    dependencyCheck {
+        nvd.apiKey = System.getenv('NVD_KEY')
+    }
 }
