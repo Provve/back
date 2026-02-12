@@ -29,10 +29,10 @@ paths:
       responses:
         '200':
           description: Успешная регистрация
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '409':
           description: Пользователь уже существует
-        '400':
-          description: Данные не прошли валидацию
     delete:
       tags:
         - accounts
@@ -47,6 +47,8 @@ paths:
       responses:
         '200':
           description: Аккаунт удален
+        '400':
+          $ref: "#/components/responses/ValidationError"
 
   /auth:
     post:
@@ -70,6 +72,8 @@ paths:
                 properties:
                   token:
                     type: string
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '404':
           description: Пользователь не найден
         '403':
@@ -144,6 +148,8 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/DataWritten"
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '403':
@@ -168,6 +174,8 @@ paths:
       responses:
         '200':
           description: Пароль успешно обновлён
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
@@ -188,6 +196,8 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/DataWritten"
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '403':
@@ -212,6 +222,8 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/DataWritten"
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
@@ -232,6 +244,8 @@ paths:
       responses:
         '200':
           description: Код отправлен на email
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '404':
           description: На почту не зарегистрирован ни один аккаунт
 
@@ -652,6 +666,15 @@ components:
       description: Эти данные нельзя записывать без согласия пользователя на обработку ПД
     DataNotUnique:
       description: Данные не удовлетворяют требованию уникальности
+    ValidationError:
+      description: Ошибка валидации данных
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Error"
+
     Unauthenticated:
       description: Следует пройти аутентификацию
   schemas:
@@ -1036,6 +1059,13 @@ components:
         - OutSum
         - InvId
         - SignatureValue
+
+    Error:
+      type: object
+      properties:
+        details:
+          type: string
+          description: Детали ошибки
 
   securitySchemes:
     auth:

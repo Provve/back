@@ -1,0 +1,11 @@
+security.jwt.auth.secret: 1
+security.jwt.reset.secret: 1
+s3:
+  url: http://localhost:19000
+  access-key: 1
+  secret-key: 1
+  region: r
+  buckets:
+    images: i4s
+    exams: e3s
+    solutions: s7s

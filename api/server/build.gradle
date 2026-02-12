@@ -24,11 +24,17 @@ repositories {
     mavenLocal()
 }
 
+configurations {
+    mockitoAgent
+}
+
 dependencies {
     implementation 'provve-backend:accounts'
     implementation 'provve-backend:notification'
     implementation 'provve-backend:payment'
 
+    implementation libs.hibernate.validation
+    implementation libs.expressly
     implementation libs.amazon.s3
     implementation libs.bundles.vertx
     implementation libs.jackson.databind
@@ -36,13 +42,25 @@ dependencies {
     compileOnly libs.simple.mail
     compileOnly libs.jooq
 
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
     implementation libs.avaje
     implementation libs.avaje.config
     annotationProcessor libs.avaje.generator
+
     runtimeOnly libs.mockito.core // для avaje
+    mockitoAgent(libs.mockito.core) {
+        transitive = false
+    }
+
+    testImplementation libs.avaje.test
+    testAnnotationProcessor libs.avaje.generator
+    testImplementation libs.bundles.testing
+    testCompileOnly libs.simple.mail
 }
 
 tasks.openApiGenerate {
@@ -74,6 +92,10 @@ def mainVerticle = 'tech.provve.api.server.ApiServer'
 run {
     mainClass = 'io.vertx.core.Launcher'
     args = ['run', mainVerticle]
+}
+
+application {
+    applicationDefaultJvmArgs = ['--enable-native-access=ALL-UNNAMED', "-javaagent:${configurations.mockitoAgent.asPath}"]
 }
 
 tasks.register('buildDto', org.gradle.jvm.tasks.Jar) {
@@ -123,4 +145,9 @@ tasks.named('shadowJar', ShadowJar) {
                 'Main-Verticle': mainVerticle
         )
     }
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    jvmArgs("--enable-native-access=ALL-UNNAMED")
 }

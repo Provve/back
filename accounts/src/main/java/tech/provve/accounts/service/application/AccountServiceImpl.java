@@ -27,8 +27,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import static java.lang.Boolean.FALSE;
-import static tech.provve.accounts.predicate.StringPredicate.isBlank;
-import static tech.provve.accounts.predicate.StringPredicate.isNotBlank;
 
 @Singleton
 @RequiredArgsConstructor
@@ -54,8 +52,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void register(RegisterAccountRequest registerAccountRequest) {
-        validateRegister(registerAccountRequest);
-
         repository.findByLogin(registerAccountRequest.getLogin())
                   .ifPresent(_ -> {
                       throw new AccountAlreadyExists("Account with login '%s' is already exists.".formatted(
@@ -73,16 +69,6 @@ public class AccountServiceImpl implements AccountService {
         ));
     }
 
-    private void validateRegister(RegisterAccountRequest registerAccountRequest) {
-        boolean emailSetIllegally = !registerAccountRequest.getConsentPersonalData() && isNotBlank(
-                registerAccountRequest.getEmail());
-        if (emailSetIllegally) {
-            throw new DataNotValid("Email cannot be set before an user personal data consent.");
-        }
-        validateLogin(registerAccountRequest.getLogin());
-        validatePassword(registerAccountRequest.getPassword());
-    }
-
     @Override
     public void delete(DeleteAccountRequest deleteAccountRequest) {
         var jwtPayload = jwsParsingService.parseAuth(deleteAccountRequest.getAuthToken());
@@ -92,9 +78,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public String authenticate(AuthenticateUserRequest authenticateUserRequest) {
-        validateLogin(authenticateUserRequest.getLogin());
-        validatePassword(authenticateUserRequest.getPassword());
-
         Account account = repository.findByLogin(authenticateUserRequest.getLogin())
                                     .orElseThrow(() -> new AccountNotFound(String.format(
                                             "Account with login '%s' not found",
@@ -106,25 +89,13 @@ public class AccountServiceImpl implements AccountService {
                 account.passwordHash()
         ));
         if (invalidPasswordHash) {
-            throw new DataNotValid(String.format(
-                    "Invalid password hash for '%s' account",
+            throw new AccessDenied(String.format(
+                    "Invalid password for '%s' account",
                     authenticateUserRequest.getLogin()
             ));
         }
 
         return jwtIssuingService.issueAuth(account.login(), account.isPremium());
-    }
-
-    private void validateLogin(String login) {
-        if (isBlank(login)) {
-            throw new DataNotValid("Login must be provided");
-        }
-    }
-
-    private void validatePassword(String password) {
-        if (isBlank(password)) {
-            throw new DataNotValid("Password hash must be provided");
-        }
     }
 
     @Override

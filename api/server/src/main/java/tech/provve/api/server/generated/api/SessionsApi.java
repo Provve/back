@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface SessionsApi {
-
     Future<ApiResponse<Void>> createSession(CreateSessionRequest createSessionRequest);
     Future<ApiResponse<Integer>> getRandomValueForAntifraud();
     Future<ApiResponse<Void>> uploadObservation(ObservationUpload observationUpload);

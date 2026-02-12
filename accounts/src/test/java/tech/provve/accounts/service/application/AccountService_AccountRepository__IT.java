@@ -12,9 +12,9 @@ import org.mockito.Mock;
 import tech.provve.accounts.PostgresIntegrationTest;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.domain.model.value.PremiumExpiration;
+import tech.provve.accounts.exception.AccessDenied;
 import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotUnique;
-import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.accounts.exception.NoPersonalDataConsent;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
@@ -102,7 +102,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
         );
 
         // act assert
-        assertThrows(DataNotValid.class, () -> service.authenticate(authRequest));
+        assertThrows(AccessDenied.class, () -> service.authenticate(authRequest));
     }
 
     @Test

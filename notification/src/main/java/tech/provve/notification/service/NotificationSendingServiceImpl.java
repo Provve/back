@@ -1,6 +1,5 @@
 package tech.provve.notification.service;
 
-import io.avaje.config.Config;
 import io.avaje.inject.External;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +31,10 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
     @External
     private final Mailer mailer;
 
-    private final String mailServerUsername = Config.get("mail.username");
-
     @Override
     public void send(NotifyCommand notifyCommand) {
+        var mailServerUsername = mailer.getServerConfig()
+                                       .getUsername();
         var receipeeEmail = notifyCommand.requisites()
                                          .email();
         boolean canSkipProcessing = receipeeEmail == null

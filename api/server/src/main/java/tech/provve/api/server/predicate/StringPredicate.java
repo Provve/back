@@ -1,4 +1,4 @@
-package tech.provve.accounts.predicate;
+package tech.provve.api.server.predicate;
 
 public class StringPredicate {
 

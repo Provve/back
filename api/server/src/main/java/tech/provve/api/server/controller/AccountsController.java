@@ -6,9 +6,13 @@ import lombok.RequiredArgsConstructor;
 import tech.provve.accounts.exception.*;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.api.server.exception.HttpException;
+import tech.provve.api.server.exception.ValidationError;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.AccountsApi;
 import tech.provve.api.server.generated.dto.*;
+import tech.provve.api.server.mapper.ValidationDtoMapper;
+import tech.provve.api.server.service.DtoValidatingService;
+import tech.provve.api.server.validation.dto.RequestResetCode;
 import tech.provve.payment.exception.PaymentGatewayNotAccessible;
 import tech.provve.payment.service.application.PaymentService;
 
@@ -20,13 +24,19 @@ public class AccountsController implements AccountsApi {
 
     private final PaymentService paymentService;
 
+    private final DtoValidatingService validatingService;
+
     public Future<ApiResponse<AuthenticateUser200Response>> authenticateUser(AuthenticateUserRequest authenticateUserRequest) {
         try {
+            validatingService.validate(ValidationDtoMapper.INSTANCE.map(authenticateUserRequest));
+
             var token = accountService.authenticate(authenticateUserRequest);
             return Future.succeededFuture(new ApiResponse<>(
                     new AuthenticateUser200Response(token)
             ));
-        } catch (DataNotValid e) {
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        } catch (AccessDenied e) {
             return Future.failedFuture(new HttpException(e, 403));
         } catch (AccountNotFound e) {
             return Future.failedFuture(new HttpException(e, 404));
@@ -36,25 +46,34 @@ public class AccountsController implements AccountsApi {
     @Override
     public Future<ApiResponse<Void>> registerAccount(RegisterAccountRequest registerAccountRequest) {
         try {
+            validatingService.validate(ValidationDtoMapper.INSTANCE.map(registerAccountRequest));
             accountService.register(registerAccountRequest);
             return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
         } catch (AccountAlreadyExists e) {
             return Future.failedFuture(new HttpException(e, 409));
-        } catch (DataNotValid e) {
-            return Future.failedFuture(new HttpException(e, 400));
         }
     }
 
     @Override
     public Future<ApiResponse<Void>> deleteAccount(DeleteAccountRequest deleteAccountRequest) {
-        accountService.delete(deleteAccountRequest);
-        return Future.succeededFuture(new ApiResponse<>(200));
+        try {
+            validatingService.validate(ValidationDtoMapper.INSTANCE.map(deleteAccountRequest));
+            accountService.delete(deleteAccountRequest);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
 
     public Future<ApiResponse<Void>> requestResetCode(String email) {
         try {
+            validatingService.validate(new RequestResetCode(email));
             accountService.requestResetCode(email);
             return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
         } catch (AccountNotFound e) {
             return Future.failedFuture(new HttpException(e, 404));
         }
@@ -62,8 +81,11 @@ public class AccountsController implements AccountsApi {
 
     public Future<ApiResponse<Void>> updateAvatar(UpdateAvatarRequest updateAvatarRequest) {
         try {
+            validatingService.validate(ValidationDtoMapper.INSTANCE.map(updateAvatarRequest));
             accountService.updateAvatar(updateAvatarRequest);
             return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
         } catch (NoPersonalDataConsent e) {
             return Future.failedFuture(new HttpException(e, 403));
         } catch (DataNotUnique e) {
@@ -73,8 +95,11 @@ public class AccountsController implements AccountsApi {
 
     public Future<ApiResponse<Void>> updateEmail(UpdateEmailRequest updateEmailRequest) {
         try {
+            validatingService.validate(ValidationDtoMapper.INSTANCE.map(updateEmailRequest));
             accountService.updateEmail(updateEmailRequest);
             return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
         } catch (NoPersonalDataConsent e) {
             return Future.failedFuture(new HttpException(e, 403));
         } catch (DataNotUnique e) {
@@ -83,14 +108,24 @@ public class AccountsController implements AccountsApi {
     }
 
     public Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest) {
-        accountService.updatePassword(updatePasswordRequest);
-        return Future.succeededFuture(new ApiResponse<>(200));
+        try {
+            validatingService.validate(ValidationDtoMapper.INSTANCE.map(updatePasswordRequest));
+            accountService.updatePassword(updatePasswordRequest);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
 
     @Override
     public Future<ApiResponse<Void>> updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest) {
-        accountService.updatePersonalDataConsent(updatePersonalDataConsentRequest);
-        return Future.succeededFuture(new ApiResponse<>(200));
+        try {
+            validatingService.validate(ValidationDtoMapper.INSTANCE.map(updatePersonalDataConsentRequest));
+            accountService.updatePersonalDataConsent(updatePersonalDataConsentRequest);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
 
     @Override

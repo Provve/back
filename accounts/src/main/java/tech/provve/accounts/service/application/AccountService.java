@@ -1,17 +1,17 @@
 package tech.provve.accounts.service.application;
 
+import tech.provve.accounts.exception.AccessDenied;
 import tech.provve.accounts.exception.AccountAlreadyExists;
 import tech.provve.accounts.exception.AccountAlreadyUpgraded;
 import tech.provve.accounts.exception.AccountNotFound;
-import tech.provve.accounts.exception.DataNotValid;
 import tech.provve.api.server.generated.dto.*;
 
 /**
- * Прикладной сервис управления базой аккаунтов.
+ * Прикладной сервис управления аккаунтами.
  */
 public interface AccountService {
 
-    void register(RegisterAccountRequest registerAccountRequest) throws DataNotValid, AccountAlreadyExists;
+    void register(RegisterAccountRequest registerAccountRequest) throws AccountAlreadyExists;
 
     /**
      * Delete all account`s data
@@ -21,7 +21,7 @@ public interface AccountService {
     /**
      * @return JWT
      */
-    String authenticate(AuthenticateUserRequest authenticateUserRequest) throws DataNotValid, AccountNotFound;
+    String authenticate(AuthenticateUserRequest authenticateUserRequest) throws AccountNotFound, AccessDenied;
 
     /**
      *

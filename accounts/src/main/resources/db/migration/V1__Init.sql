@@ -5,7 +5,7 @@ CREATE TABLE accounts.accounts (
     email VARCHAR(254), -- RFC 5321
     avatar_url TEXT,
     premium BOOLEAN DEFAULT FALSE,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash TEXT NOT NULL,
     consent_personal_data BOOLEAN DEFAULT FALSE,
     username VARCHAR(30) NOT NULL
 );
