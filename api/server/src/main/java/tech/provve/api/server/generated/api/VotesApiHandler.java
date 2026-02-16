@@ -49,10 +49,8 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            UUID id = requestParameters.pathParameter("id") != null ? UUID.fromString(requestParameters.pathParameter(
-                                                                                                               "id")
-                                                                                                       .getString())
-                    : null;
+            UUID id = requestParameters.pathParameter("id") != null ? UUID.fromString(requestParameters.pathParameter("id")
+                                                                                                       .getString()) : null;
             RequestParameter body = requestParameters.body();
             AddCommentOnVoteRequest addCommentOnVoteRequest = body != null ? DatabindCodec.mapper()
                                                                                           .convertValue(
@@ -84,15 +82,12 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            UUID id = requestParameters.pathParameter("id") != null ? UUID.fromString(requestParameters.pathParameter(
-                                                                                                               "id")
-                                                                                                       .getString())
-                    : null;
+            UUID id = requestParameters.pathParameter("id") != null ? UUID.fromString(requestParameters.pathParameter("id")
+                                                                                                       .getString()) : null;
             RequestParameter body = requestParameters.body();
             CastVoteRequest castVoteRequest = body != null ? DatabindCodec.mapper()
                                                                           .convertValue(
-                                                                                  body.get(),
-                                                                                  new TypeReference<CastVoteRequest>() {
+                                                                                  body.get(), new TypeReference<CastVoteRequest>() {
                                                                                   }
                                                                           ) : null;
 
@@ -122,8 +117,7 @@ public class VotesApiHandler implements RouteHandler {
                 RequestParameter body = requestParameters.body();
             CreateVoteRequest createVoteRequest = body != null ? DatabindCodec.mapper()
                                                                               .convertValue(
-                                                                                      body.get(),
-                                                                                      new TypeReference<CreateVoteRequest>() {
+                                                                                      body.get(), new TypeReference<CreateVoteRequest>() {
                                                                                       }
                                                                               ) : null;
 
@@ -149,12 +143,10 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            UUID voteId = requestParameters.pathParameter("vote_id") != null
-                    ? UUID.fromString(requestParameters.pathParameter("vote_id")
-                                                       .getString()) : null;
-            UUID commentId = requestParameters.pathParameter("comment_id") != null
-                    ? UUID.fromString(requestParameters.pathParameter("comment_id")
-                                                       .getString()) : null;
+            UUID voteId = requestParameters.pathParameter("vote_id") != null ? UUID.fromString(requestParameters.pathParameter("vote_id")
+                                                                                                                .getString()) : null;
+            UUID commentId = requestParameters.pathParameter("comment_id") != null ? UUID.fromString(requestParameters.pathParameter("comment_id")
+                                                                                                                      .getString()) : null;
 
             logger.debug("Parameter voteId is {}", voteId);
             logger.debug("Parameter commentId is {}", commentId);
@@ -179,12 +171,10 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            UUID voteId = requestParameters.pathParameter("vote_id") != null
-                    ? UUID.fromString(requestParameters.pathParameter("vote_id")
-                                                       .getString()) : null;
-            UUID commentId = requestParameters.pathParameter("comment_id") != null
-                    ? UUID.fromString(requestParameters.pathParameter("comment_id")
-                                                       .getString()) : null;
+            UUID voteId = requestParameters.pathParameter("vote_id") != null ? UUID.fromString(requestParameters.pathParameter("vote_id")
+                                                                                                                .getString()) : null;
+            UUID commentId = requestParameters.pathParameter("comment_id") != null ? UUID.fromString(requestParameters.pathParameter("comment_id")
+                                                                                                                      .getString()) : null;
 
             logger.debug("Parameter voteId is {}", voteId);
             logger.debug("Parameter commentId is {}", commentId);
@@ -209,10 +199,8 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-            UUID id = requestParameters.pathParameter("id") != null ? UUID.fromString(requestParameters.pathParameter(
-                                                                                                               "id")
-                                                                                                       .getString())
-                    : null;
+            UUID id = requestParameters.pathParameter("id") != null ? UUID.fromString(requestParameters.pathParameter("id")
+                                                                                                       .getString()) : null;
 
             logger.debug("Parameter id is {}", id);
 
@@ -238,16 +226,14 @@ public class VotesApiHandler implements RouteHandler {
 
             Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
                                                                                                           .convertValue(
-                                                                                                                  requestParameters.queryParameter(
-                                                                                                                                           "pagination")
+                                                                                                                  requestParameters.queryParameter("pagination")
                                                                                                                                    .get(),
                                                                                                                   new TypeReference<Pagination>() {
                                                                                                                   }
                                                                                                           ) : null;
             Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
                                                                                               .convertValue(
-                                                                                                      requestParameters.queryParameter(
-                                                                                                                               "filter")
+                                                                                                      requestParameters.queryParameter("filter")
                                                                                                                        .get(),
                                                                                                       new TypeReference<Filter>() {
                                                                                                       }

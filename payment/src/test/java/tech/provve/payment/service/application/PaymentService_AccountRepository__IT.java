@@ -128,6 +128,7 @@ class PaymentService_AccountRepository__IT extends PostgresIntegrationTest {
                 true,
                 "n",
                 null,
+                "",
                 premium
         );
 

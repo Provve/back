@@ -1,10 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.vertx.ext.web.FileUpload;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamAddVote {
@@ -29,15 +30,10 @@ public class ExamAddVote {
     }
 
     private ActionEnum action;
-
     private String arguments;
-
     private java.util.UUID skillId;
-
     private String name;
-
     private String desc;
-
     private FileUpload material;
 
     public ExamAddVote() {

@@ -52,6 +52,7 @@ class AccountRepositoryTest extends PostgresIntegrationTest {
                 true,
                 "n",
                 "p",
+                null,
                 false
         );
 
@@ -69,6 +70,7 @@ class AccountRepositoryTest extends PostgresIntegrationTest {
                 true,
                 "n",
                 "p",
+                null,
                 true
         );
         repository.save(account);
@@ -90,6 +92,7 @@ class AccountRepositoryTest extends PostgresIntegrationTest {
                 true,
                 "n",
                 "p",
+                null,
                 false
         );
 

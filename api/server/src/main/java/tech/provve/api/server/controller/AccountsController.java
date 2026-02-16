@@ -95,6 +95,12 @@ public class AccountsController implements AccountsApi {
         }
     }
 
+    @Override
+    public Future<ApiResponse<Void>> updateContacts(UpdateContactsRequest updateContactsRequest) {
+        accountService.updateContacts(updateContactsRequest);
+        return Future.succeededFuture(new ApiResponse<>(200));
+    }
+
     public Future<ApiResponse<Void>> updateEmail(UpdateEmailRequest updateEmailRequest) {
         try {
             validatingService.validate(ValidationDtoMapper.INSTANCE.map(updateEmailRequest));

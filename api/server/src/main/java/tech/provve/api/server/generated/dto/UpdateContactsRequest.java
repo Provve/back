@@ -6,28 +6,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UpdatePersonalDataConsentRequest {
+public class UpdateContactsRequest {
 
-    private Boolean consentPersonalData;
+    private Contacts contacts;
     private String authToken;
 
-    public UpdatePersonalDataConsentRequest() {
+    public UpdateContactsRequest() {
 
     }
 
-    public UpdatePersonalDataConsentRequest(Boolean consentPersonalData, String authToken) {
-        this.consentPersonalData = consentPersonalData;
+    public UpdateContactsRequest(Contacts contacts, String authToken) {
+        this.contacts = contacts;
         this.authToken = authToken;
     }
 
 
-    @JsonProperty("consent_personal_data")
-    public Boolean getConsentPersonalData() {
-        return consentPersonalData;
+    @JsonProperty("contacts")
+    public Contacts getContacts() {
+        return contacts;
     }
 
-    public void setConsentPersonalData(Boolean consentPersonalData) {
-        this.consentPersonalData = consentPersonalData;
+    public void setContacts(Contacts contacts) {
+        this.contacts = contacts;
     }
 
 
@@ -49,23 +49,23 @@ public class UpdatePersonalDataConsentRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest = (UpdatePersonalDataConsentRequest) o;
-        return Objects.equals(consentPersonalData, updatePersonalDataConsentRequest.consentPersonalData) &&
-                Objects.equals(authToken, updatePersonalDataConsentRequest.authToken);
+        UpdateContactsRequest updateContactsRequest = (UpdateContactsRequest) o;
+        return Objects.equals(contacts, updateContactsRequest.contacts) &&
+                Objects.equals(authToken, updateContactsRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(consentPersonalData, authToken);
+        return Objects.hash(contacts, authToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class UpdatePersonalDataConsentRequest {\n");
+        sb.append("class UpdateContactsRequest {\n");
 
-        sb.append("    consentPersonalData: ")
-          .append(toIndentedString(consentPersonalData))
+        sb.append("    contacts: ")
+          .append(toIndentedString(contacts))
           .append("\n");
         sb.append("    authToken: ")
           .append(toIndentedString(authToken))

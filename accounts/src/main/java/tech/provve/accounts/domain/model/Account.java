@@ -7,6 +7,7 @@ public record Account(
         Boolean isConsentPersonalData,
         String username,
         String avatarUrl,
+        String contactInfo,
         Boolean isPremium
 ) {
 

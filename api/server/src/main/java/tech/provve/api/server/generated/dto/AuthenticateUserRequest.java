@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AuthenticateUserRequest {
 
     private String login;
-
     private String password;
 
     public AuthenticateUserRequest() {

@@ -1,10 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
  * Уведомление о событии в системе
@@ -34,9 +35,7 @@ public class Notification {
     }
 
     private LevelEnum level;
-
     private String message;
-
     private OffsetDateTime createdAt;
 
     public Notification() {

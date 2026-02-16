@@ -1,20 +1,17 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RegisterAccountRequest {
 
     private String login;
-
     private String email;
-
     private String password;
-
     private Boolean consentPersonalData;
-
     private String username;
 
     public RegisterAccountRequest() {

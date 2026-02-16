@@ -166,6 +166,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void updateContacts(UpdateContactsRequest updateContactsRequest) {
+        var jwtPayload = jwsParsingService.parseAuth(updateContactsRequest.getAuthToken());
+        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        String contacts = updateContactsRequest.getContacts()
+                                               .getUrLs()
+                                               .toString();
+        repository.updateContactInfo(login, contacts);
+    }
+
+    @Override
     public void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest) {
         var jwtPayload = jwsParsingService.parseAuth(updatePersonalDataConsentRequest.getAuthToken());
         var login = ((String) jwtPayload.get(JWT_SUBJECT));

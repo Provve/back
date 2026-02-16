@@ -175,6 +175,7 @@ class AccountService_S3Service__IT extends PostgresIntegrationTest {
                 true,
                 "n",
                 null,
+                null,
                 true
         );
         repository.save(account);

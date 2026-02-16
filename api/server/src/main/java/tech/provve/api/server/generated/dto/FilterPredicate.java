@@ -1,9 +1,10 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FilterPredicate {
@@ -31,7 +32,6 @@ public class FilterPredicate {
     }
 
     private OperatorEnum operator;
-
     private String value;
 
     public FilterPredicate() {

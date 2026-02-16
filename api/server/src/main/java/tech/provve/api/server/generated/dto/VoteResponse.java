@@ -1,12 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.time.OffsetDateTime;
 
-import tech.provve.api.server.generated.dto.VoteResponseAllOfVotes;
+import java.time.OffsetDateTime;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VoteResponse {
@@ -31,11 +30,8 @@ public class VoteResponse {
     }
 
     private ActionEnum action;
-
     private String arguments;
-
     private VoteResponseAllOfVotes votes;
-
     private OffsetDateTime expireAt;
 
     public VoteResponse() {

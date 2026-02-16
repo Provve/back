@@ -3,29 +3,31 @@ package tech.provve.api.server.generated.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Error {
+public class Contacts {
 
-    private String details;
+    private List<String> urLs = new ArrayList<>();
 
-    public Error() {
+    public Contacts() {
 
     }
 
-    public Error(String details) {
-        this.details = details;
+    public Contacts(List<String> urLs) {
+        this.urLs = urLs;
     }
 
 
-    @JsonProperty("details")
-    public String getDetails() {
-        return details;
+    @JsonProperty("URLs")
+    public List<String> getUrLs() {
+        return urLs;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setUrLs(List<String> urLs) {
+        this.urLs = urLs;
     }
 
 
@@ -37,22 +39,22 @@ public class Error {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Error error = (Error) o;
-        return Objects.equals(details, error.details);
+        Contacts contacts = (Contacts) o;
+        return Objects.equals(urLs, contacts.urLs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(details);
+        return Objects.hash(urLs);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class Error {\n");
+        sb.append("class Contacts {\n");
 
-        sb.append("    details: ")
-          .append(toIndentedString(details))
+        sb.append("    urLs: ")
+          .append(toIndentedString(urLs))
           .append("\n");
         sb.append("}");
         return sb.toString();

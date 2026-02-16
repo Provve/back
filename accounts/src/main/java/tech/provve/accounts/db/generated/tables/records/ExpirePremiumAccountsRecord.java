@@ -10,7 +10,7 @@ import tech.provve.accounts.db.generated.tables.ExpirePremiumAccounts;
 
 /**
  * Функция для отключения премиум-статуса пользователям, срок подписки которых
- * истек. Возвращает login и email обработанных аккаунтов.
+ * истек. Возвращает список обработанных аккаунтов.
  */
 @SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class ExpirePremiumAccountsRecord extends TableRecordImpl<ExpirePremiumAccountsRecord> {

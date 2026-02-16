@@ -7,7 +7,8 @@ CREATE TABLE accounts.accounts (
     premium BOOLEAN DEFAULT FALSE,
     password_hash TEXT NOT NULL,
     consent_personal_data BOOLEAN DEFAULT FALSE,
-    username VARCHAR(30) NOT NULL
+    username VARCHAR(30) NOT NULL,
+    contact_info TEXT
 );
 
 CREATE INDEX idx_accounts_email
@@ -21,6 +22,7 @@ COMMENT ON COLUMN accounts.accounts.premium IS 'Является ли польз
 COMMENT ON COLUMN accounts.accounts.password_hash IS 'Хэшированный пароль пользователя';
 COMMENT ON COLUMN accounts.accounts.consent_personal_data IS 'Флаг согласия пользователя на обработку персональных данных';
 COMMENT ON COLUMN accounts.accounts.username IS 'Отображаемое имя пользователя';
+COMMENT ON COLUMN accounts.accounts.contact_info IS 'Произвальная информация с контакными данными';
 
 
 CREATE TABLE accounts.premium_expiration (

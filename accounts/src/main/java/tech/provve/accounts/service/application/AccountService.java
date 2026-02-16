@@ -35,6 +35,8 @@ public interface AccountService {
 
     void updateAvatar(UpdateAvatarRequest updateAvatarRequest);
 
+    void updateContacts(UpdateContactsRequest updateContactsRequest);
+
     void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest);
 
     /**

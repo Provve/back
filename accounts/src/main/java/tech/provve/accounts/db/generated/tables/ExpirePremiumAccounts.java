@@ -14,7 +14,7 @@ import tech.provve.accounts.db.generated.tables.records.ExpirePremiumAccountsRec
 
 /**
  * Функция для отключения премиум-статуса пользователям, срок подписки которых
- * истек.
+ * истек. Возвращает список обработанных аккаунтов.
  */
 @SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class ExpirePremiumAccounts extends TableImpl<ExpirePremiumAccountsRecord> {
@@ -37,69 +37,43 @@ public class ExpirePremiumAccounts extends TableImpl<ExpirePremiumAccountsRecord
     /**
      * The column <code>accounts.expire_premium_accounts.login</code>.
      */
-    public final TableField<ExpirePremiumAccountsRecord, String> LOGIN = createField(
-            DSL.name("login"),
-            SQLDataType.VARCHAR,
-            this,
-            ""
-    );
+    public final TableField<ExpirePremiumAccountsRecord, String> LOGIN = createField(DSL.name("login"), SQLDataType.VARCHAR, this, "");
 
     /**
      * The column <code>accounts.expire_premium_accounts.email</code>.
      */
-    public final TableField<ExpirePremiumAccountsRecord, String> EMAIL = createField(
-            DSL.name("email"),
-            SQLDataType.VARCHAR,
-            this,
-            ""
-    );
+    public final TableField<ExpirePremiumAccountsRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR, this, "");
 
     /**
      * The column <code>accounts.expire_premium_accounts.avatar_url</code>.
      */
-    public final TableField<ExpirePremiumAccountsRecord, String> AVATAR_URL = createField(
-            DSL.name("avatar_url"),
-            SQLDataType.CLOB,
-            this,
-            ""
-    );
+    public final TableField<ExpirePremiumAccountsRecord, String> AVATAR_URL = createField(DSL.name("avatar_url"), SQLDataType.CLOB, this, "");
 
     /**
      * The column <code>accounts.expire_premium_accounts.premium</code>.
      */
-    public final TableField<ExpirePremiumAccountsRecord, Boolean> PREMIUM = createField(
-            DSL.name("premium"),
-            SQLDataType.BOOLEAN,
-            this,
-            ""
-    );
+    public final TableField<ExpirePremiumAccountsRecord, Boolean> PREMIUM = createField(DSL.name("premium"), SQLDataType.BOOLEAN, this, "");
 
     /**
      * The column <code>accounts.expire_premium_accounts.password_hash</code>.
      */
-    public final TableField<ExpirePremiumAccountsRecord, String> PASSWORD_HASH = createField(
-            DSL.name("password_hash"),
-            SQLDataType.VARCHAR,
-            this,
-            ""
-    );
+    public final TableField<ExpirePremiumAccountsRecord, String> PASSWORD_HASH = createField(DSL.name("password_hash"), SQLDataType.VARCHAR, this, "");
 
     /**
      * The column
      * <code>accounts.expire_premium_accounts.consent_personal_data</code>.
      */
     public final TableField<ExpirePremiumAccountsRecord, Boolean> CONSENT_PERSONAL_DATA = createField(
-            DSL.name("consent_personal_data"), SQLDataType.BOOLEAN, this, "");
+            DSL.name("consent_personal_data"),
+            SQLDataType.BOOLEAN,
+            this,
+            ""
+    );
 
     /**
      * The column <code>accounts.expire_premium_accounts.username</code>.
      */
-    public final TableField<ExpirePremiumAccountsRecord, String> USERNAME = createField(
-            DSL.name("username"),
-            SQLDataType.VARCHAR,
-            this,
-            ""
-    );
+    public final TableField<ExpirePremiumAccountsRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR, this, "");
 
     private ExpirePremiumAccounts(Name alias, Table<ExpirePremiumAccountsRecord> aliased) {
         this(
@@ -118,8 +92,7 @@ public class ExpirePremiumAccounts extends TableImpl<ExpirePremiumAccountsRecord
                 null,
                 aliased,
                 parameters,
-                DSL.comment(
-                        "Функция для отключения премиум-статуса пользователям, срок подписки которых истек. Возвращает login и email обработанных аккаунтов."),
+                DSL.comment("Функция для отключения премиум-статуса пользователям, срок подписки которых истек. Возвращает список обработанных аккаунтов."),
                 TableOptions.function(),
                 where
         );
@@ -196,11 +169,7 @@ public class ExpirePremiumAccounts extends TableImpl<ExpirePremiumAccountsRecord
      * Call this table-valued function
      */
     public ExpirePremiumAccounts call() {
-        ExpirePremiumAccounts result = new ExpirePremiumAccounts(
-                DSL.name("expire_premium_accounts"),
-                null,
-                new Field[]{}
-        );
+        ExpirePremiumAccounts result = new ExpirePremiumAccounts(DSL.name("expire_premium_accounts"), null, new Field[]{});
 
         return aliased() ? result.as(getUnqualifiedName()) : result;
     }

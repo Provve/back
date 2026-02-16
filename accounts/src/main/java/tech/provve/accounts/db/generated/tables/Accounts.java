@@ -4,16 +4,31 @@
 package tech.provve.accounts.db.generated.tables;
 
 
-import org.jooq.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Index;
+import org.jooq.Name;
+import org.jooq.OrderField;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import tech.provve.accounts.db.generated.tables.records.AccountsRecord;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import tech.provve.accounts.db.generated.tables.records.AccountsRecord;
 
 
 /**
@@ -63,12 +78,7 @@ public class Accounts extends TableImpl<AccountsRecord> {
      * The column <code>accounts.accounts.avatar_url</code>. Ссылка на аватар
      * пользователя
      */
-    public final TableField<AccountsRecord, String> AVATAR_URL = createField(
-            DSL.name("avatar_url"),
-            SQLDataType.CLOB,
-            this,
-            "Ссылка на аватар пользователя"
-    );
+    public final TableField<AccountsRecord, String> AVATAR_URL = createField(DSL.name("avatar_url"), SQLDataType.CLOB, this, "Ссылка на аватар пользователя");
 
     /**
      * The column <code>accounts.accounts.premium</code>. Является ли
@@ -76,10 +86,7 @@ public class Accounts extends TableImpl<AccountsRecord> {
      */
     public final TableField<AccountsRecord, Boolean> PREMIUM = createField(
             DSL.name("premium"),
-            SQLDataType.BOOLEAN.defaultValue(DSL.field(
-                    DSL.raw("false"),
-                    SQLDataType.BOOLEAN
-            )),
+            SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)),
             this,
             "Является ли пользователь платным"
     );
@@ -90,8 +97,7 @@ public class Accounts extends TableImpl<AccountsRecord> {
      */
     public final TableField<AccountsRecord, String> PASSWORD_HASH = createField(
             DSL.name("password_hash"),
-            SQLDataType.VARCHAR(255)
-                       .nullable(false),
+            SQLDataType.CLOB.nullable(false),
             this,
             "Хэшированный пароль пользователя"
     );
@@ -122,20 +128,23 @@ public class Accounts extends TableImpl<AccountsRecord> {
             "Отображаемое имя пользователя"
     );
 
+    /**
+     * The column <code>accounts.accounts.contact_info</code>. Произвальная
+     * информация с контакными данными
+     */
+    public final TableField<AccountsRecord, String> CONTACT_INFO = createField(
+            DSL.name("contact_info"),
+            SQLDataType.CLOB.nullable(false),
+            this,
+            "Произвальная информация с контакными данными"
+    );
+
     private Accounts(Name alias, Table<AccountsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
 
     private Accounts(Name alias, Table<AccountsRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(
-                alias,
-                null,
-                aliased,
-                parameters,
-                DSL.comment("Таблица для хранения учетных записей пользователей"),
-                TableOptions.table(),
-                where
-        );
+        super(alias, null, aliased, parameters, DSL.comment("Таблица для хранения учетных записей пользователей"), TableOptions.table(), where);
     }
 
     /**
@@ -167,23 +176,13 @@ public class Accounts extends TableImpl<AccountsRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.asList(
-                Internal.createIndex(
-                        DSL.name("idx_accounts_email"),
-                        Accounts.ACCOUNTS_,
-                        new OrderField[]{Accounts.ACCOUNTS_.EMAIL},
-                        false
-                )
+                Internal.createIndex(DSL.name("idx_accounts_email"), Accounts.ACCOUNTS_, new OrderField[]{Accounts.ACCOUNTS_.EMAIL}, false)
         );
     }
 
     @Override
     public UniqueKey<AccountsRecord> getPrimaryKey() {
-        return Internal.createUniqueKey(
-                Accounts.ACCOUNTS_,
-                DSL.name("accounts_pkey"),
-                new TableField[]{Accounts.ACCOUNTS_.LOGIN},
-                true
-        );
+        return Internal.createUniqueKey(Accounts.ACCOUNTS_, DSL.name("accounts_pkey"), new TableField[]{Accounts.ACCOUNTS_.LOGIN}, true);
     }
 
     @Override

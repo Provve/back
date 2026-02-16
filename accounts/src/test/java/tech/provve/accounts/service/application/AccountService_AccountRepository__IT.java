@@ -19,10 +19,7 @@ import tech.provve.accounts.exception.NoPersonalDataConsent;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwtIssuingService;
-import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
-import tech.provve.api.server.generated.dto.DeleteAccountRequest;
-import tech.provve.api.server.generated.dto.RegisterAccountRequest;
-import tech.provve.api.server.generated.dto.UpdateEmailRequest;
+import tech.provve.api.server.generated.dto.*;
 import tech.provve.notification.service.NotificationSendingService;
 
 import java.sql.Connection;
@@ -38,6 +35,7 @@ import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 
 @InjectTest
@@ -133,6 +131,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
                 true,
                 "n",
                 null,
+                null,
                 false
         );
         repository.save(account);
@@ -161,6 +160,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
                         true,
                         "n",
                         null,
+                        null,
                         true
                 ),
                 new Account(
@@ -169,6 +169,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
                         "",
                         true,
                         "n",
+                        null,
                         null,
                         true
                 )
@@ -209,6 +210,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
                 false,
                 "n",
                 null,
+                null,
                 true
         );
         repository.save(account);
@@ -230,6 +232,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
                 "",
                 true,
                 "n",
+                null,
                 null,
                 true
         );
@@ -255,6 +258,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
                 true,
                 "n",
                 null,
+                null,
                 true
         );
         repository.save(account);
@@ -267,6 +271,36 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
 
         // assert
         assertThat(repository.findByLogin(login)).isNotPresent();
+    }
+
+    @Test
+    void updateContacts_givenData_saved() {
+        // arrange
+        var account = new Account(
+                "o",
+                "v@v.v",
+                "",
+                true,
+                "n",
+                null,
+                null,
+                true
+        );
+        repository.save(account);
+
+        var authToken = "a";
+        var contacts = new Contacts(List.of("m"));
+        var request = new UpdateContactsRequest(contacts, authToken);
+        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", account.login()));
+        service.updateContacts(request);
+
+        // act
+        var foundAccount = repository.findByLogin(account.login())
+                                     .get();
+
+        // assert
+        assertThat(foundAccount.contactInfo()).isEqualTo(contacts.getUrLs()
+                                                                 .toString());
     }
 
 }

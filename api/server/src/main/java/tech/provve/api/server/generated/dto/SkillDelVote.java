@@ -1,9 +1,10 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkillDelVote {
@@ -28,9 +29,7 @@ public class SkillDelVote {
     }
 
     private ActionEnum action;
-
     private String arguments;
-
     private java.util.UUID id;
 
     public SkillDelVote() {

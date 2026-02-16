@@ -1,13 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.vertx.ext.web.FileUpload;
-import tech.provve.api.server.generated.dto.ExamAddVote;
-import tech.provve.api.server.generated.dto.SkillAddVote;
-import tech.provve.api.server.generated.dto.SkillDelVote;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateVoteRequest {
@@ -32,17 +30,11 @@ public class CreateVoteRequest {
     }
 
     private ActionEnum action;
-
     private String arguments;
-
     private String name;
-
     private java.util.UUID id;
-
     private java.util.UUID skillId;
-
     private String desc;
-
     private FileUpload material;
 
     public CreateVoteRequest() {

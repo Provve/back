@@ -207,6 +207,26 @@ paths:
       security:
         - auth: [ ]
 
+  /contacts:
+    put:
+      summary: Обновление контактных данных
+      tags:
+        - accounts
+      operationId: updateContacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContacts.request'
+      responses:
+        '200':
+          $ref: "#/components/responses/DataWritten"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
+      security:
+        - auth: [ ]
+
   /pd-consent:
     put:
       summary: Согласие с Политикой обработки персональных данных (ПД)
@@ -911,7 +931,7 @@ components:
     DeleteAccount.request:
       type: object
       required:
-        - token
+        - auth_token
       properties:
         auth_token:
           type: string
@@ -930,7 +950,7 @@ components:
       type: object
       required:
         - email
-        - token
+        - auth_token
       properties:
         email:
           type: string
@@ -955,7 +975,7 @@ components:
       type: object
       required:
         - avatar
-        - token
+        - auth_token
       properties:
         avatar:
           type: string
@@ -963,6 +983,27 @@ components:
         auth_token:
           type: string
           description: Токен аутентификации
+
+    UpdateContacts.request:
+      type: object
+      required:
+        - contacts
+        - auth_token
+      properties:
+        contacts:
+          $ref: "#/components/schemas/Contacts"
+        auth_token:
+          type: string
+          description: Токен аутентификации
+
+    Contacts:
+      type: object
+      properties:
+        URLs:
+          type: array
+          items:
+            type: string
+          description: Произвольные URL для связи
 
     UpdatePersonalDataConsent.request:
       type: object

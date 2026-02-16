@@ -3,8 +3,10 @@ package tech.provve.api.server.generated.api;
 import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.DeleteAccountRequest;
+import tech.provve.api.server.generated.dto.Error;
 import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
+import tech.provve.api.server.generated.dto.UpdateContactsRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
@@ -23,6 +25,8 @@ public interface AccountsApi {
     Future<ApiResponse<Void>> registerAccount(RegisterAccountRequest registerAccountRequest);
     Future<ApiResponse<Void>> requestResetCode(String email);
     Future<ApiResponse<Void>> updateAvatar(UpdateAvatarRequest updateAvatarRequest);
+
+    Future<ApiResponse<Void>> updateContacts(UpdateContactsRequest updateContactsRequest);
     Future<ApiResponse<Void>> updateEmail(UpdateEmailRequest updateEmailRequest);
     Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest);
     Future<ApiResponse<Void>> updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest);

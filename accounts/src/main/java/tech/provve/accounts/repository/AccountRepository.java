@@ -35,6 +35,7 @@ public class AccountRepository {
                     result.get(ACCOUNTS_.CONSENT_PERSONAL_DATA),
                     result.get(ACCOUNTS_.USERNAME),
                     result.get(ACCOUNTS_.AVATAR_URL),
+                    result.get(ACCOUNTS_.CONTACT_INFO),
                     result.get(ACCOUNTS_.PREMIUM)
             );
 
@@ -87,6 +88,13 @@ public class AccountRepository {
     public void updateAvatarUrl(String login, String avatarUrl) {
         dsl.update(ACCOUNTS_)
            .set(ACCOUNTS_.AVATAR_URL, avatarUrl)
+           .where(ACCOUNTS_.LOGIN.eq(login))
+           .execute();
+    }
+
+    public void updateContactInfo(String login, String contactInfo) {
+        dsl.update(ACCOUNTS_)
+           .set(ACCOUNTS_.CONTACT_INFO, contactInfo)
            .where(ACCOUNTS_.LOGIN.eq(login))
            .execute();
     }

@@ -4,15 +4,16 @@
 package tech.provve.accounts.db.generated;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SchemaImpl;
+
 import tech.provve.accounts.db.generated.tables.ExpirePremiumAccounts;
 import tech.provve.accounts.db.generated.tables.PremiumExpiration;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 /**

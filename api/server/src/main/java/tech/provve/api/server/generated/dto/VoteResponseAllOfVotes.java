@@ -1,8 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 /**
  * Голоса
@@ -11,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class VoteResponseAllOfVotes {
 
     private Integer positive;
-
     private Integer negative;
 
     public VoteResponseAllOfVotes() {
