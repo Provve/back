@@ -5,6 +5,7 @@ import dev.failsafe.Failsafe;
 import dev.failsafe.FailsafeException;
 import dev.failsafe.RetryPolicy;
 import io.avaje.config.Config;
+import io.avaje.inject.External;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.inject.Inject;
@@ -27,9 +28,15 @@ public class ApiClient {
     private static final Integer PREMIUM_PRICE = Config.getInt("premium-price");
     private static final byte[] JWT_SECRET = Config.get("robokassa.jwt-secret")
                                                    .getBytes(StandardCharsets.UTF_8);
+
+    @External
     private final HttpRequest.Builder getPaymentLinkBuilder;
+
+    @External
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @External
     private final RetryPolicy<String> retryPolicy;
 
     /**

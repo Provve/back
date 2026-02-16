@@ -26,7 +26,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 
-import static tech.provve.payment.factory.HttpClientFactory.GET_PAYMENT_LINK_URL;
+import static tech.provve.api.server.factory.HttpClientFactory.GET_PAYMENT_LINK_URL;
 
 @Factory
 public class Services {
@@ -48,7 +48,7 @@ public class Services {
     }
 
     @Bean
-    public ApiClient apiClient(@External HttpRequest.Builder getPaymentLinkBuilder, @External HttpClient httpClient, @External RetryPolicy<String> retryPolicy) {
+    public ApiClient apiClient(HttpRequest.Builder getPaymentLinkBuilder, HttpClient httpClient, RetryPolicy<String> retryPolicy) {
         return new ApiClient(getPaymentLinkBuilder, httpClient, retryPolicy);
     }
 

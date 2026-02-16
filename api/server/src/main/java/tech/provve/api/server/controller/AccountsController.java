@@ -1,5 +1,6 @@
 package tech.provve.api.server.controller;
 
+import io.avaje.inject.External;
 import io.vertx.core.Future;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class AccountsController implements AccountsApi {
 
     private final AccountService accountService;
 
+    @External
     private final PaymentService paymentService;
 
     private final DtoValidatingService validatingService;

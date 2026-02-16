@@ -2,7 +2,7 @@ security:
   jwt:
     auth:
       secret: ${auth_secret}
-      expires-in-seconds: 86_400 # сутки
+      expires-in-seconds: 86400 # сутки
     reset:
       secret: ${reset_secret}
       expires-in-seconds: 300 # 5 минут

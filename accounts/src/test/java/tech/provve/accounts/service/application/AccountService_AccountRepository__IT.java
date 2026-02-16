@@ -18,6 +18,7 @@ import tech.provve.accounts.exception.DataNotUnique;
 import tech.provve.accounts.exception.NoPersonalDataConsent;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
+import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.DeleteAccountRequest;
 import tech.provve.api.server.generated.dto.RegisterAccountRequest;
@@ -44,6 +45,23 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
 
     @Inject
     AccountService service;
+
+    @Setup
+    void avaje(BeanScopeBuilder b) {
+        b.bean(
+                JwtIssuingService.class, new JwtIssuingService() {
+                    @Override
+                    public String issueAuth(String login, boolean premium) {
+                        return "";
+                    }
+
+                    @Override
+                    public String issueReset(String login) {
+                        return "";
+                    }
+                }
+        );
+    }
 
     @Inject
     AccountRepository repository;

@@ -1,4 +1,4 @@
-package tech.provve.payment.factory;
+package tech.provve.api.server.factory;
 
 import dev.failsafe.RetryPolicy;
 import io.avaje.inject.Bean;

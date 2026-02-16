@@ -26,8 +26,7 @@ public class PasswordHashingService {
     }
 
     public boolean verify(String password, String previousHash) {
-        var hash = hash(password);
-        return previousHash.equals(hash);
+        return argon2.verify(previousHash, password.toCharArray());
     }
 
 }
