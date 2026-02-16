@@ -41,6 +41,7 @@ dependencies {
     implementation libs.slf4j
     compileOnly libs.simple.mail
     compileOnly libs.jooq
+    compileOnly libs.failsafe
     implementation libs.caffeine
     implementation libs.bucket4j.caffeine
 

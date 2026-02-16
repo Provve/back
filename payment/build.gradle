@@ -21,6 +21,7 @@ dependencies {
 
     implementation libs.jooq.postgres
     implementation libs.bundles.jjwt
+    implementation libs.failsafe
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok

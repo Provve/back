@@ -1,6 +1,9 @@
 package tech.provve.payment.gateway.robokassa;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.failsafe.Failsafe;
+import dev.failsafe.FailsafeException;
+import dev.failsafe.RetryPolicy;
 import io.avaje.config.Config;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -10,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import tech.provve.payment.exception.PaymentGatewayNotAccessible;
 
-import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -22,17 +24,13 @@ import java.util.Map;
 public class ApiClient {
 
     private static final String MERCHANT_LOGIN = Config.get("robokassa.merchant-login");
-
     private static final Integer PREMIUM_PRICE = Config.getInt("premium-price");
-
     private static final byte[] JWT_SECRET = Config.get("robokassa.jwt-secret")
                                                    .getBytes(StandardCharsets.UTF_8);
-
     private final HttpRequest.Builder getPaymentLinkBuilder;
-
-    private final HttpClient httpClient = HttpClient.newHttpClient();
-
+    private final HttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final RetryPolicy<String> retryPolicy;
 
     /**
      * @return ссылка для оплаты
@@ -43,10 +41,10 @@ public class ApiClient {
             var request = getPaymentLinkBuilder
                     .POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody))
                     .build();
-            return httpClient.send(request, HttpResponse.BodyHandlers.ofString())
-                             .body();
-
-        } catch (IOException e) {
+            return Failsafe.with(retryPolicy)
+                           .get(() -> httpClient.send(request, HttpResponse.BodyHandlers.ofString())
+                                                .body());
+        } catch (FailsafeException e) {
             throw new PaymentGatewayNotAccessible(e);
         }
     }

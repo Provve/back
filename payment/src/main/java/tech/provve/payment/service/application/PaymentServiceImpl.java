@@ -39,10 +39,11 @@ public class PaymentServiceImpl implements PaymentService {
 
         var requestJson = apiClient.jsonRequestBody(accountLogin);
         var jws = apiClient.jws(requestJson);
+        var paymentLink = apiClient.getPaymentLinkForPremium(jws);
 
         invoiceRepository.save(new Invoice(accountLogin, jws));
 
-        return apiClient.getPaymentLinkForPremium(jws);
+        return paymentLink;
     }
 
     @Override

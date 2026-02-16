@@ -1,5 +1,6 @@
 package tech.provve.api.server.factory;
 
+import dev.failsafe.RetryPolicy;
 import io.avaje.inject.Bean;
 import io.avaje.inject.External;
 import io.avaje.inject.Factory;
@@ -22,6 +23,7 @@ import tech.provve.payment.service.application.PaymentService;
 import tech.provve.payment.service.application.PaymentServiceImpl;
 
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 
 import static tech.provve.payment.factory.HttpClientFactory.GET_PAYMENT_LINK_URL;
@@ -46,8 +48,8 @@ public class Services {
     }
 
     @Bean
-    public ApiClient apiClient(@External HttpRequest.Builder getPaymentLinkBuilder) {
-        return new ApiClient(getPaymentLinkBuilder);
+    public ApiClient apiClient(@External HttpRequest.Builder getPaymentLinkBuilder, @External HttpClient httpClient, @External RetryPolicy<String> retryPolicy) {
+        return new ApiClient(getPaymentLinkBuilder, httpClient, retryPolicy);
     }
 
     @Bean
