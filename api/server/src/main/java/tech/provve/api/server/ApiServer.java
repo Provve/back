@@ -1,7 +1,9 @@
 package tech.provve.api.server;
 
 import io.avaje.inject.BeanScope;
+import io.avaje.inject.BeanScopeBuilder;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
@@ -19,9 +21,13 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static tech.provve.api.server.factory.RateLimit.RATE_LIMITER;
+
 @Slf4j
 @SuppressWarnings("unused")
 public class ApiServer extends AbstractVerticle {
+
+    public static final int PORT = 8080;
 
     private static final String SPEC_FILE = "provve-api.yaml";
 
@@ -29,23 +35,31 @@ public class ApiServer extends AbstractVerticle {
 
     private static final String RESET_SECURITY_SCHEME = "reset";
 
-    private final List<RouteHandler> handlers;
+    private List<RouteHandler> handlers;
 
-    private final JWTAuthHandler jwtAuthHandler;
+    private JWTAuthHandler jwtAuthHandler;
 
-    private final JWTAuthHandler jwtResetHandler;
+    private JWTAuthHandler jwtResetHandler;
 
-    private final ScheduledExecutorService scheduledExecutorService;
+    private ScheduledExecutorService scheduledExecutorService;
 
-    private final DowngradeExpiredPremium downgradeExpiredPremium;
+    private DowngradeExpiredPremium downgradeExpiredPremium;
 
-    private final InitS3Buckets initS3Buckets;
+    private InitS3Buckets initS3Buckets;
 
-    @SuppressWarnings("unused")
+    private Handler<RoutingContext> rateLimiter;
+
     public ApiServer() {
-        BeanScope beanScope = BeanScope.builder()
-                                       .bean(Vertx.class, vertx)
-                                       .build();
+        BeanScopeBuilder scopeBuilder = BeanScope.builder()
+                                                 .bean(Vertx.class, vertx);
+        init(scopeBuilder.build());
+    }
+
+    public ApiServer(BeanScopeBuilder scopeBuilder) {
+        init(scopeBuilder.build());
+    }
+
+    private void init(BeanScope beanScope) {
         this.handlers = beanScope.list(RouteHandler.class);
         this.jwtAuthHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_AUTH);
         this.jwtResetHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_RESET);
@@ -53,6 +67,7 @@ public class ApiServer extends AbstractVerticle {
         this.scheduledExecutorService = beanScope.get(ScheduledExecutorService.class);
         this.downgradeExpiredPremium = beanScope.get(DowngradeExpiredPremium.class);
         this.initS3Buckets = beanScope.get(InitS3Buckets.class);
+        this.rateLimiter = beanScope.<Handler<RoutingContext>>get(Handler.class, RATE_LIMITER);
     }
 
     @Override
@@ -70,17 +85,25 @@ public class ApiServer extends AbstractVerticle {
                                        .createRouter();
                      })
                      .map(api -> {
-                         var root = Router.router(vertx);
-                         root.errorHandler(500, this::handlerStatus500);
-                         root.errorHandler(400, this::handlerStatus400);
+                         // путь действителен?
+                         api.getRoutes()
+                            .stream()
+                            .filter(route -> "/auth".equals(route.getName()))
+                            .findFirst()
+                            .orElseThrow();
+
+                         var root = Router.router(vertx)
+                                          .errorHandler(400, this::handlerStatus400)
+                                          .errorHandler(500, this::handlerStatus500);
                          root.route("/api/v1/*")
+                             .handler(rateLimiter)
                              .subRouter(api);
 
                          return root;
                      })
                      .compose(router -> vertx.createHttpServer()
                                              .requestHandler(router)
-                                             .listen(8080))
+                                             .listen(PORT))
                      .onSuccess(server -> log.info("API Server started successfully"))
                      .onFailure(t -> log.error("API Server not started", t))
                      .<Void>mapEmpty()

@@ -902,6 +902,11 @@ components:
         username:
           type: string
           description: Отображаемое имя аккаунта
+      required:
+        - login
+        - password
+        - consent_personal_data
+        - username
 
     DeleteAccount.request:
       type: object

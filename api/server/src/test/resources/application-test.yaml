@@ -9,3 +9,8 @@ s3:
     images: i4s
     exams: e3s
     solutions: s7s
+mail:
+  host: localhost
+  port: 1025
+  username: support@provve.tech
+  password: ${mail_password}

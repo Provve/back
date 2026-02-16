@@ -41,6 +41,8 @@ dependencies {
     implementation libs.slf4j
     compileOnly libs.simple.mail
     compileOnly libs.jooq
+    implementation libs.caffeine
+    implementation libs.bucket4j.caffeine
 
     implementation libs.mapstruct
     annotationProcessor libs.mapstruct.processor
@@ -60,6 +62,7 @@ dependencies {
     testImplementation libs.avaje.test
     testAnnotationProcessor libs.avaje.generator
     testImplementation libs.bundles.testing
+    testImplementation libs.vertx.junit
     testCompileOnly libs.simple.mail
 }
 

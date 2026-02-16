@@ -21,6 +21,7 @@ vertx-core = { module = 'io.vertx:vertx-core', version.ref = 'vertx' }
 vertx-auth-jwt = { module = 'io.vertx:vertx-auth-jwt', version.ref = 'vertx' }
 vertx-web = { module = 'io.vertx:vertx-web', version.ref = 'vertx' }
 vertx-web-open-api = { module = 'io.vertx:vertx-web-openapi', version.ref = 'vertx' }
+vertx-junit = { module = 'io.vertx:vertx-junit5', version.ref = 'vertx' }
 
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind', version = '2.20.1' }
 lombok = { group = 'org.projectlombok', name = 'lombok', version = '1.18.42' }
@@ -54,6 +55,8 @@ jooq-postgres = { group = 'org.jooq', name = 'jooq-postgres-extensions', version
 jooq = { group = 'org.jooq', name = 'jooq', version.ref = 'jooq' }
 mapstruct-processor = { module = 'org.mapstruct:mapstruct-processor', version.ref = 'mapstruct' }
 mapstruct = { module = 'org.mapstruct:mapstruct', version.ref = 'mapstruct' }
+bucket4j-caffeine = { module = 'com.bucket4j:bucket4j_jdk17-caffeine', version = '8.16.1' }
+caffeine = { module = 'com.github.ben-manes.caffeine:caffeine', version = '2.9.3' }
 
 provve-api-dto = { module = 'tech.provve.api:server-dto', version = '0.0.1' }
 
