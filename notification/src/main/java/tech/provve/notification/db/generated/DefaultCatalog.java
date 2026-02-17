@@ -5,7 +5,11 @@ package tech.provve.notification.db.generated;
 
 
 import org.jooq.Constants;
+import org.jooq.Schema;
 import org.jooq.impl.CatalogImpl;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -22,10 +26,22 @@ public class DefaultCatalog extends CatalogImpl {
     public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
 
     /**
+     * The schema <code>notification</code>.
+     */
+    public final Notification NOTIFICATION = Notification.NOTIFICATION;
+
+    /**
      * No further instances allowed
      */
     private DefaultCatalog() {
         super("");
+    }
+
+    @Override
+    public final List<Schema> getSchemas() {
+        return Arrays.asList(
+                Notification.NOTIFICATION
+        );
     }
 
     /**

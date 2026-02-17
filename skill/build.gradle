@@ -1,7 +1,25 @@
+buildscript {
+    dependencies {
+        classpath libs.jdbc.postgres
+        classpath libs.flyway.postgres
+    }
+}
+
 plugins {
-    id 'application'
+    id 'java'
+    alias(libs.plugins.flyway)
+    alias(libs.plugins.jooq)
+    id 'common-java'
 }
 
 repositories {
     mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'provve-backend:notification'
+
+    testImplementation libs.local.s3.rest
+    testImplementation libs.local.s3.jupiter
 }

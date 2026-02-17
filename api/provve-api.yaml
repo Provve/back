@@ -631,13 +631,17 @@ paths:
         - auth: [ ]
 
   /notifications:
-    get:
+    post:
       summary: Получение уведомлений
       tags:
         - notifications
       operationId: listNotifications
-      parameters:
-        - $ref: "#/components/parameters/Pagination"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListNotifications'
       responses:
         '200':
           description: Список уведомлений успешно получен
@@ -1112,6 +1116,14 @@ components:
         details:
           type: string
           description: Детали ошибки
+
+    ListNotifications:
+      type: object
+      properties:
+        auth_token:
+          type: string
+        pagination:
+          $ref: "#/components/schemas/Pagination"
 
   securitySchemes:
     auth:

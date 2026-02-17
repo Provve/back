@@ -1,14 +1,15 @@
 buildscript {
     dependencies {
-        classpath 'org.postgresql:postgresql:42.7.2'
+        classpath libs.jdbc.postgres
         classpath libs.flyway.postgres
     }
 }
 
 plugins {
     id 'java'
-    alias(libs.plugins.jooq)
     alias(libs.plugins.flyway)
+    alias(libs.plugins.jooq)
+    id 'common-java'
 }
 
 repositories {
@@ -24,83 +25,15 @@ dependencies {
     implementation libs.amazon.s3
     implementation libs.vertx.auth.jwt
     implementation libs.vertx.web
-    implementation libs.jooq.postgres
     implementation libs.bundles.jjwt
 
     implementation libs.mapstruct
     annotationProcessor libs.mapstruct.processor
 
-    compileOnly libs.lombok
-    annotationProcessor libs.lombok
-
-    implementation libs.avaje
-    implementation libs.avaje.config
-    annotationProcessor libs.avaje.generator
-
-
-    testImplementation libs.bundles.testing
-    testImplementation libs.avaje.test
-    testAnnotationProcessor libs.avaje.generator
-    testImplementation libs.testcontainers.postgresql
-    testImplementation libs.testcontainers.junit
     testImplementation libs.local.s3.rest
     testImplementation libs.local.s3.jupiter
 
     testCompileOnly libs.simple.mail
-}
-
-flyway {
-    url = 'jdbc:postgresql://localhost:5432/provve'
-    user = 'postgres'
-    password = '1'
-    schemas = ['accounts_history', 'accounts']
-}
-
-jooq {
-    configuration {
-        jdbc {
-            driver = "org.postgresql.Driver"
-            url = 'jdbc:postgresql://localhost:5432/provve'
-            user = 'postgres'
-            password = '1'
-        }
-        generator {
-            database {
-                inputSchema = "accounts"
-            }
-            generate {
-                fluentSetters = true
-                javaTimeTypes = true
-                globalKeyReferences = false
-                globalTableReferences = false
-                globalIndexReferences = false
-            }
-            target {
-                packageName = "tech.provve.accounts.db.generated"
-                locale = 'ru'
-                directory = "/src/main/java/"
-            }
-        }
-    }
-}
-
-tasks.named("jooqCodegen") {
-    dependsOn(tasks.named("flywayMigrate"))
-
-    // Use Flyway migration scripts as input to code generation, to avoid
-    // task execution when unnecessary
-    inputs.files(fileTree("src/main/resources/db/migration"))
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.compilerArgs = [
-            '-Amapstruct.suppressGeneratorTimestamp=true'
-    ]
-}
-
-tasks.withType(Test).configureEach {
-    useJUnitPlatform()
-    jvmArgs("--enable-native-access=ALL-UNNAMED")
 }
 
 processResources {

@@ -4,16 +4,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import tech.provve.api.server.generated.dto.Notification;
-import tech.provve.notification.db.generated.tables.records.NotificationsRecord;
+import tech.provve.notification.db.generated.tables.records.NotificationRecord;
 import tech.provve.notification.domain.entity.InputNotification;
 import tech.provve.notification.domain.value.NotificationLevel;
 
 import static tech.provve.api.server.generated.dto.Notification.LevelEnum.*;
 
 @Mapper
-public interface NotificationsMapper {
+public interface NotificationMapper {
 
-    NotificationsMapper INSTANCE = Mappers.getMapper(NotificationsMapper.class);
+    NotificationMapper INSTANCE = Mappers.getMapper(NotificationMapper.class);
 
     default Notification.LevelEnum level(Short from) {
         return switch (from) {
@@ -36,6 +36,6 @@ public interface NotificationsMapper {
     @Mapping(target = "notifiedAccount", source = "receiver")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    NotificationsRecord map(InputNotification from);
+    NotificationRecord map(InputNotification from);
 
 }
