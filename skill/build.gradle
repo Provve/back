@@ -18,8 +18,25 @@ repositories {
 }
 
 dependencies {
+    implementation 'provve-backend:accounts'
     implementation 'provve-backend:notification'
 
     testImplementation libs.local.s3.rest
     testImplementation libs.local.s3.jupiter
+}
+
+jooq {
+    configuration {
+        generator {
+            database {
+                forcedTypes {
+                    forcedType {
+                        userType = "java.lang.Boolean"
+                        binding = "tech.provve.skill.jooq_binding.BooleanBitBinding"
+                        includeExpression = "reaction"
+                    }
+                }
+            }
+        }
+    }
 }

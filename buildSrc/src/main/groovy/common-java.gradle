@@ -4,6 +4,9 @@ dependencies {
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+
     implementation libs.avaje
     implementation libs.avaje.config
     annotationProcessor libs.avaje.generator

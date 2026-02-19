@@ -43,11 +43,9 @@ public class NotificationRepository {
         var select = dsl.select()
                         .from(NOTIFICATION_)
                         .where(NOTIFICATION_.NOTIFIED_ACCOUNT.eq(login));
-        return dsl.fetchMany(select)
-                  .stream()
+        return dsl.fetchStream(select)
                   .map(result -> result.map(outputMapper))
-                  .findAny()
-                  .get();
+                  .toList();
     }
 
 }
