@@ -4,6 +4,8 @@ import java.util.Map;
 
 public interface JwsParsingService {
 
+    String JWT_SUBJECT = "sub";
+
     /**
      * Parse Reset Token generated in {@link JwtIssuingService}
      *

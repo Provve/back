@@ -27,12 +27,11 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import static java.lang.Boolean.FALSE;
+import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
 
 @Singleton
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
-
-    private static final String JWT_SUBJECT = "sub";
 
     private final AccountRepository repository;
 

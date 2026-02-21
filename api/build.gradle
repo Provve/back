@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.owasp.dependencycheck.gradle.tasks.Aggregate
 
 import java.nio.charset.StandardCharsets
@@ -6,10 +8,20 @@ import java.nio.file.Files
 plugins {
     id 'java'
     id 'idea'
+    id 'application'
+    id 'maven-publish'
+    alias(libs.plugins.openapi.generator)
+    alias(libs.plugins.shadow)
     alias(libs.plugins.dependencycheck)
 }
 
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
 configurations {
+    mockitoAgent
     spec {
         extendsFrom(compileOnly)
         canBeResolved = true
@@ -17,12 +29,46 @@ configurations {
     }
 }
 
-repositories {
-    mavenLocal()
-}
-
 dependencies {
     spec libs.antifraud.api
+
+    implementation project(':accounts')
+    implementation project(':notification')
+    implementation project(':payment')
+    implementation project(':skill')
+
+    implementation libs.hibernate.validation
+    implementation libs.expressly
+    implementation libs.amazon.s3
+    implementation libs.bundles.vertx
+    implementation libs.jackson.databind
+    implementation libs.slf4j
+    compileOnly libs.simple.mail
+    compileOnly libs.jooq
+    compileOnly libs.failsafe
+    implementation libs.caffeine
+    implementation libs.bucket4j.caffeine
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.avaje
+    implementation libs.avaje.config
+    annotationProcessor libs.avaje.generator
+
+    runtimeOnly libs.mockito.core // для avaje
+    mockitoAgent(libs.mockito.core) {
+        transitive = false
+    }
+
+    testImplementation libs.avaje.test
+    testAnnotationProcessor libs.avaje.generator
+    testImplementation libs.bundles.testing
+    testImplementation libs.vertx.junit
+    testCompileOnly libs.simple.mail
 }
 
 // run 'build' task to get specs
@@ -35,9 +81,97 @@ configurations.spec.resolvedConfiguration.resolvedArtifacts.each {
     Files.createDirectories(destination.parentFile.toPath())
     destination.write(specContent)
 }
+tasks.openApiGenerate {
+    dependsOn(build)
+
+    generatorName = 'java-vertx-web'
+    inputSpec = "${layout.projectDirectory}/provve-api.yaml"
+    outputDir = "${layout.projectDirectory}"
+    configOptions = [
+            invokerPackage         : "tech.provve.api.server.generated",
+            apiPackage             : "tech.provve.api.server.generated.api",
+            modelPackage           : "tech.provve.api.server.generated.dto",
+            hideGenerationTimestamp: "true"
+    ]
+    templateDir = "${layout.projectDirectory}/src/main/resources/templates"
+}
+
+processResources {
+    from("$rootProject.layout.projectDirectory") {
+        include 'provve-api.yaml'
+    }
+    from(rootProject.layout.buildDirectory.file('/specs')) {
+        include 'antifraud-api.yaml'
+        into('build/specs')
+    }
+}
+
+def mainVerticle = 'tech.provve.api.server.ApiServer'
+run {
+    mainClass = 'io.vertx.core.Launcher'
+    args = ['run', mainVerticle]
+}
+
+application {
+    applicationDefaultJvmArgs = ['--enable-native-access=ALL-UNNAMED', "-javaagent:${configurations.mockitoAgent.asPath}"]
+}
+
+tasks.register('buildDto', org.gradle.jvm.tasks.Jar) {
+    from(sourceSets.main.output.classesDirs) {
+        include '**/dto/**'
+    }
+}
+
+publishing {
+    publications {
+        onlyDto(MavenPublication) {
+            group = 'tech.provve.api'
+            artifactId = 'server-dto'
+            version = '0.0.1'
+            artifact(tasks.named('buildDto'))
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+jar.enabled = false // чтобы не генерить второй jar
+
+def version = libs.versions.provve.backend.get()
+tasks.named('shadowJar', ShadowJar) {
+    archiveVersion.set(version)
+    archiveClassifier.set(null)
+    excludes = [
+            'templates/*.mustache',
+            'db/migration/**',
+            '/*.txt'
+    ]
+    mergeServiceFiles()
+
+    // так как модули собираются в монолит, их конфиги также нужно объдинять
+    transform(AppendingTransformer) {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        resource = 'application.yaml'
+    }
+
+//    minimize()
+
+    manifest {
+        attributes(
+                'Main-Class': 'io.vertx.core.Launcher',
+                'Main-Verticle': mainVerticle
+        )
+    }
+}
 
 tasks.withType(Aggregate).configureEach {
     dependencyCheck {
         nvd.apiKey = System.getenv('NVD_KEY')
     }
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    jvmArgs("--enable-native-access=ALL-UNNAMED")
 }

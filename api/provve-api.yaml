@@ -366,19 +366,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/Exam.response"
 
-  /exams/{id}/solution:
+  /exams/{name}/solution:
     post:
       tags:
         - skills
       summary: Отправка решения экзамена на проверку
       operationId: submitExamSolution
       parameters:
-        - name: id
+        - name: name
           in: path
           required: true
           schema:
             type: string
-            format: uuid
           description: ID экзамена, для которой отправляется решение
       requestBody:
         required: true
@@ -405,6 +404,12 @@ paths:
         - skills
       operationId: getResultsBySkill
       parameters:
+        - name: skill_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID навыка
         - $ref: "#/components/parameters/Pagination"
         - $ref: "#/components/parameters/Filter"
       responses:
@@ -421,19 +426,18 @@ paths:
       security:
         - auth: [ ]
 
-  /exams/{exam_id}/result:
+  /exams/{exam_name}/result:
     get:
       summary: Посмотреть результат
       tags:
         - skills
       operationId: viewExamResult
       parameters:
-        - name: exam_id
+        - name: exam_name
           in: path
           required: true
           schema:
             type: string
-            format: uuid
           description: ID экзамена, результат по которому нужно получить
       responses:
         '200':
@@ -485,10 +489,12 @@ paths:
       responses:
         '200':
           description: Голосование успешно создано
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '409':
-          description: Объект голосования уже существует
+          $ref: "#/components/responses/DataNotUnique"
       security:
         - auth: [ ]
 
@@ -507,10 +513,12 @@ paths:
       responses:
         '200':
           description: Голосование успешно создано
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '409':
-          description: Объект голосования уже существует
+          $ref: "#/components/responses/DataNotUnique"
       security:
         - auth: [ ]
 
@@ -529,10 +537,12 @@ paths:
       responses:
         '200':
           description: Голосование успешно создано
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '409':
-          description: Объект голосования уже существует
+          $ref: "#/components/responses/DataNotUnique"
       security:
         - auth: [ ]
 
@@ -558,8 +568,12 @@ paths:
       responses:
         '200':
           description: Голос учтен
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
+        '409':
+          $ref: "#/components/responses/DataNotUnique"
         '403':
           description: Авторам запрещено голосовать
       security:
@@ -593,7 +607,7 @@ paths:
         - votes
       operationId: addCommentOnVote
       parameters:
-        - name: id
+        - name: name
           in: path
           required: true
           schema:
@@ -608,6 +622,8 @@ paths:
       responses:
         '200':
           description: Комментарий успешно добавлен
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
@@ -636,6 +652,8 @@ paths:
       responses:
         '200':
           description: Комментарий успешно отредактирован
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '403':
@@ -825,6 +843,15 @@ components:
         arguments:
           type: string
           description: Аргументы за совершение действия, предложенного в голосовании.
+        tags:
+          type: array
+          items:
+            type: string
+          description: Поисковые теги
+
+        auth_token:
+          type: string
+          description: Токен аутентификации
 
     SkillAddVote:
       allOf:
@@ -1083,9 +1110,8 @@ components:
     CreateSession.request:
       type: object
       properties:
-        exam_id:
+        exam_name:
           type: string
-          format: uuid
           description: ID экзамена
         cipher:
           type: integer

@@ -1,4 +1,5 @@
 dependencies {
+    implementation libs.provve.api.dto
     implementation libs.jooq.postgres
 
     compileOnly libs.lombok

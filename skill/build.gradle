@@ -18,8 +18,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'provve-backend:accounts'
-    implementation 'provve-backend:notification'
+    implementation project(':accounts')
+    implementation project(':notification')
+    implementation libs.jsoup
 
     testImplementation libs.local.s3.rest
     testImplementation libs.local.s3.jupiter

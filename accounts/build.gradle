@@ -18,8 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation libs.provve.api.dto
-    implementation 'provve-backend:notification'
+    implementation project(':notification')
 
     implementation libs.argon2
     implementation libs.amazon.s3

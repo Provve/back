@@ -18,7 +18,6 @@ repositories {
 }
 
 dependencies {
-    implementation libs.provve.api.dto
     implementation libs.simple.mail
 
     implementation libs.mapstruct

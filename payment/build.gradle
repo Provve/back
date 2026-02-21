@@ -18,11 +18,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'provve-backend:accounts'
+    implementation project(':accounts')
     implementation libs.bundles.jjwt
     implementation libs.failsafe
 
-    testImplementation 'provve-backend:notification'
+    testImplementation project(':notification')
 }
 
 processResources {

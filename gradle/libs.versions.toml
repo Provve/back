@@ -57,6 +57,7 @@ mapstruct = { module = 'org.mapstruct:mapstruct', version.ref = 'mapstruct' }
 bucket4j-caffeine = { module = 'com.bucket4j:bucket4j_jdk17-caffeine', version = '8.16.1' }
 caffeine = { module = 'com.github.ben-manes.caffeine:caffeine', version = '2.9.3' }
 failsafe = { module = 'dev.failsafe:failsafe', version = '3.3.2' }
+jsoup = { module = 'org.jsoup:jsoup', version = '1.22.1' }
 
 jdbc-postgres = { module = 'org.postgresql:postgresql', version = '42.7.2' }
 flyway-postgres = { module = 'org.flywaydb:flyway-database-postgresql', version.ref = 'flyway' }
