@@ -1,5 +1,6 @@
 package tech.provve.api.server.factory;
 
+import com.github.kagkarlsson.scheduler.Scheduler;
 import dev.failsafe.RetryPolicy;
 import io.avaje.inject.Bean;
 import io.avaje.inject.External;
@@ -14,6 +15,7 @@ import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.*;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.accounts.service.application.AccountServiceImpl;
+import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.repository.NotificationRepository;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.notification.service.NotificationSendingServiceImpl;
@@ -63,6 +65,7 @@ public class Services {
                                          JwsParsingService jwsParsingService,
                                          PasswordHashingService passwordHashingService,
                                          NotificationSendingService notificationSendingService,
+                                         Scheduling scheduling,
                                          Vertx vertx,
                                          S3Service s3Service) {
         return new AccountServiceImpl(
@@ -71,9 +74,15 @@ public class Services {
                 jwsParsingService,
                 passwordHashingService,
                 notificationSendingService,
+                scheduling,
                 vertx,
                 s3Service
         );
+    }
+
+    @Bean
+    public Scheduling scheduling(Scheduler scheduler) {
+        return new Scheduling(scheduler);
     }
 
     @Bean

@@ -6,7 +6,6 @@ import io.vertx.core.Vertx;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import tech.provve.accounts.domain.model.Account;
-import tech.provve.accounts.domain.model.value.PremiumExpiration;
 import tech.provve.accounts.exception.*;
 import tech.provve.accounts.mapper.AccountMapper;
 import tech.provve.accounts.repository.AccountRepository;
@@ -15,16 +14,16 @@ import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.accounts.service.PasswordHashingService;
 import tech.provve.accounts.service.S3Service;
 import tech.provve.api.server.generated.dto.*;
+import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.domain.value.AccountDowngraded;
 import tech.provve.notification.domain.value.AccountUpgraded;
 import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
 import tech.provve.notification.service.NotificationSendingService;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import static java.lang.Boolean.FALSE;
 
@@ -44,6 +43,9 @@ public class AccountServiceImpl implements AccountService {
 
     @External
     private final NotificationSendingService notificationService;
+
+    @External
+    private final Scheduling scheduling;
 
     @External
     private final Vertx vertx;
@@ -196,28 +198,25 @@ public class AccountServiceImpl implements AccountService {
                                         login
                                 )));
         repository.updatePremium(login, true);
-
-        var future = LocalDateTime.now(ZoneId.of("UTC"))
-                                  .plusMonths(1);
-        repository.save(new PremiumExpiration(
+        scheduling.downgradePremiumAccount(
                 login,
-                OffsetDateTime.of(future, ZoneOffset.UTC)
-        ));
-
+                Instant.now(Clock.systemUTC())
+                       .plus(1, ChronoUnit.MONTHS)
+        );
         notificationService.send(new AccountUpgraded(
                 new RecipientRequisites(login, account.email())
         ));
     }
 
     @Override
-    public void downgradeAllExpired() {
-        repository.findPremiumExpired()
-                  .forEach(account -> {
+    public void downgrade(String login) {
+        repository.findByLogin(login)
+                  .ifPresent(account -> {
+                      repository.updatePremium(account.login(), false);
                       notificationService.send(new AccountDowngraded(new RecipientRequisites(
                               account.login(),
                               account.email()
                       )));
-                      repository.clearPremiumExpired();
                   });
     }
 }

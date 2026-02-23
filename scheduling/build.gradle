@@ -1,0 +1,13 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api libs.db.scheduler
+    compileOnlyApi libs.avaje
+    annotationProcessor libs.avaje.generator
+}

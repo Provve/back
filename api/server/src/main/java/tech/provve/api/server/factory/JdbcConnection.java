@@ -5,7 +5,9 @@ import io.avaje.inject.Factory;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import org.jooq.tools.jdbc.SingleConnectionDataSource;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -17,6 +19,11 @@ public class JdbcConnection {
     @Bean
     public DSLContext dslContext(Connection connection) {
         return DSL.using(connection, SQLDialect.POSTGRES);
+    }
+
+    @Bean
+    public DataSource dataSource(Connection connection) {
+        return new SingleConnectionDataSource(connection);
     }
 
     @Bean

@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     implementation libs.provve.api.dto
+    implementation project(':scheduling')
     implementation 'provve-backend:notification'
 
     implementation libs.argon2

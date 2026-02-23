@@ -6,7 +6,6 @@ package tech.provve.accounts.db.generated.tables.records;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
-
 import tech.provve.accounts.db.generated.tables.Accounts;
 
 

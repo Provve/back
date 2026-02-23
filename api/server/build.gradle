@@ -8,6 +8,8 @@ buildscript {
     dependencies {
         // добавить мой генератор в список доступных
         classpath "tech.provve.openapi-generators:java-vertx-web-with-uuid:1.0"
+        classpath 'org.postgresql:postgresql:42.7.2'
+        classpath libs.flyway.postgres
     }
 }
 
@@ -17,6 +19,7 @@ plugins {
     id 'maven-publish'
     alias(libs.plugins.openapi.generator)
     alias(libs.plugins.shadow)
+    alias(libs.plugins.flyway)
 }
 
 repositories {
@@ -32,7 +35,9 @@ dependencies {
     implementation 'provve-backend:accounts'
     implementation 'provve-backend:notification'
     implementation 'provve-backend:payment'
+    implementation 'provve-backend:scheduling'
 
+    implementation libs.db.scheduler
     implementation libs.hibernate.validation
     implementation libs.expressly
     implementation libs.amazon.s3
@@ -65,6 +70,13 @@ dependencies {
     testImplementation libs.bundles.testing
     testImplementation libs.vertx.junit
     testCompileOnly libs.simple.mail
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/provve'
+    user = 'postgres'
+    password = '1'
+    schemas = ['scheduler_history', 'scheduler']
 }
 
 tasks.openApiGenerate {

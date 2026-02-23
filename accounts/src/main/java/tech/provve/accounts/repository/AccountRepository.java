@@ -6,19 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
-import tech.provve.accounts.db.generated.tables.records.PremiumExpirationRecord;
 import tech.provve.accounts.domain.model.Account;
-import tech.provve.accounts.domain.model.value.PremiumExpiration;
 import tech.provve.accounts.mapper.AccountMapper;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 
-import static tech.provve.accounts.db.generated.Routines.expirePremiumAccounts;
 import static tech.provve.accounts.db.generated.tables.Accounts.ACCOUNTS_;
-import static tech.provve.accounts.db.generated.tables.PremiumExpiration.PREMIUM_EXPIRATION;
 
 @Singleton
 @RequiredArgsConstructor
@@ -110,28 +103,6 @@ public class AccountRepository {
         dsl.update(ACCOUNTS_)
            .set(ACCOUNTS_.CONSENT_PERSONAL_DATA, personalDataConsent)
            .where(ACCOUNTS_.LOGIN.eq(login))
-           .execute();
-    }
-
-    /**
-     * @return аккаунты с просроченным и уже (!) отключенным premium
-     */
-    public List<Account> findPremiumExpired() {
-        return expirePremiumAccounts(dsl.configuration())
-                .map(outputMapper);
-    }
-
-    public void clearPremiumExpired() {
-        dsl.deleteFrom(PREMIUM_EXPIRATION)
-           .where(PREMIUM_EXPIRATION.EXPIRY.lessOrEqual(OffsetDateTime.now(ZoneId.of("UTC"))))
-           .execute();
-    }
-
-    public void save(PremiumExpiration premiumExpiration) {
-        dsl.insertInto(PREMIUM_EXPIRATION)
-           .set(
-                   new PremiumExpirationRecord(premiumExpiration.login(), premiumExpiration.expiry())
-           )
            .execute();
     }
 

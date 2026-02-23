@@ -4,16 +4,13 @@
 package tech.provve.accounts.db.generated;
 
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SchemaImpl;
 
-import tech.provve.accounts.db.generated.tables.ExpirePremiumAccounts;
-import tech.provve.accounts.db.generated.tables.PremiumExpiration;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -45,9 +42,7 @@ public class Accounts extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-                tech.provve.accounts.db.generated.tables.Accounts.ACCOUNTS_,
-                ExpirePremiumAccounts.EXPIRE_PREMIUM_ACCOUNTS,
-                PremiumExpiration.PREMIUM_EXPIRATION
+                tech.provve.accounts.db.generated.tables.Accounts.ACCOUNTS_
         );
     }
 }

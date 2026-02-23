@@ -5,4 +5,5 @@ include 'notification',
         'validation',
         'payment',
         'skill',
-        'accounts'
+        'accounts',
+        'scheduling'

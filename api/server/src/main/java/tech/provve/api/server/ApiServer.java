@@ -12,14 +12,10 @@ import io.vertx.ext.web.handler.JWTAuthHandler;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.openapi.RouterBuilderOptions;
 import lombok.extern.slf4j.Slf4j;
-import tech.provve.accounts.task.DowngradeExpiredPremium;
-import tech.provve.accounts.task.InitS3Buckets;
 import tech.provve.api.server.exception.HttpException;
 import tech.provve.api.server.factory.Security;
 
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import static tech.provve.api.server.factory.RateLimit.RATE_LIMITER;
 
@@ -41,12 +37,6 @@ public class ApiServer extends AbstractVerticle {
 
     private JWTAuthHandler jwtResetHandler;
 
-    private ScheduledExecutorService scheduledExecutorService;
-
-    private DowngradeExpiredPremium downgradeExpiredPremium;
-
-    private InitS3Buckets initS3Buckets;
-
     private Handler<RoutingContext> rateLimiter;
 
     public ApiServer() {
@@ -63,17 +53,11 @@ public class ApiServer extends AbstractVerticle {
         this.handlers = beanScope.list(RouteHandler.class);
         this.jwtAuthHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_AUTH);
         this.jwtResetHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_RESET);
-
-        this.scheduledExecutorService = beanScope.get(ScheduledExecutorService.class);
-        this.downgradeExpiredPremium = beanScope.get(DowngradeExpiredPremium.class);
-        this.initS3Buckets = beanScope.get(InitS3Buckets.class);
         this.rateLimiter = beanScope.<Handler<RoutingContext>>get(Handler.class, RATE_LIMITER);
     }
 
     @Override
     public void start(Promise<Void> startPromise) {
-        runTasks();
-
         RouterBuilder.create(vertx, SPEC_FILE)
                      .map(builder -> {
                          handlers.forEach(handler -> handler.mount(builder));
@@ -108,11 +92,6 @@ public class ApiServer extends AbstractVerticle {
                      .onFailure(t -> log.error("API Server not started", t))
                      .<Void>mapEmpty()
                      .onComplete(startPromise);
-    }
-
-    private void runTasks() {
-        scheduledExecutorService.scheduleWithFixedDelay(downgradeExpiredPremium, 0L, 30L, TimeUnit.DAYS);
-        scheduledExecutorService.schedule(initS3Buckets, 0L, TimeUnit.MILLISECONDS);
     }
 
     private void handlerStatus500(RoutingContext rc) {

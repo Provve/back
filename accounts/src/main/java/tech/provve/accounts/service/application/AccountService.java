@@ -45,8 +45,8 @@ public interface AccountService {
     void upgrade(String login) throws AccountNotFound, AccountAlreadyUpgraded;
 
     /**
-     * Убрать премиум-статус у всех аккаунтов, чей срок подписки истек.
+     * Убрать премиум-статус у аккаунта, чей срок подписки истек.
      */
-    void downgradeAllExpired();
+    void downgrade(String login);
 
 }
