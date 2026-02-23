@@ -20,6 +20,7 @@ repositories {
 dependencies {
     implementation project(':accounts')
     implementation project(':notification')
+    implementation project(':scheduling')
     implementation libs.jsoup
 
     testImplementation libs.local.s3.rest

@@ -12,13 +12,15 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.BucketCannedACL;
 import tech.provve.accounts.service.S3Service;
 import tech.provve.accounts.service.application.AccountService;
+import tech.provve.skill.repository.VoteRepository;
+import tech.provve.skill.service.application.SkillService;
+import tech.provve.skill.service.application.VoteService;
 
 import javax.sql.DataSource;
 import java.util.List;
 
 import static java.time.Duration.ofMinutes;
-import static tech.provve.libs.scheduling.Descriptors.DOWNGRADE_PREMIUM_ACCOUNT;
-import static tech.provve.libs.scheduling.Descriptors.INIT_S3_BUCKETS;
+import static tech.provve.libs.scheduling.Descriptors.*;
 
 @Factory
 public class Scheduling {
@@ -51,6 +53,37 @@ public class Scheduling {
         return Tasks.oneTime(DOWNGRADE_PREMIUM_ACCOUNT)
                     .onFailureRetryLater()
                     .execute((task, _) -> accountService.downgrade(task.getId()));
+    }
+
+    @Bean
+    @Named("3")
+    public OneTimeTask<Void> addSkillAfterVote(SkillService skillService, VoteService voteService, VoteRepository voteRepository) {
+        return Tasks.oneTime(ADD_SKILL_AFTER_VOTE)
+                    .execute((task, _) -> {
+                        boolean success = voteService.end(task.getId());
+                        if (success) {
+                            voteRepository.findByName(task.getId())
+                                          .ifPresent(skillService::create);
+                        }
+                    });
+    }
+
+    @Bean
+    @Named("4")
+    public OneTimeTask<Void> deleteSkillAfterVote(VoteService voteService) {
+        return Tasks.oneTime(DELETE_SKILL_AFTER_VOTE)
+                    .execute((task, _) -> {
+                        boolean success = voteService.end(task.getId());
+                    });
+    }
+
+    @Bean
+    @Named("5")
+    public OneTimeTask<Void> addExamAfterVote(VoteService voteService) {
+        return Tasks.oneTime(ADD_EXAM_AFTER_VOTE)
+                    .execute((task, _) -> {
+                        boolean success = voteService.end(task.getId());
+                    });
     }
 
     @Bean

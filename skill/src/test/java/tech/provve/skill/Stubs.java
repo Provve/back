@@ -12,7 +12,7 @@ import tech.provve.accounts.service.JwsParsingServiceImpl;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.accounts.service.S3Service;
 import tech.provve.accounts.service.application.AccountService;
-import tech.provve.accounts.task.InitS3Buckets;
+import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.service.NotificationSendingService;
 
 import java.sql.*;
@@ -23,6 +23,11 @@ import java.util.concurrent.Executor;
 @Factory
 @TestScope
 public class Stubs {
+
+    @Bean
+    public Scheduling scheduling() {
+        return Mockito.mock(Scheduling.class);
+    }
 
     @Bean
     public NotificationSendingService notificationSendingService() {
@@ -42,11 +47,6 @@ public class Stubs {
     @Bean
     public AccountService accountService() {
         return Mockito.mock(AccountService.class);
-    }
-
-    @Bean
-    public InitS3Buckets initS3Buckets() {
-        return Mockito.mock(InitS3Buckets.class);
     }
 
     @Bean

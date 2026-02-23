@@ -52,8 +52,8 @@ public class Services {
     }
 
     @Bean
-    public VoteService voteService(VoteRepository voteRepository, SkillRepository skillRepository, JwsParsingService jwsParsingService, Supplier<LocalDateTime> deadlineSupplier) {
-        return new VoteServiceImpl(voteRepository, skillRepository, jwsParsingService, deadlineSupplier);
+    public VoteService voteService(VoteRepository voteRepository, SkillRepository skillRepository, JwsParsingService jwsParsingService, Supplier<LocalDateTime> deadlineSupplier, Scheduling scheduling) {
+        return new VoteServiceImpl(voteRepository, skillRepository, deadlineSupplier, jwsParsingService, scheduling);
     }
 
     @Bean

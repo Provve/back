@@ -8,6 +8,7 @@ import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.ExamAddVote;
 import tech.provve.api.server.generated.dto.SkillAddVote;
 import tech.provve.api.server.generated.dto.SkillDelVote;
+import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.exception.SkillAlreadyExists;
 import tech.provve.skill.exception.VoteAlreadyExists;
@@ -16,6 +17,8 @@ import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.SanitizingService;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
@@ -29,9 +32,13 @@ public class VoteServiceImpl implements VoteService {
     private final SkillRepository skillRepository;
 
     @External
+    private final Supplier<LocalDateTime> deadlineSupplier;
+
+    @External
     private final JwsParsingService jwsParsingService;
 
-    private final Supplier<LocalDateTime> deadlineSupplier;
+    @External
+    private final Scheduling scheduling;
 
     @Override
     public void create(SkillAddVote skillAddVote) throws VoteAlreadyExists {
@@ -46,12 +53,13 @@ public class VoteServiceImpl implements VoteService {
 
         var jwtPayload = jwsParsingService.parseAuth(skillAddVote.getAuthToken());
         var author = ((String) jwtPayload.get(JWT_SUBJECT));
+        var deadline = deadlineSupplier.get();
         var vote = new Vote(
                 sanitize(skillAddVote.getName()),
                 true,
                 false,
                 author,
-                deadlineSupplier.get(),
+                deadline,
                 sanitize(skillAddVote.getArguments()),
                 Vote.Type.ADD_SKILL,
                 skillAddVote.getTags()
@@ -62,6 +70,7 @@ public class VoteServiceImpl implements VoteService {
                 null
         );
         voteRepository.save(vote);
+        scheduling.addSkill(vote.name(), deadline.toInstant(ZoneOffset.UTC));
     }
 
     @Override
@@ -72,5 +81,25 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public void create(ExamAddVote examAddVote) throws VoteAlreadyExists {
 
+    }
+
+    @Override
+    public boolean end(String voteName) {
+        Optional<Vote> optionalVote = voteRepository.findByName(voteName);
+
+        if (optionalVote.isEmpty()) return false;
+
+        var vote = optionalVote.get();
+        int positiveRelation = vote.reactions()
+                                   .positive() / (0 == vote.reactions()
+                                                           .negative() ? 1 : vote.reactions()
+                                                                                 .negative());
+        if (positiveRelation >= 1) {
+            voteRepository.updateSuccess(voteName, true);
+            return true;
+        } else {
+            voteRepository.updateSuccess(voteName, false);
+            return false;
+        }
     }
 }

@@ -14,4 +14,11 @@ public interface VoteService {
 
     void create(ExamAddVote examAddVote) throws VoteAlreadyExists;
 
+    /**
+     * Complete the vote
+     *
+     * @return true if the vote is existing and has more positive reactions
+     */
+    boolean end(String voteName);
+
 }

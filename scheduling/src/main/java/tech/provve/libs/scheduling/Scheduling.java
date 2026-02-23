@@ -30,18 +30,18 @@ public class Scheduling {
     }
 
     public void addSkill(String voteName, Instant when) {
-        scheduler.schedule(SKILL_ADD.instance(voteName)
-                                    .scheduledTo(when));
+        scheduler.schedule(ADD_SKILL_AFTER_VOTE.instance(voteName)
+                                               .scheduledTo(when));
     }
 
     public void delSkill(String voteName, Instant when) {
-        scheduler.schedule(SKILL_DELETE.instance(voteName)
+        scheduler.schedule(DELETE_SKILL_AFTER_VOTE.instance(voteName)
                                        .scheduledTo(when));
     }
 
     public void addExam(String voteName, Instant when) {
-        scheduler.schedule(EXAM_ADD.instance(voteName)
-                                   .scheduledTo(when));
+        scheduler.schedule(ADD_EXAM_AFTER_VOTE.instance(voteName)
+                                              .scheduledTo(when));
     }
 
     public void downgradePremiumAccount(String login, Instant when) {

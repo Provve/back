@@ -98,11 +98,22 @@ public class VoteRepository {
                   .toList();
     }
 
-    public void setReaction(String voteName, String voter, boolean reaction) {
+    public void setReaction(String name, String voter, boolean reaction) {
         dsl.insertInto(REACTIONS)
-           .set(REACTIONS.VOTE_NAME, voteName)
+           .set(REACTIONS.VOTE_NAME, name)
            .set(REACTIONS.VOTER, voter)
            .set(REACTIONS.REACTION, reaction)
+           .execute();
+    }
+
+    /**
+     * Automatically sets <code>active = false</code> by business rule
+     */
+    public void updateSuccess(String name, boolean success) {
+        dsl.update(VOTE)
+           .set(VOTE.ACTIVE, false)
+           .set(VOTE.SUCCESS, success)
+           .where(VOTE.NAME.eq(name))
            .execute();
     }
 
