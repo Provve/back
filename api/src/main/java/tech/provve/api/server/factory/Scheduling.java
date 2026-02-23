@@ -12,6 +12,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.BucketCannedACL;
 import tech.provve.accounts.service.S3Service;
 import tech.provve.accounts.service.application.AccountService;
+import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.application.SkillService;
 import tech.provve.skill.service.application.VoteService;
@@ -70,10 +71,11 @@ public class Scheduling {
 
     @Bean
     @Named("4")
-    public OneTimeTask<Void> deleteSkillAfterVote(VoteService voteService) {
+    public OneTimeTask<Void> deleteSkillAfterVote(VoteService voteService, SkillRepository skillRepository) {
         return Tasks.oneTime(DELETE_SKILL_AFTER_VOTE)
                     .execute((task, _) -> {
                         boolean success = voteService.end(task.getId());
+                        if (success) skillRepository.delete(task.getId());
                     });
     }
 

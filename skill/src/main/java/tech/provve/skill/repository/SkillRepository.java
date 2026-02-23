@@ -56,4 +56,10 @@ public class SkillRepository {
                   .get();
     }
 
+    public void delete(String name) {
+        dsl.deleteFrom(SKILL_)
+           .where(SKILL_.NAME.eq(name))
+           .execute();
+    }
+
 }

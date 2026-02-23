@@ -21,7 +21,10 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static java.util.Collections.emptyList;
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
+import static tech.provve.skill.domain.entity.Vote.Type.ADD_SKILL;
+import static tech.provve.skill.domain.entity.Vote.Type.DELETE_SKILL;
 import static tech.provve.skill.service.SanitizingService.sanitize;
 
 @Singleton
@@ -51,8 +54,7 @@ public class VoteServiceImpl implements VoteService {
                            throw new SkillAlreadyExists(skillAddVote.getName());
                        });
 
-        var jwtPayload = jwsParsingService.parseAuth(skillAddVote.getAuthToken());
-        var author = ((String) jwtPayload.get(JWT_SUBJECT));
+        var author = jwsParsingService.parseAuth(skillAddVote.getAuthToken(), JWT_SUBJECT);
         var deadline = deadlineSupplier.get();
         var vote = new Vote(
                 sanitize(skillAddVote.getName()),
@@ -61,7 +63,7 @@ public class VoteServiceImpl implements VoteService {
                 author,
                 deadline,
                 sanitize(skillAddVote.getArguments()),
-                Vote.Type.ADD_SKILL,
+                ADD_SKILL,
                 skillAddVote.getTags()
                             .stream()
                             .map(SanitizingService::sanitize)
@@ -75,7 +77,27 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public void create(SkillDelVote skillDelVote) throws VoteAlreadyExists {
+        voteRepository.findByName(skillDelVote.getName())
+                      .ifPresent(_ -> {
+                          throw new VoteAlreadyExists(skillDelVote.getName());
+                      });
 
+        var author = jwsParsingService.parseAuth(skillDelVote.getAuthToken(), JWT_SUBJECT);
+        var deadline = deadlineSupplier.get();
+        var vote = new Vote(
+                sanitize(skillDelVote.getName()),
+                true,
+                false,
+                author,
+                deadline,
+                sanitize(skillDelVote.getArguments()),
+                DELETE_SKILL,
+                emptyList(),
+                null,
+                null
+        );
+        voteRepository.save(vote);
+        scheduling.delSkill(vote.name(), deadline.toInstant(ZoneOffset.UTC));
     }
 
     @Override

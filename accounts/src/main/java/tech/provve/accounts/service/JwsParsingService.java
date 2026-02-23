@@ -20,4 +20,11 @@ public interface JwsParsingService {
      */
     Map<String, Object> parseAuth(String jws);
 
+    /**
+     * Read certain JWT attribute
+     *
+     * @return the attribute`s value
+     */
+    String parseAuth(String jws, String attribute);
+
 }

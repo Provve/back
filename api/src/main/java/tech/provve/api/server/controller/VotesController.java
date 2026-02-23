@@ -43,7 +43,8 @@ public class VotesController implements VotesApi {
     public Future<ApiResponse<Void>> createSkillAddVote(SkillAddVote skillAddVote) {
         try {
             validatingService.validate(new tech.provve.api.server.validation.dto.SkillAddVote(
-                    skillAddVote.getName(), skillAddVote.getArguments(),
+                    skillAddVote.getName(),
+                    skillAddVote.getArguments(),
                     skillAddVote.getAuthToken()
             ));
             voteService.create(skillAddVote);
@@ -57,7 +58,19 @@ public class VotesController implements VotesApi {
 
     @Override
     public Future<ApiResponse<Void>> createSkillDelVote(SkillDelVote skillDelVote) {
-        return null;
+        try {
+            validatingService.validate(new tech.provve.api.server.validation.dto.SkillDelVote(
+                    skillDelVote.getName(),
+                    skillDelVote.getArguments(),
+                    skillDelVote.getAuthToken()
+            ));
+            voteService.create(skillDelVote);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        } catch (VoteAlreadyExists e) {
+            return Future.failedFuture(new HttpException(e, 409));
+        }
     }
 
     @Override
