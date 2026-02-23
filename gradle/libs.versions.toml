@@ -61,6 +61,7 @@ jsoup = { module = 'org.jsoup:jsoup', version = '1.22.1' }
 
 jdbc-postgres = { module = 'org.postgresql:postgresql', version = '42.7.2' }
 flyway-postgres = { module = 'org.flywaydb:flyway-database-postgresql', version.ref = 'flyway' }
+db-scheduler = { module = 'com.github.kagkarlsson:db-scheduler', version = '16.7.1' }
 
 provve-api-dto = { module = 'tech.provve.api:server-dto', version = '0.0.1' }
 

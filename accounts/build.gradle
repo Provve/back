@@ -19,6 +19,7 @@ repositories {
 
 dependencies {
     implementation project(':notification')
+    implementation project(':scheduling')
 
     implementation libs.argon2
     implementation libs.amazon.s3

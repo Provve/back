@@ -16,6 +16,7 @@ import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.SanitizingService;
 
 import java.time.LocalDateTime;
+import java.util.function.Supplier;
 
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
 import static tech.provve.skill.service.SanitizingService.sanitize;
@@ -29,6 +30,8 @@ public class VoteServiceImpl implements VoteService {
 
     @External
     private final JwsParsingService jwsParsingService;
+
+    private final Supplier<LocalDateTime> deadlineSupplier;
 
     @Override
     public void create(SkillAddVote skillAddVote) throws VoteAlreadyExists {
@@ -48,8 +51,7 @@ public class VoteServiceImpl implements VoteService {
                 true,
                 false,
                 author,
-                LocalDateTime.now()
-                             .plusDays(30), // todo вынести наверх
+                deadlineSupplier.get(),
                 sanitize(skillAddVote.getArguments()),
                 Vote.Type.ADD_SKILL,
                 skillAddVote.getTags()

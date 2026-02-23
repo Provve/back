@@ -1,6 +1,5 @@
 package tech.provve.skill;
 
-import io.avaje.config.Config;
 import io.avaje.inject.Bean;
 import io.avaje.inject.Factory;
 import io.avaje.inject.test.TestScope;
@@ -8,15 +7,14 @@ import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.mockito.Mockito;
+import tech.provve.accounts.service.JwsParsingService;
+import tech.provve.accounts.service.JwsParsingServiceImpl;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.accounts.service.S3Service;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.accounts.task.InitS3Buckets;
 import tech.provve.notification.service.NotificationSendingService;
-import tech.provve.notification.service.NotificationSendingServiceImpl;
 
-import javax.swing.plaf.synth.Region;
-import java.net.URI;
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
@@ -29,6 +27,11 @@ public class Stubs {
     @Bean
     public NotificationSendingService notificationSendingService() {
         return Mockito.mock(NotificationSendingService.class);
+    }
+
+    @Bean
+    JwsParsingService jwsParsingService() {
+        return new JwsParsingServiceImpl();
     }
 
     @Bean

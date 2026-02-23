@@ -1,5 +1,6 @@
 package tech.provve.api.server.factory;
 
+import com.github.kagkarlsson.scheduler.Scheduler;
 import dev.failsafe.RetryPolicy;
 import io.avaje.inject.Bean;
 import io.avaje.inject.External;
@@ -14,6 +15,7 @@ import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.*;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.accounts.service.application.AccountServiceImpl;
+import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.repository.NotificationRepository;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.notification.service.NotificationSendingServiceImpl;
@@ -31,6 +33,8 @@ import tech.provve.skill.service.application.VoteServiceImpl;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.time.LocalDateTime;
+import java.util.function.Supplier;
 
 import static tech.provve.api.server.factory.HttpClientFactory.GET_PAYMENT_LINK_URL;
 
@@ -48,8 +52,8 @@ public class Services {
     }
 
     @Bean
-    public VoteService voteService(VoteRepository voteRepository, SkillRepository skillRepository, JwsParsingService jwsParsingService) {
-        return new VoteServiceImpl(voteRepository, skillRepository, jwsParsingService);
+    public VoteService voteService(VoteRepository voteRepository, SkillRepository skillRepository, JwsParsingService jwsParsingService, Supplier<LocalDateTime> deadlineSupplier) {
+        return new VoteServiceImpl(voteRepository, skillRepository, jwsParsingService, deadlineSupplier);
     }
 
     @Bean
@@ -89,6 +93,7 @@ public class Services {
                                          JwsParsingService jwsParsingService,
                                          PasswordHashingService passwordHashingService,
                                          NotificationSendingService notificationSendingService,
+                                         Scheduling scheduling,
                                          Vertx vertx,
                                          S3Service s3Service) {
         return new AccountServiceImpl(
@@ -97,9 +102,15 @@ public class Services {
                 jwsParsingService,
                 passwordHashingService,
                 notificationSendingService,
+                scheduling,
                 vertx,
                 s3Service
         );
+    }
+
+    @Bean
+    public Scheduling scheduling(Scheduler scheduler) {
+        return new Scheduling(scheduler);
     }
 
     @Bean

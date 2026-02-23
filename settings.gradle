@@ -5,4 +5,5 @@ include 'api',
         'validation',
         'payment',
         'skill',
-        'accounts'
+        'accounts',
+        'scheduling'

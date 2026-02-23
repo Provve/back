@@ -20,6 +20,7 @@ public interface AccountMapper {
     @Mapping(target = "isPremium", expression = "java(Boolean.FALSE)")
     @Mapping(target = "avatarUrl", expression = "java(null)")
     @Mapping(target = "passwordHash", source = "passwordHash")
+    @Mapping(target = "contactInfo", ignore = true)
     Account map(RegisterAccountRequest from, String passwordHash);
 
 }

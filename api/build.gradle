@@ -1,15 +1,23 @@
-import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer
 import org.owasp.dependencycheck.gradle.tasks.Aggregate
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+
+buildscript {
+    dependencies {
+        classpath 'org.postgresql:postgresql:42.7.2'
+        classpath libs.flyway.postgres
+    }
+}
 
 plugins {
     id 'java'
     id 'idea'
     id 'application'
     id 'maven-publish'
+    alias(libs.plugins.flyway)
     alias(libs.plugins.openapi.generator)
     alias(libs.plugins.shadow)
     alias(libs.plugins.dependencycheck)
@@ -35,8 +43,10 @@ dependencies {
     implementation project(':accounts')
     implementation project(':notification')
     implementation project(':payment')
+    implementation project(':scheduling')
     implementation project(':skill')
 
+    implementation libs.db.scheduler
     implementation libs.hibernate.validation
     implementation libs.expressly
     implementation libs.amazon.s3
@@ -69,6 +79,13 @@ dependencies {
     testImplementation libs.bundles.testing
     testImplementation libs.vertx.junit
     testCompileOnly libs.simple.mail
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/provve'
+    user = 'postgres'
+    password = '1'
+    schemas = ['public']
 }
 
 // run 'build' task to get specs
