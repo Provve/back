@@ -14,16 +14,16 @@ public final class Descriptors {
     /**
      * Действие выполняемое по окончанию голосования за добавление навыка
      */
-    public static final TaskDescriptor<Void> SKILL_ADD = TaskDescriptor.of("SKILL_ADD");
+    public static final TaskDescriptor<Void> ADD_SKILL_AFTER_VOTE = TaskDescriptor.of("ADD_SKILL_AFTER_VOTE");
 
     /**
      * Действие выполняемое по окончанию голосования за удаление навыка
      */
-    public static final TaskDescriptor<Void> SKILL_DELETE = TaskDescriptor.of("SKILL_DELETE");
+    public static final TaskDescriptor<Void> DELETE_SKILL_AFTER_VOTE = TaskDescriptor.of("SKILL_DELETE");
 
     /**
      * Действие выполняемое по окончанию голосования за добавление экзамена к навыку
      */
-    public static final TaskDescriptor<Void> EXAM_ADD = TaskDescriptor.of("EXAM_ADD");
+    public static final TaskDescriptor<Void> ADD_EXAM_AFTER_VOTE = TaskDescriptor.of("ADD_EXAM_AFTER_VOTE");
 
 }

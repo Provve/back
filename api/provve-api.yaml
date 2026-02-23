@@ -349,7 +349,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Skill.response"
 
-  /skills/{skill_id}/exams:
+  /skills/{skill_name}/exams:
     get:
       tags:
         - skills
@@ -366,20 +366,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/Exam.response"
 
-  /exams/{id}/solution:
+  /exams/{name}/solution:
     post:
       tags:
         - skills
       summary: Отправка решения экзамена на проверку
       operationId: submitExamSolution
       parameters:
-        - name: id
+        - name: name
           in: path
           required: true
           schema:
             type: string
-            format: uuid
-          description: Идентификатор экзамена, для которой отправляется решение
+          description: ID экзамена, для которой отправляется решение
       requestBody:
         required: true
         content:
@@ -398,13 +397,19 @@ paths:
       security:
         - auth: [ ]
 
-  /skills/{skill_id}/results:
+  /skills/{skill_name}/results:
     get:
       summary: Получение результатов по экзаменам навыка
       tags:
         - skills
       operationId: getResultsBySkill
       parameters:
+        - name: skill_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID навыка
         - $ref: "#/components/parameters/Pagination"
         - $ref: "#/components/parameters/Filter"
       responses:
@@ -421,20 +426,19 @@ paths:
       security:
         - auth: [ ]
 
-  /exams/{exam_id}/result:
+  /exams/{exam_name}/result:
     get:
       summary: Посмотреть результат
       tags:
         - skills
       operationId: viewExamResult
       parameters:
-        - name: exam_id
+        - name: exam_name
           in: path
           required: true
           schema:
             type: string
-            format: uuid
-          description: Идентификатор экзамена, результат по которому нужно получить
+          description: ID экзамена, результат по которому нужно получить
       responses:
         '200':
           description: Результат получен
@@ -469,41 +473,92 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Vote.response"
+
+  /votes/skill-add:
     post:
       tags:
         - votes
-      summary: Создать голосование
-      operationId: createVote
+      summary: Создать голосование на добавление навыка
+      operationId: createSkillAddVote
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateVote.request'
+              $ref: '#/components/schemas/SkillAddVote'
       responses:
         '200':
           description: Голосование успешно создано
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '409':
-          description: Объект голосования уже существует
+          $ref: "#/components/responses/DataNotUnique"
       security:
         - auth: [ ]
 
-  /votes/{id}/voting:
+  /votes/skill-del:
+    post:
+      tags:
+        - votes
+      summary: Создать голосование на удаление навыка
+      operationId: createSkillDelVote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillDelVote'
+      responses:
+        '200':
+          description: Голосование успешно создано
+        '400':
+          $ref: "#/components/responses/ValidationError"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
+        '409':
+          $ref: "#/components/responses/DataNotUnique"
+      security:
+        - auth: [ ]
+
+  /votes/exam-add:
+    post:
+      tags:
+        - votes
+      summary: Создать голосование на добавление экзамена
+      operationId: createExamAddVote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamAddVote'
+      responses:
+        '200':
+          description: Голосование успешно создано
+        '400':
+          $ref: "#/components/responses/ValidationError"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
+        '409':
+          $ref: "#/components/responses/DataNotUnique"
+      security:
+        - auth: [ ]
+
+  /votes/{name}/voting:
     post:
       tags:
         - votes
       summary: Проголосовать
       operationId: castVote
       parameters:
-        - name: id
+        - name: name
           in: path
           required: true
           schema:
             type: string
-            format: uuid
-          description: Идентификатор голоса, за который отдаётся голос
+          description: ID голосавания, за который отдаётся голос
       requestBody:
         required: true
         content:
@@ -513,27 +568,30 @@ paths:
       responses:
         '200':
           description: Голос учтен
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
+        '409':
+          $ref: "#/components/responses/DataNotUnique"
         '403':
           description: Авторам запрещено голосовать
       security:
         - auth: [ ]
 
-  /votes/{id}/comments:
+  /votes/{name}/comments:
     get:
       summary: Получить комментарии к голосованию
       tags:
         - votes
       operationId: listCommentsOnVote
       parameters:
-        - name: id
+        - name: name
           in: path
           required: true
           schema:
             type: string
-            format: uuid
-          description: Идентификатор голосования
+          description: ID голосования
       responses:
         '200':
           description: Получен список комментариев
@@ -549,13 +607,12 @@ paths:
         - votes
       operationId: addCommentOnVote
       parameters:
-        - name: id
+        - name: name
           in: path
           required: true
           schema:
             type: string
-            format: uuid
-          description: Идентификатор голосования
+          description: ID голосования
       requestBody:
         required: true
         content:
@@ -565,35 +622,38 @@ paths:
       responses:
         '200':
           description: Комментарий успешно добавлен
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
 
-  /votes/{vote_id}/comments/{comment_id}:
+  /votes/{vote_name}/comments/{comment_id}:
     put:
       summary: Редактирование комментария к голосованию
       tags:
         - votes
       operationId: editCommentOnVote
       parameters:
-        - name: vote_id
+        - name: vote_name
           in: path
           required: true
           schema:
             type: string
-            format: uuid
-          description: Идентификатор голосования
+          description: ID голосования
         - name: comment_id
           in: path
           required: true
           schema:
-            type: string
-            format: uuid
-          description: Идентификатор комментария
+            type: integer
+            format: int32
+          description: ID комментария
       responses:
         '200':
           description: Комментарий успешно отредактирован
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '403':
@@ -606,20 +666,19 @@ paths:
         - votes
       operationId: deleteCommentOnVote
       parameters:
-        - name: vote_id
+        - name: vote_name
           in: path
           required: true
           schema:
             type: string
-            format: uuid
-          description: Идентификатор голосования
+          description: ID голосования
         - name: comment_id
           in: path
           required: true
           schema:
-            type: string
-            format: uuid
-          description: Идентификатор комментария
+            type: integer
+            format: int32
+          description: ID комментария
       responses:
         '200':
           description: Комментарий успешно удалён
@@ -631,13 +690,17 @@ paths:
         - auth: [ ]
 
   /notifications:
-    get:
+    post:
       summary: Получение уведомлений
       tags:
         - notifications
       operationId: listNotifications
-      parameters:
-        - $ref: "#/components/parameters/Pagination"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListNotifications'
       responses:
         '200':
           description: Список уведомлений успешно получен
@@ -742,108 +805,132 @@ components:
         name:
           type: string
           description: Название навыка
-        vote_id:
+        vote_name:
           type: string
-          format: uuid
           description: ID голосования, в результате которого навык был добавлен в систему.
       required:
         - name
-        - vote_id
+        - vote_name
+
     Exam.response:
       type: object
       properties:
         name:
           type: string
-        desc:
+          description: Используется как ID
+        description:
           type: string
-        session:
-          type: string
-          format: uuid
+          description: Описание для пользователей
+
     Result.response:
+      description: Успешный результат
       type: object
       properties:
-        exam_id:
-          type: string
-          format: uuid
-          description: ID экзамена, по которому получен результат
         exam_name:
           type: string
-          format: uuid
-          description: Название экзамена, по которому получен результат
+          description: ID экзамена, по которому получен результат
+        time:
+          description: Затраченное время, в минутах
+          type: integer
+          format: int32
 
-    Vote:
+    Vote.request:
       type: object
       properties:
-        action:
+        name:
           type: string
-          enum: [ delete_skill, add_skill, add_exam ]
+          description: Название голосования. Он же и id объекта голосования.
         arguments:
           type: string
           description: Аргументы за совершение действия, предложенного в голосовании.
+        tags:
+          type: array
+          items:
+            type: string
+          description: Поисковые теги
+
+        auth_token:
+          type: string
+          description: Токен аутентификации
+
     SkillAddVote:
       allOf:
-        - $ref: '#/components/schemas/Vote'
-        - type: object
-          properties:
-            name:
-              type: string
-              description: Наименование навыка
+        - $ref: '#/components/schemas/Vote.request'
+
     SkillDelVote:
       allOf:
-        - $ref: '#/components/schemas/Vote'
-        - type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              description: Идентификатор навыка
+        - $ref: '#/components/schemas/Vote.request'
+
     ExamAddVote:
       allOf:
-        - $ref: '#/components/schemas/Vote'
+        - $ref: '#/components/schemas/Vote.request'
         - type: object
           properties:
-            skill_id:
+            skill_name:
               type: string
-              format: uuid
-              description: Идентификатор навыка, для проверки которого создан экзамен
-            name:
-              type: string
-              description: Название экзамена работы
-            arguments:
-              type: string
-              description: Пояснение для людей, почему экзамен важен
-            desc:
+              description: ID навыка, для проверки которого добавляют экзамен
+            description:
               type: string
               description: Финальная постановка задания для экзаменуемых
             material:
               type: string
               format: binary
-              description: Архив проекта с автотестами
+              description: Архив проекта с учебным материалом
           required:
-            - skill_id
-            - name
-            - arguments
-            - desc
+            - skill_name
+            - description
             - material
 
     Vote.response:
+      description: Всеохватывающее представление голосования
       allOf:
-        - $ref: '#/components/schemas/Vote'
+        - $ref: '#/components/schemas/Vote.request'
         - type: object
           properties:
-            votes:
+            type:
+              type: string
+              enum: [ skill_add, skill_del, exam_add ]
+              description: |
+                skill_add — добавление навыка,
+                skill_del — удаление навыка,
+                exam_add — добавление экзамена
+            reactions:
               type: object
               description: Голоса
               properties:
                 positive:
                   type: integer
+                  format: int32
                 negative:
                   type: integer
-            expire_at:
+                  format: int32
+            deadline:
               type: string
               format: date-time
               description: Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие.
               example: '2025-12-31T23:59:59Z'
+            exam_add:
+              description: Данные голосования на добавление экзамена (type = exam_add)
+              type: object
+              properties:
+                skill_name:
+                  type: string
+                  description: ID навыка, для проверки которого добавляют экзамен
+                description:
+                  type: string
+                  description: Финальная постановка задания для экзаменуемых
+                material:
+                  type: string
+                  format: binary
+                  description: Архив проекта с учебным материалом
+              required:
+                - skill_name
+                - description
+                - material
+          required:
+            - type
+            - reactions
+            - deadline
 
     Comment.response:
       type: object
@@ -851,9 +938,12 @@ components:
         author:
           $ref: "#/components/schemas/Profile.response"
           description: Автор комментария
-        comment:
+        content:
           type: string
-          description: Содержимое
+        id:
+          type: integer
+          format: int32
+          description: ID комментария
     Profile.response:
       type: object
       properties:
@@ -874,7 +964,7 @@ components:
       description: Уведомление о событии в системе
       properties:
         id:
-          description: Идентификатор уведомления
+          description: ID уведомления
           type: integer
           format: int32
         level:
@@ -1020,10 +1110,9 @@ components:
     CreateSession.request:
       type: object
       properties:
-        exam_id:
+        exam_name:
           type: string
-          format: uuid
-          description: Идентификатор экзамена
+          description: ID экзамена
         cipher:
           type: integer
           description: Зашифрованное случайное число, полученное ранее
@@ -1038,29 +1127,17 @@ components:
       required:
         - solution
 
-    CreateVote.request:
-      oneOf:
-        - $ref: '#/components/schemas/SkillAddVote'
-        - $ref: '#/components/schemas/SkillDelVote'
-        - $ref: '#/components/schemas/ExamAddVote'
-      discriminator:
-        propertyName: action
-        mapping:
-          add_skill: '#/components/schemas/SkillAddVote'
-          delete_skill: '#/components/schemas/SkillDelVote'
-          add_exam: '#/components/schemas/ExamAddVote'
-
     CastVote.request:
       type: object
       properties:
-        reaction:
+        name:
           type: string
-          enum: [ '+1', '-1' ]
-          description: |
-            +1 — за,
-            -1 — против
+          description: ID голосавания
+        positive_reaction:
+          type: boolean
+          description: true — за, false — против
       required:
-        - reaction
+        - positive_reaction
 
     AddCommentOnVote.request:
       type: object
@@ -1112,6 +1189,14 @@ components:
         details:
           type: string
           description: Детали ошибки
+
+    ListNotifications:
+      type: object
+      properties:
+        auth_token:
+          type: string
+        pagination:
+          $ref: "#/components/schemas/Pagination"
 
   securitySchemes:
     auth:

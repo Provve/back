@@ -1,7 +1,44 @@
+buildscript {
+    dependencies {
+        classpath libs.jdbc.postgres
+        classpath libs.flyway.postgres
+    }
+}
+
 plugins {
-    id 'application'
+    id 'java'
+    alias(libs.plugins.flyway)
+    alias(libs.plugins.jooq)
+    id 'common-java'
 }
 
 repositories {
     mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation project(':accounts')
+    implementation project(':notification')
+    implementation project(':scheduling')
+    implementation libs.jsoup
+
+    testImplementation libs.local.s3.rest
+    testImplementation libs.local.s3.jupiter
+}
+
+jooq {
+    configuration {
+        generator {
+            database {
+                forcedTypes {
+                    forcedType {
+                        userType = "java.lang.Boolean"
+                        binding = "tech.provve.skill.jooq_binding.BooleanBitBinding"
+                        includeExpression = "reaction"
+                    }
+                }
+            }
+        }
+    }
 }

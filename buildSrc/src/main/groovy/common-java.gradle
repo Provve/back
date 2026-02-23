@@ -1,0 +1,71 @@
+dependencies {
+    implementation libs.provve.api.dto
+    implementation libs.jooq.postgres
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+
+    implementation libs.avaje
+    implementation libs.avaje.config
+    annotationProcessor libs.avaje.generator
+
+    testImplementation libs.bundles.testing
+    testAnnotationProcessor libs.avaje.generator
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/provve'
+    user = 'postgres'
+    password = '1'
+    schemas = ["${project.name}_history", project.name]
+}
+
+jooq {
+    configuration {
+        jdbc {
+            driver = "org.postgresql.Driver"
+            url = 'jdbc:postgresql://localhost:5432/provve'
+            user = 'postgres'
+            password = '1'
+        }
+        generator {
+            database {
+                inputSchema = project.name
+            }
+            generate {
+                fluentSetters = true
+                javaTimeTypes = true
+                globalKeyReferences = false
+                globalTableReferences = false
+                globalIndexReferences = false
+            }
+            target {
+                packageName = "tech.provve.${project.name}.db.generated"
+                locale = 'ru'
+                directory = "/src/main/java/"
+            }
+        }
+    }
+}
+
+tasks.named("jooqCodegen") {
+    dependsOn(tasks.named("flywayMigrate"))
+
+    // Use Flyway migration scripts as input to code generation, to avoid
+    // task execution when unnecessary
+    inputs.files(fileTree("src/main/resources/db/migration"))
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    jvmArgs("--enable-native-access=ALL-UNNAMED")
+}

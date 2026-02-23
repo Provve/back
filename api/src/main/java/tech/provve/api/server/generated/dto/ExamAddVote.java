@@ -1,0 +1,173 @@
+package tech.provve.api.server.generated.dto;
+
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.ext.web.FileUpload;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ExamAddVote {
+
+    private String name;
+    private String arguments;
+    private List<String> tags = new ArrayList<>();
+    private String authToken;
+    private String skillName;
+    private String description;
+    private FileUpload material;
+
+    public ExamAddVote() {
+
+    }
+
+    public ExamAddVote(String name, String arguments, List<String> tags, String authToken, String skillName, String description, FileUpload material) {
+        this.name = name;
+        this.arguments = arguments;
+        this.tags = tags;
+        this.authToken = authToken;
+        this.skillName = skillName;
+        this.description = description;
+        this.material = material;
+    }
+
+
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    @JsonProperty("arguments")
+    public String getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(String arguments) {
+        this.arguments = arguments;
+    }
+
+
+    @JsonProperty("tags")
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+
+    @JsonProperty("auth_token")
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+
+    @JsonProperty("skill_name")
+    public String getSkillName() {
+        return skillName;
+    }
+
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
+    }
+
+
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    @JsonProperty("material")
+    public FileUpload getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(FileUpload material) {
+        this.material = material;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ExamAddVote examAddVote = (ExamAddVote) o;
+        return Objects.equals(name, examAddVote.name) &&
+                Objects.equals(arguments, examAddVote.arguments) &&
+                Objects.equals(tags, examAddVote.tags) &&
+                Objects.equals(authToken, examAddVote.authToken) &&
+                Objects.equals(skillName, examAddVote.skillName) &&
+                Objects.equals(description, examAddVote.description) &&
+                Objects.equals(material, examAddVote.material);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, arguments, tags, authToken, skillName, description, material);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ExamAddVote {\n");
+
+        sb.append("    name: ")
+          .append(toIndentedString(name))
+          .append("\n");
+        sb.append("    arguments: ")
+          .append(toIndentedString(arguments))
+          .append("\n");
+        sb.append("    tags: ")
+          .append(toIndentedString(tags))
+          .append("\n");
+        sb.append("    authToken: ")
+          .append(toIndentedString(authToken))
+          .append("\n");
+        sb.append("    skillName: ")
+          .append(toIndentedString(skillName))
+          .append("\n");
+        sb.append("    description: ")
+          .append(toIndentedString(description))
+          .append("\n");
+        sb.append("    material: ")
+          .append(toIndentedString(material))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+}
