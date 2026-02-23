@@ -4,14 +4,15 @@ import io.avaje.inject.External;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import org.jooq.exception.IntegrityConstraintViolationException;
 import tech.provve.accounts.service.JwsParsingService;
+import tech.provve.api.server.generated.dto.CastVoteRequest;
 import tech.provve.api.server.generated.dto.ExamAddVote;
 import tech.provve.api.server.generated.dto.SkillAddVote;
 import tech.provve.api.server.generated.dto.SkillDelVote;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.skill.domain.entity.Vote;
-import tech.provve.skill.exception.SkillAlreadyExists;
-import tech.provve.skill.exception.VoteAlreadyExists;
+import tech.provve.skill.exception.*;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.SanitizingService;
@@ -30,6 +31,8 @@ import static tech.provve.skill.service.SanitizingService.sanitize;
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class VoteServiceImpl implements VoteService {
+
+    private static final String POSTGRES_DUPLICATE_ERROR_PART = "duplicate";
 
     private final VoteRepository voteRepository;
     private final SkillRepository skillRepository;
@@ -103,6 +106,30 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public void create(ExamAddVote examAddVote) throws VoteAlreadyExists {
 
+    }
+
+    @Override
+    public void cast(String voteName, CastVoteRequest castVote) {
+        var voter = jwsParsingService.parseAuth(castVote.getAuthToken(), JWT_SUBJECT);
+        voteRepository.findByName(voteName)
+                      .ifPresentOrElse(
+                              vote -> {
+                                  if (voter.equals(vote.author())) {
+                                      throw new AuthorCannotVote();
+                                  }
+
+                                  try {
+                                      voteRepository.setReaction(voteName, voter, castVote.getPositiveReaction());
+                                  } catch (IntegrityConstraintViolationException e) {
+                                      if (e.getMessage()
+                                           .contains(POSTGRES_DUPLICATE_ERROR_PART)) {
+                                          throw new CastAlreadyExists();
+                                      }
+                                  }
+                              }, () -> {
+                                  throw new VoteNotFound(voteName);
+                              }
+                      );
     }
 
     @Override

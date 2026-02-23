@@ -572,10 +572,12 @@ paths:
           $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
-        '409':
-          $ref: "#/components/responses/DataNotUnique"
         '403':
           description: Авторам запрещено голосовать
+        '404':
+          description: Голосование не найдено
+        '409':
+          $ref: "#/components/responses/DataNotUnique"
       security:
         - auth: [ ]
 
@@ -1130,14 +1132,14 @@ components:
     CastVote.request:
       type: object
       properties:
-        name:
-          type: string
-          description: ID голосавания
         positive_reaction:
           type: boolean
           description: true — за, false — против
+        auth_token:
+          type: string
       required:
         - positive_reaction
+        - auth_token
 
     AddCommentOnVote.request:
       type: object

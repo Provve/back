@@ -1,7 +1,6 @@
 package tech.provve.api.server.generated;
 
 public class ApiResponse<T> {
-
     private final T data;
     private final int statusCode;
 

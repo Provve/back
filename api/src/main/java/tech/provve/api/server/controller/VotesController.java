@@ -10,8 +10,8 @@ import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.VotesApi;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.api.server.service.DtoValidatingService;
-import tech.provve.skill.exception.SkillAlreadyExists;
-import tech.provve.skill.exception.VoteAlreadyExists;
+import tech.provve.api.server.validation.dto.CastVote;
+import tech.provve.skill.exception.*;
 import tech.provve.skill.service.application.VoteService;
 
 import java.util.List;
@@ -30,7 +30,19 @@ public class VotesController implements VotesApi {
 
     @Override
     public Future<ApiResponse<Void>> castVote(String name, CastVoteRequest castVoteRequest) {
-        return null;
+        try {
+            validatingService.validate(new CastVote(name, castVoteRequest.getAuthToken(), castVoteRequest.getPositiveReaction()));
+            voteService.cast(name, castVoteRequest);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        } catch (AuthorCannotVote e) {
+            return Future.failedFuture(new HttpException(e, 403));
+        } catch (VoteNotFound e) {
+            return Future.failedFuture(new HttpException(e, 404));
+        } catch (CastAlreadyExists e) {
+            return Future.failedFuture(new HttpException(e, 409));
+        }
     }
 
     @Override

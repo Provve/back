@@ -16,13 +16,20 @@ import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.service.NotificationSendingService;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 @Factory
 @TestScope
 public class Stubs {
+
+    @Bean
+    public Supplier<LocalDateTime> deadline() {
+        return () -> LocalDateTime.now();
+    }
 
     @Bean
     public Scheduling scheduling() {

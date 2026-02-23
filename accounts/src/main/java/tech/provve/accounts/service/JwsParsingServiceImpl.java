@@ -28,6 +28,12 @@ public class JwsParsingServiceImpl implements JwsParsingService {
         );
     }
 
+    @Override
+    public String parseAuth(String jws, String attribute) {
+        var jwtPayload = parseAuth(jws);
+        return ((String) jwtPayload.get(attribute));
+    }
+
     private Map<String, Object> parse(String jws, byte[] secret) {
         var key = Keys.hmacShaKeyFor(secret);
         return Jwts.parser()

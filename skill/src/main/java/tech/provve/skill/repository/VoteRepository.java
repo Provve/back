@@ -98,6 +98,10 @@ public class VoteRepository {
                   .toList();
     }
 
+    /**
+     * @param voter    who is voting
+     * @param reaction +/-
+     */
     public void setReaction(String name, String voter, boolean reaction) {
         dsl.insertInto(REACTIONS)
            .set(REACTIONS.VOTE_NAME, name)

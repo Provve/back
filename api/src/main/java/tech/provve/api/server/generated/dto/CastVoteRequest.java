@@ -1,33 +1,23 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CastVoteRequest {
 
-    private String name;
     private Boolean positiveReaction;
+    private String authToken;
 
     public CastVoteRequest() {
 
     }
 
-    public CastVoteRequest(String name, Boolean positiveReaction) {
-        this.name = name;
+    public CastVoteRequest(Boolean positiveReaction, String authToken) {
         this.positiveReaction = positiveReaction;
-    }
-
-
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.authToken = authToken;
     }
 
 
@@ -41,6 +31,16 @@ public class CastVoteRequest {
     }
 
 
+    @JsonProperty("auth_token")
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -50,13 +50,13 @@ public class CastVoteRequest {
             return false;
         }
         CastVoteRequest castVoteRequest = (CastVoteRequest) o;
-        return Objects.equals(name, castVoteRequest.name) &&
-                Objects.equals(positiveReaction, castVoteRequest.positiveReaction);
+        return Objects.equals(positiveReaction, castVoteRequest.positiveReaction) &&
+                Objects.equals(authToken, castVoteRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, positiveReaction);
+        return Objects.hash(positiveReaction, authToken);
     }
 
     @Override
@@ -64,11 +64,11 @@ public class CastVoteRequest {
         StringBuilder sb = new StringBuilder();
         sb.append("class CastVoteRequest {\n");
 
-        sb.append("    name: ")
-          .append(toIndentedString(name))
-          .append("\n");
         sb.append("    positiveReaction: ")
           .append(toIndentedString(positiveReaction))
+          .append("\n");
+        sb.append("    authToken: ")
+          .append(toIndentedString(authToken))
           .append("\n");
         sb.append("}");
         return sb.toString();
