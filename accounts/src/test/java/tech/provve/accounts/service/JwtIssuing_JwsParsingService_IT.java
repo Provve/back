@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
+import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
 
 @TestScope
 @Factory
@@ -60,7 +61,7 @@ class JwtIssuing_JwsParsingService_IT {
 
         // act assert
         assertThatNoException()
-                .isThrownBy(() -> jwsParsingService.parseReset(resetToken));
+                .isThrownBy(() -> jwsParsingService.parseReset(resetToken, JWT_SUBJECT));
     }
 
     @Test
@@ -70,8 +71,7 @@ class JwtIssuing_JwsParsingService_IT {
         var resetToken = jwtIssuingService.issueReset(login);
 
         // act
-        var parsed = jwsParsingService.parseReset(resetToken);
-        var subject = ((String) parsed.get("sub"));
+        var subject = jwsParsingService.parseReset(resetToken, JWT_SUBJECT);
 
         // assert
         assertThat(subject)

@@ -47,7 +47,10 @@ public class VotesController implements VotesApi {
 
     @Override
     public Future<ApiResponse<Void>> createExamAddVote(ExamAddVote examAddVote) {
-        // использовать метод multipart для загрузки архива в s3 и клиент AWS CRT-based
+        // validate
+        // pass
+
+        // within MS: использовать метод multipart для загрузки архива в s3 и клиент AWS CRT-based
         return null;
     }
 

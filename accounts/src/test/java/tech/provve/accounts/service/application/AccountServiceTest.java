@@ -8,8 +8,6 @@ import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
 
-import java.util.Map;
-
 import static org.mockito.Mockito.*;
 
 @InjectTest
@@ -30,7 +28,8 @@ class AccountServiceTest {
         var login = "w";
         var authToken = "a";
         var request = new UpdatePersonalDataConsentRequest(true, authToken);
-        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", login));
+        when(jwsParsingService.parseAuth(authToken, "sub")).thenReturn(login);
+
 
         // act
         service.updatePersonalDataConsent(request);
@@ -46,7 +45,7 @@ class AccountServiceTest {
         var login = "w";
         var authToken = "a";
         var request = new UpdatePersonalDataConsentRequest(false, authToken);
-        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", login));
+        when(jwsParsingService.parseAuth(authToken, "sub")).thenReturn(login);
 
         // act
         service.updatePersonalDataConsent(request);

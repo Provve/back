@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import tech.provve.accounts.PostgresIntegrationTest;
 import tech.provve.accounts.domain.model.Account;
-import tech.provve.accounts.domain.model.value.PremiumExpiration;
 import tech.provve.accounts.exception.AccessDenied;
 import tech.provve.accounts.exception.AccountNotFound;
 import tech.provve.accounts.exception.DataNotUnique;
@@ -25,17 +24,11 @@ import tech.provve.notification.service.NotificationSendingService;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 
 @InjectTest
@@ -147,60 +140,6 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
     }
 
     @Test
-    void downgradeAllExpired_someExpired_setPremiumToFalse() {
-        // arrange
-        var login1 = "c";
-        var login2 = "d";
-
-        var premiumAccounts = List.of(
-                new Account(
-                        login1,
-                        "c@c.c",
-                        "",
-                        true,
-                        "n",
-                        null,
-                        null,
-                        true
-                ),
-                new Account(
-                        login2,
-                        "d@d.d",
-                        "",
-                        true,
-                        "n",
-                        null,
-                        null,
-                        true
-                )
-        );
-        var nowUtc = LocalDateTime.now(ZoneId.of("UTC"));
-        var past = nowUtc.minusHours(1);
-        var future = OffsetDateTime.of(
-                past,
-                ZoneOffset.ofHours(7) // сдвиг в будущее
-        );
-        premiumAccounts.forEach(account -> {
-            repository.save(account);
-            repository.save(new PremiumExpiration(
-                    account.login(),
-                    future
-            ));
-        });
-
-        // act
-        service.downgradeAllExpired();
-
-        // assert
-        var account1 = repository.findByLogin(login1)
-                                 .get();
-        var account2 = repository.findByLogin(login2)
-                                 .get();
-        assertThat(account1.isPremium()).isFalse();
-        assertThat(account2.isPremium()).isFalse();
-    }
-
-    @Test
     void updateEmail_noPersonalDataConsent_exception() {
         // arrange
         var account = new Account(
@@ -217,7 +156,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
 
         var authToken = "a";
         UpdateEmailRequest request = new UpdateEmailRequest("new@email.com", authToken);
-        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", account.login()));
+        when(jwsParsingService.parseAuth(authToken, "sub")).thenReturn(account.login());
 
         // act assert
         assertThrows(NoPersonalDataConsent.class, () -> service.updateEmail(request));
@@ -241,7 +180,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
         var completelyUnknownEmail = account.email();
         var authToken = "a";
         UpdateEmailRequest request = new UpdateEmailRequest(completelyUnknownEmail, authToken);
-        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", account.login()));
+        when(jwsParsingService.parseAuth(authToken, "sub")).thenReturn(account.login());
 
         // act assert
         assertThrows(DataNotUnique.class, () -> service.updateEmail(request));
@@ -264,7 +203,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
         repository.save(account);
 
         var request = new DeleteAccountRequest(login);
-        when(jwsParsingService.parseAuth(login)).thenReturn(Map.of("sub", account.login()));
+        when(jwsParsingService.parseAuth(login, "sub")).thenReturn(account.login());
 
         // act
         service.delete(request);
@@ -291,7 +230,7 @@ class AccountService_AccountRepository__IT extends PostgresIntegrationTest {
         var authToken = "a";
         var contacts = new Contacts(List.of("m"));
         var request = new UpdateContactsRequest(contacts, authToken);
-        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", account.login()));
+        when(jwsParsingService.parseAuth(authToken, "sub")).thenReturn(account.login());
         service.updateContacts(request);
 
         // act

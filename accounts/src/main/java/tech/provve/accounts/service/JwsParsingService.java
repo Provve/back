@@ -1,7 +1,5 @@
 package tech.provve.accounts.service;
 
-import java.util.Map;
-
 public interface JwsParsingService {
 
     String JWT_SUBJECT = "sub";
@@ -9,22 +7,15 @@ public interface JwsParsingService {
     /**
      * Parse Reset Token generated in {@link JwtIssuingService}
      *
-     * @return payload properties
+     * @return the attribute`s value
      */
-    Map<String, Object> parseReset(String jws);
+    <T> T parseReset(String jws, T attribute);
 
     /**
      * Parse Auth Token generated in {@link JwtIssuingService}
      *
-     * @return payload properties
-     */
-    Map<String, Object> parseAuth(String jws);
-
-    /**
-     * Read certain JWT attribute
-     *
      * @return the attribute`s value
      */
-    String parseAuth(String jws, String attribute);
+    <T> T parseAuth(String jws, T attribute);
 
 }

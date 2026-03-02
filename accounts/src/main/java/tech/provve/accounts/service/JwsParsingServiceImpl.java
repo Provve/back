@@ -13,25 +13,21 @@ import java.util.Map;
 public class JwsParsingServiceImpl implements JwsParsingService {
 
     @Override
-    public Map<String, Object> parseReset(String jws) {
-        return parse(
+    public <T> T parseReset(String jws, T attribute) {
+        var jwtPayload = parse(
                 jws, Config.get("security.jwt.reset.secret")
                            .getBytes()
         );
+        return ((T) jwtPayload.get(attribute));
     }
 
     @Override
-    public Map<String, Object> parseAuth(String jws) {
-        return parse(
+    public <T> T parseAuth(String jws, T attribute) {
+        var jwtPayload = parse(
                 jws, Config.get("security.jwt.auth.secret")
                            .getBytes()
         );
-    }
-
-    @Override
-    public String parseAuth(String jws, String attribute) {
-        var jwtPayload = parseAuth(jws);
-        return ((String) jwtPayload.get(attribute));
+        return ((T) jwtPayload.get(attribute));
     }
 
     private Map<String, Object> parse(String jws, byte[] secret) {

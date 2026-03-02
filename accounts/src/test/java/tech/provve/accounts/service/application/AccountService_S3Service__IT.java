@@ -2,13 +2,9 @@ package tech.provve.accounts.service.application;
 
 import com.robothy.s3.jupiter.LocalS3;
 import io.avaje.config.Config;
-import io.avaje.inject.Bean;
 import io.avaje.inject.BeanScopeBuilder;
-import io.avaje.inject.Factory;
-import io.avaje.inject.Primary;
 import io.avaje.inject.test.InjectTest;
 import io.avaje.inject.test.Setup;
-import io.avaje.inject.test.TestScope;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -20,11 +16,7 @@ import org.jooq.impl.DSL;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.model.BucketCannedACL;
 import tech.provve.accounts.PostgresIntegrationTest;
 import tech.provve.accounts.domain.model.Account;
@@ -40,7 +32,6 @@ import java.net.http.HttpResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -102,7 +93,7 @@ class AccountService_S3Service__IT extends PostgresIntegrationTest {
 
         String authToken = "a";
         var updateAvatarRequest = new UpdateAvatarRequest(stubFileUpload(avatarPath), authToken);
-        when(jwsParsingService.parseAuth(authToken)).thenReturn(Map.of("sub", login));
+        when(jwsParsingService.parseAuth(authToken, "sub")).thenReturn(login);
 
         service.updateAvatar(updateAvatarRequest);
         Account updatedAccount = repository.findByLogin(login)

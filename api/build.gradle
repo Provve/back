@@ -45,6 +45,7 @@ dependencies {
     implementation project(':payment')
     implementation project(':scheduling')
     implementation project(':skill')
+    implementation project(':validation')
 
     implementation libs.db.scheduler
     implementation libs.hibernate.validation
@@ -145,7 +146,7 @@ publishing {
             group = 'tech.provve.api'
             artifactId = 'server-dto'
             version = '0.0.1'
-            artifact(tasks.named('buildDto'))
+            artifact(tasks.buildDto)
         }
     }
     repositories {

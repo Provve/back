@@ -1,19 +1,21 @@
-plugins {
-    id 'java'
+buildscript {
+    dependencies {
+        classpath libs.jdbc.postgres
+        classpath libs.flyway.postgres
+    }
 }
 
-group = 'tech.provve'
-version = 'unspecified'
+plugins {
+    id 'java'
+    alias(libs.plugins.flyway)
+    alias(libs.plugins.jooq)
+    id 'common-java'
+}
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
-
-test {
-    useJUnitPlatform()
 }

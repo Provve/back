@@ -1,9 +1,6 @@
 package tech.provve.accounts.service.application;
 
-import tech.provve.accounts.exception.AccessDenied;
-import tech.provve.accounts.exception.AccountAlreadyExists;
-import tech.provve.accounts.exception.AccountAlreadyUpgraded;
-import tech.provve.accounts.exception.AccountNotFound;
+import tech.provve.accounts.exception.*;
 import tech.provve.api.server.generated.dto.*;
 
 /**
@@ -31,7 +28,7 @@ public interface AccountService {
 
     void updatePassword(UpdatePasswordRequest updatePasswordRequest);
 
-    void updateEmail(UpdateEmailRequest updateEmailRequest);
+    void updateEmail(UpdateEmailRequest updateEmailRequest) throws NoPersonalDataConsent;
 
     void updateAvatar(UpdateAvatarRequest updateAvatarRequest);
 
