@@ -60,4 +60,9 @@ public class S3Service {
         );
         return PERMANENT_URL_FORMAT.formatted(bucket, key);
     }
+
+    public String uploadUsingCrt() {
+        //
+        return null;
+    }
 }

@@ -41,7 +41,7 @@ CREATE INDEX idx_skill_tags ON skill.skill USING GIN(tags);
 CREATE TABLE skill.exam_add_vote (
     vote_name VARCHAR(100) REFERENCES skill.vote(name) ON DELETE CASCADE, -- удалить при удалении самого голосования (модерацией)
     skill_name VARCHAR(100) REFERENCES skill.skill(name) ON DELETE CASCADE, -- удалить при удалении навыка
-    description TEXT,
+    description VARCHAR(3000),
     material_url TEXT NOT NULL
 );
 COMMENT ON TABLE skill.exam_add_vote IS 'Данные голосования на добавление экзамена (type = 2)';
@@ -69,8 +69,28 @@ FOR EACH ROW EXECUTE PROCEDURE delete_related_vote();
 
 
 
+CREATE TABLE skill.exam (
+    name VARCHAR(100) PRIMARY KEY,
+    skill_name VARCHAR(100) REFERENCES skill.skill(name) ON DELETE CASCADE,
+    description VARCHAR(3000) NOT NULL,
+    material_url TEXT NOT NULL
+)
+COMMENT ON TABLE skill.exam IS 'Данные экзамена.';
+COMMENT ON COLUMN skill.exam.name IS 'Название экзамена';
+COMMENT ON COLUMN skill.exam.skill_name IS 'Какой навык экзамен проверяет';
+COMMENT ON COLUMN skill.exam.description IS 'Постановка задания для экзаменуемых';
+COMMENT ON COLUMN skill.exam.material_url IS 'Ссылка на учебный материал в хранилище S3';
+
+CREATE TABLE skill.result (
+     exam_name VARCHAR(100) REFERENCES skill.skill(name) ON DELETE CASCADE,
+     examinee VARCHAR(50) REFERENCES accounts.accounts(login) ON DELETE CASCADE,
+     duration INTERVAL NOT NULL
+)
+
+
+
 CREATE TABLE skill.reactions (
-    voter VARCHAR(50) REFERENCES accounts.accounts(login),
+    voter VARCHAR(50) REFERENCES accounts.accounts(login) ON DELETE CASCADE,
     vote_name VARCHAR(100) REFERENCES skill.vote(name) ON DELETE CASCADE,
     reaction BIT(1) NOT NULL,
 

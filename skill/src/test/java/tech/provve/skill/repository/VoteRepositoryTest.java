@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.skill.PostgresIntegrationTest;
-import tech.provve.skill.domain.entity.ExamAddVote;
+import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Skill;
 import tech.provve.skill.domain.entity.Vote;
 
@@ -94,14 +94,14 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
                 "xyz!",
                 ADD_EXAM,
                 List.of("1"),
-                new ExamAddVote("a", description, ""),
+                new Exam("b", "a", description, ""),
                 null
         ));
 
         // assert
         var savedVote = voteRepository.findByName(author_login)
                                       .get();
-        assertThat(savedVote.examAddVote()
+        assertThat(savedVote.exam()
                             .description()).isEqualTo(description);
     }
 
@@ -112,7 +112,7 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         accountRepository.save(new Account(author_login, "a", "1", true, "q", null, null, false));
         skillRepository.save(new Skill(author_login, List.of("a")));
 
-        var examAddvote = new ExamAddVote("a", "d", "");
+        var examAddvote = new Exam("b", "a", "d", "");
         var now = LocalDateTime.now();
         var votes = List.of(
                 new Vote(

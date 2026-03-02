@@ -535,8 +535,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ExamAddVote'
       responses:
-        '200':
-          description: Голосование успешно создано
+        '202':
+          description: Голосование будет создано, пользователь получит уведомление
         '400':
           $ref: "#/components/responses/ValidationError"
         '401':
@@ -873,6 +873,7 @@ components:
               description: ID навыка, для проверки которого добавляют экзамен
             description:
               type: string
+              maxLength: 3000
               description: Финальная постановка задания для экзаменуемых
             material:
               type: string

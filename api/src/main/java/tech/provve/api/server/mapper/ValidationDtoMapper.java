@@ -24,4 +24,6 @@ public interface ValidationDtoMapper {
 
     UpdatePersonalDataConsentRequest map(tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest from);
 
+    ExamAddVote map(tech.provve.api.server.generated.dto.ExamAddVote from);
+
 }

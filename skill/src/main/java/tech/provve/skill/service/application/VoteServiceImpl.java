@@ -12,7 +12,10 @@ import tech.provve.api.server.generated.dto.SkillAddVote;
 import tech.provve.api.server.generated.dto.SkillDelVote;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.skill.domain.entity.Vote;
-import tech.provve.skill.exception.*;
+import tech.provve.skill.exception.AuthorCannotVote;
+import tech.provve.skill.exception.CastAlreadyExists;
+import tech.provve.skill.exception.VoteAlreadyExists;
+import tech.provve.skill.exception.VoteNotFound;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.SanitizingService;
@@ -52,10 +55,6 @@ public class VoteServiceImpl implements VoteService {
                       .ifPresent(_ -> {
                           throw new VoteAlreadyExists(skillAddVote.getName());
                       });
-        skillRepository.findByName(skillAddVote.getName())
-                       .ifPresent(_ -> {
-                           throw new SkillAlreadyExists(skillAddVote.getName());
-                       });
 
         var author = jwsParsingService.parseAuth(skillAddVote.getAuthToken(), JWT_SUBJECT);
         var deadline = deadlineSupplier.get();
@@ -105,7 +104,35 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public void create(ExamAddVote examAddVote) throws VoteAlreadyExists {
+        voteRepository.findByName(examAddVote.getName())
+                      .ifPresent(_ -> {
+                          throw new VoteAlreadyExists(examAddVote.getName());
+                      });
 
+        var author = jwsParsingService.parseAuth(examAddVote.getAuthToken(), JWT_SUBJECT);
+        var deadline = deadlineSupplier.get();
+
+        // нужно обращаться к интерфейсу, чтобы в модуль skill не добавлять зависимость от vertx
+        // сохранить a & b
+        var materialUrl = s3.save(examAddVote.getMaterial()); // a
+
+        // запустить МС сохранения (PREPARED.entry =
+        //        var exam = new Exam(examAddVote.getName(), examAddVote.getSkillName(), examAddVote.getDescription(), materialUrl);
+        //        var vote = new Vote(
+        //                sanitize(examAddVote.getName()),
+        //                true,
+        //                false,
+        //                author,
+        //                deadline,
+        //                sanitize(examAddVote.getArguments()),
+        //                DELETE_SKILL,
+        //                emptyList(),
+        //                exam,
+        //                null
+        //        );
+        //        voteRepository.save(vote);
+        //        scheduling.delSkill(vote.name(), deadline.toInstant(ZoneOffset.UTC));
+        // )
     }
 
     @Override
@@ -133,6 +160,7 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    @SuppressWarnings("all")
     public boolean end(String voteName) {
         Optional<Vote> optionalVote = voteRepository.findByName(voteName);
 

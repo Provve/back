@@ -8,7 +8,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jspecify.annotations.NullMarked;
-import tech.provve.skill.domain.entity.ExamAddVote;
+import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.domain.value.VoteReactions;
 import tech.provve.skill.mapper.VoteMapper;
@@ -32,7 +32,8 @@ public class VoteRepository {
     private final DSLContext dsl;
 
     private final RecordMapper<Record, Vote> outputMapper = record -> {
-        ExamAddVote examAddVote = record.map(_ -> new ExamAddVote(
+        Exam exam = record.map(_ -> new Exam(
+                record.get(VOTE.NAME),
                 record.get(EXAM_ADD_VOTE.SKILL_NAME),
                 record.get(EXAM_ADD_VOTE.DESCRIPTION),
                 record.get(EXAM_ADD_VOTE.MATERIAL_URL)
@@ -56,7 +57,7 @@ public class VoteRepository {
                         )
                 ),
                 List.of(record.get(VOTE.TAGS)),
-                examAddVote,
+                exam,
                 reactions
         );
     };
@@ -69,7 +70,7 @@ public class VoteRepository {
         if (ADD_EXAM.equals(vote.type())) {
             dsl.insertInto(EXAM_ADD_VOTE)
                .set(VoteMapper.INSTANCE.map(
-                       Objects.requireNonNull(vote.examAddVote()),
+                       Objects.requireNonNull(vote.exam()),
                        vote.name()
                ))
                .execute();

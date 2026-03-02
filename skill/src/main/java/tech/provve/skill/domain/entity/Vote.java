@@ -26,7 +26,7 @@ import java.util.List;
  * @param arguments   Аргументы за совершение действия, предложенного в голосовании
  * @param type        Тип голосования
  * @param tags        Теги голосования
- * @param examAddVote {@link Type#ADD_EXAM}
+ * @param exam {@link Type#ADD_EXAM}
  */
 public record Vote(
         String name,
@@ -37,7 +37,7 @@ public record Vote(
         String arguments,
         Type type,
         List<String> tags,
-        @Nullable ExamAddVote examAddVote,
+        @Nullable Exam exam,
         @Nullable VoteReactions reactions
 ) {
 
