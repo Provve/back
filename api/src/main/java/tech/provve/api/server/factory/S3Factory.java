@@ -35,6 +35,7 @@ public class S3Factory {
                             .region(Region.of(s3Settings.region))
                             .credentialsProvider(StaticCredentialsProvider.create(
                                     AwsBasicCredentials.create(s3Settings.accessKey, s3Settings.secretKey)))
+                            .retryConfiguration(builder -> builder.numRetries(5))
                             .build();
     }
 

@@ -23,6 +23,7 @@ import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.SanitizingService;
 import terch.provve.libs.s3.S3Service;
 
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
@@ -146,19 +147,8 @@ public class VoteServiceImpl implements VoteService {
         // )
     }
 
-    void uploadToS3(String filename, String key) {
-        vertx.fileSystem()
-             .readFile(
-                     filename, ar -> {
-                         if (ar.failed()) return;
-
-                         byte[] data = ar.result()
-                                         .getBytes();
-                         String bucket = Config.get("s3.buckets.exams");
-                         String archiveUrl = s3Service.crtUpload(bucket, key, data);
-                         // pass to MS
-                     }
-             );
+    private void uploadToS3(String path, String key) {
+        s3Service.crtUpload(Config.get("s3.buckets.exams"), key, Path.of(path));
     }
 
     @Override

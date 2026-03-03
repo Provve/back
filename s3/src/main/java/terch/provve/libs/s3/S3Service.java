@@ -10,6 +10,7 @@ import software.amazon.awssdk.http.HttpStatusCode;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
 
+import java.nio.file.Path;
 import java.util.UUID;
 
 @Singleton
@@ -97,10 +98,10 @@ public class S3Service {
      *
      * @return постоянная ссылка в формате "bucket/obj-key"
      */
-    public String crtUpload(String bucket, String key, byte[] bytes) {
+    public String crtUpload(String bucket, String key, Path path) {
         s3AsyncClient.putObject(
                 b -> b.bucket(bucket)
-                      .key(key), AsyncRequestBody.fromBytes((bytes))
+                      .key(key), AsyncRequestBody.fromFile(path)
         );
         return PERMANENT_URL_FORMAT.formatted(bucket, key);
     }
