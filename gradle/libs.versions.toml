@@ -46,8 +46,9 @@ testcontainers-junit = { module = 'org.testcontainers:testcontainers-junit-jupit
 testcontainers-mailpit = { group = 'ch.martinelli.oss', name = 'testcontainers-mailpit', version.ref = 'testcontainers-mailpit' }
 local-s3-jupiter = { module = 'io.github.robothy:local-s3-jupiter', version.ref = 's3' }
 local-s3-rest = { module = 'io.github.robothy:local-s3-rest', version.ref = 's3' }
-amazon-s3 = { module = 'software.amazon.awssdk:s3', version = '2.42.4' }
-amazon-crt = { module = 'software.amazon.awssdk:aws-crt', version = '0.43.4' }
+aws-s3 = { module = 'software.amazon.awssdk:s3', version = '2.42.4' }
+aws-crt = { module = 'software.amazon.awssdk.crt:aws-crt', version = '0.43.4' }
+url-encoder = { module = 'com.uwyn:urlencoder', version = '1.3.2' }
 
 hibernate-validation = { group = 'org.hibernate.validator', name = 'hibernate-validator', version = '9.1.0.Final' }
 expressly = { group = 'org.glassfish.expressly', name = 'expressly', version = '6.0.0' }

@@ -34,10 +34,10 @@ public class Stubs {
 
     @Bean
     public S3Client s3Client() {
-        var url = Config.get("s3.url");
-        var region = Config.get("s3.region");
-        var keyId = Config.get("s3.access-key");
-        var secretKey = Config.get("s3.secret-key");
+        var url = Config.get("s3.credentials.url");
+        var region = Config.get("s3.credentials.region");
+        var keyId = Config.get("s3.credentials.access-key");
+        var secretKey = Config.get("s3.credentials.secret-key");
 
         return S3Client.builder()
                        .endpointOverride(URI.create(url))

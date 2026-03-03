@@ -98,7 +98,7 @@ class AccountService_S3Service__IT extends PostgresIntegrationTest {
         service.updateAvatar(updateAvatarRequest);
         Account updatedAccount = repository.findByLogin(login)
                                            .get();
-        String avatarUrl = Config.get("s3.url") + "/" + updatedAccount.avatarUrl();
+        String avatarUrl = Config.get("s3.credentials.url") + "/" + updatedAccount.avatarUrl();
         HttpRequest downloadRequest = HttpRequest.newBuilder(URI.create(avatarUrl))
                                                  .build();
         // act

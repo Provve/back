@@ -46,11 +46,13 @@ dependencies {
     implementation project(':scheduling')
     implementation project(':skill')
     implementation project(':validation')
+    implementation project(':s3')
 
     implementation libs.db.scheduler
     implementation libs.hibernate.validation
     implementation libs.expressly
-    implementation libs.amazon.s3
+    implementation libs.aws.s3
+    implementation libs.aws.crt
     implementation libs.bundles.vertx
     implementation libs.jackson.databind
     implementation libs.slf4j

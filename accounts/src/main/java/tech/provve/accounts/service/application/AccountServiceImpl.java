@@ -12,7 +12,6 @@ import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.accounts.service.PasswordHashingService;
-import tech.provve.accounts.service.S3Service;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.domain.value.AccountDowngraded;
@@ -20,6 +19,7 @@ import tech.provve.notification.domain.value.AccountUpgraded;
 import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
 import tech.provve.notification.service.NotificationSendingService;
+import terch.provve.libs.s3.S3Service;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -49,6 +49,7 @@ public class AccountServiceImpl implements AccountService {
     @External
     private final Vertx vertx;
 
+    @External
     private final S3Service s3Service;
 
     @Override
@@ -150,11 +151,13 @@ public class AccountServiceImpl implements AccountService {
                      avatarFile, ar -> {
                          if (ar.failed()) return;
 
+                         byte[] data = ar.result()
+                                         .getBytes();
                          String bucket = Config.get("s3.buckets.images");
-                         String avatarUrl = s3Service.uploadToS3(
+                         String avatarUrl = s3Service.upload(
                                  bucket,
-                                 ar.result()
-                                   .getBytes()
+                                 S3Service.defaultKeygen(data),
+                                 data
                          );
                          repository.updateAvatarUrl(login, avatarUrl);
                      }

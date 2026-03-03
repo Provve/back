@@ -6,6 +6,7 @@ import io.vertx.ext.auth.jwt.JWTAuth;
 import org.mockito.Mockito;
 import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.mailer.MailerBuilder;
+import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Factory
@@ -21,6 +22,21 @@ public class Stubs {
     @Bean
     public S3Client s3Client() {
         return new S3Client() {
+            @Override
+            public String serviceName() {
+                return "";
+            }
+
+            @Override
+            public void close() {
+
+            }
+        };
+    }
+
+    @Bean
+    public S3AsyncClient asyncClient() {
+        return new S3AsyncClient() {
             @Override
             public String serviceName() {
                 return "";

@@ -1,6 +1,8 @@
 package tech.provve.skill.service.application;
 
+import io.avaje.config.Config;
 import io.avaje.inject.External;
+import io.vertx.core.Vertx;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import tech.provve.skill.exception.VoteNotFound;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.SanitizingService;
+import terch.provve.libs.s3.S3Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -35,8 +38,6 @@ import static tech.provve.skill.service.SanitizingService.sanitize;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class VoteServiceImpl implements VoteService {
 
-    private static final String POSTGRES_DUPLICATE_ERROR_PART = "duplicate";
-
     private final VoteRepository voteRepository;
     private final SkillRepository skillRepository;
 
@@ -48,6 +49,12 @@ public class VoteServiceImpl implements VoteService {
 
     @External
     private final Scheduling scheduling;
+
+    @External
+    private final S3Service s3Service;
+
+    @External
+    private final Vertx vertx;
 
     @Override
     public void create(SkillAddVote skillAddVote) throws VoteAlreadyExists {
@@ -112,9 +119,13 @@ public class VoteServiceImpl implements VoteService {
         var author = jwsParsingService.parseAuth(examAddVote.getAuthToken(), JWT_SUBJECT);
         var deadline = deadlineSupplier.get();
 
-        // нужно обращаться к интерфейсу, чтобы в модуль skill не добавлять зависимость от vertx
-        // сохранить a & b
-        var materialUrl = s3.save(examAddVote.getMaterial()); // a
+        String publicArchiveName = examAddVote.getPublicArchive()
+                                              .uploadedFileName();
+        String privateArchiveName = examAddVote.getPrivateArchive()
+                                               .uploadedFileName();
+
+        uploadToS3(privateArchiveName, S3Service.privateArchiveKeygen(examAddVote.getName()));
+        uploadToS3(publicArchiveName, S3Service.publicArchiveKeygen(examAddVote.getName()));
 
         // запустить МС сохранения (PREPARED.entry =
         //        var exam = new Exam(examAddVote.getName(), examAddVote.getSkillName(), examAddVote.getDescription(), materialUrl);
@@ -135,21 +146,36 @@ public class VoteServiceImpl implements VoteService {
         // )
     }
 
+    void uploadToS3(String filename, String key) {
+        vertx.fileSystem()
+             .readFile(
+                     filename, ar -> {
+                         if (ar.failed()) return;
+
+                         byte[] data = ar.result()
+                                         .getBytes();
+                         String bucket = Config.get("s3.buckets.exams");
+                         String archiveUrl = s3Service.crtUpload(bucket, key, data);
+                         // pass to MS
+                     }
+             );
+    }
+
     @Override
     public void cast(String voteName, CastVoteRequest castVote) {
         var voter = jwsParsingService.parseAuth(castVote.getAuthToken(), JWT_SUBJECT);
         voteRepository.findByName(voteName)
                       .ifPresentOrElse(
                               vote -> {
-                                  if (voter.equals(vote.author())) {
-                                      throw new AuthorCannotVote();
-                                  }
-
                                   try {
+                                      if (voter.equals(vote.author())) {
+                                          throw new AuthorCannotVote();
+                                      }
+
                                       voteRepository.setReaction(voteName, voter, castVote.getPositiveReaction());
                                   } catch (IntegrityConstraintViolationException e) {
                                       if (e.getMessage()
-                                           .contains(POSTGRES_DUPLICATE_ERROR_PART)) {
+                                           .contains("duplicate")) {
                                           throw new CastAlreadyExists();
                                       }
                                   }

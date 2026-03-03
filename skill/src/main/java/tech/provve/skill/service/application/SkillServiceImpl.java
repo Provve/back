@@ -3,6 +3,7 @@ package tech.provve.skill.service.application;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Skill;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.repository.SkillRepository;
@@ -16,5 +17,10 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public void create(Vote fromVote) {
         skillRepository.save(new Skill(fromVote.name(), fromVote.tags()));
+    }
+
+    @Override
+    public void addExam(String toSkill, Exam exam) {
+
     }
 }

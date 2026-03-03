@@ -21,7 +21,9 @@ dependencies {
     implementation project(':accounts')
     implementation project(':notification')
     implementation project(':scheduling')
+    implementation project(':s3')
     implementation libs.jsoup
+    compileOnly libs.vertx.web
 
     testImplementation libs.local.s3.rest
     testImplementation libs.local.s3.jupiter

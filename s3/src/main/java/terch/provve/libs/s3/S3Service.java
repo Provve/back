@@ -1,10 +1,13 @@
-package tech.provve.accounts.service;
+package terch.provve.libs.s3;
 
+import com.uwyn.urlencoder.UrlEncoder;
 import io.avaje.inject.External;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.core.async.AsyncRequestBody;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.http.HttpStatusCode;
+import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import java.util.UUID;
@@ -14,11 +17,40 @@ public class S3Service {
 
     private static final String PERMANENT_URL_FORMAT = "%s/%s";
 
-    @External
+    /**
+     * Генерирует ключ приватного архива экзамена (проверяющей части)
+     *
+     * @param examName название самого экзамена
+     */
+    public static String privateArchiveKeygen(String examName) {
+        return "private/" +
+                UrlEncoder.encode(examName);
+    }
+
+    /**
+     * Генерирует ключ публичного архива экзамена (проверяемой части)
+     * <br> examName — название самого экзамена
+     */
+    public static String publicArchiveKeygen(String examName) {
+        return "public/" +
+                UrlEncoder.encode(examName);
+    }
+
+    /**
+     * Генерирует UUID из данных
+     */
+    public static String defaultKeygen(byte[] data) {
+        return UUID.nameUUIDFromBytes(data)
+                   .toString();
+    }
+
     private final S3Client s3Client;
 
-    public S3Service(S3Client client) {
+    private final S3AsyncClient s3AsyncClient;
+
+    public S3Service(@External S3Client client, @External S3AsyncClient asyncClient) {
         s3Client = client;
+        s3AsyncClient = asyncClient;
     }
 
     /**
@@ -48,12 +80,11 @@ public class S3Service {
     }
 
     /**
-     * Загружает объект в S3 и возвращает постоянную ссылку в формате "bucket/obj-key"
+     * Upload sync
+     *
+     * @return постоянная ссылка в формате "bucket/obj-key"
      */
-    public String uploadToS3(String bucket, byte[] bytes) {
-        var key = UUID.nameUUIDFromBytes(bytes)
-                      .toString();
-
+    public String upload(String bucket, String key, byte[] bytes) {
         s3Client.putObject(
                 b -> b.bucket(bucket)
                       .key(key), RequestBody.fromBytes(bytes)
@@ -61,8 +92,16 @@ public class S3Service {
         return PERMANENT_URL_FORMAT.formatted(bucket, key);
     }
 
-    public String uploadUsingCrt() {
-        //
-        return null;
+    /**
+     * Upload async using CRT
+     *
+     * @return постоянная ссылка в формате "bucket/obj-key"
+     */
+    public String crtUpload(String bucket, String key, byte[] bytes) {
+        s3AsyncClient.putObject(
+                b -> b.bucket(bucket)
+                      .key(key), AsyncRequestBody.fromBytes((bytes))
+        );
+        return PERMANENT_URL_FORMAT.formatted(bucket, key);
     }
 }

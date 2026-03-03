@@ -10,12 +10,12 @@ import io.avaje.inject.Factory;
 import jakarta.inject.Named;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.BucketCannedACL;
-import tech.provve.accounts.service.S3Service;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.application.SkillService;
 import tech.provve.skill.service.application.VoteService;
+import terch.provve.libs.s3.S3Service;
 
 import javax.sql.DataSource;
 import java.util.List;

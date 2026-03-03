@@ -20,9 +20,9 @@ repositories {
 dependencies {
     implementation project(':notification')
     implementation project(':scheduling')
+    implementation project(':s3')
 
     implementation libs.argon2
-    implementation libs.amazon.s3
     implementation libs.vertx.auth.jwt
     implementation libs.vertx.web
     implementation libs.bundles.jjwt

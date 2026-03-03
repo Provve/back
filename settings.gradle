@@ -7,3 +7,4 @@ include 'api',
         'skill',
         'accounts',
         'scheduling'
+include 's3'

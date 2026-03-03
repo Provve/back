@@ -875,14 +875,19 @@ components:
               type: string
               maxLength: 3000
               description: Финальная постановка задания для экзаменуемых
-            material:
+            public_archive:
               type: string
               format: binary
-              description: Архив проекта с учебным материалом
+              description: Проверяемая часть экзамена, задание
+            private_archive:
+              type: string
+              format: binary
+              description: Проверяющая часть экзамена
           required:
             - skill_name
             - description
-            - material
+            - public_archive
+            - private_archive
 
     Vote.response:
       description: Всеохватывающее представление голосования
@@ -913,27 +918,34 @@ components:
               description: Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие.
               example: '2025-12-31T23:59:59Z'
             exam_add:
-              description: Данные голосования на добавление экзамена (type = exam_add)
-              type: object
-              properties:
-                skill_name:
-                  type: string
-                  description: ID навыка, для проверки которого добавляют экзамен
-                description:
-                  type: string
-                  description: Финальная постановка задания для экзаменуемых
-                material:
-                  type: string
-                  format: binary
-                  description: Архив проекта с учебным материалом
-              required:
-                - skill_name
-                - description
-                - material
+              $ref: "#/components/schemas/ExamAddVote.response"
           required:
             - type
             - reactions
             - deadline
+
+    ExamAddVote.response:
+      type: object
+      properties:
+        skill_name:
+          type: string
+          description: ID навыка, для проверки которого добавляют экзамен
+        description:
+          type: string
+          description: Финальная постановка задания для экзаменуемых
+        public_archive_url:
+          type: string
+          format: binary
+          description: Проверяемая часть экзамена, задание
+        private_archive_url:
+          type: string
+          format: binary
+          description: Проверяющая часть экзамена
+      required:
+        - skill_name
+        - description
+        - public_archive_url
+        - private_archive_url
 
     Comment.response:
       type: object

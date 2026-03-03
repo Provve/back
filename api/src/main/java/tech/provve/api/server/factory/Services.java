@@ -10,6 +10,7 @@ import io.vertx.ext.auth.jwt.JWTAuth;
 import jakarta.inject.Named;
 import org.jooq.DSLContext;
 import org.simplejavamail.api.mailer.Mailer;
+import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.*;
@@ -29,6 +30,7 @@ import tech.provve.skill.service.application.SkillService;
 import tech.provve.skill.service.application.SkillServiceImpl;
 import tech.provve.skill.service.application.VoteService;
 import tech.provve.skill.service.application.VoteServiceImpl;
+import terch.provve.libs.s3.S3Service;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -52,8 +54,8 @@ public class Services {
     }
 
     @Bean
-    public VoteService voteService(VoteRepository voteRepository, SkillRepository skillRepository, JwsParsingService jwsParsingService, Supplier<LocalDateTime> deadlineSupplier, Scheduling scheduling) {
-        return new VoteServiceImpl(voteRepository, skillRepository, deadlineSupplier, jwsParsingService, scheduling);
+    public VoteService voteService(VoteRepository voteRepository, SkillRepository skillRepository, JwsParsingService jwsParsingService, Supplier<LocalDateTime> deadlineSupplier, Scheduling scheduling, S3Service s3Service, Vertx vertx) {
+        return new VoteServiceImpl(voteRepository, skillRepository, deadlineSupplier, jwsParsingService, scheduling, s3Service, vertx);
     }
 
     @Bean
@@ -62,8 +64,8 @@ public class Services {
     }
 
     @Bean
-    public S3Service s3Service(S3Client s3Client) {
-        return new S3Service(s3Client);
+    public S3Service s3Service(S3Client s3Client, S3AsyncClient s3AsyncClient) {
+        return new S3Service(s3Client, s3AsyncClient);
     }
 
     @Bean
