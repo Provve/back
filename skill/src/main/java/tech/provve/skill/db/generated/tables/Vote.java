@@ -4,39 +4,23 @@
 package tech.provve.skill.db.generated.tables;
 
 
+import org.jooq.*;
+import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
+import org.jooq.impl.TableImpl;
+import tech.provve.skill.db.generated.Domains;
+import tech.provve.skill.db.generated.Skill;
+import tech.provve.skill.db.generated.tables.records.VoteRecord;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.jooq.Check;
-import org.jooq.Condition;
-import org.jooq.Field;
-import org.jooq.Index;
-import org.jooq.Name;
-import org.jooq.OrderField;
-import org.jooq.PlainSQL;
-import org.jooq.QueryPart;
-import org.jooq.SQL;
-import org.jooq.Schema;
-import org.jooq.Select;
-import org.jooq.Stringly;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
-import org.jooq.UniqueKey;
-import org.jooq.impl.DSL;
-import org.jooq.impl.Internal;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
-
-import tech.provve.skill.db.generated.Domains;
-import tech.provve.skill.db.generated.Skill;
-import tech.provve.skill.db.generated.tables.records.VoteRecord;
-
 
 /**
- * Таблица голосований за навыки
+ * Общая форма голосования
  */
 @SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class Vote extends TableImpl<VoteRecord> {
@@ -82,13 +66,7 @@ public class Vote extends TableImpl<VoteRecord> {
     /**
      * The column <code>skill.vote.success</code>. Итог успешного голосования
      */
-    public final TableField<VoteRecord, Boolean> SUCCESS = createField(
-            DSL.name("success"),
-            SQLDataType.BOOLEAN.nullable(false)
-                               .defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)),
-            this,
-            "Итог успешного голосования"
-    );
+    public final TableField<VoteRecord, Boolean> SUCCESS = createField(DSL.name("success"), SQLDataType.BOOLEAN, this, "Итог успешного голосования");
 
     /**
      * The column <code>skill.vote.author</code>. Автор голосования
@@ -145,7 +123,7 @@ public class Vote extends TableImpl<VoteRecord> {
     }
 
     private Vote(Name alias, Table<VoteRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment("Таблица голосований за навыки"), TableOptions.table(), where);
+        super(alias, null, aliased, parameters, DSL.comment("Общая форма голосования"), TableOptions.table(), where);
     }
 
     /**

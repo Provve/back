@@ -7,7 +7,6 @@ package tech.provve.skill.db.generated;
 import org.jooq.Configuration;
 import org.jooq.Field;
 import org.jooq.Result;
-
 import tech.provve.skill.db.generated.tables.GetReactionsTotal;
 import tech.provve.skill.db.generated.tables.records.GetReactionsTotalRecord;
 

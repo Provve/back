@@ -6,7 +6,6 @@ buildscript {
 }
 
 plugins {
-    id 'java'
     alias(libs.plugins.flyway)
     alias(libs.plugins.jooq)
     id 'common-java'
@@ -18,4 +17,5 @@ repositories {
 }
 
 dependencies {
+    implementation project(':statemachine')
 }

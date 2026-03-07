@@ -38,7 +38,7 @@ public class SkillRepository {
            .execute();
     }
 
-    public Optional<Skill> findByName(String name) {
+    public Optional<Skill> find(String name) {
         return dsl.select()
                   .from(SKILL_)
                   .where(SKILL_.NAME.eq(name))

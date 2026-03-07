@@ -4,26 +4,14 @@
 package tech.provve.skill.db.generated.tables;
 
 
-import java.util.Collection;
-
-import org.jooq.Condition;
-import org.jooq.Field;
-import org.jooq.Name;
-import org.jooq.PlainSQL;
-import org.jooq.QueryPart;
-import org.jooq.SQL;
-import org.jooq.Schema;
-import org.jooq.Select;
-import org.jooq.Stringly;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-
 import tech.provve.skill.db.generated.Skill;
 import tech.provve.skill.db.generated.tables.records.ExamAddVoteRecord;
+
+import java.util.Collection;
 
 
 /**
@@ -48,14 +36,14 @@ public class ExamAddVote extends TableImpl<ExamAddVoteRecord> {
     }
 
     /**
-     * The column <code>skill.exam_add_vote.skill_name</code>. Связанный навык
-     */
-    public final TableField<ExamAddVoteRecord, String> SKILL_NAME = createField(DSL.name("skill_name"), SQLDataType.VARCHAR(100), this, "Связанный навык");
-
-    /**
      * The column <code>skill.exam_add_vote.vote_name</code>.
      */
     public final TableField<ExamAddVoteRecord, String> VOTE_NAME = createField(DSL.name("vote_name"), SQLDataType.VARCHAR(100), this, "");
+
+    /**
+     * The column <code>skill.exam_add_vote.skill_name</code>. Связанный навык
+     */
+    public final TableField<ExamAddVoteRecord, String> SKILL_NAME = createField(DSL.name("skill_name"), SQLDataType.VARCHAR(100), this, "Связанный навык");
 
     /**
      * The column <code>skill.exam_add_vote.description</code>. Финальная
@@ -63,20 +51,31 @@ public class ExamAddVote extends TableImpl<ExamAddVoteRecord> {
      */
     public final TableField<ExamAddVoteRecord, String> DESCRIPTION = createField(
             DSL.name("description"),
-            SQLDataType.CLOB,
+            SQLDataType.VARCHAR(3000),
             this,
             "Финальная постановка задания для экзаменуемых"
     );
 
     /**
-     * The column <code>skill.exam_add_vote.material_url</code>. Ссылка на
-     * учебный материал в S3
+     * The column <code>skill.exam_add_vote.private_archive_url</code>.
+     * Проверяющая часть экзамена
      */
-    public final TableField<ExamAddVoteRecord, String> MATERIAL_URL = createField(
-            DSL.name("material_url"),
+    public final TableField<ExamAddVoteRecord, String> PRIVATE_ARCHIVE_URL = createField(
+            DSL.name("private_archive_url"),
             SQLDataType.CLOB.nullable(false),
             this,
-            "Ссылка на учебный материал в S3"
+            "Проверяющая часть экзамена"
+    );
+
+    /**
+     * The column <code>skill.exam_add_vote.public_archive_url</code>.
+     * Проверяемая часть экзамена, задание
+     */
+    public final TableField<ExamAddVoteRecord, String> PUBLIC_ARCHIVE_URL = createField(
+            DSL.name("public_archive_url"),
+            SQLDataType.CLOB.nullable(false),
+            this,
+            "Проверяемая часть экзамена, задание"
     );
 
     private ExamAddVote(Name alias, Table<ExamAddVoteRecord> aliased) {

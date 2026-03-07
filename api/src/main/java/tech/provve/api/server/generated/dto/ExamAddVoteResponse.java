@@ -12,17 +12,15 @@ public class ExamAddVoteResponse {
     private String skillName;
     private String description;
     private FileUpload publicArchiveUrl;
-    private FileUpload privateArchiveUrl;
 
     public ExamAddVoteResponse() {
 
     }
 
-    public ExamAddVoteResponse(String skillName, String description, FileUpload publicArchiveUrl, FileUpload privateArchiveUrl) {
+    public ExamAddVoteResponse(String skillName, String description, FileUpload publicArchiveUrl) {
         this.skillName = skillName;
         this.description = description;
         this.publicArchiveUrl = publicArchiveUrl;
-        this.privateArchiveUrl = privateArchiveUrl;
     }
 
 
@@ -56,16 +54,6 @@ public class ExamAddVoteResponse {
     }
 
 
-    @JsonProperty("private_archive_url")
-    public FileUpload getPrivateArchiveUrl() {
-        return privateArchiveUrl;
-    }
-
-    public void setPrivateArchiveUrl(FileUpload privateArchiveUrl) {
-        this.privateArchiveUrl = privateArchiveUrl;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -77,13 +65,12 @@ public class ExamAddVoteResponse {
         ExamAddVoteResponse examAddVoteResponse = (ExamAddVoteResponse) o;
         return Objects.equals(skillName, examAddVoteResponse.skillName) &&
                 Objects.equals(description, examAddVoteResponse.description) &&
-                Objects.equals(publicArchiveUrl, examAddVoteResponse.publicArchiveUrl) &&
-                Objects.equals(privateArchiveUrl, examAddVoteResponse.privateArchiveUrl);
+                Objects.equals(publicArchiveUrl, examAddVoteResponse.publicArchiveUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(skillName, description, publicArchiveUrl, privateArchiveUrl);
+        return Objects.hash(skillName, description, publicArchiveUrl);
     }
 
     @Override
@@ -99,9 +86,6 @@ public class ExamAddVoteResponse {
           .append("\n");
         sb.append("    publicArchiveUrl: ")
           .append(toIndentedString(publicArchiveUrl))
-          .append("\n");
-        sb.append("    privateArchiveUrl: ")
-          .append(toIndentedString(privateArchiveUrl))
           .append("\n");
         sb.append("}");
         return sb.toString();

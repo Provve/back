@@ -937,15 +937,10 @@ components:
           type: string
           format: binary
           description: Проверяемая часть экзамена, задание
-        private_archive_url:
-          type: string
-          format: binary
-          description: Проверяющая часть экзамена
       required:
         - skill_name
         - description
         - public_archive_url
-        - private_archive_url
 
     Comment.response:
       type: object

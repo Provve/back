@@ -1,0 +1,23 @@
+buildscript {
+    dependencies {
+        classpath libs.jdbc.postgres
+        classpath libs.flyway.postgres
+    }
+}
+
+plugins {
+    alias(libs.plugins.flyway)
+    alias(libs.plugins.jooq)
+    id 'common-java'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation project(':s3')
+    implementation libs.zip4j
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}

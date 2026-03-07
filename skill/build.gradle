@@ -6,7 +6,6 @@ buildscript {
 }
 
 plugins {
-    id 'java'
     alias(libs.plugins.flyway)
     alias(libs.plugins.jooq)
     id 'common-java'
@@ -22,7 +21,10 @@ dependencies {
     implementation project(':notification')
     implementation project(':scheduling')
     implementation project(':s3')
+    implementation project(':statemachine')
+    implementation libs.zip4j
     implementation libs.jsoup
+    implementation libs.jackson.databind
     compileOnly libs.vertx.web
 
     testImplementation libs.local.s3.rest

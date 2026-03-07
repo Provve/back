@@ -10,10 +10,10 @@ import org.mockito.Mockito;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwsParsingServiceImpl;
 import tech.provve.accounts.service.JwtIssuingService;
-import tech.provve.accounts.service.S3Service;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.service.NotificationSendingService;
+import terch.provve.libs.s3.S3Service;
 
 import java.sql.*;
 import java.time.LocalDateTime;

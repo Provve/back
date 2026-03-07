@@ -47,6 +47,7 @@ dependencies {
     implementation project(':skill')
     implementation project(':validation')
     implementation project(':s3')
+    implementation project(':statemachine')
 
     implementation libs.db.scheduler
     implementation libs.hibernate.validation

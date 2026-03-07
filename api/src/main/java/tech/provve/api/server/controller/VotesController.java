@@ -17,6 +17,7 @@ import tech.provve.skill.exception.CastAlreadyExists;
 import tech.provve.skill.exception.VoteAlreadyExists;
 import tech.provve.skill.exception.VoteNotFound;
 import tech.provve.skill.service.application.VoteService;
+import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class VotesController implements VotesApi {
             return Future.succeededFuture(new ApiResponse<>(202));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
-        } catch (VoteAlreadyExists e) {
+        } catch (VoteAlreadyExists | StatemachineAlreadyExists e) {
             return Future.failedFuture(new HttpException(e, 409));
         }
     }

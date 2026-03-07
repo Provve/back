@@ -5,7 +5,6 @@ package tech.provve.skill.db.generated.tables.records;
 
 
 import org.jooq.impl.TableRecordImpl;
-
 import tech.provve.skill.db.generated.tables.GetReactionsTotal;
 
 
@@ -20,7 +19,7 @@ public class GetReactionsTotalRecord extends TableRecordImpl<GetReactionsTotalRe
     /**
      * Setter for <code>skill.get_reactions_total.total_positive</code>.
      */
-    public GetReactionsTotalRecord setTotalPositive(Long value) {
+    public GetReactionsTotalRecord setTotalPositive(Integer value) {
         set(0, value);
         return this;
     }
@@ -28,14 +27,14 @@ public class GetReactionsTotalRecord extends TableRecordImpl<GetReactionsTotalRe
     /**
      * Getter for <code>skill.get_reactions_total.total_positive</code>.
      */
-    public Long getTotalPositive() {
-        return (Long) get(0);
+    public Integer getTotalPositive() {
+        return (Integer) get(0);
     }
 
     /**
      * Setter for <code>skill.get_reactions_total.total_negative</code>.
      */
-    public GetReactionsTotalRecord setTotalNegative(Long value) {
+    public GetReactionsTotalRecord setTotalNegative(Integer value) {
         set(1, value);
         return this;
     }
@@ -43,8 +42,8 @@ public class GetReactionsTotalRecord extends TableRecordImpl<GetReactionsTotalRe
     /**
      * Getter for <code>skill.get_reactions_total.total_negative</code>.
      */
-    public Long getTotalNegative() {
-        return (Long) get(1);
+    public Integer getTotalNegative() {
+        return (Integer) get(1);
     }
 
     // -------------------------------------------------------------------------
@@ -61,7 +60,7 @@ public class GetReactionsTotalRecord extends TableRecordImpl<GetReactionsTotalRe
     /**
      * Create a detached, initialised GetReactionsTotalRecord
      */
-    public GetReactionsTotalRecord(Long totalPositive, Long totalNegative) {
+    public GetReactionsTotalRecord(Integer totalPositive, Integer totalNegative) {
         super(GetReactionsTotal.GET_REACTIONS_TOTAL);
 
         setTotalPositive(totalPositive);

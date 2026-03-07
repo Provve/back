@@ -6,5 +6,6 @@ include 'api',
         'payment',
         'skill',
         'accounts',
-        'scheduling'
-include 's3'
+        'scheduling',
+        's3',
+        'statemachine'
