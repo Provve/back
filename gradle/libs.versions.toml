@@ -24,6 +24,7 @@ vertx-web-open-api = { module = 'io.vertx:vertx-web-openapi', version.ref = 'ver
 vertx-junit = { module = 'io.vertx:vertx-junit5', version.ref = 'vertx' }
 
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind', version = '2.20.1' }
+jackson-time = { module = 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310', version = '2.21.1' }
 lombok = { group = 'org.projectlombok', name = 'lombok', version = '1.18.42' }
 slf4j = { group = 'org.slf4j', name = 'slf4j-api', version = '2.1.0-alpha1' }
 simple-mail = { module = 'org.simplejavamail:simple-java-mail', version.ref = 'simple-java-mail' }
@@ -88,6 +89,10 @@ jjwt = [
     'jjwt-api',
     'jjwt-impl',
     'jjwt-jackson'
+]
+jackson = [
+    'jackson-databind',
+    'jackson-time'
 ]
 
 

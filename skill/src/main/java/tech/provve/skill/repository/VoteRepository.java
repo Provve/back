@@ -68,11 +68,11 @@ public class VoteRepository {
            .set(VoteMapper.INSTANCE.map(vote))
            .execute();
 
-        if (ADD_EXAM.equals(vote.type())) {
+        if (ADD_EXAM.equals(vote.getType())) {
             dsl.insertInto(EXAM_ADD_VOTE)
                .set(VoteMapper.INSTANCE.map(
-                       Objects.requireNonNull(vote.exam()),
-                       vote.name()
+                       Objects.requireNonNull(vote.getExam()),
+                       vote.getName()
                ))
                .execute();
         }

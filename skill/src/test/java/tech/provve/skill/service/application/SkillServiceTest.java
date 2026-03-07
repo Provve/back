@@ -27,24 +27,22 @@ class SkillServiceTest {
         // arrange
         var name = "v";
         var tags = List.of("x", "y");
-        var vote = new Vote(
-                name,
-                true,
-                false,
-                "",
-                LocalDateTime.now(),
-                "",
-                Vote.Type.ADD_SKILL,
-                tags,
-                null,
-                null
-        );
+        var vote = Vote.builder()
+                       .name(name)
+                       .active(true)
+                       .success(false)
+                       .author("")
+                       .deadline(LocalDateTime.now())
+                       .arguments("")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(tags)
+                       .build();
 
         // act
         skillService.create(vote);
 
         // assert
-        verify(skillRepository).save(new Skill(vote.name(), vote.tags()));
+        verify(skillRepository).save(new Skill(vote.getName(), vote.getTags()));
     }
 
 }

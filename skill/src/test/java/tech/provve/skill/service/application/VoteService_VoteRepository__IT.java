@@ -77,25 +77,23 @@ public class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
         var author = "r";
         accountRepository.save(new Account(author, "", "", false, "", "", "", false));
 
-        var vote = new Vote(
-                "v",
-                true,
-                false,
-                author,
-                LocalDateTime.now(),
-                "",
-                Vote.Type.ADD_SKILL,
-                emptyList(),
-                null,
-                null
-        );
+        var vote = Vote.builder()
+                       .name("v")
+                       .active(true)
+                       .success(false)
+                       .author(author)
+                       .deadline(LocalDateTime.now())
+                       .arguments("")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(emptyList())
+                       .build();
         voteRepository.save(vote);
 
         when(jwsParsingService.parseAuth(any(), eq("sub"))).thenReturn(author);
 
         // act assert
         assertThatThrownBy(() -> {
-            voteService.cast(vote.name(), new CastVoteRequest(true, ""));
+            voteService.cast(vote.getName(), new CastVoteRequest(true, ""));
         }).isExactlyInstanceOf(AuthorCannotVote.class);
     }
 
@@ -108,26 +106,24 @@ public class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
         var notAuthor = "r";
         accountRepository.save(new Account(notAuthor, "", "", false, "", "", "", false));
 
-        var vote = new Vote(
-                "v",
-                true,
-                false,
-                author,
-                LocalDateTime.now(),
-                "",
-                Vote.Type.ADD_SKILL,
-                emptyList(),
-                null,
-                null
-        );
+        var vote = Vote.builder()
+                       .name("v")
+                       .active(true)
+                       .success(false)
+                       .author(author)
+                       .deadline(LocalDateTime.now())
+                       .arguments("")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(emptyList())
+                       .build();
         voteRepository.save(vote);
 
         when(jwsParsingService.parseAuth(any(), eq("sub"))).thenReturn(notAuthor);
 
         // act assert
         assertThatThrownBy(() -> {
-            voteService.cast(vote.name(), new CastVoteRequest(true, ""));
-            voteService.cast(vote.name(), new CastVoteRequest(true, ""));
+            voteService.cast(vote.getName(), new CastVoteRequest(true, ""));
+            voteService.cast(vote.getName(), new CastVoteRequest(true, ""));
         }).isExactlyInstanceOf(CastAlreadyExists.class);
     }
 
@@ -140,29 +136,27 @@ public class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
         var notAuthor = "r";
         accountRepository.save(new Account(notAuthor, "", "", false, "", "", "", false));
 
-        var vote = new Vote(
-                "v",
-                true,
-                false,
-                author,
-                LocalDateTime.now(),
-                "",
-                Vote.Type.ADD_SKILL,
-                emptyList(),
-                null,
-                null
-        );
+        var vote = Vote.builder()
+                       .name("v")
+                       .active(true)
+                       .success(false)
+                       .author(author)
+                       .deadline(LocalDateTime.now())
+                       .arguments("")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(emptyList())
+                       .build();
         voteRepository.save(vote);
 
         when(jwsParsingService.parseAuth(any(), eq("sub"))).thenReturn(notAuthor);
 
         // act
-        voteService.cast(vote.name(), new CastVoteRequest(true, ""));
+        voteService.cast(vote.getName(), new CastVoteRequest(true, ""));
 
         // assert
-        assertThat(voteRepository.findByName(vote.name())
+        assertThat(voteRepository.findByName(vote.getName())
                                  .get()
-                                 .reactions()
+                                 .getReactions()
                                  .positive()).isEqualTo(1);
     }
 

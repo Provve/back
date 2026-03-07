@@ -13,8 +13,7 @@ public interface VoteMapper {
 
     VoteMapper INSTANCE = Mappers.getMapper(VoteMapper.class);
 
-    @Mapping(target = "type", expression = "java((short) from.type().getCode())")
-        //todo warning: Unmapped target properties: "name, active, success, author, deadline, arguments, tags".
+    @Mapping(target = "type", expression = "java((short) from.getType().getCode())")
     VoteRecord map(Vote from);
 
     ExamAddVoteRecord map(Exam from, String voteName);

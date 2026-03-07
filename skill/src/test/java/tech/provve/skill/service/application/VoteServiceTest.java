@@ -41,18 +41,17 @@ public class VoteServiceTest {
             """)
     void end_morePositiveReactions_successTrue(int positive, int negaitve) {
         // arrange
-        var vote = new Vote(
-                "v",
-                true,
-                false,
-                "",
-                LocalDateTime.now(),
-                "",
-                Vote.Type.ADD_SKILL,
-                emptyList(),
-                null,
-                new VoteReactions(positive, negaitve)
-        );
+        var vote = Vote.builder()
+                       .name("v")
+                       .active(true)
+                       .success(false)
+                       .author("")
+                       .deadline(LocalDateTime.now())
+                       .arguments("")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(emptyList())
+                       .reactions(new VoteReactions(positive, negaitve))
+                       .build();
         when(voteRepository.findByName(anyString())).thenReturn(Optional.of(vote));
 
         // act
@@ -70,18 +69,17 @@ public class VoteServiceTest {
             """)
     void end_moreNegativeReactions_successFalse(int positive, int negaitve) {
         // arrange
-        var vote = new Vote(
-                "v",
-                true,
-                false,
-                "",
-                LocalDateTime.now(),
-                "",
-                Vote.Type.ADD_SKILL,
-                emptyList(),
-                null,
-                new VoteReactions(positive, negaitve)
-        );
+        var vote = Vote.builder()
+                       .name("v")
+                       .active(true)
+                       .success(false)
+                       .author("")
+                       .deadline(LocalDateTime.now())
+                       .arguments("")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(emptyList())
+                       .reactions(new VoteReactions(positive, negaitve))
+                       .build();
         when(voteRepository.findByName(anyString())).thenReturn(Optional.of(vote));
 
         // act

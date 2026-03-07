@@ -65,14 +65,21 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         accountRepository.save(new Account(author_login, "a", "1", true, "q", null, null, false));
 
         // act
-        voteRepository.save(new Vote(
-                author_login, true, false, author_login, LocalDateTime.now(), "xyz!", Vote.Type.ADD_SKILL, List.of("1"), null, null
-        ));
+        voteRepository.save(Vote.builder()
+                                .name(author_login)
+                                .active(true)
+                                .success(false)
+                                .author(author_login)
+                                .deadline(LocalDateTime.now())
+                                .arguments("xyz!")
+                                .type(Vote.Type.ADD_SKILL)
+                                .tags(List.of("1"))
+                                .build());
 
         // assert
         var savedVote = voteRepository.findByName(author_login)
                                       .get();
-        assertThat(savedVote.name()).isEqualTo(author_login);
+        assertThat(savedVote.getName()).isEqualTo(author_login);
     }
 
     @Test
@@ -85,23 +92,22 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         var description = "d";
 
         // act
-        voteRepository.save(new Vote(
-                author_login,
-                true,
-                false,
-                author_login,
-                LocalDateTime.now(),
-                "xyz!",
-                ADD_EXAM,
-                List.of("1"),
-                new Exam("b", "a", description, ""),
-                null
-        ));
+        voteRepository.save(Vote.builder()
+                                .name(author_login)
+                                .active(true)
+                                .success(false)
+                                .author(author_login)
+                                .deadline(LocalDateTime.now())
+                                .arguments("xyz!")
+                                .type(Vote.Type.ADD_EXAM)
+                                .tags(List.of("1"))
+                                .exam(new Exam("b", "a", description, "", ""))
+                                .build());
 
         // assert
         var savedVote = voteRepository.findByName(author_login)
                                       .get();
-        assertThat(savedVote.exam()
+        assertThat(savedVote.getExam()
                             .description()).isEqualTo(description);
     }
 
@@ -112,32 +118,31 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         accountRepository.save(new Account(author_login, "a", "1", true, "q", null, null, false));
         skillRepository.save(new Skill(author_login, List.of("a")));
 
-        var examAddvote = new Exam("b", "a", "d", "");
+        var examAddvote = new Exam("b", "a", "d", "", "");
         var now = LocalDateTime.now();
         var votes = List.of(
-                new Vote(
-                        "a",
-                        true,
-                        false,
-                        "a",
-                        now,
-                        "xyz!",
-                        ADD_EXAM,
-                        List.of("1"),
-                        examAddvote,
-                        null
-                ), new Vote(
-                        "b",
-                        true,
-                        false,
-                        "a",
-                        now,
-                        "xyz!",
-                        DELETE_SKILL,
-                        List.of("1"),
-                        examAddvote,
-                        null
-                )
+                Vote.builder()
+                    .name("a")
+                    .active(true)
+                    .success(false)
+                    .author("a")
+                    .deadline(now)
+                    .arguments("xyz!")
+                    .type(Vote.Type.ADD_EXAM)
+                    .tags(List.of("1"))
+                    .exam(examAddvote)
+                    .build(),
+                Vote.builder()
+                    .name("b")
+                    .active(true)
+                    .success(false)
+                    .author("a")
+                    .deadline(now)
+                    .arguments("xyz!")
+                    .type(Vote.Type.DELETE_SKILL)
+                    .tags(List.of("1"))
+                    .exam(examAddvote)
+                    .build()
         );
 
         // act
@@ -146,8 +151,8 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         // assert
         var savedVotes = voteRepository.getAll();
         assertThat(savedVotes).satisfiesExactly(
-                vote -> ADD_EXAM.equals(vote.type()),
-                vote -> DELETE_SKILL.equals(vote.type())
+                vote -> ADD_EXAM.equals(vote.getType()),
+                vote -> DELETE_SKILL.equals(vote.getType())
         );
     }
 

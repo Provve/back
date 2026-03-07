@@ -58,7 +58,7 @@ public class StatemachineFactory {
                                        .deadline(deadline)
                                        .build();
                 voteRepository.save(vote);
-                scheduling.addExam(vote.name(), deadline.toInstant(ZoneOffset.UTC));
+                scheduling.addExam(vote.getName(), deadline.toInstant(ZoneOffset.UTC));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException("Couldn't create Vote from given json:" + e);
             }

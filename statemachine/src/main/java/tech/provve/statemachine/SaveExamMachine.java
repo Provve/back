@@ -32,7 +32,6 @@ import static tech.provve.statemachine.service.SecretGenerator.generateSecret;
 /**
  * МС для сохранения приватного архива экзамена
  */
-//@Singleton
 public class SaveExamMachine extends StateMachine<SaveExamState, SaveExamEvent> {
 
     public static final String VALIDATION_ERROR_NOTIFICATION_SENDER = "1";

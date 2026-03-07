@@ -1,10 +1,10 @@
 package tech.provve.skill.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import lombok.experimental.Accessors;
 import org.jspecify.annotations.Nullable;
 import tech.provve.skill.domain.value.VoteReactions;
 
@@ -23,7 +23,6 @@ import java.util.List;
  * </ol>
  */
 @Getter
-@Accessors(fluent = true)
 @Builder(toBuilder = true)
 public class Vote {
 
@@ -52,6 +51,7 @@ public class Vote {
     /**
      * Конечный срок, когда голосование закроется, будет подсчитан результат и совершено действие.
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime deadline;
 
     /**

@@ -24,7 +24,7 @@ dependencies {
     implementation project(':statemachine')
     implementation libs.zip4j
     implementation libs.jsoup
-    implementation libs.jackson.databind
+    implementation libs.bundles.jackson
     compileOnly libs.vertx.web
 
     testImplementation libs.local.s3.rest

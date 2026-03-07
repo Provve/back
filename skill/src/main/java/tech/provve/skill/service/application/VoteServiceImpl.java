@@ -44,7 +44,9 @@ public class VoteServiceImpl implements VoteService {
 
     private final VoteRepository voteRepository;
     private final SkillRepository skillRepository;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @External
+    private final ObjectMapper objectMapper;
 
     @External
     private final Supplier<LocalDateTime> deadlineSupplier;
@@ -87,7 +89,7 @@ public class VoteServiceImpl implements VoteService {
                                          .toList())
                        .build();
         voteRepository.save(vote);
-        scheduling.addSkill(vote.name(), deadline.toInstant(ZoneOffset.UTC));
+        scheduling.addSkill(vote.getName(), deadline.toInstant(ZoneOffset.UTC));
     }
 
     @Override
@@ -113,7 +115,7 @@ public class VoteServiceImpl implements VoteService {
                                          .toList())
                        .build();
         voteRepository.save(vote);
-        scheduling.delSkill(vote.name(), deadline.toInstant(ZoneOffset.UTC));
+        scheduling.delSkill(vote.getName(), deadline.toInstant(ZoneOffset.UTC));
     }
 
     @Override
@@ -125,9 +127,9 @@ public class VoteServiceImpl implements VoteService {
                       });
 
         String publicArchive = examAddVote.getPublicArchive()
-                                              .uploadedFileName();
+                                          .uploadedFileName();
         String privateArchive = examAddVote.getPrivateArchive()
-                                               .uploadedFileName();
+                                           .uploadedFileName();
 
         String bucket = Config.get("s3.buckets.exams");
         String privateArchiveUrl = s3Service.crtUpload(
@@ -165,7 +167,7 @@ public class VoteServiceImpl implements VoteService {
                       .ifPresentOrElse(
                               vote -> {
                                   try {
-                                      if (voter.equals(vote.author())) {
+                                      if (voter.equals(vote.getAuthor())) {
                                           throw new AuthorCannotVote();
                                       }
 
@@ -190,9 +192,9 @@ public class VoteServiceImpl implements VoteService {
         if (optionalVote.isEmpty()) return false;
 
         var vote = optionalVote.get();
-        int positiveRelation = vote.reactions()
-                                   .positive() / (0 == vote.reactions()
-                                                           .negative() ? 1 : vote.reactions()
+        int positiveRelation = vote.getReactions()
+                                   .positive() / (0 == vote.getReactions()
+                                                           .negative() ? 1 : vote.getReactions()
                                                                                  .negative());
         if (positiveRelation >= 1) {
             voteRepository.updateSuccess(voteName, true);

@@ -55,7 +55,7 @@ dependencies {
     implementation libs.aws.s3
     implementation libs.aws.crt
     implementation libs.bundles.vertx
-    implementation libs.jackson.databind
+    implementation libs.bundles.jackson
     implementation libs.slf4j
     compileOnly libs.simple.mail
     compileOnly libs.jooq
