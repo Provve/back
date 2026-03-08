@@ -11,6 +11,7 @@ import jakarta.inject.Named;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.BucketCannedACL;
 import tech.provve.accounts.service.application.AccountService;
+import tech.provve.skill.repository.ExamRepository;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.application.SkillService;
@@ -23,6 +24,9 @@ import java.util.List;
 import static java.time.Duration.ofMinutes;
 import static tech.provve.libs.scheduling.Descriptors.*;
 
+/**
+ * ID каждой таски = vote name
+ */
 @Factory
 public class Scheduling {
 
@@ -81,10 +85,15 @@ public class Scheduling {
 
     @Bean
     @Named("5")
-    public OneTimeTask<Void> addExamAfterVote(VoteService voteService) {
+    @SuppressWarnings("all")
+    public OneTimeTask<Void> addExamAfterVote(VoteService voteService, VoteRepository voteRepository, ExamRepository examRepository) {
         return Tasks.oneTime(ADD_EXAM_AFTER_VOTE)
                     .execute((task, _) -> {
                         boolean success = voteService.end(task.getId());
+                        if (success) {
+                            voteRepository.findByName(task.getId())
+                                          .ifPresent(vote -> examRepository.save(vote.getExam()));
+                        }
                     });
     }
 

@@ -15,12 +15,8 @@ import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Skill;
 import tech.provve.skill.domain.entity.Vote;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static tech.provve.skill.domain.entity.Vote.Type.ADD_EXAM;
@@ -32,18 +28,6 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
     @Setup
     void set(BeanScopeBuilder b) {
         b.bean(DSLContext.class, DSL.using(connection(), SQLDialect.POSTGRES));
-    }
-
-    Connection connection() {
-        Properties props = new Properties();
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "1");
-
-        try {
-            return DriverManager.getConnection(postgres.getJdbcUrl(), props);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Inject
@@ -85,10 +69,11 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
     @Test
     void save_type_examAddVode_saved() {
         // arrange
-        var author_login = "a";
+        var author_login = "aa";
         accountRepository.save(new Account(author_login, "a", "1", true, "q", null, null, false));
 
-        skillRepository.save(new Skill(author_login, List.of("a")));
+        var skill = new Skill("a", List.of("a"));
+        skillRepository.save(skill);
         var description = "d";
 
         // act
@@ -101,7 +86,7 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
                                 .arguments("xyz!")
                                 .type(Vote.Type.ADD_EXAM)
                                 .tags(List.of("1"))
-                                .exam(new Exam("b", "a", description, "", ""))
+                                .exam(new Exam("b", skill.name(), description, "", ""))
                                 .build());
 
         // assert
@@ -114,7 +99,7 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
     @Test
     void findAll_differentVotesPresented_returnedAllVotes() {
         // arrange
-        var author_login = "a";
+        var author_login = "aaa";
         accountRepository.save(new Account(author_login, "a", "1", true, "q", null, null, false));
         skillRepository.save(new Skill(author_login, List.of("a")));
 
@@ -122,7 +107,7 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         var now = LocalDateTime.now();
         var votes = List.of(
                 Vote.builder()
-                    .name("a")
+                    .name("8734")
                     .active(true)
                     .success(false)
                     .author("a")
@@ -150,10 +135,9 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
 
         // assert
         var savedVotes = voteRepository.getAll();
-        assertThat(savedVotes).satisfiesExactly(
-                vote -> ADD_EXAM.equals(vote.getType()),
-                vote -> DELETE_SKILL.equals(vote.getType())
-        );
+        assertThat(savedVotes).extracting(Vote::getType)
+                              .anyMatch(ADD_EXAM::equals)
+                              .anyMatch(DELETE_SKILL::equals);
     }
 
 }

@@ -1,8 +1,10 @@
 package tech.provve.skill;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.avaje.inject.Bean;
 import io.avaje.inject.Factory;
 import io.avaje.inject.test.TestScope;
+import io.vertx.core.Vertx;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -25,6 +27,16 @@ import java.util.function.Supplier;
 @Factory
 @TestScope
 public class Stubs {
+
+    @Bean
+    public Vertx vertx() {
+        return Mockito.mock(Vertx.class);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 
     @Bean
     public Supplier<LocalDateTime> deadline() {

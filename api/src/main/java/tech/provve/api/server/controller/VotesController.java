@@ -12,10 +12,7 @@ import tech.provve.api.server.generated.dto.*;
 import tech.provve.api.server.mapper.ValidationDtoMapper;
 import tech.provve.api.server.service.DtoValidatingService;
 import tech.provve.api.server.validation.dto.CastVote;
-import tech.provve.skill.exception.AuthorCannotVote;
-import tech.provve.skill.exception.CastAlreadyExists;
-import tech.provve.skill.exception.VoteAlreadyExists;
-import tech.provve.skill.exception.VoteNotFound;
+import tech.provve.skill.exception.*;
 import tech.provve.skill.service.application.VoteService;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 
@@ -58,6 +55,8 @@ public class VotesController implements VotesApi {
             return Future.succeededFuture(new ApiResponse<>(202));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
+        } catch (SkillNotFound e) {
+            return Future.failedFuture(new HttpException(e, 404));
         } catch (VoteAlreadyExists | StatemachineAlreadyExists e) {
             return Future.failedFuture(new HttpException(e, 409));
         }

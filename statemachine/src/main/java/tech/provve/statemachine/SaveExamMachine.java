@@ -39,21 +39,22 @@ public class SaveExamMachine extends StateMachine<SaveExamState, SaveExamEvent> 
     public static final String DELAYED_EXAM_VOTE_CREATOR = "3";
 
     private final Consumer<String> delayedExamVoteCreator;
-
-    @Named(VALIDATION_ERROR_NOTIFICATION_SENDER)
     private final BiConsumer<String, String> validationErrorNotificationSender;
-
-    @Named(EXAM_SAVED_NOTIFICATION_SENDER)
     private final BiConsumer<String, String> examSavedNotificationSender;
     private final PrivateArchiveSpecification privateArchiveSpecification;
     private final SaveExamRepository repository;
     private final S3Service s3Service;
 
-    public SaveExamMachine(Consumer<String> delayedExamVoteCreator, BiConsumer<String, String> validationErrorNotificationSender1, BiConsumer<String, String> examSavedNotificationSender1, PrivateArchiveSpecification privateArchiveSpecification, SaveExamRepository repository, S3Service s3Service) {
+    public SaveExamMachine(@Named(DELAYED_EXAM_VOTE_CREATOR) Consumer<String> delayedExamVoteCreator,
+                           @Named(VALIDATION_ERROR_NOTIFICATION_SENDER) BiConsumer<String, String> validationErrorNotificationSender,
+                           @Named(EXAM_SAVED_NOTIFICATION_SENDER) BiConsumer<String, String> examSavedNotificationSender,
+                           PrivateArchiveSpecification privateArchiveSpecification,
+                           SaveExamRepository repository,
+                           S3Service s3Service) {
         super(SaveExamState.class, Match.BY_EQUALITY);
         this.delayedExamVoteCreator = delayedExamVoteCreator;
-        this.validationErrorNotificationSender = validationErrorNotificationSender1;
-        this.examSavedNotificationSender = examSavedNotificationSender1;
+        this.validationErrorNotificationSender = validationErrorNotificationSender;
+        this.examSavedNotificationSender = examSavedNotificationSender;
         this.privateArchiveSpecification = privateArchiveSpecification;
         this.repository = repository;
         this.s3Service = s3Service;
@@ -84,12 +85,6 @@ public class SaveExamMachine extends StateMachine<SaveExamState, SaveExamEvent> 
                     .state(PREPARED)
                         .onEntry(() -> {
                             delayedExamVoteCreator.accept(delayedVoteJson);
-
-                        /*
-                        Сохранил json с голосованием в таблицу, извлекаю её и создаю голосование через delayedExamVoteCreator.
-                        Проблемы нет.
-                         */
-
                             examSavedNotificationSender.accept(name, author);
                             repository.updateState(name, getState());
                         })

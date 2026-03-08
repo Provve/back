@@ -20,11 +20,7 @@ import tech.provve.skill.exception.CastAlreadyExists;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Properties;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,18 +35,6 @@ public class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
     @Setup
     void set(BeanScopeBuilder b) {
         b.bean(DSLContext.class, DSL.using(connection(), SQLDialect.POSTGRES));
-    }
-
-    Connection connection() {
-        Properties props = new Properties();
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "1");
-
-        try {
-            return DriverManager.getConnection(postgres.getJdbcUrl(), props);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Mock(stubOnly = true)

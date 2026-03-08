@@ -27,6 +27,7 @@ dependencies {
     implementation libs.bundles.jackson
     compileOnly libs.vertx.web
 
+    testImplementation libs.vertx.web
     testImplementation libs.local.s3.rest
     testImplementation libs.local.s3.jupiter
 }

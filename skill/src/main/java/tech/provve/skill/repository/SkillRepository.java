@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jspecify.annotations.NullMarked;
 import tech.provve.skill.db.generated.tables.records.SkillRecord;
 import tech.provve.skill.domain.entity.Skill;
@@ -13,6 +15,7 @@ import tech.provve.skill.domain.entity.Skill;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Boolean.TRUE;
 import static tech.provve.skill.db.generated.tables.Skill.SKILL_;
 
 @NullMarked
@@ -43,6 +46,14 @@ public class SkillRepository {
                   .from(SKILL_)
                   .where(SKILL_.NAME.eq(name))
                   .fetchOptional(outputMapper);
+    }
+
+    public boolean exists(String name) {
+        var trueField = DSL.field("true", SQLDataType.BOOLEAN);
+        return TRUE.equals(dsl.select()
+                              .from(SKILL_)
+                              .where(SKILL_.NAME.eq(name))
+                              .fetchOne(set -> set.get(trueField)));
     }
 
     @SuppressWarnings("all")

@@ -17,10 +17,7 @@ import tech.provve.api.server.generated.dto.SkillDelVote;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
-import tech.provve.skill.exception.AuthorCannotVote;
-import tech.provve.skill.exception.CastAlreadyExists;
-import tech.provve.skill.exception.VoteAlreadyExists;
-import tech.provve.skill.exception.VoteNotFound;
+import tech.provve.skill.exception.*;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.XssSanitizer;
@@ -125,6 +122,9 @@ public class VoteServiceImpl implements VoteService {
                       .ifPresent(_ -> {
                           throw new VoteAlreadyExists(examAddVote.getName());
                       });
+        if (!skillRepository.exists(examAddVote.getSkillName())) {
+            throw new SkillNotFound(examAddVote.getSkillName());
+        }
 
         String publicArchive = examAddVote.getPublicArchive()
                                           .uploadedFileName();

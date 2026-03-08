@@ -541,6 +541,8 @@ paths:
           $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
+        '404':
+          description: Связанный навык не найден
         '409':
           $ref: "#/components/responses/DataNotUnique"
       security:
