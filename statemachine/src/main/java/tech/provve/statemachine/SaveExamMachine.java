@@ -20,14 +20,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.zip.ZipInputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static tech.provve.statemachine.domain.value.PrivateArchive.INJECT_SECRET_FILE;
 import static tech.provve.statemachine.domain.value.PrivateArchive.INJECT_SECRET_PLACEHOLDER;
 import static tech.provve.statemachine.domain.value.SaveExamEvent.INVALIDATE;
 import static tech.provve.statemachine.domain.value.SaveExamEvent.PREPARE;
 import static tech.provve.statemachine.domain.value.SaveExamState.*;
 import static tech.provve.statemachine.service.SecretGenerator.bytesToHex;
 import static tech.provve.statemachine.service.SecretGenerator.generateSecret;
+import static tech.provve.statemachine.service.ZipManipulator.extractFromZip;
 
 /**
  * МС для сохранения приватного архива экзамена
@@ -117,10 +120,10 @@ public class SaveExamMachine extends StateMachine<SaveExamState, SaveExamEvent> 
 
         try (ZipFile zipFile = new ZipFile(tempArchive.toString())) {
             String secret = bytesToHex(generateSecret(16));
-            replacePlaceholderInDockerfile(zipFile, secret);
+            replacePlaceholderInDockerfile(zipFile, privateArchiveData, secret);
 
             ZipParameters params = new ZipParameters();
-            params.setFileNameInZip("secret");
+            params.setFileNameInZip(INJECT_SECRET_FILE);
             zipFile.addStream(new ByteArrayInputStream(secret.getBytes(UTF_8)), params);
 
             return Files.readAllBytes(tempArchive);
@@ -129,25 +132,26 @@ public class SaveExamMachine extends StateMachine<SaveExamState, SaveExamEvent> 
         }
     }
 
-    private void replacePlaceholderInDockerfile(ZipFile zipFile, String replacement) throws IOException {
+    private void replacePlaceholderInDockerfile(ZipFile zipFile, byte[] data, String replacement) throws IOException {
         var dockerFile = "Dockerfile";
         var dockerFileHeader = new FileHeader();
         dockerFileHeader.setFileName(dockerFile);
 
         try (
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(zipFile.getInputStream(dockerFileHeader))
-                );
-                ByteArrayOutputStream writer = new ByteArrayOutputStream()
+                var zipInputStream = new ZipInputStream(new ByteArrayInputStream(data));
+                var reader = new BufferedReader(
+                        new InputStreamReader(new ByteArrayInputStream(extractFromZip(dockerFile, zipInputStream)), UTF_8));
+                var out = new ByteArrayOutputStream();
         ) {
             reader.lines()
                   .map(line -> line.replace(INJECT_SECRET_PLACEHOLDER, replacement))
+                  .map(line -> line + System.lineSeparator())
                   .map(String::getBytes)
-                  .forEach(writer::writeBytes);
+                  .forEachOrdered(out::writeBytes);
 
             var params = new ZipParameters();
             params.setFileNameInZip(dockerFile);
-            zipFile.addStream(new ByteArrayInputStream(writer.toByteArray()), params);
+            zipFile.addStream(new ByteArrayInputStream(out.toByteArray()), params);
         }
     }
 }

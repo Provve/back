@@ -94,6 +94,7 @@ jackson = [
     'jackson-databind',
     'jackson-time'
 ]
+aws = ['aws-s3', 'aws-crt']
 
 
 [plugins]

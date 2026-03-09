@@ -21,7 +21,7 @@ import tech.provve.skill.exception.*;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.XssSanitizer;
-import tech.provve.statemachine.service.application.StatemachineService;
+import tech.provve.statemachine.service.domain.StatemachineService;
 import terch.provve.libs.s3.S3Service;
 
 import java.nio.file.Files;

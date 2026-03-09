@@ -11,6 +11,17 @@ import java.util.zip.ZipInputStream;
 @Singleton
 public class ZipManipulator {
 
+    @SneakyThrows
+    public static byte[] extractFromZip(String fileName, ZipInputStream z) {
+        ZipEntry ze;
+        while ((ze = z.getNextEntry()) != null) {
+            if (fileName.equals(ze.getName()))
+                return z.readAllBytes();
+        }
+
+        return new byte[0];
+    }
+
     /**
      * Check if the stream contains all specified files.
      */

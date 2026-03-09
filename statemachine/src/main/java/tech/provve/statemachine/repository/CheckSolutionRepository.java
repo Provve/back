@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
 import org.jspecify.annotations.NullMarked;
 import tech.provve.statemachine.db.generated.enums.CheckSolutionState;
 import tech.provve.statemachine.db.generated.tables.records.CheckSolutionRecord;
@@ -15,7 +13,7 @@ import tech.provve.statemachine.domain.entity.CheckSolution;
 
 import java.util.List;
 
-import static java.lang.Boolean.TRUE;
+import static java.util.Objects.nonNull;
 import static tech.provve.statemachine.db.generated.tables.CheckSolution.CHECK_SOLUTION;
 
 @NullMarked
@@ -51,6 +49,9 @@ public class CheckSolutionRepository {
            .execute();
     }
 
+    /**
+     * @return all of saved machines in non-final state
+     */
     @SuppressWarnings("all")
     public List<CheckSolution> list() {
         var select = dsl.select()
@@ -63,11 +64,10 @@ public class CheckSolutionRepository {
     }
 
     public boolean exists(String name) {
-        var trueField = DSL.field("true", SQLDataType.BOOLEAN);
-        return TRUE.equals(dsl.select()
-                              .from(CHECK_SOLUTION)
-                              .where(CHECK_SOLUTION.NAME.eq(name))
-                              .fetchOne(set -> set.get(trueField)));
+        return nonNull(dsl.select(CHECK_SOLUTION.NAME)
+                          .from(CHECK_SOLUTION)
+                          .where(CHECK_SOLUTION.NAME.eq(name))
+                          .fetchOne());
     }
 
     public void delete(String name) {

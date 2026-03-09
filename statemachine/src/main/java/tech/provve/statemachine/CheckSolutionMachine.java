@@ -2,6 +2,7 @@ package tech.provve.statemachine;
 
 import de.amr.statemachine.Match;
 import de.amr.statemachine.StateMachine;
+import jakarta.inject.Singleton;
 import tech.provve.statemachine.domain.entity.CheckSolution;
 import tech.provve.statemachine.domain.value.CheckSolutionEvent;
 import tech.provve.statemachine.domain.value.CheckSolutionState;
@@ -13,6 +14,7 @@ import static tech.provve.statemachine.domain.value.CheckSolutionState.*;
 /**
  * МС для проверки решения от экзаменуемого
  */
+@Singleton
 public class CheckSolutionMachine extends StateMachine<CheckSolutionState, CheckSolutionEvent> {
 
     private final CheckSolutionRepository repository;

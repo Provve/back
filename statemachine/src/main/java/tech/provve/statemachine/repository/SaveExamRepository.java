@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
 import org.jspecify.annotations.NullMarked;
 import tech.provve.statemachine.db.generated.enums.SaveExamState;
 import tech.provve.statemachine.db.generated.tables.records.SaveExamRecord;
@@ -15,7 +13,7 @@ import tech.provve.statemachine.domain.entity.SaveExam;
 
 import java.util.List;
 
-import static java.lang.Boolean.TRUE;
+import static java.util.Objects.nonNull;
 import static tech.provve.statemachine.db.generated.tables.SaveExam.SAVE_EXAM;
 
 @NullMarked
@@ -53,6 +51,9 @@ public class SaveExamRepository {
            .execute();
     }
 
+    /**
+     * @return all of saved machines in non-final state
+     */
     @SuppressWarnings("all")
     public List<SaveExam> list() {
         var select = dsl.select()
@@ -65,11 +66,10 @@ public class SaveExamRepository {
     }
 
     public boolean exists(String name) {
-        var trueField = DSL.field("true", SQLDataType.BOOLEAN);
-        return TRUE.equals(dsl.select()
-                              .from(SAVE_EXAM)
-                              .where(SAVE_EXAM.NAME.eq(name))
-                              .fetchOne(set -> set.get(trueField)));
+        return nonNull(dsl.select(SAVE_EXAM.NAME)
+                          .from(SAVE_EXAM)
+                          .where(SAVE_EXAM.NAME.eq(name))
+                          .fetchOne());
     }
 
     public void delete(String name) {

@@ -20,4 +20,8 @@ dependencies {
     implementation project(':s3')
     implementation libs.zip4j
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation libs.aws.s3
+    testImplementation libs.zip4j
+    implementation libs.mockito.core
 }

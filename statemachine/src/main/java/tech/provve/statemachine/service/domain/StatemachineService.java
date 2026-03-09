@@ -1,4 +1,4 @@
-package tech.provve.statemachine.service.application;
+package tech.provve.statemachine.service.domain;
 
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 
