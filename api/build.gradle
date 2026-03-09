@@ -45,13 +45,17 @@ dependencies {
     implementation project(':payment')
     implementation project(':scheduling')
     implementation project(':skill')
+    implementation project(':validation')
+    implementation project(':s3')
+    implementation project(':statemachine')
 
     implementation libs.db.scheduler
     implementation libs.hibernate.validation
     implementation libs.expressly
-    implementation libs.amazon.s3
+    implementation libs.aws.s3
+    implementation libs.aws.crt
     implementation libs.bundles.vertx
-    implementation libs.jackson.databind
+    implementation libs.bundles.jackson
     implementation libs.slf4j
     compileOnly libs.simple.mail
     compileOnly libs.jooq
@@ -145,7 +149,7 @@ publishing {
             group = 'tech.provve.api'
             artifactId = 'server-dto'
             version = '0.0.1'
-            artifact(tasks.named('buildDto'))
+            artifact(tasks.buildDto)
         }
     }
     repositories {

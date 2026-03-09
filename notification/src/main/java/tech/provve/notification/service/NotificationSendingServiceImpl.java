@@ -15,9 +15,6 @@ import java.util.Objects;
 import static tech.provve.notification.domain.value.NotifyCommand.Address.EMAIL;
 import static tech.provve.notification.domain.value.NotifyCommand.Address.INTERNAL;
 
-/**
- * Infrastructure service for sending mails.
- */
 @Singleton
 @RequiredArgsConstructor
 public class NotificationSendingServiceImpl implements NotificationSendingService {

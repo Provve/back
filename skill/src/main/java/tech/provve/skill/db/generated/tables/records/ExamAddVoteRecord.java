@@ -5,7 +5,6 @@ package tech.provve.skill.db.generated.tables.records;
 
 
 import org.jooq.impl.TableRecordImpl;
-
 import tech.provve.skill.db.generated.tables.ExamAddVote;
 
 
@@ -18,25 +17,10 @@ public class ExamAddVoteRecord extends TableRecordImpl<ExamAddVoteRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>skill.exam_add_vote.skill_name</code>. Связанный навык
-     */
-    public ExamAddVoteRecord setSkillName(String value) {
-        set(0, value);
-        return this;
-    }
-
-    /**
-     * Getter for <code>skill.exam_add_vote.skill_name</code>. Связанный навык
-     */
-    public String getSkillName() {
-        return (String) get(0);
-    }
-
-    /**
      * Setter for <code>skill.exam_add_vote.vote_name</code>.
      */
     public ExamAddVoteRecord setVoteName(String value) {
-        set(1, value);
+        set(0, value);
         return this;
     }
 
@@ -44,6 +28,21 @@ public class ExamAddVoteRecord extends TableRecordImpl<ExamAddVoteRecord> {
      * Getter for <code>skill.exam_add_vote.vote_name</code>.
      */
     public String getVoteName() {
+        return (String) get(0);
+    }
+
+    /**
+     * Setter for <code>skill.exam_add_vote.skill_name</code>. Связанный навык
+     */
+    public ExamAddVoteRecord setSkillName(String value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>skill.exam_add_vote.skill_name</code>. Связанный навык
+     */
+    public String getSkillName() {
         return (String) get(1);
     }
 
@@ -65,20 +64,37 @@ public class ExamAddVoteRecord extends TableRecordImpl<ExamAddVoteRecord> {
     }
 
     /**
-     * Setter for <code>skill.exam_add_vote.material_url</code>. Ссылка на
-     * учебный материал в S3
+     * Setter for <code>skill.exam_add_vote.private_archive_url</code>.
+     * Проверяющая часть экзамена
      */
-    public ExamAddVoteRecord setMaterialUrl(String value) {
+    public ExamAddVoteRecord setPrivateArchiveUrl(String value) {
         set(3, value);
         return this;
     }
 
     /**
-     * Getter for <code>skill.exam_add_vote.material_url</code>. Ссылка на
-     * учебный материал в S3
+     * Getter for <code>skill.exam_add_vote.private_archive_url</code>.
+     * Проверяющая часть экзамена
      */
-    public String getMaterialUrl() {
+    public String getPrivateArchiveUrl() {
         return (String) get(3);
+    }
+
+    /**
+     * Setter for <code>skill.exam_add_vote.public_archive_url</code>.
+     * Проверяемая часть экзамена, задание
+     */
+    public ExamAddVoteRecord setPublicArchiveUrl(String value) {
+        set(4, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>skill.exam_add_vote.public_archive_url</code>.
+     * Проверяемая часть экзамена, задание
+     */
+    public String getPublicArchiveUrl() {
+        return (String) get(4);
     }
 
     // -------------------------------------------------------------------------
@@ -95,13 +111,14 @@ public class ExamAddVoteRecord extends TableRecordImpl<ExamAddVoteRecord> {
     /**
      * Create a detached, initialised ExamAddVoteRecord
      */
-    public ExamAddVoteRecord(String skillName, String voteName, String description, String materialUrl) {
+    public ExamAddVoteRecord(String voteName, String skillName, String description, String privateArchiveUrl, String publicArchiveUrl) {
         super(ExamAddVote.EXAM_ADD_VOTE);
 
-        setSkillName(skillName);
         setVoteName(voteName);
+        setSkillName(skillName);
         setDescription(description);
-        setMaterialUrl(materialUrl);
+        setPrivateArchiveUrl(privateArchiveUrl);
+        setPublicArchiveUrl(publicArchiveUrl);
         resetTouchedOnNotNull();
     }
 }

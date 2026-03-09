@@ -8,7 +8,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jspecify.annotations.NullMarked;
-import tech.provve.skill.domain.entity.ExamAddVote;
+import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.domain.value.VoteReactions;
 import tech.provve.skill.mapper.VoteMapper;
@@ -32,33 +32,35 @@ public class VoteRepository {
     private final DSLContext dsl;
 
     private final RecordMapper<Record, Vote> outputMapper = record -> {
-        ExamAddVote examAddVote = record.map(_ -> new ExamAddVote(
+        Exam exam = record.map(_ -> new Exam(
+                record.get(VOTE.NAME),
                 record.get(EXAM_ADD_VOTE.SKILL_NAME),
                 record.get(EXAM_ADD_VOTE.DESCRIPTION),
-                record.get(EXAM_ADD_VOTE.MATERIAL_URL)
+                record.get(EXAM_ADD_VOTE.PUBLIC_ARCHIVE_URL),
+                record.get(EXAM_ADD_VOTE.PRIVATE_ARCHIVE_URL)
         ));
         VoteReactions reactions = record.map(_ -> new VoteReactions(
                 record.get(GET_REACTIONS_TOTAL.TOTAL_POSITIVE),
                 record.get(GET_REACTIONS_TOTAL.TOTAL_NEGATIVE)
         ));
 
-        return new Vote(
-                record.get(VOTE.NAME),
-                record.get(VOTE.ACTIVE),
-                record.get(VOTE.SUCCESS),
-                record.get(VOTE.AUTHOR),
-                record.get(VOTE.DEADLINE),
-                record.get(VOTE.ARGUMENTS),
-                record.get(
-                        VOTE.TYPE, Converter.from(
-                                Short.class, Vote.Type.class,
-                                code -> Vote.Type.map(code)
-                        )
-                ),
-                List.of(record.get(VOTE.TAGS)),
-                examAddVote,
-                reactions
-        );
+        return Vote.builder()
+                   .name(record.get(VOTE.NAME))
+                   .active(record.get(VOTE.ACTIVE))
+                   .success(record.get(VOTE.SUCCESS))
+                   .author(record.get(VOTE.AUTHOR))
+                   .deadline(record.get(VOTE.DEADLINE))
+                   .arguments(record.get(VOTE.ARGUMENTS))
+                   .type(record.get(
+                           VOTE.TYPE, Converter.from(
+                                   Short.class, Vote.Type.class,
+                                   code -> Vote.Type.map(code)
+                           )
+                   ))
+                   .tags(List.of(record.get(VOTE.TAGS)))
+                   .exam(exam)
+                   .reactions(reactions)
+                   .build();
     };
 
     public void save(Vote vote) {
@@ -66,11 +68,11 @@ public class VoteRepository {
            .set(VoteMapper.INSTANCE.map(vote))
            .execute();
 
-        if (ADD_EXAM.equals(vote.type())) {
+        if (ADD_EXAM.equals(vote.getType())) {
             dsl.insertInto(EXAM_ADD_VOTE)
                .set(VoteMapper.INSTANCE.map(
-                       Objects.requireNonNull(vote.examAddVote()),
-                       vote.name()
+                       Objects.requireNonNull(vote.getExam()),
+                       vote.getName()
                ))
                .execute();
         }

@@ -1,8 +1,10 @@
 package tech.provve.skill;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.avaje.inject.Bean;
 import io.avaje.inject.Factory;
 import io.avaje.inject.test.TestScope;
+import io.vertx.core.Vertx;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -10,10 +12,10 @@ import org.mockito.Mockito;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwsParsingServiceImpl;
 import tech.provve.accounts.service.JwtIssuingService;
-import tech.provve.accounts.service.S3Service;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.service.NotificationSendingService;
+import terch.provve.libs.s3.S3Service;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -25,6 +27,16 @@ import java.util.function.Supplier;
 @Factory
 @TestScope
 public class Stubs {
+
+    @Bean
+    public Vertx vertx() {
+        return Mockito.mock(Vertx.class);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 
     @Bean
     public Supplier<LocalDateTime> deadline() {

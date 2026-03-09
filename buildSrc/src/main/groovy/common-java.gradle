@@ -1,3 +1,7 @@
+plugins {
+    id 'java'
+}
+
 dependencies {
     implementation libs.provve.api.dto
     implementation libs.jooq.postgres

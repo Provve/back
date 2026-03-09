@@ -20,11 +20,7 @@ import tech.provve.skill.exception.CastAlreadyExists;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Properties;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,18 +35,6 @@ public class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
     @Setup
     void set(BeanScopeBuilder b) {
         b.bean(DSLContext.class, DSL.using(connection(), SQLDialect.POSTGRES));
-    }
-
-    Connection connection() {
-        Properties props = new Properties();
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "1");
-
-        try {
-            return DriverManager.getConnection(postgres.getJdbcUrl(), props);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Mock(stubOnly = true)
@@ -77,25 +61,23 @@ public class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
         var author = "r";
         accountRepository.save(new Account(author, "", "", false, "", "", "", false));
 
-        var vote = new Vote(
-                "v",
-                true,
-                false,
-                author,
-                LocalDateTime.now(),
-                "",
-                Vote.Type.ADD_SKILL,
-                emptyList(),
-                null,
-                null
-        );
+        var vote = Vote.builder()
+                       .name("v")
+                       .active(true)
+                       .success(false)
+                       .author(author)
+                       .deadline(LocalDateTime.now())
+                       .arguments("")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(emptyList())
+                       .build();
         voteRepository.save(vote);
 
         when(jwsParsingService.parseAuth(any(), eq("sub"))).thenReturn(author);
 
         // act assert
         assertThatThrownBy(() -> {
-            voteService.cast(vote.name(), new CastVoteRequest(true, ""));
+            voteService.cast(vote.getName(), new CastVoteRequest(true, ""));
         }).isExactlyInstanceOf(AuthorCannotVote.class);
     }
 
@@ -108,26 +90,24 @@ public class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
         var notAuthor = "r";
         accountRepository.save(new Account(notAuthor, "", "", false, "", "", "", false));
 
-        var vote = new Vote(
-                "v",
-                true,
-                false,
-                author,
-                LocalDateTime.now(),
-                "",
-                Vote.Type.ADD_SKILL,
-                emptyList(),
-                null,
-                null
-        );
+        var vote = Vote.builder()
+                       .name("v")
+                       .active(true)
+                       .success(false)
+                       .author(author)
+                       .deadline(LocalDateTime.now())
+                       .arguments("")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(emptyList())
+                       .build();
         voteRepository.save(vote);
 
         when(jwsParsingService.parseAuth(any(), eq("sub"))).thenReturn(notAuthor);
 
         // act assert
         assertThatThrownBy(() -> {
-            voteService.cast(vote.name(), new CastVoteRequest(true, ""));
-            voteService.cast(vote.name(), new CastVoteRequest(true, ""));
+            voteService.cast(vote.getName(), new CastVoteRequest(true, ""));
+            voteService.cast(vote.getName(), new CastVoteRequest(true, ""));
         }).isExactlyInstanceOf(CastAlreadyExists.class);
     }
 
@@ -140,29 +120,27 @@ public class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
         var notAuthor = "r";
         accountRepository.save(new Account(notAuthor, "", "", false, "", "", "", false));
 
-        var vote = new Vote(
-                "v",
-                true,
-                false,
-                author,
-                LocalDateTime.now(),
-                "",
-                Vote.Type.ADD_SKILL,
-                emptyList(),
-                null,
-                null
-        );
+        var vote = Vote.builder()
+                       .name("v")
+                       .active(true)
+                       .success(false)
+                       .author(author)
+                       .deadline(LocalDateTime.now())
+                       .arguments("")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(emptyList())
+                       .build();
         voteRepository.save(vote);
 
         when(jwsParsingService.parseAuth(any(), eq("sub"))).thenReturn(notAuthor);
 
         // act
-        voteService.cast(vote.name(), new CastVoteRequest(true, ""));
+        voteService.cast(vote.getName(), new CastVoteRequest(true, ""));
 
         // assert
-        assertThat(voteRepository.findByName(vote.name())
+        assertThat(voteRepository.findByName(vote.getName())
                                  .get()
-                                 .reactions()
+                                 .getReactions()
                                  .positive()).isEqualTo(1);
     }
 

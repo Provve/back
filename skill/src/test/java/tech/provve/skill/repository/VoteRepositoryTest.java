@@ -11,16 +11,12 @@ import org.junit.jupiter.api.Test;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.skill.PostgresIntegrationTest;
-import tech.provve.skill.domain.entity.ExamAddVote;
+import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Skill;
 import tech.provve.skill.domain.entity.Vote;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static tech.provve.skill.domain.entity.Vote.Type.ADD_EXAM;
@@ -32,18 +28,6 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
     @Setup
     void set(BeanScopeBuilder b) {
         b.bean(DSLContext.class, DSL.using(connection(), SQLDialect.POSTGRES));
-    }
-
-    Connection connection() {
-        Properties props = new Properties();
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "1");
-
-        try {
-            return DriverManager.getConnection(postgres.getJdbcUrl(), props);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Inject
@@ -65,79 +49,85 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         accountRepository.save(new Account(author_login, "a", "1", true, "q", null, null, false));
 
         // act
-        voteRepository.save(new Vote(
-                author_login, true, false, author_login, LocalDateTime.now(), "xyz!", Vote.Type.ADD_SKILL, List.of("1"), null, null
-        ));
+        voteRepository.save(Vote.builder()
+                                .name(author_login)
+                                .active(true)
+                                .success(false)
+                                .author(author_login)
+                                .deadline(LocalDateTime.now())
+                                .arguments("xyz!")
+                                .type(Vote.Type.ADD_SKILL)
+                                .tags(List.of("1"))
+                                .build());
 
         // assert
         var savedVote = voteRepository.findByName(author_login)
                                       .get();
-        assertThat(savedVote.name()).isEqualTo(author_login);
+        assertThat(savedVote.getName()).isEqualTo(author_login);
     }
 
     @Test
     void save_type_examAddVode_saved() {
         // arrange
-        var author_login = "a";
+        var author_login = "aa";
         accountRepository.save(new Account(author_login, "a", "1", true, "q", null, null, false));
 
-        skillRepository.save(new Skill(author_login, List.of("a")));
+        var skill = new Skill("a", List.of("a"));
+        skillRepository.save(skill);
         var description = "d";
 
         // act
-        voteRepository.save(new Vote(
-                author_login,
-                true,
-                false,
-                author_login,
-                LocalDateTime.now(),
-                "xyz!",
-                ADD_EXAM,
-                List.of("1"),
-                new ExamAddVote("a", description, ""),
-                null
-        ));
+        voteRepository.save(Vote.builder()
+                                .name(author_login)
+                                .active(true)
+                                .success(false)
+                                .author(author_login)
+                                .deadline(LocalDateTime.now())
+                                .arguments("xyz!")
+                                .type(Vote.Type.ADD_EXAM)
+                                .tags(List.of("1"))
+                                .exam(new Exam("b", skill.name(), description, "", ""))
+                                .build());
 
         // assert
         var savedVote = voteRepository.findByName(author_login)
                                       .get();
-        assertThat(savedVote.examAddVote()
+        assertThat(savedVote.getExam()
                             .description()).isEqualTo(description);
     }
 
     @Test
     void findAll_differentVotesPresented_returnedAllVotes() {
         // arrange
-        var author_login = "a";
+        var author_login = "aaa";
         accountRepository.save(new Account(author_login, "a", "1", true, "q", null, null, false));
         skillRepository.save(new Skill(author_login, List.of("a")));
 
-        var examAddvote = new ExamAddVote("a", "d", "");
+        var examAddvote = new Exam("b", "a", "d", "", "");
         var now = LocalDateTime.now();
         var votes = List.of(
-                new Vote(
-                        "a",
-                        true,
-                        false,
-                        "a",
-                        now,
-                        "xyz!",
-                        ADD_EXAM,
-                        List.of("1"),
-                        examAddvote,
-                        null
-                ), new Vote(
-                        "b",
-                        true,
-                        false,
-                        "a",
-                        now,
-                        "xyz!",
-                        DELETE_SKILL,
-                        List.of("1"),
-                        examAddvote,
-                        null
-                )
+                Vote.builder()
+                    .name("8734")
+                    .active(true)
+                    .success(false)
+                    .author("a")
+                    .deadline(now)
+                    .arguments("xyz!")
+                    .type(Vote.Type.ADD_EXAM)
+                    .tags(List.of("1"))
+                    .exam(examAddvote)
+                    .build(),
+                Vote.builder()
+                    .name("b")
+                    .active(true)
+                    .success(false)
+                    .author("a")
+                    .deadline(now)
+                    .arguments("xyz!")
+                    .type(Vote.Type.DELETE_SKILL)
+                    .tags(List.of("1"))
+                    .exam(examAddvote)
+                    .build()
         );
 
         // act
@@ -145,10 +135,9 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
 
         // assert
         var savedVotes = voteRepository.getAll();
-        assertThat(savedVotes).satisfiesExactly(
-                vote -> ADD_EXAM.equals(vote.type()),
-                vote -> DELETE_SKILL.equals(vote.type())
-        );
+        assertThat(savedVotes).extracting(Vote::getType)
+                              .anyMatch(ADD_EXAM::equals)
+                              .anyMatch(DELETE_SKILL::equals);
     }
 
 }

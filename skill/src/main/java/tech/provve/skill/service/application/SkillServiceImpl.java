@@ -15,6 +15,6 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public void create(Vote fromVote) {
-        skillRepository.save(new Skill(fromVote.name(), fromVote.tags()));
+        skillRepository.save(new Skill(fromVote.getName(), fromVote.getTags()));
     }
 }

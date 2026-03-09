@@ -6,12 +6,14 @@ import io.vertx.core.Vertx;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import org.mockito.Mockito;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
 import tech.provve.accounts.service.JwtIssuingService;
+import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.notification.service.NotificationSendingServiceImpl;
 
@@ -26,11 +28,16 @@ import java.util.concurrent.Executor;
 public class Stubs {
 
     @Bean
+    public Scheduling scheduling() {
+        return Mockito.mock(Scheduling.class);
+    }
+
+    @Bean
     public S3Client s3Client() {
-        var url = Config.get("s3.url");
-        var region = Config.get("s3.region");
-        var keyId = Config.get("s3.access-key");
-        var secretKey = Config.get("s3.secret-key");
+        var url = Config.get("s3.credentials.url");
+        var region = Config.get("s3.credentials.region");
+        var keyId = Config.get("s3.credentials.access-key");
+        var secretKey = Config.get("s3.credentials.secret-key");
 
         return S3Client.builder()
                        .endpointOverride(URI.create(url))

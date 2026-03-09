@@ -6,7 +6,7 @@ import org.jsoup.safety.Safelist;
 /**
  * For removing XSS scripts
  */
-public class SanitizingService {
+public class XssSanitizer {
 
     public static String sanitize(String s) {
         return Jsoup.clean(s, Safelist.none());

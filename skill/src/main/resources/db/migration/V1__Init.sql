@@ -41,13 +41,15 @@ CREATE INDEX idx_skill_tags ON skill.skill USING GIN(tags);
 CREATE TABLE skill.exam_add_vote (
     vote_name VARCHAR(100) REFERENCES skill.vote(name) ON DELETE CASCADE, -- удалить при удалении самого голосования (модерацией)
     skill_name VARCHAR(100) REFERENCES skill.skill(name) ON DELETE CASCADE, -- удалить при удалении навыка
-    description TEXT,
-    material_url TEXT NOT NULL
+    description VARCHAR(3000),
+    private_archive_url TEXT NOT NULL,
+    public_archive_url TEXT NOT NULL
 );
 COMMENT ON TABLE skill.exam_add_vote IS 'Данные голосования на добавление экзамена (type = 2)';
 COMMENT ON COLUMN skill.exam_add_vote.skill_name IS 'Связанный навык';
 COMMENT ON COLUMN skill.exam_add_vote.description IS 'Финальная постановка задания для экзаменуемых';
-COMMENT ON COLUMN skill.exam_add_vote.material_url IS 'Ссылка на учебный материал в S3';
+COMMENT ON COLUMN skill.exam_add_vote.private_archive_url IS 'Проверяющая часть экзамена';
+COMMENT ON COLUMN skill.exam_add_vote.public_archive_url IS 'Проверяемая часть экзамена, задание';
 
 CREATE OR REPLACE FUNCTION delete_related_vote()
 RETURNS TRIGGER AS $$
@@ -69,8 +71,30 @@ FOR EACH ROW EXECUTE PROCEDURE delete_related_vote();
 
 
 
+CREATE TABLE skill.exam (
+    name VARCHAR(100) PRIMARY KEY,
+    skill_name VARCHAR(100) REFERENCES skill.skill(name) ON DELETE CASCADE,
+    description VARCHAR(3000) NOT NULL,
+    private_archive_url TEXT NOT NULL,
+    public_archive_url TEXT NOT NULL
+);
+COMMENT ON TABLE skill.exam IS 'Данные экзамена.';
+COMMENT ON COLUMN skill.exam.name IS 'Название экзамена';
+COMMENT ON COLUMN skill.exam.skill_name IS 'Какой навык экзамен проверяет';
+COMMENT ON COLUMN skill.exam.description IS 'Постановка задания для экзаменуемых';
+COMMENT ON COLUMN skill.exam.private_archive_url IS 'Проверяющая часть экзамена';
+COMMENT ON COLUMN skill.exam.public_archive_url IS 'Проверяемая часть экзамена, задание';
+
+CREATE TABLE skill.result (
+     exam_name VARCHAR(100) REFERENCES skill.skill(name) ON DELETE CASCADE,
+     examinee VARCHAR(50) REFERENCES accounts.accounts(login) ON DELETE CASCADE,
+     duration INTERVAL NOT NULL
+);
+
+
+
 CREATE TABLE skill.reactions (
-    voter VARCHAR(50) REFERENCES accounts.accounts(login),
+    voter VARCHAR(50) REFERENCES accounts.accounts(login) ON DELETE CASCADE,
     vote_name VARCHAR(100) REFERENCES skill.vote(name) ON DELETE CASCADE,
     reaction BIT(1) NOT NULL,
 

@@ -12,7 +12,6 @@ import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.accounts.service.PasswordHashingService;
-import tech.provve.accounts.service.S3Service;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.domain.value.AccountDowngraded;
@@ -20,6 +19,7 @@ import tech.provve.notification.domain.value.AccountUpgraded;
 import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
 import tech.provve.notification.service.NotificationSendingService;
+import terch.provve.libs.s3.S3Service;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -49,6 +49,7 @@ public class AccountServiceImpl implements AccountService {
     @External
     private final Vertx vertx;
 
+    @External
     private final S3Service s3Service;
 
     @Override
@@ -72,8 +73,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void delete(DeleteAccountRequest deleteAccountRequest) {
-        var jwtPayload = jwsParsingService.parseAuth(deleteAccountRequest.getAuthToken());
-        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        var login = jwsParsingService.parseAuth(deleteAccountRequest.getAuthToken(), JWT_SUBJECT);
         repository.delete(login);
     }
 
@@ -117,8 +117,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
-        var jwtPayload = jwsParsingService.parseReset(updatePasswordRequest.getResetToken());
-        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        var login = jwsParsingService.parseReset(updatePasswordRequest.getResetToken(), JWT_SUBJECT);
         repository.updatePasswordHash(
                 passwordHashingService.hash(updatePasswordRequest.getNewPassword()),
                 login
@@ -127,9 +126,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateEmail(UpdateEmailRequest updateEmailRequest) {
-        var jwtPayload = jwsParsingService.parseAuth(updateEmailRequest.getAuthToken());
-        var login = ((String) jwtPayload.get(JWT_SUBJECT));
-
+        var login = jwsParsingService.parseAuth(updateEmailRequest.getAuthToken(), JWT_SUBJECT);
         repository.findByEmail(updateEmailRequest.getEmail())
                   .ifPresent(_ -> {
                       throw new DataNotUnique("Email '%s' is not unique!".formatted(updateEmailRequest.getEmail()));
@@ -145,8 +142,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateAvatar(UpdateAvatarRequest updateAvatarRequest) {
-        var jwtPayload = jwsParsingService.parseAuth(updateAvatarRequest.getAuthToken());
-        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        var login = jwsParsingService.parseAuth(updateAvatarRequest.getAuthToken(), JWT_SUBJECT);
         String avatarFile = updateAvatarRequest.getAvatar()
                                                .uploadedFileName();
 
@@ -155,11 +151,13 @@ public class AccountServiceImpl implements AccountService {
                      avatarFile, ar -> {
                          if (ar.failed()) return;
 
+                         byte[] data = ar.result()
+                                         .getBytes();
                          String bucket = Config.get("s3.buckets.images");
-                         String avatarUrl = s3Service.uploadToS3(
+                         String avatarUrl = s3Service.upload(
                                  bucket,
-                                 ar.result()
-                                   .getBytes()
+                                 S3Service.defaultKeygen(data),
+                                 data
                          );
                          repository.updateAvatarUrl(login, avatarUrl);
                      }
@@ -168,8 +166,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateContacts(UpdateContactsRequest updateContactsRequest) {
-        var jwtPayload = jwsParsingService.parseAuth(updateContactsRequest.getAuthToken());
-        var login = ((String) jwtPayload.get(JWT_SUBJECT));
+        var login = jwsParsingService.parseAuth(updateContactsRequest.getAuthToken(), JWT_SUBJECT);
         String contacts = updateContactsRequest.getContacts()
                                                .getUrLs()
                                                .toString();
@@ -178,9 +175,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest) {
-        var jwtPayload = jwsParsingService.parseAuth(updatePersonalDataConsentRequest.getAuthToken());
-        var login = ((String) jwtPayload.get(JWT_SUBJECT));
-
+        var login = jwsParsingService.parseAuth(updatePersonalDataConsentRequest.getAuthToken(), JWT_SUBJECT);
         if (FALSE.equals(updatePersonalDataConsentRequest.getConsentPersonalData())) {
             repository.updatePersonalDataConsent(login, updatePersonalDataConsentRequest.getConsentPersonalData());
             repository.updateEmail(login, null);

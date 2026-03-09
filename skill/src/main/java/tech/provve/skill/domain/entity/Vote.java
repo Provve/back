@@ -1,5 +1,9 @@
 package tech.provve.skill.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.jspecify.annotations.Nullable;
 import tech.provve.skill.domain.value.VoteReactions;
@@ -17,29 +21,68 @@ import java.util.List;
  *     <li>Подсчет результата по прошествии deadline</li>
  *     <li>Завершение</li>
  * </ol>
- *
- * @param name        Название голосования. Оно же и ID объекта голосования
- * @param active      Проводится ли голосование
- * @param success     Положительно ли завершено голосование
- * @param author      Автор голосования
- * @param deadline    Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие
- * @param arguments   Аргументы за совершение действия, предложенного в голосовании
- * @param type        Тип голосования
- * @param tags        Теги голосования
- * @param examAddVote {@link Type#ADD_EXAM}
  */
-public record Vote(
-        String name,
-        boolean active,
-        boolean success,
-        String author,
-        LocalDateTime deadline,
-        String arguments,
-        Type type,
-        List<String> tags,
-        @Nullable ExamAddVote examAddVote,
-        @Nullable VoteReactions reactions
-) {
+@Getter
+@Builder(toBuilder = true)
+public class Vote {
+
+    /**
+     * Название голосования. Оно же и ID объекта голосования.
+     */
+    @NonNull
+    private final String name;
+
+    /**
+     * Признак активности голосования.
+     */
+    private final boolean active;
+
+    /**
+     * Признак успешного завершения голосования.
+     */
+    private final boolean success;
+
+    /**
+     * Автор голосования.
+     */
+    @NonNull
+    private final String author;
+
+    /**
+     * Конечный срок, когда голосование закроется, будет подсчитан результат и совершено действие.
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime deadline;
+
+    /**
+     * Аргументы за совершение действия, предложенного в голосовании
+     */
+    @NonNull
+    private final String arguments;
+
+    /**
+     * Тип голосования
+     */
+    @NonNull
+    private final Type type;
+
+    /**
+     * Теги голосования
+     */
+    @NonNull
+    private final List<String> tags;
+
+    /**
+     * Дополнительная информация для типа {@link Type#ADD_EXAM}.
+     */
+    @Nullable
+    private final Exam exam;
+
+    /**
+     * Реакции на голосование.
+     */
+    @Nullable
+    private final VoteReactions reactions;
 
     public enum Type {
         /**

@@ -1,0 +1,14 @@
+s3:
+  # where objects are stored
+  buckets:
+    # public read
+    images: i4s
+    # archives with exams, private
+    exams: e3s
+    # archives with solutions, private
+    solutions: s7s
+  credentials:
+    url: http://localhost:19000
+    access-key: 1
+    secret-key: 1
+    region: ru-msk

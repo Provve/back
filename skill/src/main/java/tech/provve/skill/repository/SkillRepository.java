@@ -13,6 +13,7 @@ import tech.provve.skill.domain.entity.Skill;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.Skill.SKILL_;
 
 @NullMarked
@@ -38,11 +39,18 @@ public class SkillRepository {
            .execute();
     }
 
-    public Optional<Skill> findByName(String name) {
+    public Optional<Skill> find(String name) {
         return dsl.select()
                   .from(SKILL_)
                   .where(SKILL_.NAME.eq(name))
                   .fetchOptional(outputMapper);
+    }
+
+    public boolean exists(String name) {
+        return nonNull(dsl.select(SKILL_.NAME)
+                          .from(SKILL_)
+                          .where(SKILL_.NAME.eq(name))
+                          .fetchOne());
     }
 
     @SuppressWarnings("all")

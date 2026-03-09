@@ -9,10 +9,12 @@ import tech.provve.api.server.exception.ValidationError;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.VotesApi;
 import tech.provve.api.server.generated.dto.*;
+import tech.provve.api.server.mapper.ValidationDtoMapper;
 import tech.provve.api.server.service.DtoValidatingService;
 import tech.provve.api.server.validation.dto.CastVote;
 import tech.provve.skill.exception.*;
 import tech.provve.skill.service.application.VoteService;
+import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 
 import java.util.List;
 
@@ -47,8 +49,17 @@ public class VotesController implements VotesApi {
 
     @Override
     public Future<ApiResponse<Void>> createExamAddVote(ExamAddVote examAddVote) {
-        // использовать метод multipart для загрузки архива в s3 и клиент AWS CRT-based
-        return null;
+        try {
+            validatingService.validate(ValidationDtoMapper.INSTANCE.map(examAddVote));
+            voteService.create(examAddVote);
+            return Future.succeededFuture(new ApiResponse<>(202));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        } catch (SkillNotFound e) {
+            return Future.failedFuture(new HttpException(e, 404));
+        } catch (VoteAlreadyExists | StatemachineAlreadyExists e) {
+            return Future.failedFuture(new HttpException(e, 409));
+        }
     }
 
     @Override
@@ -63,7 +74,7 @@ public class VotesController implements VotesApi {
             return Future.succeededFuture(new ApiResponse<>(200));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
-        } catch (VoteAlreadyExists | SkillAlreadyExists e) {
+        } catch (VoteAlreadyExists e) {
             return Future.failedFuture(new HttpException(e, 409));
         }
     }

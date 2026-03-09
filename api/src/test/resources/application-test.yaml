@@ -1,10 +1,11 @@
 security.jwt.auth.secret: 1
 security.jwt.reset.secret: 1
 s3:
-  url: http://localhost:19000
-  access-key: 1
-  secret-key: 1
-  region: r
+  credentials:
+    url: http://localhost:19000
+    access-key: 1
+    secret-key: 1
+    region: ru-msk
   buckets:
     images: i4s
     exams: e3s
@@ -14,3 +15,7 @@ mail:
   port: 1025
   username: support@provve.tech
   password: ${mail_password}
+premium-price: 20000 # в рублях
+robokassa:
+  merchant-login: l
+  jwt-secret: l:1

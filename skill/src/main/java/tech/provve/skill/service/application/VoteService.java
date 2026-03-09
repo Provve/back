@@ -4,15 +4,18 @@ import tech.provve.api.server.generated.dto.CastVoteRequest;
 import tech.provve.api.server.generated.dto.ExamAddVote;
 import tech.provve.api.server.generated.dto.SkillAddVote;
 import tech.provve.api.server.generated.dto.SkillDelVote;
-import tech.provve.skill.exception.*;
+import tech.provve.skill.exception.AuthorCannotVote;
+import tech.provve.skill.exception.CastAlreadyExists;
+import tech.provve.skill.exception.VoteAlreadyExists;
+import tech.provve.skill.exception.VoteNotFound;
 
 public interface VoteService {
 
-    void create(SkillAddVote skillAddVote) throws VoteAlreadyExists, SkillAlreadyExists;
+    void create(SkillAddVote skillAddVote) throws VoteAlreadyExists;
 
     void create(SkillDelVote skillDelVote) throws VoteAlreadyExists;
 
-    void create(ExamAddVote examAddVote) throws VoteAlreadyExists, ExamAlreadyExists;
+    void create(ExamAddVote examAddVote) throws VoteAlreadyExists;
 
     /**
      * Give a vote on vote.

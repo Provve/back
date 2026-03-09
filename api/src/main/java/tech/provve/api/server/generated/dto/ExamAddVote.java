@@ -17,20 +17,22 @@ public class ExamAddVote {
     private String authToken;
     private String skillName;
     private String description;
-    private FileUpload material;
+    private FileUpload publicArchive;
+    private FileUpload privateArchive;
 
     public ExamAddVote() {
 
     }
 
-    public ExamAddVote(String name, String arguments, List<String> tags, String authToken, String skillName, String description, FileUpload material) {
+    public ExamAddVote(String name, String arguments, List<String> tags, String authToken, String skillName, String description, FileUpload publicArchive, FileUpload privateArchive) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;
         this.authToken = authToken;
         this.skillName = skillName;
         this.description = description;
-        this.material = material;
+        this.publicArchive = publicArchive;
+        this.privateArchive = privateArchive;
     }
 
 
@@ -94,13 +96,23 @@ public class ExamAddVote {
     }
 
 
-    @JsonProperty("material")
-    public FileUpload getMaterial() {
-        return material;
+    @JsonProperty("public_archive")
+    public FileUpload getPublicArchive() {
+        return publicArchive;
     }
 
-    public void setMaterial(FileUpload material) {
-        this.material = material;
+    public void setPublicArchive(FileUpload publicArchive) {
+        this.publicArchive = publicArchive;
+    }
+
+
+    @JsonProperty("private_archive")
+    public FileUpload getPrivateArchive() {
+        return privateArchive;
+    }
+
+    public void setPrivateArchive(FileUpload privateArchive) {
+        this.privateArchive = privateArchive;
     }
 
 
@@ -119,12 +131,13 @@ public class ExamAddVote {
                 Objects.equals(authToken, examAddVote.authToken) &&
                 Objects.equals(skillName, examAddVote.skillName) &&
                 Objects.equals(description, examAddVote.description) &&
-                Objects.equals(material, examAddVote.material);
+                Objects.equals(publicArchive, examAddVote.publicArchive) &&
+                Objects.equals(privateArchive, examAddVote.privateArchive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, arguments, tags, authToken, skillName, description, material);
+        return Objects.hash(name, arguments, tags, authToken, skillName, description, publicArchive, privateArchive);
     }
 
     @Override
@@ -150,8 +163,11 @@ public class ExamAddVote {
         sb.append("    description: ")
           .append(toIndentedString(description))
           .append("\n");
-        sb.append("    material: ")
-          .append(toIndentedString(material))
+        sb.append("    publicArchive: ")
+          .append(toIndentedString(publicArchive))
+          .append("\n");
+        sb.append("    privateArchive: ")
+          .append(toIndentedString(privateArchive))
           .append("\n");
         sb.append("}");
         return sb.toString();

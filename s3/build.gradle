@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation libs.aws.s3
+    implementation libs.aws.crt
+    implementation libs.url.encoder
+
+    compileOnlyApi libs.avaje
+    annotationProcessor libs.avaje.generator
+}

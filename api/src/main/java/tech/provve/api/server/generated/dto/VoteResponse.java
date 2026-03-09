@@ -42,13 +42,13 @@ public class VoteResponse {
     private TypeEnum type;
     private VoteResponseAllOfReactions reactions;
     private OffsetDateTime deadline;
-    private VoteResponseAllOfExamAdd examAdd;
+    private ExamAddVoteResponse examAdd;
 
     public VoteResponse() {
 
     }
 
-    public VoteResponse(String name, String arguments, List<String> tags, String authToken, TypeEnum type, VoteResponseAllOfReactions reactions, OffsetDateTime deadline, VoteResponseAllOfExamAdd examAdd) {
+    public VoteResponse(String name, String arguments, List<String> tags, String authToken, TypeEnum type, VoteResponseAllOfReactions reactions, OffsetDateTime deadline, ExamAddVoteResponse examAdd) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;
@@ -131,11 +131,11 @@ public class VoteResponse {
 
 
     @JsonProperty("exam_add")
-    public VoteResponseAllOfExamAdd getExamAdd() {
+    public ExamAddVoteResponse getExamAdd() {
         return examAdd;
     }
 
-    public void setExamAdd(VoteResponseAllOfExamAdd examAdd) {
+    public void setExamAdd(ExamAddVoteResponse examAdd) {
         this.examAdd = examAdd;
     }
 

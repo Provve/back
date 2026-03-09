@@ -24,6 +24,7 @@ vertx-web-open-api = { module = 'io.vertx:vertx-web-openapi', version.ref = 'ver
 vertx-junit = { module = 'io.vertx:vertx-junit5', version.ref = 'vertx' }
 
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind', version = '2.20.1' }
+jackson-time = { module = 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310', version = '2.21.1' }
 lombok = { group = 'org.projectlombok', name = 'lombok', version = '1.18.42' }
 slf4j = { group = 'org.slf4j', name = 'slf4j-api', version = '2.1.0-alpha1' }
 simple-mail = { module = 'org.simplejavamail:simple-java-mail', version.ref = 'simple-java-mail' }
@@ -46,7 +47,10 @@ testcontainers-junit = { module = 'org.testcontainers:testcontainers-junit-jupit
 testcontainers-mailpit = { group = 'ch.martinelli.oss', name = 'testcontainers-mailpit', version.ref = 'testcontainers-mailpit' }
 local-s3-jupiter = { module = 'io.github.robothy:local-s3-jupiter', version.ref = 's3' }
 local-s3-rest = { module = 'io.github.robothy:local-s3-rest', version.ref = 's3' }
-amazon-s3 = { module = 'software.amazon.awssdk:s3', version = '2.41.21' }
+aws-s3 = { module = 'software.amazon.awssdk:s3', version = '2.42.4' }
+aws-crt = { module = 'software.amazon.awssdk.crt:aws-crt', version = '0.43.4' }
+url-encoder = { module = 'com.uwyn:urlencoder', version = '1.3.2' }
+zip4j = { module = 'net.lingala.zip4j:zip4j', version = '2.11.6' }
 
 hibernate-validation = { group = 'org.hibernate.validator', name = 'hibernate-validator', version = '9.1.0.Final' }
 expressly = { group = 'org.glassfish.expressly', name = 'expressly', version = '6.0.0' }
@@ -86,6 +90,11 @@ jjwt = [
     'jjwt-impl',
     'jjwt-jackson'
 ]
+jackson = [
+    'jackson-databind',
+    'jackson-time'
+]
+aws = ['aws-s3', 'aws-crt']
 
 
 [plugins]
