@@ -6,38 +6,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Observation {
+public class Checksum {
 
-    private Boolean cheated;
-    private String details;
+    private String checksum;
+    private String sig;
 
-    public Observation() {
+    public Checksum() {
 
     }
 
-    public Observation(Boolean cheated, String details) {
-        this.cheated = cheated;
-        this.details = details;
+    public Checksum(String checksum, String sig) {
+        this.checksum = checksum;
+        this.sig = sig;
     }
 
 
-    @JsonProperty("cheated")
-    public Boolean getCheated() {
-        return cheated;
+    @JsonProperty("checksum")
+    public String getChecksum() {
+        return checksum;
     }
 
-    public void setCheated(Boolean cheated) {
-        this.cheated = cheated;
+    public void setChecksum(String checksum) {
+        this.checksum = checksum;
     }
 
 
-    @JsonProperty("details")
-    public String getDetails() {
-        return details;
+    @JsonProperty("sig")
+    public String getSig() {
+        return sig;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setSig(String sig) {
+        this.sig = sig;
     }
 
 
@@ -49,26 +49,26 @@ public class Observation {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Observation observation = (Observation) o;
-        return Objects.equals(cheated, observation.cheated) &&
-                Objects.equals(details, observation.details);
+        Checksum checksum = (Checksum) o;
+        return Objects.equals(checksum, checksum.checksum) &&
+                Objects.equals(sig, checksum.sig);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cheated, details);
+        return Objects.hash(checksum, sig);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class Observation {\n");
+        sb.append("class Checksum {\n");
 
-        sb.append("    cheated: ")
-          .append(toIndentedString(cheated))
+        sb.append("    checksum: ")
+          .append(toIndentedString(checksum))
           .append("\n");
-        sb.append("    details: ")
-          .append(toIndentedString(details))
+        sb.append("    sig: ")
+          .append(toIndentedString(sig))
           .append("\n");
         sb.append("}");
         return sb.toString();

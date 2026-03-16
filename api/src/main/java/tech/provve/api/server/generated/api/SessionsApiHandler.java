@@ -28,8 +28,6 @@ public class SessionsApiHandler implements RouteHandler {
     public void mount(RouterBuilder builder) {
         builder.operation("createSession")
                .handler(this::createSession);
-        builder.operation("getRandomValueForAntifraud")
-               .handler(this::getRandomValueForAntifraud);
         builder.operation("uploadObservation")
                .handler(this::uploadObservation);
     }
@@ -50,27 +48,6 @@ public class SessionsApiHandler implements RouteHandler {
         logger.debug("Parameter createSessionRequest is {}", createSessionRequest);
 
         api.createSession(createSessionRequest)
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
-
-    private void getRandomValueForAntifraud(RoutingContext routingContext) {
-        logger.info("getRandomValueForAntifraud()");
-
-        // Param extraction
-        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
-
-
-        api.getRandomValueForAntifraud()
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

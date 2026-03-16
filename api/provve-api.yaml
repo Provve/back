@@ -269,21 +269,7 @@ paths:
         '404':
           description: На почту не зарегистрирован ни один аккаунт
 
-  /session/stage-1:
-    get:
-      tags:
-        - sessions
-      description: Получить рандомныое значение для подтверждения подлинности Антифрода.
-      operationId: getRandomValueForAntifraud
-      responses:
-        '200':
-          description: Случайное число, которое нужно зашифровать
-          content:
-            application/json:
-              schema:
-                type: integer
-
-  /session/stage-2:
+  /session:
     post:
       tags:
         - sessions
@@ -297,11 +283,11 @@ paths:
               $ref: '#/components/schemas/CreateSession.request'
       responses:
         '201':
-          description: Сессия успешно создана для пользователя
+          description: Сессия начата
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SessionCreatedNotification"
+                $ref: "#/components/schemas/CreateSession.response"
         '200':
           description: Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
         '401':
@@ -852,10 +838,8 @@ components:
           items:
             type: string
           description: Поисковые теги
-
         auth_token:
-          type: string
-          description: Токен аутентификации
+          $ref: "#/components/schemas/AuthToken"
 
     SkillAddVote:
       allOf:
@@ -997,15 +981,6 @@ components:
           type: string
           format: date-time
 
-    SessionCreatedNotification:
-      type: object
-      properties:
-        notification:
-          $ref: "#/components/schemas/Notification"
-        hash:
-          type: string
-          description: hash(notification)
-
     RegisterAccount.request:
       type: object
       properties:
@@ -1036,8 +1011,7 @@ components:
         - auth_token
       properties:
         auth_token:
-          type: string
-          description: Токен аутентификации
+          $ref: "#/components/schemas/AuthToken"
 
     AuthenticateUser.request:
       type: object
@@ -1058,8 +1032,7 @@ components:
           type: string
           description: Новая почта аккаунта
         auth_token:
-          type: string
-          description: Токен аутентификации
+          $ref: "#/components/schemas/AuthToken"
 
     UpdatePassword.request:
       type: object
@@ -1083,8 +1056,7 @@ components:
           type: string
           format: binary
         auth_token:
-          type: string
-          description: Токен аутентификации
+          $ref: "#/components/schemas/AuthToken"
 
     UpdateContacts.request:
       type: object
@@ -1095,8 +1067,7 @@ components:
         contacts:
           $ref: "#/components/schemas/Contacts"
         auth_token:
-          type: string
-          description: Токен аутентификации
+          $ref: "#/components/schemas/AuthToken"
 
     Contacts:
       type: object
@@ -1116,8 +1087,7 @@ components:
         consent_personal_data:
           type: boolean
         auth_token:
-          type: string
-          description: Токен аутентификации
+          $ref: "#/components/schemas/AuthToken"
 
     CreateSession.request:
       type: object
@@ -1125,9 +1095,24 @@ components:
         exam_name:
           type: string
           description: ID экзамена
-        cipher:
-          type: integer
-          description: Зашифрованное случайное число, полученное ранее
+        redirect:
+          type: string
+          format: uri
+          description: Адрес переадрессации на локальный сервер Антифрода.
+        checksum:
+          $ref: "build/specs/antifraud-api.yaml#/components/schemas/Checksum"
+        auth_token:
+          $ref: "#/components/schemas/AuthToken"
+
+    CreateSession.response:
+      type: object
+      properties:
+        continue:
+          type: boolean
+          description: Нужно ли продолжать выполнение, отправив запрос Антифроду?
+        redirect:
+          type: string
+          format: uri
 
     SubmitExamSolution.request:
       type: object
@@ -1146,7 +1131,7 @@ components:
           type: boolean
           description: true — за, false — против
         auth_token:
-          type: string
+          $ref: "#/components/schemas/AuthToken"
       required:
         - positive_reaction
         - auth_token
@@ -1206,9 +1191,13 @@ components:
       type: object
       properties:
         auth_token:
-          type: string
+          $ref: "#/components/schemas/AuthToken"
         pagination:
           $ref: "#/components/schemas/Pagination"
+
+    AuthToken:
+      type: string
+      description: Токен аутентификации
 
   securitySchemes:
     auth:

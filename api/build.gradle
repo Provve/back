@@ -48,6 +48,8 @@ dependencies {
     implementation project(':validation')
     implementation project(':s3')
     implementation project(':statemachine')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // для компиляции. todo нужно настроить shadow в :statemachine
 
     implementation libs.db.scheduler
     implementation libs.hibernate.validation
@@ -94,17 +96,17 @@ flyway {
 
 // run 'build' task to get specs
 configurations.spec.resolvedConfiguration.resolvedArtifacts.each {
-    def specContent = it.file.getText(StandardCharsets.UTF_8 as String)
-    def destination = layout
-            .projectDirectory
-            .file("/build/specs/$it.name.$it.extension")
-            .asFile
-    Files.createDirectories(destination.parentFile.toPath())
-    destination.write(specContent)
+    if ('yaml' == it.extension) {
+        def specContent = it.file.getText(StandardCharsets.UTF_8 as String)
+        def destination = layout
+                .projectDirectory
+                .file("/build/specs/$it.name.$it.extension")
+                .asFile
+        Files.createDirectories(destination.parentFile.toPath())
+        destination.write(specContent)
+    }
 }
 tasks.openApiGenerate {
-    dependsOn(build)
-
     generatorName = 'java-vertx-web'
     inputSpec = "${layout.projectDirectory}/provve-api.yaml"
     outputDir = "${layout.projectDirectory}"
@@ -125,6 +127,10 @@ processResources {
         include 'antifraud-api.yaml'
         into('build/specs')
     }
+}
+
+tasks.withType(Copy).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.INHERIT
 }
 
 def mainVerticle = 'tech.provve.api.server.ApiServer'

@@ -24,7 +24,14 @@ public class ExamAddVote {
 
     }
 
-    public ExamAddVote(String name, String arguments, List<String> tags, String authToken, String skillName, String description, FileUpload publicArchive, FileUpload privateArchive) {
+    public ExamAddVote(String name,
+                       String arguments,
+                       List<String> tags,
+                       String authToken,
+                       String skillName,
+                       String description,
+                       FileUpload publicArchive,
+                       FileUpload privateArchive) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;

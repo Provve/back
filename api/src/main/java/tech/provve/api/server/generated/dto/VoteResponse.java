@@ -48,7 +48,14 @@ public class VoteResponse {
 
     }
 
-    public VoteResponse(String name, String arguments, List<String> tags, String authToken, TypeEnum type, VoteResponseAllOfReactions reactions, OffsetDateTime deadline, ExamAddVoteResponse examAdd) {
+    public VoteResponse(String name,
+                        String arguments,
+                        List<String> tags,
+                        String authToken,
+                        TypeEnum type,
+                        VoteResponseAllOfReactions reactions,
+                        OffsetDateTime deadline,
+                        ExamAddVoteResponse examAdd) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;

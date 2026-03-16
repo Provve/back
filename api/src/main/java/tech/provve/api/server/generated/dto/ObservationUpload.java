@@ -8,36 +8,60 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ObservationUpload {
 
-    private Observation observation;
-    private String mac;
+    private Boolean cheated;
+    private String details;
+    private String sig;
+    private Checksum checksum;
 
     public ObservationUpload() {
 
     }
 
-    public ObservationUpload(Observation observation, String mac) {
-        this.observation = observation;
-        this.mac = mac;
+    public ObservationUpload(Boolean cheated, String details, String sig, Checksum checksum) {
+        this.cheated = cheated;
+        this.details = details;
+        this.sig = sig;
+        this.checksum = checksum;
     }
 
 
-    @JsonProperty("observation")
-    public Observation getObservation() {
-        return observation;
+    @JsonProperty("cheated")
+    public Boolean getCheated() {
+        return cheated;
     }
 
-    public void setObservation(Observation observation) {
-        this.observation = observation;
+    public void setCheated(Boolean cheated) {
+        this.cheated = cheated;
     }
 
 
-    @JsonProperty("mac")
-    public String getMac() {
-        return mac;
+    @JsonProperty("details")
+    public String getDetails() {
+        return details;
     }
 
-    public void setMac(String mac) {
-        this.mac = mac;
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+
+    @JsonProperty("sig")
+    public String getSig() {
+        return sig;
+    }
+
+    public void setSig(String sig) {
+        this.sig = sig;
+    }
+
+
+    @JsonProperty("checksum")
+    public Checksum getChecksum() {
+        return checksum;
+    }
+
+    public void setChecksum(Checksum checksum) {
+        this.checksum = checksum;
     }
 
 
@@ -50,13 +74,15 @@ public class ObservationUpload {
             return false;
         }
         ObservationUpload observationUpload = (ObservationUpload) o;
-        return Objects.equals(observation, observationUpload.observation) &&
-                Objects.equals(mac, observationUpload.mac);
+        return Objects.equals(cheated, observationUpload.cheated) &&
+                Objects.equals(details, observationUpload.details) &&
+                Objects.equals(sig, observationUpload.sig) &&
+                Objects.equals(checksum, observationUpload.checksum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(observation, mac);
+        return Objects.hash(cheated, details, sig, checksum);
     }
 
     @Override
@@ -64,11 +90,17 @@ public class ObservationUpload {
         StringBuilder sb = new StringBuilder();
         sb.append("class ObservationUpload {\n");
 
-        sb.append("    observation: ")
-          .append(toIndentedString(observation))
+        sb.append("    cheated: ")
+          .append(toIndentedString(cheated))
           .append("\n");
-        sb.append("    mac: ")
-          .append(toIndentedString(mac))
+        sb.append("    details: ")
+          .append(toIndentedString(details))
+          .append("\n");
+        sb.append("    sig: ")
+          .append(toIndentedString(sig))
+          .append("\n");
+        sb.append("    checksum: ")
+          .append(toIndentedString(checksum))
           .append("\n");
         sb.append("}");
         return sb.toString();

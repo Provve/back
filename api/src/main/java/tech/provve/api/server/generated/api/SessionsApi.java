@@ -7,6 +7,5 @@ import tech.provve.api.server.generated.dto.ObservationUpload;
 
 public interface SessionsApi {
     Future<ApiResponse<Void>> createSession(CreateSessionRequest createSessionRequest);
-    Future<ApiResponse<Integer>> getRandomValueForAntifraud();
     Future<ApiResponse<Void>> uploadObservation(ObservationUpload observationUpload);
 }

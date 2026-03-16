@@ -24,7 +24,14 @@ public class RobokassaConfirmPaymentRequest {
 
     }
 
-    public RobokassaConfirmPaymentRequest(String outSum, Integer invId, BigDecimal fee, String email, String signatureValue, String paymentMethod, String incCurrLabel, Map<String, String> shp) {
+    public RobokassaConfirmPaymentRequest(String outSum,
+                                          Integer invId,
+                                          BigDecimal fee,
+                                          String email,
+                                          String signatureValue,
+                                          String paymentMethod,
+                                          String incCurrLabel,
+                                          Map<String, String> shp) {
         this.outSum = outSum;
         this.invId = invId;
         this.fee = fee;
