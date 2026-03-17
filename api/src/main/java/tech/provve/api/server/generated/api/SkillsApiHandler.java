@@ -1,18 +1,27 @@
 package tech.provve.api.server.generated.api;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import io.vertx.core.json.jackson.DatabindCodec;
+import tech.provve.api.server.generated.dto.ExamResponse;
 import io.vertx.ext.web.FileUpload;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.ValidationHandler;
-import jakarta.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import tech.provve.api.server.RouteHandler;
 import tech.provve.api.server.generated.dto.Filter;
 import tech.provve.api.server.generated.dto.Pagination;
+import tech.provve.api.server.generated.dto.ResultResponse;
+import tech.provve.api.server.generated.dto.SkillResponse;
+
+import tech.provve.api.server.RouteHandler;
+import com.fasterxml.jackson.core.type.TypeReference;
+import io.vertx.core.json.jackson.DatabindCodec;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.ValidationHandler;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.core.json.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import jakarta.inject.Singleton;
+
+import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class SkillsApiHandler implements RouteHandler {

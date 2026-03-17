@@ -7,12 +7,14 @@ import lombok.SneakyThrows;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.CreateSessionRequest;
 import tech.provve.api.server.generated.dto.CreateSessionResponse;
+import tech.provve.skill.domain.entity.Session;
 import tech.provve.skill.exception.ExamPassTwice;
 import tech.provve.skill.repository.ResultRepository;
 import tech.provve.skill.repository.SessionRepository;
 import tech.provve.skill.repository.VoteRepository;
 
 import java.security.SecureRandom;
+import java.time.Instant;
 
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
 
@@ -37,8 +39,10 @@ public class SessionServiceImpl implements SessionService {
         boolean skillCanBeRemoved = voteRepository.exists(request.getExamName());
         var nonce = String.valueOf(SecureRandom.getInstanceStrong()
                                                .nextInt());
-        return new CreateSessionResponse(true,
-                                         request.getRedirect(),
+
+        sessionRepository.save(new Session(login, request.getExamName(), Instant.now()));
+
+        return new CreateSessionResponse(request.getRedirect(),
                                          skillCanBeRemoved,
                                          nonce);
     }

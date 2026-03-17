@@ -11,7 +11,7 @@ import tech.provve.skill.db.generated.tables.records.SessionRecord;
 import tech.provve.skill.domain.entity.Session;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -36,8 +36,7 @@ public class SessionRepository {
         dsl.insertInto(SESSION)
            .set(new SessionRecord(session.owner(),
                                   session.examName(),
-                                  OffsetDateTime.ofInstant(session.started(),
-                                                           ZoneOffset.UTC)))
+                                  OffsetDateTime.ofInstant(session.started(), ZoneId.systemDefault())))
            .execute();
     }
 

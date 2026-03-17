@@ -1111,9 +1111,6 @@ components:
     CreateSession.response:
       type: object
       properties:
-        continue:
-          type: boolean
-          description: Сигнал Антифроду, нужно ли продолжать выполнение
         redirect:
           type: string
           format: uri
