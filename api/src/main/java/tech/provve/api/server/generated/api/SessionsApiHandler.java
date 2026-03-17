@@ -40,10 +40,8 @@ public class SessionsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         CreateSessionRequest createSessionRequest = body != null ? DatabindCodec.mapper()
-                                                                                .convertValue(
-                                                                                        body.get(), new TypeReference<CreateSessionRequest>() {
-                                                                                        }
-                                                                                ) : null;
+                                                                                .convertValue(body.get(), new TypeReference<CreateSessionRequest>() {
+                                                                                }) : null;
 
         logger.debug("Parameter createSessionRequest is {}", createSessionRequest);
 
@@ -69,10 +67,8 @@ public class SessionsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         ObservationUpload observationUpload = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(
-                                                                                  body.get(), new TypeReference<ObservationUpload>() {
-                                                                                  }
-                                                                          ) : null;
+                                                                          .convertValue(body.get(), new TypeReference<ObservationUpload>() {
+                                                                          }) : null;
 
         logger.debug("Parameter observationUpload is {}", observationUpload);
 

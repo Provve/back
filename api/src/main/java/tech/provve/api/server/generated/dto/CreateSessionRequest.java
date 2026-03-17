@@ -8,59 +8,44 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateSessionRequest {
-
+  
   private String examName;
   private URI redirect;
-  private Checksum checksum;
   private String authToken;
 
-  public CreateSessionRequest() {
+    public CreateSessionRequest() {
 
   }
 
-  public CreateSessionRequest(String examName, URI redirect, Checksum checksum, String authToken) {
+    public CreateSessionRequest(String examName, URI redirect, String authToken) {
     this.examName = examName;
     this.redirect = redirect;
-    this.checksum = checksum;
     this.authToken = authToken;
   }
 
 
-  @JsonProperty("exam_name")
+    @JsonProperty("exam_name")
   public String getExamName() {
     return examName;
   }
-
   public void setExamName(String examName) {
     this.examName = examName;
   }
 
 
-  @JsonProperty("redirect")
+    @JsonProperty("redirect")
   public URI getRedirect() {
     return redirect;
   }
-
   public void setRedirect(URI redirect) {
     this.redirect = redirect;
   }
 
 
-  @JsonProperty("checksum")
-  public Checksum getChecksum() {
-    return checksum;
-  }
-
-  public void setChecksum(Checksum checksum) {
-    this.checksum = checksum;
-  }
-
-
-  @JsonProperty("auth_token")
+    @JsonProperty("auth_token")
   public String getAuthToken() {
     return authToken;
   }
-
   public void setAuthToken(String authToken) {
     this.authToken = authToken;
   }
@@ -77,13 +62,12 @@ public class CreateSessionRequest {
     CreateSessionRequest createSessionRequest = (CreateSessionRequest) o;
     return Objects.equals(examName, createSessionRequest.examName) &&
             Objects.equals(redirect, createSessionRequest.redirect) &&
-            Objects.equals(checksum, createSessionRequest.checksum) &&
             Objects.equals(authToken, createSessionRequest.authToken);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(examName, redirect, checksum, authToken);
+      return Objects.hash(examName, redirect, authToken);
   }
 
   @Override
@@ -91,18 +75,15 @@ public class CreateSessionRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class CreateSessionRequest {\n");
 
-    sb.append("    examName: ")
-      .append(toIndentedString(examName))
-      .append("\n");
-    sb.append("    redirect: ")
-      .append(toIndentedString(redirect))
-      .append("\n");
-    sb.append("    checksum: ")
-      .append(toIndentedString(checksum))
-      .append("\n");
-    sb.append("    authToken: ")
-      .append(toIndentedString(authToken))
-      .append("\n");
+      sb.append("    examName: ")
+        .append(toIndentedString(examName))
+        .append("\n");
+      sb.append("    redirect: ")
+        .append(toIndentedString(redirect))
+        .append("\n");
+      sb.append("    authToken: ")
+        .append(toIndentedString(authToken))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -115,7 +96,7 @@ public class CreateSessionRequest {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

@@ -37,11 +37,9 @@ public class PaymentsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         RobokassaConfirmPaymentRequest robokassaConfirmPaymentRequest = body != null ? DatabindCodec.mapper()
-                                                                                                    .convertValue(
-                                                                                                            body.get(),
-                                                                                                            new TypeReference<RobokassaConfirmPaymentRequest>() {
-                                                                                                            }
-                                                                                                    ) : null;
+                                                                                                    .convertValue(body.get(),
+                                                                                                                  new TypeReference<RobokassaConfirmPaymentRequest>() {
+                                                                                                                  }) : null;
 
         logger.debug("Parameter robokassaConfirmPaymentRequest is {}", robokassaConfirmPaymentRequest);
 

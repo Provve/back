@@ -14,8 +14,8 @@ import tech.provve.accounts.service.application.AccountService;
 import tech.provve.skill.repository.ExamRepository;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
-import tech.provve.skill.service.application.SkillService;
-import tech.provve.skill.service.application.VoteService;
+import tech.provve.skill.service.domain.SkillService;
+import tech.provve.skill.service.domain.VoteService;
 import tech.provve.statemachine.service.domain.StatemachineService;
 import terch.provve.libs.s3.S3Service;
 

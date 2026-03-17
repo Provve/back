@@ -282,16 +282,16 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateSession.request'
       responses:
-        '201':
+        '200':
           description: Сессия начата
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/CreateSession.response"
-        '200':
-          description: Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
         '401':
           $ref: "#/components/responses/Unauthenticated"
+        '404':
+          description: Указанный экзамен не найден
         '409':
           description: Дважды пройти экзамен нельзя
       security:
@@ -313,6 +313,8 @@ paths:
           description: Данные наблюдения загружены
         '401':
           $ref: "#/components/responses/Unauthenticated"
+        '403':
+          description: Легитимность Антифрода не доказана
       security:
         - auth: [ ]
 
@@ -1099,20 +1101,28 @@ components:
           type: string
           format: uri
           description: Адрес переадрессации на локальный сервер Антифрода.
-        checksum:
-          $ref: "build/specs/antifraud-api.yaml#/components/schemas/Checksum"
         auth_token:
           $ref: "#/components/schemas/AuthToken"
+      required:
+        - exam_name
+        - redirect
+        - auth_token
 
     CreateSession.response:
       type: object
       properties:
         continue:
           type: boolean
-          description: Нужно ли продолжать выполнение, отправив запрос Антифроду?
+          description: Сигнал Антифроду, нужно ли продолжать выполнение
         redirect:
           type: string
           format: uri
+        loss_risk:
+          type: boolean
+          description: Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
+        nonce:
+          type: string
+          description: Случайное значение для алгоритма проверки легитимности Антифрода.
 
     SubmitExamSolution.request:
       type: object

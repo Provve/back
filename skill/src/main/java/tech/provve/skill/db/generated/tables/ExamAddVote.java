@@ -49,34 +49,28 @@ public class ExamAddVote extends TableImpl<ExamAddVoteRecord> {
      * The column <code>skill.exam_add_vote.description</code>. Финальная
      * постановка задания для экзаменуемых
      */
-    public final TableField<ExamAddVoteRecord, String> DESCRIPTION = createField(
-            DSL.name("description"),
-            SQLDataType.VARCHAR(3000),
-            this,
-            "Финальная постановка задания для экзаменуемых"
-    );
+    public final TableField<ExamAddVoteRecord, String> DESCRIPTION = createField(DSL.name("description"),
+                                                                                 SQLDataType.VARCHAR(3000),
+                                                                                 this,
+                                                                                 "Финальная постановка задания для экзаменуемых");
 
     /**
      * The column <code>skill.exam_add_vote.private_archive_url</code>.
      * Проверяющая часть экзамена
      */
-    public final TableField<ExamAddVoteRecord, String> PRIVATE_ARCHIVE_URL = createField(
-            DSL.name("private_archive_url"),
-            SQLDataType.CLOB.nullable(false),
-            this,
-            "Проверяющая часть экзамена"
-    );
+    public final TableField<ExamAddVoteRecord, String> PRIVATE_ARCHIVE_URL = createField(DSL.name("private_archive_url"),
+                                                                                         SQLDataType.CLOB.nullable(false),
+                                                                                         this,
+                                                                                         "Проверяющая часть экзамена");
 
     /**
      * The column <code>skill.exam_add_vote.public_archive_url</code>.
      * Проверяемая часть экзамена, задание
      */
-    public final TableField<ExamAddVoteRecord, String> PUBLIC_ARCHIVE_URL = createField(
-            DSL.name("public_archive_url"),
-            SQLDataType.CLOB.nullable(false),
-            this,
-            "Проверяемая часть экзамена, задание"
-    );
+    public final TableField<ExamAddVoteRecord, String> PUBLIC_ARCHIVE_URL = createField(DSL.name("public_archive_url"),
+                                                                                        SQLDataType.CLOB.nullable(false),
+                                                                                        this,
+                                                                                        "Проверяемая часть экзамена, задание");
 
     private ExamAddVote(Name alias, Table<ExamAddVoteRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

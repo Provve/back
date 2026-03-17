@@ -42,13 +42,11 @@ public class Comment extends TableImpl<CommentRecord> {
     /**
      * The column <code>skill.comment.id</code>. Идентификатор комментария
      */
-    public final TableField<CommentRecord, Integer> ID = createField(
-            DSL.name("id"),
-            SQLDataType.INTEGER.nullable(false)
-                               .identity(true),
-            this,
-            "Идентификатор комментария"
-    );
+    public final TableField<CommentRecord, Integer> ID = createField(DSL.name("id"),
+                                                                     SQLDataType.INTEGER.nullable(false)
+                                                                                        .identity(true),
+                                                                     this,
+                                                                     "Идентификатор комментария");
 
     /**
      * The column <code>skill.comment.author</code>. Автор комментария
@@ -58,27 +56,21 @@ public class Comment extends TableImpl<CommentRecord> {
     /**
      * The column <code>skill.comment.content</code>. Содержание комментария
      */
-    public final TableField<CommentRecord, String> CONTENT = createField(
-            DSL.name("content"),
-            SQLDataType.VARCHAR(500)
-                       .nullable(false),
-            this,
-            "Содержание комментария"
-    );
+    public final TableField<CommentRecord, String> CONTENT = createField(DSL.name("content"),
+                                                                         SQLDataType.VARCHAR(500)
+                                                                                    .nullable(false),
+                                                                         this,
+                                                                         "Содержание комментария");
 
     /**
      * The column <code>skill.comment.created</code>. Время создания комментария
      */
-    public final TableField<CommentRecord, OffsetDateTime> CREATED = createField(
-            DSL.name("created"),
-            SQLDataType.TIMESTAMPWITHTIMEZONE(6)
-                       .defaultValue(DSL.field(
-                               DSL.raw("CURRENT_TIMESTAMP"),
-                               SQLDataType.TIMESTAMPWITHTIMEZONE
-                       )),
-            this,
-            "Время создания комментария"
-    );
+    public final TableField<CommentRecord, OffsetDateTime> CREATED = createField(DSL.name("created"),
+                                                                                 SQLDataType.TIMESTAMPWITHTIMEZONE(6)
+                                                                                            .defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"),
+                                                                                                                    SQLDataType.TIMESTAMPWITHTIMEZONE)),
+                                                                                 this,
+                                                                                 "Время создания комментария");
 
     /**
      * The column <code>skill.comment.vote_name</code>. Связанное голосование

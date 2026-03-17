@@ -5,9 +5,9 @@ import java.time.Duration;
 /**
  * @param examName Название экзамена
  * @param examinee Логин экзаменуемого
- * @param duration Время прохождения экзамена
+ * @param duration Время прохождения экзамена = <i>время окончания сессии</i> - <i>время начала сессии</i>
  */
-public record ExamResult(
+public record Result(
         String examName,
         String examinee,
         Duration duration

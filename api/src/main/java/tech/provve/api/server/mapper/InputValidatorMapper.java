@@ -6,9 +6,9 @@ import org.mapstruct.factory.Mappers;
 import tech.provve.api.server.validation.dto.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface ValidationDtoMapper {
+public interface InputValidatorMapper {
 
-    ValidationDtoMapper INSTANCE = Mappers.getMapper(ValidationDtoMapper.class);
+    InputValidatorMapper INSTANCE = Mappers.getMapper(InputValidatorMapper.class);
 
     RegisterAccountRequest map(tech.provve.api.server.generated.dto.RegisterAccountRequest from);
 
@@ -25,5 +25,7 @@ public interface ValidationDtoMapper {
     UpdatePersonalDataConsentRequest map(tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest from);
 
     ExamAddVote map(tech.provve.api.server.generated.dto.ExamAddVote from);
+
+    CreateSessionRequest map(tech.provve.api.server.generated.dto.CreateSessionRequest from);
 
 }

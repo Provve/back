@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Set;
 
 @Singleton
-public class DtoValidatingService {
+public class InputValidator {
 
     private final Validator validator;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
-    public DtoValidatingService(Validator validator) {
+    public InputValidator(Validator validator) {
         this.validator = validator;
     }
 

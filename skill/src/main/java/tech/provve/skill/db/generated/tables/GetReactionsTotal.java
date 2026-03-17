@@ -44,11 +44,9 @@ public class GetReactionsTotal extends TableImpl<GetReactionsTotalRecord> {
     public final TableField<GetReactionsTotalRecord, Integer> TOTAL_NEGATIVE = createField(DSL.name("total_negative"), SQLDataType.INTEGER, this, "");
 
     private GetReactionsTotal(Name alias, Table<GetReactionsTotalRecord> aliased) {
-        this(
-                alias, aliased, new Field[]{
-                        DSL.val(null, SQLDataType.VARCHAR)
-                }
-        );
+        this(alias, aliased, new Field[]{
+                DSL.val(null, SQLDataType.VARCHAR)
+        });
     }
 
     private GetReactionsTotal(Name alias, Table<GetReactionsTotalRecord> aliased, Field<?>[] parameters) {
@@ -130,11 +128,9 @@ public class GetReactionsTotal extends TableImpl<GetReactionsTotalRecord> {
     public GetReactionsTotal call(
             String voteNameParam
     ) {
-        GetReactionsTotal result = new GetReactionsTotal(
-                DSL.name("get_reactions_total"), null, new Field[]{
+        GetReactionsTotal result = new GetReactionsTotal(DSL.name("get_reactions_total"), null, new Field[]{
                 DSL.val(voteNameParam, SQLDataType.VARCHAR)
-        }
-        );
+        });
 
         return aliased() ? result.as(getUnqualifiedName()) : result;
     }
@@ -145,11 +141,9 @@ public class GetReactionsTotal extends TableImpl<GetReactionsTotalRecord> {
     public GetReactionsTotal call(
             Field<String> voteNameParam
     ) {
-        GetReactionsTotal result = new GetReactionsTotal(
-                DSL.name("get_reactions_total"), null, new Field[]{
+        GetReactionsTotal result = new GetReactionsTotal(DSL.name("get_reactions_total"), null, new Field[]{
                 voteNameParam
-        }
-        );
+        });
 
         return aliased() ? result.as(getUnqualifiedName()) : result;
     }

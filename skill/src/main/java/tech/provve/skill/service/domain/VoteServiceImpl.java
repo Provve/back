@@ -1,4 +1,4 @@
-package tech.provve.skill.service.application;
+package tech.provve.skill.service.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.avaje.config.Config;

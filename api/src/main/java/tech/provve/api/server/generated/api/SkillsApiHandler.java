@@ -47,18 +47,15 @@ public class SkillsApiHandler implements RouteHandler {
         String skillName = requestParameters.pathParameter("skill_name") != null ? requestParameters.pathParameter("skill_name")
                                                                                                     .getString() : null;
         Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                      .convertValue(
-                                                                                                              requestParameters.queryParameter("pagination")
-                                                                                                                               .get(),
-                                                                                                              new TypeReference<Pagination>() {
-                                                                                                              }
-                                                                                                      ) : null;
+                                                                                                      .convertValue(requestParameters.queryParameter(
+                                                                                                                                             "pagination")
+                                                                                                                                     .get(),
+                                                                                                                    new TypeReference<Pagination>() {
+                                                                                                                    }) : null;
         Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                          .convertValue(
-                                                                                                  requestParameters.queryParameter("filter")
-                                                                                                                   .get(), new TypeReference<Filter>() {
-                                                                                                  }
-                                                                                          ) : null;
+                                                                                          .convertValue(requestParameters.queryParameter("filter")
+                                                                                                                         .get(), new TypeReference<Filter>() {
+                                                                                          }) : null;
 
         logger.debug("Parameter skillName is {}", skillName);
         logger.debug("Parameter pagination is {}", pagination);
@@ -85,18 +82,15 @@ public class SkillsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                      .convertValue(
-                                                                                                              requestParameters.queryParameter("pagination")
-                                                                                                                               .get(),
-                                                                                                              new TypeReference<Pagination>() {
-                                                                                                              }
-                                                                                                      ) : null;
+                                                                                                      .convertValue(requestParameters.queryParameter(
+                                                                                                                                             "pagination")
+                                                                                                                                     .get(),
+                                                                                                                    new TypeReference<Pagination>() {
+                                                                                                                    }) : null;
         Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                          .convertValue(
-                                                                                                  requestParameters.queryParameter("filter")
-                                                                                                                   .get(), new TypeReference<Filter>() {
-                                                                                                  }
-                                                                                          ) : null;
+                                                                                          .convertValue(requestParameters.queryParameter("filter")
+                                                                                                                         .get(), new TypeReference<Filter>() {
+                                                                                          }) : null;
 
         logger.debug("Parameter pagination is {}", pagination);
         logger.debug("Parameter filter is {}", filter);
@@ -122,18 +116,15 @@ public class SkillsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                      .convertValue(
-                                                                                                              requestParameters.queryParameter("pagination")
-                                                                                                                               .get(),
-                                                                                                              new TypeReference<Pagination>() {
-                                                                                                              }
-                                                                                                      ) : null;
+                                                                                                      .convertValue(requestParameters.queryParameter(
+                                                                                                                                             "pagination")
+                                                                                                                                     .get(),
+                                                                                                                    new TypeReference<Pagination>() {
+                                                                                                                    }) : null;
         Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                          .convertValue(
-                                                                                                  requestParameters.queryParameter("filter")
-                                                                                                                   .get(), new TypeReference<Filter>() {
-                                                                                                  }
-                                                                                          ) : null;
+                                                                                          .convertValue(requestParameters.queryParameter("filter")
+                                                                                                                         .get(), new TypeReference<Filter>() {
+                                                                                          }) : null;
 
         logger.debug("Parameter pagination is {}", pagination);
         logger.debug("Parameter filter is {}", filter);

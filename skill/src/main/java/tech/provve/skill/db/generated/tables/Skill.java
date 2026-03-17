@@ -45,8 +45,7 @@ public class Skill extends TableImpl<SkillRecord> {
                                                                     SQLDataType.VARCHAR(100)
                                                                                .nullable(false),
                                                                     this,
-                                                                    "Название навыка"
-    );
+                                                                    "Название навыка");
 
     /**
      * The column <code>skill.skill.tags</code>.
@@ -55,8 +54,7 @@ public class Skill extends TableImpl<SkillRecord> {
                                                                       Domains.TAG.getDataType()
                                                                                  .array(),
                                                                       this,
-                                                                      ""
-    );
+                                                                      "");
 
     private Skill(Name alias, Table<SkillRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

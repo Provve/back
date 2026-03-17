@@ -39,10 +39,8 @@ public class NotificationsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         ListNotifications listNotifications = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(
-                                                                                  body.get(), new TypeReference<ListNotifications>() {
-                                                                                  }
-                                                                          ) : null;
+                                                                          .convertValue(body.get(), new TypeReference<ListNotifications>() {
+                                                                          }) : null;
 
         logger.debug("Parameter listNotifications is {}", listNotifications);
 

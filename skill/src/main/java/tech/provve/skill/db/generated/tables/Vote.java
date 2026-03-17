@@ -44,24 +44,20 @@ public class Vote extends TableImpl<VoteRecord> {
      * The column <code>skill.vote.name</code>. Название голосования. Он же и id
      * объекта голосования
      */
-    public final TableField<VoteRecord, String> NAME = createField(
-            DSL.name("name"),
-            SQLDataType.VARCHAR(100)
-                       .nullable(false),
-            this,
-            "Название голосования. Он же и id объекта голосования"
-    );
+    public final TableField<VoteRecord, String> NAME = createField(DSL.name("name"),
+                                                                   SQLDataType.VARCHAR(100)
+                                                                              .nullable(false),
+                                                                   this,
+                                                                   "Название голосования. Он же и id объекта голосования");
 
     /**
      * The column <code>skill.vote.active</code>. Признак активного голосования
      */
-    public final TableField<VoteRecord, Boolean> ACTIVE = createField(
-            DSL.name("active"),
-            SQLDataType.BOOLEAN.nullable(false)
-                               .defaultValue(DSL.field(DSL.raw("true"), SQLDataType.BOOLEAN)),
-            this,
-            "Признак активного голосования"
-    );
+    public final TableField<VoteRecord, Boolean> ACTIVE = createField(DSL.name("active"),
+                                                                      SQLDataType.BOOLEAN.nullable(false)
+                                                                                         .defaultValue(DSL.field(DSL.raw("true"), SQLDataType.BOOLEAN)),
+                                                                      this,
+                                                                      "Признак активного голосования");
 
     /**
      * The column <code>skill.vote.success</code>. Итог успешного голосования
@@ -77,46 +73,38 @@ public class Vote extends TableImpl<VoteRecord> {
      * The column <code>skill.vote.deadline</code>. Конечный срок, когда
      * голосование закроется, будет подсчитан результат и совершенно действие.
      */
-    public final TableField<VoteRecord, LocalDateTime> DEADLINE = createField(
-            DSL.name("deadline"),
-            SQLDataType.LOCALDATETIME(6)
-                       .nullable(false),
-            this,
-            "Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие."
-    );
+    public final TableField<VoteRecord, LocalDateTime> DEADLINE = createField(DSL.name("deadline"),
+                                                                              SQLDataType.LOCALDATETIME(6)
+                                                                                         .nullable(false),
+                                                                              this,
+                                                                              "Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие.");
 
     /**
      * The column <code>skill.vote.arguments</code>. Аргументы за совершение
      * действия, предложенного в голосовании.
      */
-    public final TableField<VoteRecord, String> ARGUMENTS = createField(
-            DSL.name("arguments"),
-            SQLDataType.CLOB,
-            this,
-            "Аргументы за совершение действия, предложенного в голосовании."
-    );
+    public final TableField<VoteRecord, String> ARGUMENTS = createField(DSL.name("arguments"),
+                                                                        SQLDataType.CLOB,
+                                                                        this,
+                                                                        "Аргументы за совершение действия, предложенного в голосовании.");
 
     /**
      * The column <code>skill.vote.type</code>. 0 = добавление навыка, 1 =
      * удаление навыка, 2 = добавление экзамена
      */
-    public final TableField<VoteRecord, Short> TYPE = createField(
-            DSL.name("type"),
-            SQLDataType.SMALLINT,
-            this,
-            "0 = добавление навыка, 1 = удаление навыка, 2 = добавление экзамена"
-    );
+    public final TableField<VoteRecord, Short> TYPE = createField(DSL.name("type"),
+                                                                  SQLDataType.SMALLINT,
+                                                                  this,
+                                                                  "0 = добавление навыка, 1 = удаление навыка, 2 = добавление экзамена");
 
     /**
      * The column <code>skill.vote.tags</code>.
      */
-    public final TableField<VoteRecord, String[]> TAGS = createField(
-            DSL.name("tags"),
-            Domains.TAG.getDataType()
-                       .array(),
-            this,
-            ""
-    );
+    public final TableField<VoteRecord, String[]> TAGS = createField(DSL.name("tags"),
+                                                                     Domains.TAG.getDataType()
+                                                                                .array(),
+                                                                     this,
+                                                                     "");
 
     private Vote(Name alias, Table<VoteRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
-public class RateLimitingService {
+public class ApiRateLimiter {
 
     private final Supplier<BucketConfiguration> bucketConfigurationSupplier;
 

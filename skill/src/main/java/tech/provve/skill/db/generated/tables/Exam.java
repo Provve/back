@@ -39,58 +39,48 @@ public class Exam extends TableImpl<ExamRecord> {
     /**
      * The column <code>skill.exam.name</code>. Название экзамена
      */
-    public final TableField<ExamRecord, String> NAME = createField(
-            DSL.name("name"),
-            SQLDataType.VARCHAR(100)
-                       .nullable(false),
-            this,
-            "Название экзамена"
-    );
+    public final TableField<ExamRecord, String> NAME = createField(DSL.name("name"),
+                                                                   SQLDataType.VARCHAR(100)
+                                                                              .nullable(false),
+                                                                   this,
+                                                                   "Название экзамена");
 
     /**
      * The column <code>skill.exam.skill_name</code>. Какой навык экзамен
      * проверяет
      */
-    public final TableField<ExamRecord, String> SKILL_NAME = createField(
-            DSL.name("skill_name"),
-            SQLDataType.VARCHAR(100),
-            this,
-            "Какой навык экзамен проверяет"
-    );
+    public final TableField<ExamRecord, String> SKILL_NAME = createField(DSL.name("skill_name"),
+                                                                         SQLDataType.VARCHAR(100),
+                                                                         this,
+                                                                         "Какой навык экзамен проверяет");
 
     /**
      * The column <code>skill.exam.description</code>. Постановка задания для
      * экзаменуемых
      */
-    public final TableField<ExamRecord, String> DESCRIPTION = createField(
-            DSL.name("description"),
-            SQLDataType.VARCHAR(3000)
-                       .nullable(false),
-            this,
-            "Постановка задания для экзаменуемых"
-    );
+    public final TableField<ExamRecord, String> DESCRIPTION = createField(DSL.name("description"),
+                                                                          SQLDataType.VARCHAR(3000)
+                                                                                     .nullable(false),
+                                                                          this,
+                                                                          "Постановка задания для экзаменуемых");
 
     /**
      * The column <code>skill.exam.private_archive_url</code>. Проверяющая часть
      * экзамена
      */
-    public final TableField<ExamRecord, String> PRIVATE_ARCHIVE_URL = createField(
-            DSL.name("private_archive_url"),
-            SQLDataType.CLOB.nullable(false),
-            this,
-            "Проверяющая часть экзамена"
-    );
+    public final TableField<ExamRecord, String> PRIVATE_ARCHIVE_URL = createField(DSL.name("private_archive_url"),
+                                                                                  SQLDataType.CLOB.nullable(false),
+                                                                                  this,
+                                                                                  "Проверяющая часть экзамена");
 
     /**
      * The column <code>skill.exam.public_archive_url</code>. Проверяемая часть
      * экзамена, задание
      */
-    public final TableField<ExamRecord, String> PUBLIC_ARCHIVE_URL = createField(
-            DSL.name("public_archive_url"),
-            SQLDataType.CLOB.nullable(false),
-            this,
-            "Проверяемая часть экзамена, задание"
-    );
+    public final TableField<ExamRecord, String> PUBLIC_ARCHIVE_URL = createField(DSL.name("public_archive_url"),
+                                                                                 SQLDataType.CLOB.nullable(false),
+                                                                                 this,
+                                                                                 "Проверяемая часть экзамена, задание");
 
     private Exam(Name alias, Table<ExamRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
