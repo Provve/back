@@ -24,7 +24,7 @@ import tech.provve.api.server.controller.AccountsController;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
-import tech.provve.api.server.service.RateLimitingService;
+import tech.provve.api.server.service.ApiRateLimiter;
 
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -40,7 +40,7 @@ import static tech.provve.api.server.ApiServer.PORT;
 
 @InjectTest
 @ExtendWith(VertxExtension.class)
-class ApiServer_RateLimitingService__IT {
+class ApiServer_Api_RateLimiter__IT {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -76,13 +76,13 @@ class ApiServer_RateLimitingService__IT {
         );
 
         when(accountsController.authenticateUser(any())).thenReturn(Future.succeededFuture(new ApiResponse<>(new AuthenticateUser200Response(""))));
-        var rateLimitingService = new RateLimitingService(conf, manager) {
+        var rateLimitingService = new ApiRateLimiter(conf, manager) {
             @Override
             public boolean pass(SocketAddress key) {
                 return super.pass(keys.getFirst());
             }
         };
-        beanScopeBuilder.bean(RateLimitingService.class, rateLimitingService);
+        beanScopeBuilder.bean(ApiRateLimiter.class, rateLimitingService);
 
         var body = new AuthenticateUserRequest("w", "1");
         var apiServer = new ApiServer(beanScopeBuilder);
@@ -120,13 +120,13 @@ class ApiServer_RateLimitingService__IT {
         );
 
         when(accountsController.authenticateUser(any())).thenReturn(Future.succeededFuture(new ApiResponse<>(new AuthenticateUser200Response(""))));
-        var rateLimitingService = new RateLimitingService(conf, manager) {
+        var rateLimitingService = new ApiRateLimiter(conf, manager) {
             @Override
             public boolean pass(SocketAddress key) {
                 return super.pass(keys.get(repetitionInfo.getCurrentRepetition() - 1));
             }
         };
-        beanScopeBuilder.bean(RateLimitingService.class, rateLimitingService);
+        beanScopeBuilder.bean(ApiRateLimiter.class, rateLimitingService);
 
         var body = new AuthenticateUserRequest("w", "1");
         var apiServer = new ApiServer(beanScopeBuilder);

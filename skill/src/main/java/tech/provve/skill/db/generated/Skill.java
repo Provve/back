@@ -57,6 +57,7 @@ public class Skill extends SchemaImpl {
                 GetReactionsTotal.GET_REACTIONS_TOTAL,
                 Reactions.REACTIONS,
                 Result.RESULT,
+                Session.SESSION,
                 tech.provve.skill.db.generated.tables.Skill.SKILL_,
                 Vote.VOTE
         );

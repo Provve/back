@@ -55,10 +55,8 @@ public class VotesApiHandler implements RouteHandler {
                                                                                          .getString() : null;
         RequestParameter body = requestParameters.body();
         AddCommentOnVoteRequest addCommentOnVoteRequest = body != null ? DatabindCodec.mapper()
-                                                                                      .convertValue(
-                                                                                              body.get(), new TypeReference<AddCommentOnVoteRequest>() {
-                                                                                              }
-                                                                                      ) : null;
+                                                                                      .convertValue(body.get(), new TypeReference<AddCommentOnVoteRequest>() {
+                                                                                      }) : null;
 
         logger.debug("Parameter name is {}", name);
         logger.debug("Parameter addCommentOnVoteRequest is {}", addCommentOnVoteRequest);
@@ -87,10 +85,8 @@ public class VotesApiHandler implements RouteHandler {
                                                                                          .getString() : null;
         RequestParameter body = requestParameters.body();
         CastVoteRequest castVoteRequest = body != null ? DatabindCodec.mapper()
-                                                                      .convertValue(
-                                                                              body.get(), new TypeReference<CastVoteRequest>() {
-                                                                              }
-                                                                      ) : null;
+                                                                      .convertValue(body.get(), new TypeReference<CastVoteRequest>() {
+                                                                      }) : null;
 
         logger.debug("Parameter name is {}", name);
         logger.debug("Parameter castVoteRequest is {}", castVoteRequest);
@@ -117,10 +113,8 @@ public class VotesApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         ExamAddVote examAddVote = body != null ? DatabindCodec.mapper()
-                                                              .convertValue(
-                                                                      body.get(), new TypeReference<ExamAddVote>() {
-                                                                      }
-                                                              ) : null;
+                                                              .convertValue(body.get(), new TypeReference<ExamAddVote>() {
+                                                              }) : null;
 
         logger.debug("Parameter examAddVote is {}", examAddVote);
 
@@ -146,10 +140,8 @@ public class VotesApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         SkillAddVote skillAddVote = body != null ? DatabindCodec.mapper()
-                                                                .convertValue(
-                                                                        body.get(), new TypeReference<SkillAddVote>() {
-                                                                        }
-                                                                ) : null;
+                                                                .convertValue(body.get(), new TypeReference<SkillAddVote>() {
+                                                                }) : null;
 
         logger.debug("Parameter skillAddVote is {}", skillAddVote);
 
@@ -175,10 +167,8 @@ public class VotesApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         SkillDelVote skillDelVote = body != null ? DatabindCodec.mapper()
-                                                                .convertValue(
-                                                                        body.get(), new TypeReference<SkillDelVote>() {
-                                                                        }
-                                                                ) : null;
+                                                                .convertValue(body.get(), new TypeReference<SkillDelVote>() {
+                                                                }) : null;
 
         logger.debug("Parameter skillDelVote is {}", skillDelVote);
 
@@ -284,18 +274,15 @@ public class VotesApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                      .convertValue(
-                                                                                                              requestParameters.queryParameter("pagination")
-                                                                                                                               .get(),
-                                                                                                              new TypeReference<Pagination>() {
-                                                                                                              }
-                                                                                                      ) : null;
+                                                                                                      .convertValue(requestParameters.queryParameter(
+                                                                                                                                             "pagination")
+                                                                                                                                     .get(),
+                                                                                                                    new TypeReference<Pagination>() {
+                                                                                                                    }) : null;
         Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                          .convertValue(
-                                                                                                  requestParameters.queryParameter("filter")
-                                                                                                                   .get(), new TypeReference<Filter>() {
-                                                                                                  }
-                                                                                          ) : null;
+                                                                                          .convertValue(requestParameters.queryParameter("filter")
+                                                                                                                         .get(), new TypeReference<Filter>() {
+                                                                                          }) : null;
 
         logger.debug("Parameter pagination is {}", pagination);
         logger.debug("Parameter filter is {}", filter);

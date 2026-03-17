@@ -1,17 +1,23 @@
 package tech.provve.api.server.generated.api;
 
+import tech.provve.api.server.generated.dto.ListNotifications;
+import tech.provve.api.server.generated.dto.Notification;
+
+import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameter;
 import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.RequestParameter;
 import io.vertx.ext.web.validation.ValidationHandler;
-import jakarta.inject.Singleton;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.provve.api.server.RouteHandler;
-import tech.provve.api.server.generated.dto.ListNotifications;
+import jakarta.inject.Singleton;
+
+import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class NotificationsApiHandler implements RouteHandler {
@@ -39,10 +45,8 @@ public class NotificationsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         ListNotifications listNotifications = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(
-                                                                                  body.get(), new TypeReference<ListNotifications>() {
-                                                                                  }
-                                                                          ) : null;
+                                                                          .convertValue(body.get(), new TypeReference<ListNotifications>() {
+                                                                          }) : null;
 
         logger.debug("Parameter listNotifications is {}", listNotifications);
 

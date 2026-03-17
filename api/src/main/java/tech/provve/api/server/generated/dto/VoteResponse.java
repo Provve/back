@@ -1,13 +1,16 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+
+import tech.provve.api.server.generated.dto.ExamAddVoteResponse;
+import tech.provve.api.server.generated.dto.VoteResponseAllOfReactions;
 
 /**
  * Всеохватывающее представление голосования
@@ -48,7 +51,14 @@ public class VoteResponse {
 
     }
 
-    public VoteResponse(String name, String arguments, List<String> tags, String authToken, TypeEnum type, VoteResponseAllOfReactions reactions, OffsetDateTime deadline, ExamAddVoteResponse examAdd) {
+    public VoteResponse(String name,
+                        String arguments,
+                        List<String> tags,
+                        String authToken,
+                        TypeEnum type,
+                        VoteResponseAllOfReactions reactions,
+                        OffsetDateTime deadline,
+                        ExamAddVoteResponse examAdd) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;

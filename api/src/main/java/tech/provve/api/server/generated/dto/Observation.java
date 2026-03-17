@@ -1,53 +1,42 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Observation {
 
-
-    public enum ViolationsEnum {
-        REMOTE_CONTROL("remote_control"),
-        CLIPBOARD("clipboard"),
-        WEB("web");
-
-        private String value;
-
-        ViolationsEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return value;
-        }
-    }
-
-    private List<ViolationsEnum> violations = new ArrayList<>();
+    private Boolean cheated;
+    private String details;
 
     public Observation() {
 
     }
 
-    public Observation(List<ViolationsEnum> violations) {
-        this.violations = violations;
+    public Observation(Boolean cheated, String details) {
+        this.cheated = cheated;
+        this.details = details;
     }
 
 
-    @JsonProperty("violations")
-    public List<ViolationsEnum> getViolations() {
-        return violations;
+    @JsonProperty("cheated")
+    public Boolean getCheated() {
+        return cheated;
     }
 
-    public void setViolations(List<ViolationsEnum> violations) {
-        this.violations = violations;
+    public void setCheated(Boolean cheated) {
+        this.cheated = cheated;
+    }
+
+
+    @JsonProperty("details")
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
 
@@ -60,12 +49,13 @@ public class Observation {
             return false;
         }
         Observation observation = (Observation) o;
-        return Objects.equals(violations, observation.violations);
+        return Objects.equals(cheated, observation.cheated) &&
+                Objects.equals(details, observation.details);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(violations);
+        return Objects.hash(cheated, details);
     }
 
     @Override
@@ -73,8 +63,11 @@ public class Observation {
         StringBuilder sb = new StringBuilder();
         sb.append("class Observation {\n");
 
-        sb.append("    violations: ")
-          .append(toIndentedString(violations))
+        sb.append("    cheated: ")
+          .append(toIndentedString(cheated))
+          .append("\n");
+        sb.append("    details: ")
+          .append(toIndentedString(details))
           .append("\n");
         sb.append("}");
         return sb.toString();

@@ -14,8 +14,9 @@ import tech.provve.accounts.service.application.AccountService;
 import tech.provve.skill.repository.ExamRepository;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
-import tech.provve.skill.service.application.SkillService;
-import tech.provve.skill.service.application.VoteService;
+import tech.provve.skill.service.domain.SkillService;
+import tech.provve.skill.service.domain.VoteService;
+import tech.provve.statemachine.service.domain.StatemachineService;
 import terch.provve.libs.s3.S3Service;
 
 import javax.sql.DataSource;
@@ -94,6 +95,16 @@ public class Scheduling {
                             voteRepository.findByName(task.getId())
                                           .ifPresent(vote -> examRepository.save(vote.getExam()));
                         }
+                    });
+    }
+
+    @Bean
+    @Named("6")
+    @SuppressWarnings("all")
+    public OneTimeTask<Void> continueStateMachines(StatemachineService statemachineService) {
+        return Tasks.oneTime(CONTINUE_STATEMACHINES)
+                    .execute((_, _) -> {
+                        statemachineService.continueAll();
                     });
     }
 

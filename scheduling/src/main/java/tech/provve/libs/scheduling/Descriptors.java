@@ -9,6 +9,7 @@ public final class Descriptors {
     }
 
     public static final TaskDescriptor<Void> INIT_S3_BUCKETS = TaskDescriptor.of("INIT_S3_BUCKETS");
+    public static final TaskDescriptor<Void> CONTINUE_STATEMACHINES = TaskDescriptor.of("CONTINUE_STATEMACHINES");
     public static final TaskDescriptor<Void> DOWNGRADE_PREMIUM_ACCOUNT = TaskDescriptor.of("DOWNGRADE_PREMIUM_ACCOUNT");
 
     /**

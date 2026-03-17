@@ -69,10 +69,8 @@ public class AccountsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         AuthenticateUserRequest authenticateUserRequest = body != null ? DatabindCodec.mapper()
-                                                                                      .convertValue(
-                                                                                              body.get(), new TypeReference<AuthenticateUserRequest>() {
-                                                                                              }
-                                                                                      ) : null;
+                                                                                      .convertValue(body.get(), new TypeReference<AuthenticateUserRequest>() {
+                                                                                      }) : null;
 
         logger.debug("Parameter authenticateUserRequest is {}", authenticateUserRequest);
 
@@ -98,10 +96,8 @@ public class AccountsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         DeleteAccountRequest deleteAccountRequest = body != null ? DatabindCodec.mapper()
-                                                                                .convertValue(
-                                                                                        body.get(), new TypeReference<DeleteAccountRequest>() {
-                                                                                        }
-                                                                                ) : null;
+                                                                                .convertValue(body.get(), new TypeReference<DeleteAccountRequest>() {
+                                                                                }) : null;
 
         logger.debug("Parameter deleteAccountRequest is {}", deleteAccountRequest);
 
@@ -127,10 +123,8 @@ public class AccountsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         RegisterAccountRequest registerAccountRequest = body != null ? DatabindCodec.mapper()
-                                                                                    .convertValue(
-                                                                                            body.get(), new TypeReference<RegisterAccountRequest>() {
-                                                                                            }
-                                                                                    ) : null;
+                                                                                    .convertValue(body.get(), new TypeReference<RegisterAccountRequest>() {
+                                                                                    }) : null;
 
         logger.debug("Parameter registerAccountRequest is {}", registerAccountRequest);
 
@@ -181,10 +175,8 @@ public class AccountsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         UpdateAvatarRequest updateAvatarRequest = body != null ? DatabindCodec.mapper()
-                                                                              .convertValue(
-                                                                                      body.get(), new TypeReference<UpdateAvatarRequest>() {
-                                                                                      }
-                                                                              ) : null;
+                                                                              .convertValue(body.get(), new TypeReference<UpdateAvatarRequest>() {
+                                                                              }) : null;
 
         logger.debug("Parameter updateAvatarRequest is {}", updateAvatarRequest);
 
@@ -210,10 +202,8 @@ public class AccountsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         UpdateContactsRequest updateContactsRequest = body != null ? DatabindCodec.mapper()
-                                                                                  .convertValue(
-                                                                                          body.get(), new TypeReference<UpdateContactsRequest>() {
-                                                                                          }
-                                                                                  ) : null;
+                                                                                  .convertValue(body.get(), new TypeReference<UpdateContactsRequest>() {
+                                                                                  }) : null;
 
         logger.debug("Parameter updateContactsRequest is {}", updateContactsRequest);
 
@@ -239,10 +229,8 @@ public class AccountsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         UpdateEmailRequest updateEmailRequest = body != null ? DatabindCodec.mapper()
-                                                                            .convertValue(
-                                                                                    body.get(), new TypeReference<UpdateEmailRequest>() {
-                                                                                    }
-                                                                            ) : null;
+                                                                            .convertValue(body.get(), new TypeReference<UpdateEmailRequest>() {
+                                                                            }) : null;
 
         logger.debug("Parameter updateEmailRequest is {}", updateEmailRequest);
 
@@ -268,10 +256,8 @@ public class AccountsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         UpdatePasswordRequest updatePasswordRequest = body != null ? DatabindCodec.mapper()
-                                                                                  .convertValue(
-                                                                                          body.get(), new TypeReference<UpdatePasswordRequest>() {
-                                                                                          }
-                                                                                  ) : null;
+                                                                                  .convertValue(body.get(), new TypeReference<UpdatePasswordRequest>() {
+                                                                                  }) : null;
 
         logger.debug("Parameter updatePasswordRequest is {}", updatePasswordRequest);
 
@@ -297,11 +283,9 @@ public class AccountsApiHandler implements RouteHandler {
 
         RequestParameter body = requestParameters.body();
         UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest = body != null ? DatabindCodec.mapper()
-                                                                                                        .convertValue(
-                                                                                                                body.get(),
-                                                                                                                new TypeReference<UpdatePersonalDataConsentRequest>() {
-                                                                                                                }
-                                                                                                        ) : null;
+                                                                                                        .convertValue(body.get(),
+                                                                                                                      new TypeReference<UpdatePersonalDataConsentRequest>() {
+                                                                                                                      }) : null;
 
         logger.debug("Parameter updatePersonalDataConsentRequest is {}", updatePersonalDataConsentRequest);
 

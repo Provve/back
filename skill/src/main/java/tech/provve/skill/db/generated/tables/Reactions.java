@@ -48,24 +48,20 @@ public class Reactions extends TableImpl<ReactionsRecord> {
      * The column <code>skill.reactions.vote_name</code>. Связанный навык, за
      * который идёт голосование
      */
-    public final TableField<ReactionsRecord, String> VOTE_NAME = createField(
-            DSL.name("vote_name"),
-            SQLDataType.VARCHAR(100),
-            this,
-            "Связанный навык, за который идёт голосование"
-    );
+    public final TableField<ReactionsRecord, String> VOTE_NAME = createField(DSL.name("vote_name"),
+                                                                             SQLDataType.VARCHAR(100),
+                                                                             this,
+                                                                             "Связанный навык, за который идёт голосование");
 
     /**
      * The column <code>skill.reactions.reaction</code>. 1 — "за", 0 — "против"
      */
-    public final TableField<ReactionsRecord, Boolean> REACTION = createField(
-            DSL.name("reaction"),
-            SQLDataType.CHAR(1)
-                       .nullable(false),
-            this,
-            "1 — \"за\", 0 — \"против\"",
-            new BooleanBitBinding()
-    );
+    public final TableField<ReactionsRecord, Boolean> REACTION = createField(DSL.name("reaction"),
+                                                                             SQLDataType.CHAR(1)
+                                                                                        .nullable(false),
+                                                                             this,
+                                                                             "1 — \"за\", 0 — \"против\"",
+                                                                             new BooleanBitBinding());
 
     private Reactions(Name alias, Table<ReactionsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -104,12 +100,10 @@ public class Reactions extends TableImpl<ReactionsRecord> {
     @Override
     public List<UniqueKey<ReactionsRecord>> getUniqueKeys() {
         return Arrays.asList(
-                Internal.createUniqueKey(
-                        Reactions.REACTIONS,
-                        DSL.name("reactions_voter_vote_name_key"),
-                        new TableField[]{Reactions.REACTIONS.VOTER, Reactions.REACTIONS.VOTE_NAME},
-                        true
-                )
+                Internal.createUniqueKey(Reactions.REACTIONS,
+                                         DSL.name("reactions_voter_vote_name_key"),
+                                         new TableField[]{Reactions.REACTIONS.VOTER, Reactions.REACTIONS.VOTE_NAME},
+                                         true)
         );
     }
 

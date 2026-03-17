@@ -9,11 +9,11 @@ import tech.provve.api.server.exception.ValidationError;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.VotesApi;
 import tech.provve.api.server.generated.dto.*;
-import tech.provve.api.server.mapper.ValidationDtoMapper;
-import tech.provve.api.server.service.DtoValidatingService;
+import tech.provve.api.server.mapper.InputValidatorMapper;
+import tech.provve.api.server.service.InputValidator;
 import tech.provve.api.server.validation.dto.CastVote;
 import tech.provve.skill.exception.*;
-import tech.provve.skill.service.application.VoteService;
+import tech.provve.skill.service.domain.VoteService;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class VotesController implements VotesApi {
 
-    private final DtoValidatingService validatingService;
+    private final InputValidator validatingService;
     private final VoteService voteService;
 
     @Override
@@ -50,7 +50,7 @@ public class VotesController implements VotesApi {
     @Override
     public Future<ApiResponse<Void>> createExamAddVote(ExamAddVote examAddVote) {
         try {
-            validatingService.validate(ValidationDtoMapper.INSTANCE.map(examAddVote));
+            validatingService.validate(InputValidatorMapper.INSTANCE.map(examAddVote));
             voteService.create(examAddVote);
             return Future.succeededFuture(new ApiResponse<>(202));
         } catch (ValidationError e) {

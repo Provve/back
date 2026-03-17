@@ -10,7 +10,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.net.SocketAddress;
 import io.vertx.ext.web.RoutingContext;
 import jakarta.inject.Named;
-import tech.provve.api.server.service.RateLimitingService;
+import tech.provve.api.server.service.ApiRateLimiter;
 
 import java.util.function.Supplier;
 
@@ -42,7 +42,7 @@ public class RateLimit {
 
     @Bean
     @Named(RATE_LIMITER)
-    public Handler<RoutingContext> routingContextHandler(RateLimitingService rateLimitingService) {
+    public Handler<RoutingContext> routingContextHandler(ApiRateLimiter apiRateLimiter) {
         return context -> {
             if (!"/api/v1/auth".equals(context.request()
                                               .path())) {
@@ -51,7 +51,7 @@ public class RateLimit {
             }
             var senderAddress = context.request()
                                        .remoteAddress();
-            if (rateLimitingService.pass(senderAddress)) {
+            if (apiRateLimiter.pass(senderAddress)) {
                 context.next();
                 return;
             }

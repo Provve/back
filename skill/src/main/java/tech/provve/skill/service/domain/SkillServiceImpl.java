@@ -1,4 +1,4 @@
-package tech.provve.skill.service.application;
+package tech.provve.skill.service.domain;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;

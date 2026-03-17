@@ -1,4 +1,4 @@
-package tech.provve.skill.service.application;
+package tech.provve.skill.service.domain;
 
 import io.avaje.inject.test.InjectTest;
 import jakarta.inject.Inject;

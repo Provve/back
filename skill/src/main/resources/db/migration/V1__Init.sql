@@ -119,7 +119,6 @@ $$ LANGUAGE plpgsql;
 
 
 
-
 CREATE TABLE skill.comment (
     id SERIAL PRIMARY KEY,
     author VARCHAR(50) REFERENCES accounts.accounts(login),
@@ -135,3 +134,15 @@ COMMENT ON COLUMN skill.comment.created IS 'Время создания комм
 COMMENT ON COLUMN skill.comment.vote_name IS 'Связанное голосование';
 
 CREATE INDEX idx_comment_vote_name ON skill.comment(vote_name);
+
+
+
+CREATE TABLE skill.session (
+    owner VARCHAR(50) REFERENCES accounts.accounts(login),
+    exam_name VARCHAR(100) REFERENCES skill.exam(name),
+    created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+COMMENT ON TABLE skill.session IS 'Таблица для хранения сессий экзаменуемых';
+COMMENT ON COLUMN skill.session.owner IS 'Логин экзаменуемого';
+COMMENT ON COLUMN skill.session.exam_name IS 'Проводимый экзамен';
+COMMENT ON COLUMN skill.session.created IS 'Время начала сессии';

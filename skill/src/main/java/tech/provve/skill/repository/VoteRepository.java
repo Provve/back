@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.ExamAddVote.EXAM_ADD_VOTE;
 import static tech.provve.skill.db.generated.tables.GetReactionsTotal.GET_REACTIONS_TOTAL;
 import static tech.provve.skill.db.generated.tables.Reactions.REACTIONS;
@@ -52,8 +53,10 @@ public class VoteRepository {
                    .deadline(record.get(VOTE.DEADLINE))
                    .arguments(record.get(VOTE.ARGUMENTS))
                    .type(record.get(
-                           VOTE.TYPE, Converter.from(
-                                   Short.class, Vote.Type.class,
+                           VOTE.TYPE,
+                           Converter.from(
+                                   Short.class,
+                                   Vote.Type.class,
                                    code -> Vote.Type.map(code)
                            )
                    ))
@@ -88,6 +91,13 @@ public class VoteRepository {
                   .fetchOptional(outputMapper);
     }
 
+    public boolean exists(String name) {
+        return nonNull(dsl.select(VOTE.NAME)
+                          .from(VOTE)
+                          .where(VOTE.NAME.eq(name))
+                          .fetchOne());
+    }
+
     @SuppressWarnings("all")
     public List<Vote> getAll() {
         var select = dsl.select()
@@ -106,9 +116,12 @@ public class VoteRepository {
      */
     public void setReaction(String name, String voter, boolean reaction) {
         dsl.insertInto(REACTIONS)
-           .set(REACTIONS.VOTE_NAME, name)
-           .set(REACTIONS.VOTER, voter)
-           .set(REACTIONS.REACTION, reaction)
+           .set(REACTIONS.VOTE_NAME,
+                name)
+           .set(REACTIONS.VOTER,
+                voter)
+           .set(REACTIONS.REACTION,
+                reaction)
            .execute();
     }
 
@@ -117,8 +130,10 @@ public class VoteRepository {
      */
     public void updateSuccess(String name, boolean success) {
         dsl.update(VOTE)
-           .set(VOTE.ACTIVE, false)
-           .set(VOTE.SUCCESS, success)
+           .set(VOTE.ACTIVE,
+                false)
+           .set(VOTE.SUCCESS,
+                success)
            .where(VOTE.NAME.eq(name))
            .execute();
     }

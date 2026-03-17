@@ -1,4 +1,4 @@
-package tech.provve.skill.service.application;
+package tech.provve.skill.service.domain;
 
 import tech.provve.api.server.generated.dto.CastVoteRequest;
 import tech.provve.api.server.generated.dto.ExamAddVote;

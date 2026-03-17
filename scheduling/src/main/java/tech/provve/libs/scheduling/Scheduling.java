@@ -27,6 +27,8 @@ public class Scheduling {
         scheduler.start();
         scheduler.schedule(INIT_S3_BUCKETS.instance("1")
                                           .scheduledTo(Instant.now()));
+        scheduler.schedule(CONTINUE_STATEMACHINES.instance("1")
+                                                 .scheduledTo(Instant.now()));
     }
 
     public void addSkill(String voteName, Instant when) {
@@ -36,7 +38,7 @@ public class Scheduling {
 
     public void delSkill(String voteName, Instant when) {
         scheduler.schedule(DELETE_SKILL_AFTER_VOTE.instance(voteName)
-                                       .scheduledTo(when));
+                                                  .scheduledTo(when));
     }
 
     public void addExam(String voteName, Instant when) {

@@ -1,12 +1,12 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.ext.web.FileUpload;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamAddVote {
@@ -24,7 +24,14 @@ public class ExamAddVote {
 
     }
 
-    public ExamAddVote(String name, String arguments, List<String> tags, String authToken, String skillName, String description, FileUpload publicArchive, FileUpload privateArchive) {
+    public ExamAddVote(String name,
+                       String arguments,
+                       List<String> tags,
+                       String authToken,
+                       String skillName,
+                       String description,
+                       FileUpload publicArchive,
+                       FileUpload privateArchive) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;

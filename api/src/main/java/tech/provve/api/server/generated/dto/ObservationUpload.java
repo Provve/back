@@ -1,23 +1,25 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
+import tech.provve.api.server.generated.dto.Observation;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ObservationUpload {
 
     private Observation observation;
-    private String mac;
+    private String nonce;
+    private String sig;
 
     public ObservationUpload() {
 
     }
 
-    public ObservationUpload(Observation observation, String mac) {
+    public ObservationUpload(Observation observation, String nonce, String sig) {
         this.observation = observation;
-        this.mac = mac;
+        this.nonce = nonce;
+        this.sig = sig;
     }
 
 
@@ -31,13 +33,23 @@ public class ObservationUpload {
     }
 
 
-    @JsonProperty("mac")
-    public String getMac() {
-        return mac;
+    @JsonProperty("nonce")
+    public String getNonce() {
+        return nonce;
     }
 
-    public void setMac(String mac) {
-        this.mac = mac;
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
+
+
+    @JsonProperty("sig")
+    public String getSig() {
+        return sig;
+    }
+
+    public void setSig(String sig) {
+        this.sig = sig;
     }
 
 
@@ -51,12 +63,13 @@ public class ObservationUpload {
         }
         ObservationUpload observationUpload = (ObservationUpload) o;
         return Objects.equals(observation, observationUpload.observation) &&
-                Objects.equals(mac, observationUpload.mac);
+                Objects.equals(nonce, observationUpload.nonce) &&
+                Objects.equals(sig, observationUpload.sig);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(observation, mac);
+        return Objects.hash(observation, nonce, sig);
     }
 
     @Override
@@ -67,8 +80,11 @@ public class ObservationUpload {
         sb.append("    observation: ")
           .append(toIndentedString(observation))
           .append("\n");
-        sb.append("    mac: ")
-          .append(toIndentedString(mac))
+        sb.append("    nonce: ")
+          .append(toIndentedString(nonce))
+          .append("\n");
+        sb.append("    sig: ")
+          .append(toIndentedString(sig))
           .append("\n");
         sb.append("}");
         return sb.toString();
