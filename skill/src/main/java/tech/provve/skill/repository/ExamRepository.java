@@ -13,6 +13,7 @@ import tech.provve.skill.mapper.ExamMapper;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.Exam.EXAM;
 
 @NullMarked
@@ -42,6 +43,13 @@ public class ExamRepository {
                   .from(EXAM)
                   .where(EXAM.NAME.eq(name))
                   .fetchOptional(outputMapper);
+    }
+
+    public boolean exists(String name) {
+        return nonNull(dsl.select(EXAM.NAME)
+                          .from(EXAM)
+                          .where(EXAM.NAME.eq(name))
+                          .fetchOne());
     }
 
     @SuppressWarnings("all")

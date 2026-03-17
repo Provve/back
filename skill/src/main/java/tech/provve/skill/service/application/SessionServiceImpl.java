@@ -8,7 +8,9 @@ import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.CreateSessionRequest;
 import tech.provve.api.server.generated.dto.CreateSessionResponse;
 import tech.provve.skill.domain.entity.Session;
+import tech.provve.skill.exception.ExamNotFound;
 import tech.provve.skill.exception.ExamPassTwice;
+import tech.provve.skill.repository.ExamRepository;
 import tech.provve.skill.repository.ResultRepository;
 import tech.provve.skill.repository.SessionRepository;
 import tech.provve.skill.repository.VoteRepository;
@@ -24,12 +26,17 @@ public class SessionServiceImpl implements SessionService {
 
     private final ResultRepository resultRepository;
     private final SessionRepository sessionRepository;
+    private final ExamRepository examRepository;
     private final VoteRepository voteRepository;
     private final JwsParsingService jwsParsingService;
 
     @Override
     @SneakyThrows
-    public CreateSessionResponse create(CreateSessionRequest request) throws ExamPassTwice {
+    public CreateSessionResponse create(CreateSessionRequest request) {
+        if (!(examRepository.exists(request.getExamName()))) {
+            throw new ExamNotFound(request.getExamName());
+        }
+
         var login = jwsParsingService.parseAuth(request.getAuthToken(),
                                                 JWT_SUBJECT);
         boolean notFirstAttempt = sessionRepository.exists(login) || resultRepository.exists(login);
