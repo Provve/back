@@ -9,7 +9,6 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import tech.provve.skill.db.generated.Domains;
 import tech.provve.skill.db.generated.tables.records.SkillRecord;
 
 import java.util.Arrays;
@@ -48,13 +47,9 @@ public class Skill extends TableImpl<SkillRecord> {
                                                                     "Название навыка");
 
     /**
-     * The column <code>skill.skill.tags</code>.
+     * The column <code>skill.skill.tags</code>. Поисковые теги
      */
-    public final TableField<SkillRecord, String[]> TAGS = createField(DSL.name("tags"),
-                                                                      Domains.TAG.getDataType()
-                                                                                 .array(),
-                                                                      this,
-                                                                      "");
+    public final TableField<SkillRecord, String[]> TAGS = createField(DSL.name("tags"), SQLDataType.CLOB.array(), this, "Поисковые теги");
 
     private Skill(Name alias, Table<SkillRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

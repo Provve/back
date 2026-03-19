@@ -1,9 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS skill;
 
-CREATE DOMAIN skill.TAG AS VARCHAR(20);
-COMMENT ON DOMAIN skill.TAG IS 'Поисковой тег';
-
-
 CREATE TABLE skill.vote (
     name VARCHAR(100) PRIMARY KEY,
     active BOOLEAN NOT NULL DEFAULT TRUE,
@@ -12,7 +8,7 @@ CREATE TABLE skill.vote (
     deadline TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     arguments TEXT,
     type SMALLINT CHECK(type >= 0 AND type <= 2),
-    tags skill.TAG[]
+    tags TEXT[]
 );
 COMMENT ON TABLE skill.vote IS 'Общая форма голосования';
 COMMENT ON COLUMN skill.vote.name IS 'Название голосования. Он же и id объекта голосования';
@@ -22,6 +18,7 @@ COMMENT ON COLUMN skill.vote.author IS 'Автор голосования';
 COMMENT ON COLUMN skill.vote.deadline IS 'Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие.';
 COMMENT ON COLUMN skill.vote.arguments IS 'Аргументы за совершение действия, предложенного в голосовании.';
 COMMENT ON COLUMN skill.vote.type IS '0 = добавление навыка, 1 = удаление навыка, 2 = добавление экзамена';
+COMMENT ON COLUMN skill.vote.tags IS 'Поисковые теги';
 
 CREATE INDEX idx_vote_tags ON skill.vote USING GIN(tags);
 
@@ -29,10 +26,11 @@ CREATE INDEX idx_vote_tags ON skill.vote USING GIN(tags);
 
 CREATE TABLE skill.skill (
     name VARCHAR(100) PRIMARY KEY,
-    tags skill.TAG[]
+    tags TEXT[]
 );
 COMMENT ON TABLE skill.skill IS 'Таблица навыков';
 COMMENT ON COLUMN skill.skill.name IS 'Название навыка';
+COMMENT ON COLUMN skill.skill.tags IS 'Поисковые теги';
 
 CREATE INDEX idx_skill_tags ON skill.skill USING GIN(tags);
 

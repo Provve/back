@@ -53,9 +53,12 @@ public class ExamRepository {
     }
 
     @SuppressWarnings("all")
-    public List<Exam> getAll() {
+    public List<Exam> getAll(String previous, int pageSize) {
         var select = dsl.select()
-                        .from(EXAM);
+                        .from(EXAM)
+                        .orderBy(EXAM.NAME)
+                        .seek(previous)
+                        .limit(pageSize);
         return dsl.fetchMany(select)
                   .stream()
                   .map(result -> result.map(outputMapper))

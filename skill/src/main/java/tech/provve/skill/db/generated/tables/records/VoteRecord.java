@@ -133,7 +133,7 @@ public class VoteRecord extends UpdatableRecordImpl<VoteRecord> {
     }
 
     /**
-     * Setter for <code>skill.vote.tags</code>.
+     * Setter for <code>skill.vote.tags</code>. Поисковые теги
      */
     public VoteRecord setTags(String[] value) {
         set(7, value);
@@ -141,7 +141,7 @@ public class VoteRecord extends UpdatableRecordImpl<VoteRecord> {
     }
 
     /**
-     * Getter for <code>skill.vote.tags</code>.
+     * Getter for <code>skill.vote.tags</code>. Поисковые теги
      */
     public String[] getTags() {
         return (String[]) get(7);

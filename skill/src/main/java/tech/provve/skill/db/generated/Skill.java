@@ -5,7 +5,6 @@ package tech.provve.skill.db.generated;
 
 
 import org.jooq.Catalog;
-import org.jooq.Domain;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SchemaImpl;
@@ -39,13 +38,6 @@ public class Skill extends SchemaImpl {
     @Override
     public Catalog getCatalog() {
         return DefaultCatalog.DEFAULT_CATALOG;
-    }
-
-    @Override
-    public final List<Domain<?>> getDomains() {
-        return Arrays.asList(
-                Domains.TAG
-        );
     }
 
     @Override

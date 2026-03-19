@@ -99,12 +99,15 @@ public class VoteRepository {
     }
 
     @SuppressWarnings("all")
-    public List<Vote> getAll() {
+    public List<Vote> getAll(String previous, int pageSize) {
         var select = dsl.select()
                         .from(VOTE)
                         .leftJoin(EXAM_ADD_VOTE)
                         .on(EXAM_ADD_VOTE.VOTE_NAME.eq(VOTE.NAME))
-                        .crossJoin(GET_REACTIONS_TOTAL.call(VOTE.NAME));
+                        .crossJoin(GET_REACTIONS_TOTAL.call(VOTE.NAME))
+                        .orderBy(VOTE.NAME)
+                        .seek(previous)
+                        .limit(pageSize);
         return dsl.fetchStream(select)
                   .map(result -> result.map(outputMapper))
                   .toList();

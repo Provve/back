@@ -9,7 +9,6 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import tech.provve.skill.db.generated.Domains;
 import tech.provve.skill.db.generated.Skill;
 import tech.provve.skill.db.generated.tables.records.VoteRecord;
 
@@ -98,13 +97,9 @@ public class Vote extends TableImpl<VoteRecord> {
                                                                   "0 = добавление навыка, 1 = удаление навыка, 2 = добавление экзамена");
 
     /**
-     * The column <code>skill.vote.tags</code>.
+     * The column <code>skill.vote.tags</code>. Поисковые теги
      */
-    public final TableField<VoteRecord, String[]> TAGS = createField(DSL.name("tags"),
-                                                                     Domains.TAG.getDataType()
-                                                                                .array(),
-                                                                     this,
-                                                                     "");
+    public final TableField<VoteRecord, String[]> TAGS = createField(DSL.name("tags"), SQLDataType.CLOB.array(), this, "Поисковые теги");
 
     private Vote(Name alias, Table<VoteRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -39,10 +39,13 @@ public class NotificationRepository {
      * @param login of an account for which NOTIFICATION is fetched
      */
     @SuppressWarnings("all")
-    public List<Notification> findAllBy(String login) {
+    public List<Notification> findAllBy(String login, String previous, int pageSize) {
         var select = dsl.select()
                         .from(NOTIFICATION_)
-                        .where(NOTIFICATION_.NOTIFIED_ACCOUNT.eq(login));
+                        .where(NOTIFICATION_.NOTIFIED_ACCOUNT.eq(login))
+                        .orderBy(NOTIFICATION_.ID)
+                        .seek(Integer.valueOf(previous))
+                        .limit(pageSize);
         return dsl.fetchStream(select)
                   .map(result -> result.map(outputMapper))
                   .toList();

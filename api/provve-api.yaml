@@ -319,40 +319,44 @@ paths:
         - auth: [ ]
 
   /skills:
-    get:
+    post:
       tags:
         - skills
       summary: Получение списка навыков
       operationId: listSkills
-      parameters:
-        - $ref: "#/components/parameters/Pagination"
-        - $ref: "#/components/parameters/Filter"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collection.request"
       responses:
         '200':
           description: Успешно получен список навыков
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Skill.response"
+                $ref: "#/components/schemas/Skills"
 
   /skills/{skill_name}/exams:
-    get:
+    post:
       tags:
         - skills
       summary: Получение списка экзаменов по навыку
-      operationId: listExamsBySkill
-      parameters:
-        - $ref: "#/components/parameters/Pagination"
-        - $ref: "#/components/parameters/Filter"
+      operationId: listExams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collection.request"
       responses:
         '200':
           description: Успешно получен список экзаменов
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Exam.response"
+                $ref: "#/components/schemas/Exams"
 
   /exams/{name}/solution:
     post:
@@ -386,29 +390,30 @@ paths:
         - auth: [ ]
 
   /skills/{skill_name}/results:
-    get:
-      summary: Получение результатов по экзаменам навыка
+    post:
+      summary: Получение результатов по экзаменам навыка.
       tags:
         - skills
-      operationId: getResultsBySkill
-      parameters:
-        - name: skill_name
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID навыка
-        - $ref: "#/components/parameters/Pagination"
-        - $ref: "#/components/parameters/Filter"
+      operationId: listResults
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/Collection.request"
+                - type: object
+                  properties:
+                    skill_name:
+                      type: string
+                      description: ID навыка
       responses:
         '200':
           description: Список результатов успешно получен
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Result.response"
+                $ref: "#/components/schemas/Results"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
@@ -444,23 +449,24 @@ paths:
         - auth: [ ]
 
   /votes:
-    get:
+    post:
       summary: Получить список голосований
       tags:
         - votes
       operationId: listVotes
-      parameters:
-        - $ref: "#/components/parameters/Pagination"
-        - $ref: "#/components/parameters/Filter"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collection.request"
       responses:
         '200':
           description: Получены голосования
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Vote.response"
+                $ref: "#/components/schemas/Votes"
 
   /votes/skill-add:
     post:
@@ -576,7 +582,7 @@ paths:
       summary: Получить комментарии к голосованию
       tags:
         - votes
-      operationId: listCommentsOnVote
+      operationId: listComments
       parameters:
         - name: name
           in: path
@@ -590,9 +596,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment.response"
+                $ref: "#/components/schemas/Comments"
     post:
       summary: Добавление комментария к голосованию
       tags:
@@ -692,28 +696,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ListNotifications'
+              $ref: "#/components/schemas/Collection.request"
       responses:
         '200':
           description: Список уведомлений успешно получен
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Notification"
+                $ref: "#/components/schemas/Notifications"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
     delete:
-      summary: Пометить уведомления прочитанными
+      summary: Очистить список уведомлений
       tags:
         - notifications
-      operationId: markNotificationsAsRead
+      operationId: clearNotifications
       responses:
         '200':
-          description: Уведомления удалены
+          description: Очищено
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
@@ -781,15 +783,24 @@ components:
         - page
         - size
       properties:
-        page:
-          type: integer
-          minimum: 1
-          description: Номер страницы
+        previous:
+          type: string
+          description: ID последнего элемента страницы
         size:
           type: integer
           minimum: 1
           maximum: 100
           description: Количество элементов на странице
+
+    Skills:
+      type: object
+      properties:
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/Skill.response"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
 
     Skill.response:
       type: object
@@ -804,6 +815,16 @@ components:
         - name
         - vote_name
 
+    Exams:
+      type: object
+      properties:
+        exams:
+          type: array
+          items:
+            $ref: "#/components/schemas/Exam.response"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
     Exam.response:
       type: object
       properties:
@@ -813,6 +834,16 @@ components:
         description:
           type: string
           description: Описание для пользователей
+
+    Results:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Result.response"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
 
     Result.response:
       description: Успешный результат
@@ -826,7 +857,8 @@ components:
           type: integer
           format: int32
 
-    Vote.request:
+    Vote:
+      description: Простая форма голосования
       type: object
       properties:
         name:
@@ -840,8 +872,14 @@ components:
           items:
             type: string
           description: Поисковые теги
-        auth_token:
-          $ref: "#/components/schemas/AuthToken"
+
+    Vote.request:
+      allOf:
+        - $ref: "#/components/schemas/Vote"
+        - type: object
+          properties:
+            auth_token:
+              $ref: "#/components/schemas/AuthToken"
 
     SkillAddVote:
       allOf:
@@ -877,10 +915,20 @@ components:
             - public_archive
             - private_archive
 
+    Votes:
+      type: object
+      properties:
+        votes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Vote.response"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
     Vote.response:
       description: Всеохватывающее представление голосования
       allOf:
-        - $ref: '#/components/schemas/Vote.request'
+        - $ref: '#/components/schemas/Vote'
         - type: object
           properties:
             type:
@@ -930,6 +978,14 @@ components:
         - description
         - public_archive_url
 
+    Comments:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment.response"
+
     Comment.response:
       type: object
       properties:
@@ -957,6 +1013,16 @@ components:
           type: string
           description: Отображаемое имя профиля
 
+    Notifications:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Notification"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
     Notification:
       type: object
       description: Уведомление о событии в системе
@@ -982,6 +1048,18 @@ components:
         created_at:
           type: string
           format: date-time
+
+    Collection.request:
+      type: object
+      properties:
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+        filter:
+          $ref: "#/components/schemas/Filter"
+        auth_token:
+          $ref: "#/components/schemas/AuthToken"
+      required:
+        - pagination
 
     RegisterAccount.request:
       type: object
@@ -1193,14 +1271,6 @@ components:
         details:
           type: string
           description: Детали ошибки
-
-    ListNotifications:
-      type: object
-      properties:
-        auth_token:
-          $ref: "#/components/schemas/AuthToken"
-        pagination:
-          $ref: "#/components/schemas/Pagination"
 
     AuthToken:
       type: string

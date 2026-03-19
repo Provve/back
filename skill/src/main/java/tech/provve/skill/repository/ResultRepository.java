@@ -55,20 +55,24 @@ public class ResultRepository {
                           .fetchOne());
     }
 
-    public List<Result> findAllByExaminee(String examinee) {
-        return fetchExams(RESULT.EXAMINEE.eq(examinee));
+    public List<Result> findAllByExaminee(String examinee, String previous, int pageSize) {
+        return fetchExams(previous, pageSize, RESULT.EXAMINEE.eq(examinee));
     }
 
-    public List<Result> findAllByExamineeAndExamName(String examinee, String examName) {
-        return fetchExams(RESULT.EXAMINEE.eq(examinee),
+    public List<Result> findAllByExamineeAndExamName(String examinee, String examName, String previous, int pageSize) {
+        return fetchExams(previous, pageSize,
+                          RESULT.EXAMINEE.eq(examinee),
                           RESULT.EXAM_NAME.eq(examName));
     }
 
     @SuppressWarnings("all")
-    private List<Result> fetchExams(Condition... conditions) {
+    private List<Result> fetchExams(String previous, int pageSize, Condition... conditions) {
         var select = dsl.select()
                         .from(RESULT)
-                        .where(conditions);
+                        .where(conditions)
+                        .orderBy(RESULT.EXAM_NAME)
+                        .seek(previous)
+                        .limit(pageSize);
         return dsl.fetchMany(select)
                   .stream()
                   .map(result -> result.map(outputMapper))

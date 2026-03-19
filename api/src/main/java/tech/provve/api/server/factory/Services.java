@@ -25,9 +25,9 @@ import tech.provve.payment.gateway.robokassa.ApiClient;
 import tech.provve.payment.repository.RobokassaInvoiceRepository;
 import tech.provve.payment.service.application.PaymentService;
 import tech.provve.payment.service.application.PaymentServiceImpl;
-import tech.provve.skill.repository.ExamRepository;
-import tech.provve.skill.repository.SkillRepository;
-import tech.provve.skill.repository.VoteRepository;
+import tech.provve.skill.repository.*;
+import tech.provve.skill.service.application.SessionService;
+import tech.provve.skill.service.application.SessionServiceImpl;
 import tech.provve.skill.service.domain.SkillService;
 import tech.provve.skill.service.domain.SkillServiceImpl;
 import tech.provve.skill.service.domain.VoteService;
@@ -51,8 +51,30 @@ import java.util.function.Supplier;
 import static tech.provve.api.server.factory.HttpClientFactory.GET_PAYMENT_LINK_URL;
 import static tech.provve.statemachine.SaveExamMachine.*;
 
+/**
+ * Здесь объявлены бины из модулей не-api, которые Avaje не может подтянуть из-за транизитивных зависмостей.
+ */
 @Factory
 public class Services {
+
+    @Bean
+    public SessionService sessionService(ResultRepository resultRepository,
+                                         SessionRepository sessionRepository,
+                                         ExamRepository examRepository,
+                                         VoteRepository voteRepository,
+                                         JwsParsingService jwsParsingService) {
+        return new SessionServiceImpl(resultRepository, sessionRepository, examRepository, voteRepository, jwsParsingService);
+    }
+
+    @Bean
+    public ResultRepository resultRepository(DSLContext dsl) {
+        return new ResultRepository(dsl);
+    }
+
+    @Bean
+    public SessionRepository sessionRepository(DSLContext dsl) {
+        return new SessionRepository(dsl);
+    }
 
     @Bean
     public StatemachineService statemachineService(SaveExamRepository saveExamRepository,

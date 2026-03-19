@@ -54,9 +54,12 @@ public class SkillRepository {
     }
 
     @SuppressWarnings("all")
-    public List<Skill> getAll() {
+    public List<Skill> getAll(String previous, int pageSize) {
         var select = dsl.select()
-                        .from(SKILL_);
+                        .from(SKILL_)
+                        .orderBy(SKILL_.NAME)
+                        .seek(previous)
+                        .limit(pageSize);
         return dsl.fetchMany(select)
                   .stream()
                   .map(result -> result.map(outputMapper))

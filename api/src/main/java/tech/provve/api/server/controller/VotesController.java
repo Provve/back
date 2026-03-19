@@ -68,6 +68,7 @@ public class VotesController implements VotesApi {
             validatingService.validate(new tech.provve.api.server.validation.dto.SkillAddVote(
                     skillAddVote.getName(),
                     skillAddVote.getArguments(),
+                    skillAddVote.getTags(),
                     skillAddVote.getAuthToken()
             ));
             voteService.create(skillAddVote);
@@ -85,6 +86,7 @@ public class VotesController implements VotesApi {
             validatingService.validate(new tech.provve.api.server.validation.dto.SkillDelVote(
                     skillDelVote.getName(),
                     skillDelVote.getArguments(),
+                    skillDelVote.getTags(),
                     skillDelVote.getAuthToken()
             ));
             voteService.create(skillDelVote);
