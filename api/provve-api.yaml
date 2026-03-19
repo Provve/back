@@ -337,6 +337,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Skills"
+        '400':
+          $ref: "#/components/responses/ValidationError"
 
   /skills/{skill_name}/exams:
     post:
@@ -344,6 +346,13 @@ paths:
         - skills
       summary: Получение списка экзаменов по навыку
       operationId: listExams
+      parameters:
+        - name: skill_name
+          in: path
+          required: true
+          schema:
+            type: string
+            description: ID навыка
       requestBody:
         required: true
         content:
@@ -357,6 +366,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Exams"
+        '400':
+          $ref: "#/components/responses/ValidationError"
 
   /exams/{name}/solution:
     post:
@@ -395,18 +406,19 @@ paths:
       tags:
         - skills
       operationId: listResults
+      parameters:
+        - name: skill_name
+          in: path
+          required: true
+          schema:
+            type: string
+            description: ID навыка
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: "#/components/schemas/Collection.request"
-                - type: object
-                  properties:
-                    skill_name:
-                      type: string
-                      description: ID навыка
+              $ref: "#/components/schemas/Collection.request"
       responses:
         '200':
           description: Список результатов успешно получен
@@ -414,6 +426,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Results"
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
@@ -467,6 +481,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Votes"
+        '400':
+          $ref: "#/components/responses/ValidationError"
 
   /votes/skill-add:
     post:
@@ -597,6 +613,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Comments"
+        '400':
+          $ref: "#/components/responses/ValidationError"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
     post:
       summary: Добавление комментария к голосованию
       tags:
@@ -704,6 +724,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Notifications"
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
@@ -780,7 +802,7 @@ components:
     Pagination:
       type: object
       required:
-        - page
+        - previous
         - size
       properties:
         previous:
@@ -808,12 +830,11 @@ components:
         name:
           type: string
           description: Название навыка
-        vote_name:
-          type: string
-          description: ID голосования, в результате которого навык был добавлен в систему.
+        tags:
+          $ref: "#/components/schemas/Tags"
       required:
         - name
-        - vote_name
+        - tags
 
     Exams:
       type: object
@@ -834,6 +855,9 @@ components:
         description:
           type: string
           description: Описание для пользователей
+        public_archive_url:
+          type: string
+          description: Проверяемая часть экзамена, задание
 
     Results:
       type: object
@@ -868,10 +892,7 @@ components:
           type: string
           description: Аргументы за совершение действия, предложенного в голосовании.
         tags:
-          type: array
-          items:
-            type: string
-          description: Поисковые теги
+          $ref: "#/components/schemas/Tags"
 
     Vote.request:
       allOf:
@@ -971,7 +992,6 @@ components:
           description: Финальная постановка задания для экзаменуемых
         public_archive_url:
           type: string
-          format: binary
           description: Проверяемая часть экзамена, задание
       required:
         - skill_name
@@ -1264,6 +1284,12 @@ components:
         - OutSum
         - InvId
         - SignatureValue
+
+    Tags:
+      type: array
+      items:
+        type: string
+      description: Поисковые теги
 
     Error:
       type: object

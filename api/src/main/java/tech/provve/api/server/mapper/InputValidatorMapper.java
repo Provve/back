@@ -3,6 +3,8 @@ package tech.provve.api.server.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
+import tech.provve.api.server.generated.dto.Filter;
+import tech.provve.api.server.generated.dto.FilterPredicate;
 import tech.provve.api.server.validation.dto.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
@@ -27,5 +29,11 @@ public interface InputValidatorMapper {
     ExamAddVote map(tech.provve.api.server.generated.dto.ExamAddVote from);
 
     CreateSessionRequest map(tech.provve.api.server.generated.dto.CreateSessionRequest from);
+
+    CollectionRequest map(tech.provve.api.server.generated.dto.CollectionRequest from);
+
+    CollectionRequest.Filter map(Filter from);
+
+    CollectionRequest.FilterPredicate map(FilterPredicate from);
 
 }

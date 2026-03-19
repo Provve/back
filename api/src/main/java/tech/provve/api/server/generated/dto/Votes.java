@@ -8,38 +8,38 @@ import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SkillResponse {
+public class Votes {
 
-    private String name;
-    private List<String> tags = new ArrayList<>();
+    private List<VoteResponse> votes = new ArrayList<>();
+    private Pagination pagination;
 
-    public SkillResponse() {
+    public Votes() {
 
     }
 
-    public SkillResponse(String name, List<String> tags) {
-        this.name = name;
-        this.tags = tags;
+    public Votes(List<VoteResponse> votes, Pagination pagination) {
+        this.votes = votes;
+        this.pagination = pagination;
     }
 
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("votes")
+    public List<VoteResponse> getVotes() {
+        return votes;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVotes(List<VoteResponse> votes) {
+        this.votes = votes;
     }
 
 
-    @JsonProperty("tags")
-    public List<String> getTags() {
-        return tags;
+    @JsonProperty("pagination")
+    public Pagination getPagination() {
+        return pagination;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
     }
 
 
@@ -51,26 +51,26 @@ public class SkillResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SkillResponse skillResponse = (SkillResponse) o;
-        return Objects.equals(name, skillResponse.name) &&
-                Objects.equals(tags, skillResponse.tags);
+        Votes votes = (Votes) o;
+        return Objects.equals(votes, votes.votes) &&
+                Objects.equals(pagination, votes.pagination);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, tags);
+        return Objects.hash(votes, pagination);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class SkillResponse {\n");
+        sb.append("class Votes {\n");
 
-        sb.append("    name: ")
-          .append(toIndentedString(name))
+        sb.append("    votes: ")
+          .append(toIndentedString(votes))
           .append("\n");
-        sb.append("    tags: ")
-          .append(toIndentedString(tags))
+        sb.append("    pagination: ")
+          .append(toIndentedString(pagination))
           .append("\n");
         sb.append("}");
         return sb.toString();

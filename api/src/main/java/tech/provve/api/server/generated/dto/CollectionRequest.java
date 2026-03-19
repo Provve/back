@@ -6,28 +6,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UpdatePersonalDataConsentRequest {
+public class CollectionRequest {
 
-    private Boolean consentPersonalData;
+    private Pagination pagination;
+    private Filter filter;
     private String authToken;
 
-    public UpdatePersonalDataConsentRequest() {
+    public CollectionRequest() {
 
     }
 
-    public UpdatePersonalDataConsentRequest(Boolean consentPersonalData, String authToken) {
-        this.consentPersonalData = consentPersonalData;
+    public CollectionRequest(Pagination pagination, Filter filter, String authToken) {
+        this.pagination = pagination;
+        this.filter = filter;
         this.authToken = authToken;
     }
 
 
-    @JsonProperty("consent_personal_data")
-    public Boolean getConsentPersonalData() {
-        return consentPersonalData;
+    @JsonProperty("pagination")
+    public Pagination getPagination() {
+        return pagination;
     }
 
-    public void setConsentPersonalData(Boolean consentPersonalData) {
-        this.consentPersonalData = consentPersonalData;
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
+    }
+
+
+    @JsonProperty("filter")
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 
 
@@ -49,23 +61,27 @@ public class UpdatePersonalDataConsentRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest = (UpdatePersonalDataConsentRequest) o;
-        return Objects.equals(consentPersonalData, updatePersonalDataConsentRequest.consentPersonalData) &&
-                Objects.equals(authToken, updatePersonalDataConsentRequest.authToken);
+        CollectionRequest collectionRequest = (CollectionRequest) o;
+        return Objects.equals(pagination, collectionRequest.pagination) &&
+                Objects.equals(filter, collectionRequest.filter) &&
+                Objects.equals(authToken, collectionRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(consentPersonalData, authToken);
+        return Objects.hash(pagination, filter, authToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class UpdatePersonalDataConsentRequest {\n");
+        sb.append("class CollectionRequest {\n");
 
-        sb.append("    consentPersonalData: ")
-          .append(toIndentedString(consentPersonalData))
+        sb.append("    pagination: ")
+          .append(toIndentedString(pagination))
+          .append("\n");
+        sb.append("    filter: ")
+          .append(toIndentedString(filter))
           .append("\n");
         sb.append("    authToken: ")
           .append(toIndentedString(authToken))

@@ -2,28 +2,90 @@ package tech.provve.api.server.controller;
 
 import io.vertx.core.Future;
 import io.vertx.ext.web.FileUpload;
-import io.vertx.ext.web.handler.HttpException;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import lombok.RequiredArgsConstructor;
+import tech.provve.accounts.service.JwsParsingService;
+import tech.provve.api.server.exception.HttpException;
+import tech.provve.api.server.exception.ValidationError;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.SkillsApi;
 import tech.provve.api.server.generated.dto.*;
+import tech.provve.api.server.mapper.InputValidatorMapper;
+import tech.provve.api.server.service.InputValidator;
+import tech.provve.api.server.validation.dto.CollectionRequestAuthenticated;
+import tech.provve.skill.repository.ExamRepository;
+import tech.provve.skill.repository.ResultRepository;
+import tech.provve.skill.repository.SkillRepository;
 
 import java.util.List;
 
 @Singleton
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SkillsController implements SkillsApi {
 
+    private final SkillRepository skillRepository;
+    private final ExamRepository examRepository;
+    private final ResultRepository resultRepository;
+    private final InputValidator inputValidator;
+    private final JwsParsingService jwsParsingService;
+
     @Override
-    public Future<ApiResponse<List<ResultResponse>>> getResultsBySkill(String skillName, Pagination pagination, Filter filter) {
-        return null;
+    public Future<ApiResponse<Exams>> listExams(String skillName, CollectionRequest collectionRequest) {
+        try {
+            inputValidator.validate(InputValidatorMapper.INSTANCE.map(collectionRequest));
+            List<ExamResponse> all = examRepository.getAll(collectionRequest.getPagination()
+                                                                            .getPrevious(),
+                                                           collectionRequest.getPagination()
+                                                                            .getSize())
+                                                   .stream()
+                                                   .map(exam -> new ExamResponse(exam.name(), exam.description(), exam.publicArchiveUrl()))
+                                                   .toList();
+            var pagination = new Pagination(all.getLast()
+                                               .getName(), 0);
+            return Future.succeededFuture(new ApiResponse<>(200, new Exams(all, pagination)));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
 
-    public Future<ApiResponse<ExamResponse>> listExamsBySkill(Pagination pagination, Filter filter) {
-        return Future.failedFuture(new HttpException(501));
+    @Override
+    public Future<ApiResponse<Results>> listResults(String skillName, CollectionRequest collectionRequest) {
+        try {
+            inputValidator.validate(new CollectionRequestAuthenticated(InputValidatorMapper.INSTANCE.map(collectionRequest), collectionRequest.getAuthToken()));
+            var login = jwsParsingService.parseAuth(collectionRequest.getAuthToken(), JwsParsingService.JWT_SUBJECT);
+            List<ResultResponse> all = resultRepository.findAllByExaminee(login, collectionRequest.getPagination()
+                                                                                                  .getPrevious(),
+                                                                          collectionRequest.getPagination()
+                                                                                           .getSize())
+                                                       .stream()
+                                                       .map(result -> new ResultResponse())
+                                                       .toList();
+            var pagination = new Pagination(all.getLast()
+                                               .getExamName(), 0);
+            return Future.succeededFuture(new ApiResponse<>(200, new Results(all, pagination)));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
 
-    public Future<ApiResponse<List<SkillResponse>>> listSkills(Pagination pagination, Filter filter) {
-        return Future.failedFuture(new HttpException(501));
+    @Override
+    public Future<ApiResponse<Skills>> listSkills(CollectionRequest collectionRequest) {
+        try {
+            inputValidator.validate(InputValidatorMapper.INSTANCE.map(collectionRequest));
+            List<SkillResponse> all = skillRepository.getAll(collectionRequest.getPagination()
+                                                                              .getPrevious(),
+                                                             collectionRequest.getPagination()
+                                                                              .getSize())
+                                                     .stream()
+                                                     .map(skill -> new SkillResponse(skill.name(), skill.tags()))
+                                                     .toList();
+            var pagination = new Pagination(all.getLast()
+                                               .getName(), 0);
+            return Future.succeededFuture(new ApiResponse<>(200, new Skills(all, pagination)));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
 
     @Override

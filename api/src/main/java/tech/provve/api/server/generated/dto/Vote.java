@@ -7,18 +7,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Простая форма голосования
+ **/
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SkillResponse {
+public class Vote {
 
     private String name;
+    private String arguments;
     private List<String> tags = new ArrayList<>();
 
-    public SkillResponse() {
+    public Vote() {
 
     }
 
-    public SkillResponse(String name, List<String> tags) {
+    public Vote(String name, String arguments, List<String> tags) {
         this.name = name;
+        this.arguments = arguments;
         this.tags = tags;
     }
 
@@ -30,6 +35,16 @@ public class SkillResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    @JsonProperty("arguments")
+    public String getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(String arguments) {
+        this.arguments = arguments;
     }
 
 
@@ -51,23 +66,27 @@ public class SkillResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SkillResponse skillResponse = (SkillResponse) o;
-        return Objects.equals(name, skillResponse.name) &&
-                Objects.equals(tags, skillResponse.tags);
+        Vote vote = (Vote) o;
+        return Objects.equals(name, vote.name) &&
+                Objects.equals(arguments, vote.arguments) &&
+                Objects.equals(tags, vote.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, tags);
+        return Objects.hash(name, arguments, tags);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class SkillResponse {\n");
+        sb.append("class Vote {\n");
 
         sb.append("    name: ")
           .append(toIndentedString(name))
+          .append("\n");
+        sb.append("    arguments: ")
+          .append(toIndentedString(arguments))
           .append("\n");
         sb.append("    tags: ")
           .append(toIndentedString(tags))

@@ -1,9 +1,10 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.net.URI;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateSessionRequest {
@@ -12,18 +13,18 @@ public class CreateSessionRequest {
   private URI redirect;
   private String authToken;
 
-  public CreateSessionRequest() {
+    public CreateSessionRequest() {
 
   }
 
-  public CreateSessionRequest(String examName, URI redirect, String authToken) {
+    public CreateSessionRequest(String examName, URI redirect, String authToken) {
     this.examName = examName;
     this.redirect = redirect;
     this.authToken = authToken;
   }
 
 
-  @JsonProperty("exam_name")
+    @JsonProperty("exam_name")
   public String getExamName() {
     return examName;
   }
@@ -32,7 +33,7 @@ public class CreateSessionRequest {
   }
 
 
-  @JsonProperty("redirect")
+    @JsonProperty("redirect")
   public URI getRedirect() {
     return redirect;
   }
@@ -41,7 +42,7 @@ public class CreateSessionRequest {
   }
 
 
-  @JsonProperty("auth_token")
+    @JsonProperty("auth_token")
   public String getAuthToken() {
     return authToken;
   }
@@ -74,15 +75,15 @@ public class CreateSessionRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class CreateSessionRequest {\n");
 
-    sb.append("    examName: ")
-      .append(toIndentedString(examName))
-      .append("\n");
-    sb.append("    redirect: ")
-      .append(toIndentedString(redirect))
-      .append("\n");
-    sb.append("    authToken: ")
-      .append(toIndentedString(authToken))
-      .append("\n");
+      sb.append("    examName: ")
+        .append(toIndentedString(examName))
+        .append("\n");
+      sb.append("    redirect: ")
+        .append(toIndentedString(redirect))
+        .append("\n");
+      sb.append("    authToken: ")
+        .append(toIndentedString(authToken))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -95,7 +96,7 @@ public class CreateSessionRequest {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

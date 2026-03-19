@@ -8,38 +8,38 @@ import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SkillResponse {
+public class Skills {
 
-    private String name;
-    private List<String> tags = new ArrayList<>();
+    private List<SkillResponse> skills = new ArrayList<>();
+    private Pagination pagination;
 
-    public SkillResponse() {
+    public Skills() {
 
     }
 
-    public SkillResponse(String name, List<String> tags) {
-        this.name = name;
-        this.tags = tags;
+    public Skills(List<SkillResponse> skills, Pagination pagination) {
+        this.skills = skills;
+        this.pagination = pagination;
     }
 
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("skills")
+    public List<SkillResponse> getSkills() {
+        return skills;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSkills(List<SkillResponse> skills) {
+        this.skills = skills;
     }
 
 
-    @JsonProperty("tags")
-    public List<String> getTags() {
-        return tags;
+    @JsonProperty("pagination")
+    public Pagination getPagination() {
+        return pagination;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
     }
 
 
@@ -51,26 +51,26 @@ public class SkillResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SkillResponse skillResponse = (SkillResponse) o;
-        return Objects.equals(name, skillResponse.name) &&
-                Objects.equals(tags, skillResponse.tags);
+        Skills skills = (Skills) o;
+        return Objects.equals(skills, skills.skills) &&
+                Objects.equals(pagination, skills.pagination);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, tags);
+        return Objects.hash(skills, pagination);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class SkillResponse {\n");
+        sb.append("class Skills {\n");
 
-        sb.append("    name: ")
-          .append(toIndentedString(name))
+        sb.append("    skills: ")
+          .append(toIndentedString(skills))
           .append("\n");
-        sb.append("    tags: ")
-          .append(toIndentedString(tags))
+        sb.append("    pagination: ")
+          .append(toIndentedString(pagination))
           .append("\n");
         sb.append("}");
         return sb.toString();

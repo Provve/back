@@ -8,38 +8,26 @@ import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SkillResponse {
+public class Comments {
 
-    private String name;
-    private List<String> tags = new ArrayList<>();
+    private List<CommentResponse> comments = new ArrayList<>();
 
-    public SkillResponse() {
+    public Comments() {
 
     }
 
-    public SkillResponse(String name, List<String> tags) {
-        this.name = name;
-        this.tags = tags;
+    public Comments(List<CommentResponse> comments) {
+        this.comments = comments;
     }
 
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("comments")
+    public List<CommentResponse> getComments() {
+        return comments;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    @JsonProperty("tags")
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setComments(List<CommentResponse> comments) {
+        this.comments = comments;
     }
 
 
@@ -51,26 +39,22 @@ public class SkillResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SkillResponse skillResponse = (SkillResponse) o;
-        return Objects.equals(name, skillResponse.name) &&
-                Objects.equals(tags, skillResponse.tags);
+        Comments comments = (Comments) o;
+        return Objects.equals(comments, comments.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, tags);
+        return Objects.hash(comments);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class SkillResponse {\n");
+        sb.append("class Comments {\n");
 
-        sb.append("    name: ")
-          .append(toIndentedString(name))
-          .append("\n");
-        sb.append("    tags: ")
-          .append(toIndentedString(tags))
+        sb.append("    comments: ")
+          .append(toIndentedString(comments))
           .append("\n");
         sb.append("}");
         return sb.toString();

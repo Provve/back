@@ -1,33 +1,35 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tech.provve.api.server.generated.dto.Pagination;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ListNotifications {
+public class Notifications {
 
-    private String authToken;
+    private List<Notification> notifications = new ArrayList<>();
     private Pagination pagination;
 
-    public ListNotifications() {
+    public Notifications() {
 
     }
 
-    public ListNotifications(String authToken, Pagination pagination) {
-        this.authToken = authToken;
+    public Notifications(List<Notification> notifications, Pagination pagination) {
+        this.notifications = notifications;
         this.pagination = pagination;
     }
 
 
-    @JsonProperty("auth_token")
-    public String getAuthToken() {
-        return authToken;
+    @JsonProperty("notifications")
+    public List<Notification> getNotifications() {
+        return notifications;
     }
 
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 
 
@@ -49,23 +51,23 @@ public class ListNotifications {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ListNotifications listNotifications = (ListNotifications) o;
-        return Objects.equals(authToken, listNotifications.authToken) &&
-                Objects.equals(pagination, listNotifications.pagination);
+        Notifications notifications = (Notifications) o;
+        return Objects.equals(notifications, notifications.notifications) &&
+                Objects.equals(pagination, notifications.pagination);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authToken, pagination);
+        return Objects.hash(notifications, pagination);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ListNotifications {\n");
+        sb.append("class Notifications {\n");
 
-        sb.append("    authToken: ")
-          .append(toIndentedString(authToken))
+        sb.append("    notifications: ")
+          .append(toIndentedString(notifications))
           .append("\n");
         sb.append("    pagination: ")
           .append(toIndentedString(pagination))

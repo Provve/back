@@ -1,32 +1,33 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Pagination {
 
-    private Integer page;
+    private String previous;
     private Integer size;
 
     public Pagination() {
 
     }
 
-    public Pagination(Integer page, Integer size) {
-        this.page = page;
+    public Pagination(String previous, Integer size) {
+        this.previous = previous;
         this.size = size;
     }
 
 
-    @JsonProperty("page")
-    public Integer getPage() {
-        return page;
+    @JsonProperty("previous")
+    public String getPrevious() {
+        return previous;
     }
 
-    public void setPage(Integer page) {
-        this.page = page;
+    public void setPrevious(String previous) {
+        this.previous = previous;
     }
 
 
@@ -49,13 +50,13 @@ public class Pagination {
             return false;
         }
         Pagination pagination = (Pagination) o;
-        return Objects.equals(page, pagination.page) &&
+        return Objects.equals(previous, pagination.previous) &&
                 Objects.equals(size, pagination.size);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(page, size);
+        return Objects.hash(previous, size);
     }
 
     @Override
@@ -63,8 +64,8 @@ public class Pagination {
         StringBuilder sb = new StringBuilder();
         sb.append("class Pagination {\n");
 
-        sb.append("    page: ")
-          .append(toIndentedString(page))
+        sb.append("    previous: ")
+          .append(toIndentedString(previous))
           .append("\n");
         sb.append("    size: ")
           .append(toIndentedString(size))

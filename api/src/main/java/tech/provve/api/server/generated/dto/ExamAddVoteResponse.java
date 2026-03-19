@@ -1,22 +1,22 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.vertx.ext.web.FileUpload;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamAddVoteResponse {
 
     private String skillName;
     private String description;
-    private FileUpload publicArchiveUrl;
+    private String publicArchiveUrl;
 
     public ExamAddVoteResponse() {
 
     }
 
-    public ExamAddVoteResponse(String skillName, String description, FileUpload publicArchiveUrl) {
+    public ExamAddVoteResponse(String skillName, String description, String publicArchiveUrl) {
         this.skillName = skillName;
         this.description = description;
         this.publicArchiveUrl = publicArchiveUrl;
@@ -44,11 +44,11 @@ public class ExamAddVoteResponse {
 
 
     @JsonProperty("public_archive_url")
-    public FileUpload getPublicArchiveUrl() {
+    public String getPublicArchiveUrl() {
         return publicArchiveUrl;
     }
 
-    public void setPublicArchiveUrl(FileUpload publicArchiveUrl) {
+    public void setPublicArchiveUrl(String publicArchiveUrl) {
         this.publicArchiveUrl = publicArchiveUrl;
     }
 

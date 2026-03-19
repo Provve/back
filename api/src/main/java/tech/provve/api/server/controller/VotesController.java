@@ -13,9 +13,11 @@ import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.api.server.validation.dto.CastVote;
 import tech.provve.skill.exception.*;
+import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.domain.VoteService;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Singleton
@@ -24,6 +26,7 @@ public class VotesController implements VotesApi {
 
     private final InputValidator validatingService;
     private final VoteService voteService;
+    private final VoteRepository voteRepository;
 
     @Override
     public Future<ApiResponse<Void>> addCommentOnVote(String name, AddCommentOnVoteRequest addCommentOnVoteRequest) {
@@ -109,12 +112,43 @@ public class VotesController implements VotesApi {
     }
 
     @Override
-    public Future<ApiResponse<List<CommentResponse>>> listCommentsOnVote(String name) {
+    public Future<ApiResponse<Comments>> listComments(String name) {
         return null;
     }
 
     @Override
-    public Future<ApiResponse<List<VoteResponse>>> listVotes(Pagination pagination, Filter filter) {
-        return null;
+    public Future<ApiResponse<Votes>> listVotes(CollectionRequest collectionRequest) {
+        try {
+            validatingService.validate(InputValidatorMapper.INSTANCE.map(collectionRequest));
+            List<VoteResponse> all = voteRepository.getAll(collectionRequest.getPagination()
+                                                                            .getPrevious(),
+                                                           collectionRequest.getPagination()
+                                                                            .getSize())
+                                                   .stream()
+                                                   .map(vote -> new VoteResponse(vote.getName(),
+                                                                                 vote.getArguments(),
+                                                                                 vote.getTags(),
+                                                                                 VoteResponse.TypeEnum.valueOf(vote.getType()
+                                                                                                                   .name()),
+                                                                                 new VoteResponseAllOfReactions(vote.getReactions()
+                                                                                                                    .positive(), vote.getReactions()
+                                                                                                                                     .negative()),
+                                                                                 vote.getDeadline()
+                                                                                     .atOffset(
+                                                                                             ZoneOffset.UTC),
+                                                                                 new ExamAddVoteResponse(vote.getExam()
+                                                                                                             .skillName(),
+                                                                                                         vote.getExam()
+                                                                                                             .description(),
+                                                                                                         vote.getExam()
+                                                                                                             .publicArchiveUrl())))
+                                                   .toList();
+            var pagination = new Pagination(all.getLast()
+                                               .getName(), 0);
+            return Future.succeededFuture(new ApiResponse<>(200, new Votes(all, pagination)));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
+
 }
