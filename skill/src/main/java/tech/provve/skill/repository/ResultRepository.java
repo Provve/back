@@ -9,11 +9,13 @@ import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jooq.types.YearToSecond;
 import org.jspecify.annotations.NullMarked;
+import tech.provve.api.server.generated.dto.Filter;
 import tech.provve.skill.db.generated.tables.records.ResultRecord;
 import tech.provve.skill.domain.entity.Result;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.function.Function;
 
 import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.Result.RESULT;
@@ -21,10 +23,17 @@ import static tech.provve.skill.db.generated.tables.Result.RESULT;
 @NullMarked
 @Singleton
 @RequiredArgsConstructor
-public class ResultRepository {
+public class ResultRepository extends Filtering {
 
     @External
     private final DSLContext dsl;
+
+    private static final Map<String, Function<tech.provve.api.server.generated.dto.Condition, org.jooq.Condition>> FIELD_CONDITION_MAPPERS = Map.of(
+            "exam_name", condition -> switch (condition.getOperator()) {
+                case EQ -> RESULT.EXAM_NAME.eq(condition.getValue());
+                case LIKE -> RESULT.EXAM_NAME.like(condition.getValue());
+            }
+    );
 
     private final RecordMapper<Record, Result> outputMapper = record -> new Result(
             record.get(RESULT.EXAM_NAME),
@@ -41,13 +50,6 @@ public class ResultRepository {
            .execute();
     }
 
-    public Optional<Result> find(String name) {
-        return dsl.select()
-                  .from(RESULT)
-                  .where(RESULT.EXAM_NAME.eq(name))
-                  .fetchOptional(outputMapper);
-    }
-
     public boolean exists(String examinee) {
         return nonNull(dsl.select(RESULT.EXAMINEE)
                           .from(RESULT)
@@ -55,18 +57,11 @@ public class ResultRepository {
                           .fetchOne());
     }
 
-    public List<Result> findAllByExaminee(String examinee, String previous, int pageSize) {
-        return fetchExams(previous, pageSize, RESULT.EXAMINEE.eq(examinee));
-    }
-
-    public List<Result> findAllByExamineeAndExamName(String examinee, String examName, String previous, int pageSize) {
-        return fetchExams(previous, pageSize,
-                          RESULT.EXAMINEE.eq(examinee),
-                          RESULT.EXAM_NAME.eq(examName));
-    }
-
     @SuppressWarnings("all")
-    private List<Result> fetchExams(String previous, int pageSize, Condition... conditions) {
+    public List<Result> findAll(Filter filter, String examinee, String previous, int pageSize) {
+        List<Condition> conditions = jooqConditions(filter.getConditions());
+        conditions.add(RESULT.EXAMINEE.eq(examinee));
+
         var select = dsl.select()
                         .from(RESULT)
                         .where(conditions)
@@ -78,5 +73,10 @@ public class ResultRepository {
                   .map(result -> result.map(outputMapper))
                   .findAny()
                   .get();
+    }
+
+    @Override
+    protected Map<String, Function<tech.provve.api.server.generated.dto.Condition, Condition>> fieldConditionMappers() {
+        return FIELD_CONDITION_MAPPERS;
     }
 }

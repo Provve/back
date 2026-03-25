@@ -1,12 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RobokassaConfirmPaymentRequest {
@@ -133,13 +132,13 @@ public class RobokassaConfirmPaymentRequest {
         }
         RobokassaConfirmPaymentRequest robokassaConfirmPaymentRequest = (RobokassaConfirmPaymentRequest) o;
         return Objects.equals(outSum, robokassaConfirmPaymentRequest.outSum) &&
-                Objects.equals(invId, robokassaConfirmPaymentRequest.invId) &&
-                Objects.equals(fee, robokassaConfirmPaymentRequest.fee) &&
-                Objects.equals(email, robokassaConfirmPaymentRequest.email) &&
-                Objects.equals(signatureValue, robokassaConfirmPaymentRequest.signatureValue) &&
-                Objects.equals(paymentMethod, robokassaConfirmPaymentRequest.paymentMethod) &&
-                Objects.equals(incCurrLabel, robokassaConfirmPaymentRequest.incCurrLabel) &&
-                Objects.equals(shp, robokassaConfirmPaymentRequest.shp);
+               Objects.equals(invId, robokassaConfirmPaymentRequest.invId) &&
+               Objects.equals(fee, robokassaConfirmPaymentRequest.fee) &&
+               Objects.equals(email, robokassaConfirmPaymentRequest.email) &&
+               Objects.equals(signatureValue, robokassaConfirmPaymentRequest.signatureValue) &&
+               Objects.equals(paymentMethod, robokassaConfirmPaymentRequest.paymentMethod) &&
+               Objects.equals(incCurrLabel, robokassaConfirmPaymentRequest.incCurrLabel) &&
+               Objects.equals(shp, robokassaConfirmPaymentRequest.shp);
     }
 
     @Override

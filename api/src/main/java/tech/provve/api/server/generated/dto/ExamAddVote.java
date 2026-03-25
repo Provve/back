@@ -1,12 +1,12 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.ext.web.FileUpload;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamAddVote {
@@ -133,13 +133,13 @@ public class ExamAddVote {
         }
         ExamAddVote examAddVote = (ExamAddVote) o;
         return Objects.equals(name, examAddVote.name) &&
-                Objects.equals(arguments, examAddVote.arguments) &&
-                Objects.equals(tags, examAddVote.tags) &&
-                Objects.equals(authToken, examAddVote.authToken) &&
-                Objects.equals(skillName, examAddVote.skillName) &&
-                Objects.equals(description, examAddVote.description) &&
-                Objects.equals(publicArchive, examAddVote.publicArchive) &&
-                Objects.equals(privateArchive, examAddVote.privateArchive);
+               Objects.equals(arguments, examAddVote.arguments) &&
+               Objects.equals(tags, examAddVote.tags) &&
+               Objects.equals(authToken, examAddVote.authToken) &&
+               Objects.equals(skillName, examAddVote.skillName) &&
+               Objects.equals(description, examAddVote.description) &&
+               Objects.equals(publicArchive, examAddVote.publicArchive) &&
+               Objects.equals(privateArchive, examAddVote.privateArchive);
     }
 
     @Override

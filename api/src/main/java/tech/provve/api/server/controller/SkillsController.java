@@ -34,7 +34,9 @@ public class SkillsController implements SkillsApi {
     public Future<ApiResponse<Exams>> listExams(String skillName, CollectionRequest collectionRequest) {
         try {
             inputValidator.validate(InputValidatorMapper.INSTANCE.map(collectionRequest));
-            List<ExamResponse> all = examRepository.getAll(collectionRequest.getPagination()
+
+            List<ExamResponse> all = examRepository.getAll(collectionRequest.getFilter(),
+                                                           collectionRequest.getPagination()
                                                                             .getPrevious(),
                                                            collectionRequest.getPagination()
                                                                             .getSize())
@@ -52,12 +54,14 @@ public class SkillsController implements SkillsApi {
     @Override
     public Future<ApiResponse<Results>> listResults(String skillName, CollectionRequest collectionRequest) {
         try {
-            inputValidator.validate(new CollectionRequestAuthenticated(InputValidatorMapper.INSTANCE.map(collectionRequest), collectionRequest.getAuthToken()));
+            inputValidator.validate(new CollectionRequestAuthenticated(InputValidatorMapper.INSTANCE.map(collectionRequest),
+                                                                       collectionRequest.getAuthToken()));
             var login = jwsParsingService.parseAuth(collectionRequest.getAuthToken(), JwsParsingService.JWT_SUBJECT);
-            List<ResultResponse> all = resultRepository.findAllByExaminee(login, collectionRequest.getPagination()
-                                                                                                  .getPrevious(),
-                                                                          collectionRequest.getPagination()
-                                                                                           .getSize())
+            List<ResultResponse> all = resultRepository.findAll(collectionRequest.getFilter(),
+                                                                login, collectionRequest.getPagination()
+                                                                                        .getPrevious(),
+                                                                collectionRequest.getPagination()
+                                                                                 .getSize())
                                                        .stream()
                                                        .map(result -> new ResultResponse())
                                                        .toList();
@@ -73,7 +77,8 @@ public class SkillsController implements SkillsApi {
     public Future<ApiResponse<Skills>> listSkills(CollectionRequest collectionRequest) {
         try {
             inputValidator.validate(InputValidatorMapper.INSTANCE.map(collectionRequest));
-            List<SkillResponse> all = skillRepository.getAll(collectionRequest.getPagination()
+            List<SkillResponse> all = skillRepository.getAll(collectionRequest.getFilter(),
+                                                             collectionRequest.getPagination()
                                                                               .getPrevious(),
                                                              collectionRequest.getPagination()
                                                                               .getSize())

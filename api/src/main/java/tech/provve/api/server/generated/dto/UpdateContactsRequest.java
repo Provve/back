@@ -1,9 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
+import tech.provve.api.server.generated.dto.Contacts;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdateContactsRequest {
@@ -51,7 +51,7 @@ public class UpdateContactsRequest {
         }
         UpdateContactsRequest updateContactsRequest = (UpdateContactsRequest) o;
         return Objects.equals(contacts, updateContactsRequest.contacts) &&
-                Objects.equals(authToken, updateContactsRequest.authToken);
+               Objects.equals(authToken, updateContactsRequest.authToken);
     }
 
     @Override

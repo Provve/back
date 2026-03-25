@@ -8,14 +8,18 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jspecify.annotations.NullMarked;
+import tech.provve.api.server.generated.dto.Condition;
+import tech.provve.api.server.generated.dto.Filter;
 import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.domain.value.VoteReactions;
 import tech.provve.skill.mapper.VoteMapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.ExamAddVote.EXAM_ADD_VOTE;
@@ -27,10 +31,37 @@ import static tech.provve.skill.domain.entity.Vote.Type.ADD_EXAM;
 @NullMarked
 @Singleton
 @RequiredArgsConstructor
-public class VoteRepository {
+public class VoteRepository extends Filtering {
 
     @External
     private final DSLContext dsl;
+
+    private static final Map<String, Function<tech.provve.api.server.generated.dto.Condition, org.jooq.Condition>> FIELD_CONDITION_MAPPERS = Map.of(
+            "name", condition -> switch (condition.getOperator()) {
+                case EQ -> VOTE.NAME.eq(condition.getValue());
+                case LIKE -> VOTE.NAME.like(condition.getValue());
+            },
+            "active", condition -> switch (condition.getOperator()) {
+                case EQ -> VOTE.ACTIVE.eq(Boolean.parseBoolean(condition.getValue()));
+                case LIKE -> VOTE.ACTIVE.like(condition.getValue());
+            },
+            "author", condition -> switch (condition.getOperator()) {
+                case EQ -> VOTE.AUTHOR.eq(condition.getValue());
+                case LIKE -> VOTE.AUTHOR.like(condition.getValue());
+            },
+            "arguments", condition -> switch (condition.getOperator()) {
+                case EQ -> VOTE.ARGUMENTS.eq(condition.getValue());
+                case LIKE -> VOTE.ARGUMENTS.like(condition.getValue());
+            },
+            "tags", condition -> switch (condition.getOperator()) {
+                case EQ -> VOTE.TAGS.in(condition.getValue()
+                                                 .substring(1,
+                                                            condition.getValue()
+                                                                     .length() - 1) // remove [ ]
+                                                 .split(",\\s?"));
+                case LIKE -> VOTE.TAGS.like(condition.getValue());
+            }
+    );
 
     private final RecordMapper<Record, Vote> outputMapper = record -> {
         Exam exam = record.map(_ -> new Exam(
@@ -99,12 +130,13 @@ public class VoteRepository {
     }
 
     @SuppressWarnings("all")
-    public List<Vote> getAll(String previous, int pageSize) {
+    public List<Vote> getAll(Filter filter, String previous, int pageSize) {
         var select = dsl.select()
                         .from(VOTE)
                         .leftJoin(EXAM_ADD_VOTE)
                         .on(EXAM_ADD_VOTE.VOTE_NAME.eq(VOTE.NAME))
                         .crossJoin(GET_REACTIONS_TOTAL.call(VOTE.NAME))
+                        .where(jooqConditions(filter.getConditions()))
                         .orderBy(VOTE.NAME)
                         .seek(previous)
                         .limit(pageSize);
@@ -141,4 +173,8 @@ public class VoteRepository {
            .execute();
     }
 
+    @Override
+    protected Map<String, Function<Condition, org.jooq.Condition>> fieldConditionMappers() {
+        return FIELD_CONDITION_MAPPERS;
+    }
 }

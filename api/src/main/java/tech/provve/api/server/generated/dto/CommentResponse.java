@@ -1,9 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
+import tech.provve.api.server.generated.dto.ProfileResponse;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentResponse {
@@ -63,8 +63,8 @@ public class CommentResponse {
         }
         CommentResponse commentResponse = (CommentResponse) o;
         return Objects.equals(author, commentResponse.author) &&
-                Objects.equals(content, commentResponse.content) &&
-                Objects.equals(id, commentResponse.id);
+               Objects.equals(content, commentResponse.content) &&
+               Objects.equals(id, commentResponse.id);
     }
 
     @Override

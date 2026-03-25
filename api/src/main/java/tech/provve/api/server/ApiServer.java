@@ -11,16 +11,11 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.JWTAuthHandler;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.openapi.RouterBuilderOptions;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import tech.provve.api.server.exception.HttpException;
 import tech.provve.api.server.factory.Security;
-import tech.provve.skill.domain.entity.Skill;
-import tech.provve.skill.repository.SkillRepository;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static tech.provve.api.server.factory.RateLimit.RATE_LIMITER;
 
@@ -29,19 +24,13 @@ import static tech.provve.api.server.factory.RateLimit.RATE_LIMITER;
 public class ApiServer extends AbstractVerticle {
 
     public static final int PORT = 8080;
-
     private static final String SPEC_FILE = "provve-api.yaml";
-
     private static final String AUTH_SECURITY_SCHEME = "auth";
-
     private static final String RESET_SECURITY_SCHEME = "reset";
 
     private List<RouteHandler> handlers;
-
     private JWTAuthHandler jwtAuthHandler;
-
     private JWTAuthHandler jwtResetHandler;
-
     private Handler<RoutingContext> rateLimiter;
 
     public ApiServer() {
@@ -55,58 +44,48 @@ public class ApiServer extends AbstractVerticle {
     }
 
     private void init(BeanScope beanScope) {
-        var r = beanScope.get(SkillRepository.class);
-
-//        for (int i = 0; i < 30; i++) {
-//            r.save(new Skill(UUID.randomUUID().toString(), List.of(String.valueOf(i), String.valueOf(i * 2))));
-//        }
-
-        r.getAll("10", 5)
-         .forEach(System.out::println);
-
-
-//        this.handlers = beanScope.list(RouteHandler.class);
-//        this.jwtAuthHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_AUTH);
-//        this.jwtResetHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_RESET);
-//        this.rateLimiter = beanScope.<Handler<RoutingContext>>get(Handler.class, RATE_LIMITER);
+        this.handlers = beanScope.list(RouteHandler.class);
+        this.jwtAuthHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_AUTH);
+        this.jwtResetHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_RESET);
+        this.rateLimiter = beanScope.<Handler<RoutingContext>>get(Handler.class, RATE_LIMITER);
     }
 
     @Override
     public void start(Promise<Void> startPromise) {
-//        RouterBuilder.create(vertx, SPEC_FILE)
-//                     .map(builder -> {
-//                         handlers.forEach(handler -> handler.mount(builder));
-//
-//                         return builder.setOptions(new RouterBuilderOptions()
-//                                                           .setRequireSecurityHandlers(true))
-//                                       .securityHandler(AUTH_SECURITY_SCHEME, jwtAuthHandler)
-//                                       .securityHandler(RESET_SECURITY_SCHEME, jwtResetHandler)
-//                                       .createRouter();
-//                     })
-//                     .map(api -> {
-//                         // путь действителен?
-//                         api.getRoutes()
-//                            .stream()
-//                            .filter(route -> "/auth".equals(route.getName()))
-//                            .findFirst()
-//                            .orElseThrow();
-//
-//                         var root = Router.router(vertx)
-//                                          .errorHandler(400, this::handlerStatus400)
-//                                          .errorHandler(500, this::handlerStatus500);
-//                         root.route("/api/v1/*")
-//                             .handler(rateLimiter)
-//                             .subRouter(api);
-//
-//                         return root;
-//                     })
-//                     .compose(router -> vertx.createHttpServer()
-//                                             .requestHandler(router)
-//                                             .listen(PORT))
-//                     .onSuccess(server -> log.info("API Server started successfully"))
-//                     .onFailure(t -> log.error("API Server not started", t))
-//                     .<Void>mapEmpty()
-//                     .onComplete(startPromise);
+        RouterBuilder.create(vertx, SPEC_FILE)
+                     .map(builder -> {
+                         handlers.forEach(handler -> handler.mount(builder));
+
+                         return builder.setOptions(new RouterBuilderOptions()
+                                                           .setRequireSecurityHandlers(true))
+                                       .securityHandler(AUTH_SECURITY_SCHEME, jwtAuthHandler)
+                                       .securityHandler(RESET_SECURITY_SCHEME, jwtResetHandler)
+                                       .createRouter();
+                     })
+                     .map(api -> {
+                         // путь действителен?
+                         api.getRoutes()
+                            .stream()
+                            .filter(route -> "/auth".equals(route.getName()))
+                            .findFirst()
+                            .orElseThrow();
+
+                         var root = Router.router(vertx)
+                                          .errorHandler(400, this::handlerStatus400)
+                                          .errorHandler(500, this::handlerStatus500);
+                         root.route("/api/v1/*")
+                             .handler(rateLimiter)
+                             .subRouter(api);
+
+                         return root;
+                     })
+                     .compose(router -> vertx.createHttpServer()
+                                             .requestHandler(router)
+                                             .listen(PORT))
+                     .onSuccess(server -> log.info("API Server started successfully"))
+                     .onFailure(t -> log.error("API Server not started", t))
+                     .<Void>mapEmpty()
+                     .onComplete(startPromise);
     }
 
     private void handlerStatus500(RoutingContext rc) {

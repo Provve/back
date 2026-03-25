@@ -1,9 +1,8 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 /**
  * Голоса
@@ -54,7 +53,7 @@ public class VoteResponseAllOfReactions {
         }
         VoteResponseAllOfReactions voteResponseAllOfReactions = (VoteResponseAllOfReactions) o;
         return Objects.equals(positive, voteResponseAllOfReactions.positive) &&
-                Objects.equals(negative, voteResponseAllOfReactions.negative);
+               Objects.equals(negative, voteResponseAllOfReactions.negative);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
+import tech.provve.api.server.generated.dto.Filter;
+import tech.provve.api.server.generated.dto.Pagination;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CollectionRequest {
@@ -63,8 +64,8 @@ public class CollectionRequest {
         }
         CollectionRequest collectionRequest = (CollectionRequest) o;
         return Objects.equals(pagination, collectionRequest.pagination) &&
-                Objects.equals(filter, collectionRequest.filter) &&
-                Objects.equals(authToken, collectionRequest.authToken);
+               Objects.equals(filter, collectionRequest.filter) &&
+               Objects.equals(authToken, collectionRequest.authToken);
     }
 
     @Override

@@ -1,11 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkillResponse {
@@ -53,7 +53,7 @@ public class SkillResponse {
         }
         SkillResponse skillResponse = (SkillResponse) o;
         return Objects.equals(name, skillResponse.name) &&
-                Objects.equals(tags, skillResponse.tags);
+               Objects.equals(tags, skillResponse.tags);
     }
 
     @Override

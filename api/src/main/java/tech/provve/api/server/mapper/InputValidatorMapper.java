@@ -34,6 +34,4 @@ public interface InputValidatorMapper {
 
     CollectionRequest.Filter map(Filter from);
 
-    CollectionRequest.FilterPredicate map(FilterPredicate from);
-
 }

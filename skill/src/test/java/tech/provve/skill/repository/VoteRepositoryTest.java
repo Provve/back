@@ -10,14 +10,17 @@ import org.jooq.impl.DSL;
 import org.junit.jupiter.api.Test;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.repository.AccountRepository;
+import tech.provve.api.server.generated.dto.Filter;
 import tech.provve.skill.PostgresIntegrationTest;
 import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Skill;
 import tech.provve.skill.domain.entity.Vote;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static tech.provve.skill.domain.entity.Vote.Type.ADD_EXAM;
 import static tech.provve.skill.domain.entity.Vote.Type.DELETE_SKILL;
@@ -134,7 +137,7 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         votes.forEach(voteRepository::save);
 
         // assert
-        var savedVotes = voteRepository.getAll();
+        var savedVotes = voteRepository.getAll(new Filter(emptyList()), "", 1);
         assertThat(savedVotes).extracting(Vote::getType)
                               .anyMatch(ADD_EXAM::equals)
                               .anyMatch(DELETE_SKILL::equals);

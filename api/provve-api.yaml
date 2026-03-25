@@ -593,14 +593,14 @@ paths:
       security:
         - auth: [ ]
 
-  /votes/{name}/comments:
+  /votes/{vote_name}/comments:
     get:
       summary: Получить комментарии к голосованию
       tags:
         - votes
       operationId: listComments
       parameters:
-        - name: name
+        - name: vote_name
           in: path
           required: true
           schema:
@@ -623,7 +623,7 @@ paths:
         - votes
       operationId: addCommentOnVote
       parameters:
-        - name: name
+        - name: vote_name
           in: path
           required: true
           schema:
@@ -780,25 +780,26 @@ components:
     Filter:
       type: object
       properties:
+        conditions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Condition"
+    Condition:
+      type: object
+      properties:
         field:
           type: string
-          description: Название фильтруемого поля
-        predicate:
-          type: object
-          properties:
-            operator:
-              type: string
-              enum: [ NOT, EQ, NOT_EQ, AND, OR, LIKE ]
-              description: Применяемый оператор
-            value:
-              type: string
-              description: Правый операнд
-          required:
-            - operator
-            - value
+          description: Фильтруемое поле
+        operator:
+          type: string
+          enum: [ EQ, LIKE ]
+        value:
+          type: string
+          description: Желаемое значение поля
       required:
         - field
-        - predicate
+        - operator
+        - value
     Pagination:
       type: object
       required:

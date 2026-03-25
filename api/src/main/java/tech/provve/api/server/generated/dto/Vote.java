@@ -1,11 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Простая форма голосования
@@ -68,8 +68,8 @@ public class Vote {
         }
         Vote vote = (Vote) o;
         return Objects.equals(name, vote.name) &&
-                Objects.equals(arguments, vote.arguments) &&
-                Objects.equals(tags, vote.tags);
+               Objects.equals(arguments, vote.arguments) &&
+               Objects.equals(tags, vote.tags);
     }
 
     @Override

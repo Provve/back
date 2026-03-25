@@ -1,9 +1,8 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdateEmailRequest {
@@ -51,7 +50,7 @@ public class UpdateEmailRequest {
         }
         UpdateEmailRequest updateEmailRequest = (UpdateEmailRequest) o;
         return Objects.equals(email, updateEmailRequest.email) &&
-                Objects.equals(authToken, updateEmailRequest.authToken);
+               Objects.equals(authToken, updateEmailRequest.authToken);
     }
 
     @Override

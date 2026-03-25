@@ -1,9 +1,8 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Pagination {
@@ -51,7 +50,7 @@ public class Pagination {
         }
         Pagination pagination = (Pagination) o;
         return Objects.equals(previous, pagination.previous) &&
-                Objects.equals(size, pagination.size);
+               Objects.equals(size, pagination.size);
     }
 
     @Override

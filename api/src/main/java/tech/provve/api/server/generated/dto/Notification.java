@@ -1,11 +1,10 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /**
  * Уведомление о событии в системе
@@ -100,9 +99,9 @@ public class Notification {
         }
         Notification notification = (Notification) o;
         return Objects.equals(id, notification.id) &&
-                Objects.equals(level, notification.level) &&
-                Objects.equals(message, notification.message) &&
-                Objects.equals(createdAt, notification.createdAt);
+               Objects.equals(level, notification.level) &&
+               Objects.equals(message, notification.message) &&
+               Objects.equals(createdAt, notification.createdAt);
     }
 
     @Override

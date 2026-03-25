@@ -1,13 +1,16 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+
+import tech.provve.api.server.generated.dto.ExamAddVoteResponse;
+import tech.provve.api.server.generated.dto.VoteResponseAllOfReactions;
 
 /**
  * Всеохватывающее представление голосования
@@ -144,12 +147,12 @@ public class VoteResponse {
         }
         VoteResponse voteResponse = (VoteResponse) o;
         return Objects.equals(name, voteResponse.name) &&
-                Objects.equals(arguments, voteResponse.arguments) &&
-                Objects.equals(tags, voteResponse.tags) &&
-                Objects.equals(type, voteResponse.type) &&
-                Objects.equals(reactions, voteResponse.reactions) &&
-                Objects.equals(deadline, voteResponse.deadline) &&
-                Objects.equals(examAdd, voteResponse.examAdd);
+               Objects.equals(arguments, voteResponse.arguments) &&
+               Objects.equals(tags, voteResponse.tags) &&
+               Objects.equals(type, voteResponse.type) &&
+               Objects.equals(reactions, voteResponse.reactions) &&
+               Objects.equals(deadline, voteResponse.deadline) &&
+               Objects.equals(examAdd, voteResponse.examAdd);
     }
 
     @Override

@@ -1,11 +1,14 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+
+import tech.provve.api.server.generated.dto.Pagination;
+import tech.provve.api.server.generated.dto.SkillResponse;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Skills {
@@ -53,7 +56,7 @@ public class Skills {
         }
         Skills skills = (Skills) o;
         return Objects.equals(skills, skills.skills) &&
-                Objects.equals(pagination, skills.pagination);
+               Objects.equals(pagination, skills.pagination);
     }
 
     @Override

@@ -1,11 +1,26 @@
 package tech.provve.api.server.generated.api;
 
-import io.vertx.core.Future;
+import tech.provve.api.server.generated.dto.AddCommentOnVoteRequest;
+import tech.provve.api.server.generated.dto.CastVoteRequest;
+import tech.provve.api.server.generated.dto.CollectionRequest;
+import tech.provve.api.server.generated.dto.Comments;
+import tech.provve.api.server.generated.dto.Error;
+import tech.provve.api.server.generated.dto.ExamAddVote;
+import tech.provve.api.server.generated.dto.SkillAddVote;
+import tech.provve.api.server.generated.dto.SkillDelVote;
+import tech.provve.api.server.generated.dto.Votes;
+
 import tech.provve.api.server.generated.ApiResponse;
-import tech.provve.api.server.generated.dto.*;
+
+import io.vertx.core.Future;
+import io.vertx.core.json.JsonObject;
+
+import java.util.List;
+import java.util.Map;
 
 public interface VotesApi {
-    Future<ApiResponse<Void>> addCommentOnVote(String name, AddCommentOnVoteRequest addCommentOnVoteRequest);
+
+    Future<ApiResponse<Void>> addCommentOnVote(String voteName, AddCommentOnVoteRequest addCommentOnVoteRequest);
     Future<ApiResponse<Void>> castVote(String name, CastVoteRequest castVoteRequest);
     Future<ApiResponse<Void>> createExamAddVote(ExamAddVote examAddVote);
     Future<ApiResponse<Void>> createSkillAddVote(SkillAddVote skillAddVote);
@@ -13,7 +28,6 @@ public interface VotesApi {
     Future<ApiResponse<Void>> deleteCommentOnVote(String voteName, Integer commentId);
     Future<ApiResponse<Void>> editCommentOnVote(String voteName, Integer commentId);
 
-    Future<ApiResponse<Comments>> listComments(String name);
-
+    Future<ApiResponse<Comments>> listComments(String voteName);
     Future<ApiResponse<Votes>> listVotes(CollectionRequest collectionRequest);
 }

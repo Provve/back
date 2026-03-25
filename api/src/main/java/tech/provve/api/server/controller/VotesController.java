@@ -120,7 +120,8 @@ public class VotesController implements VotesApi {
     public Future<ApiResponse<Votes>> listVotes(CollectionRequest collectionRequest) {
         try {
             validatingService.validate(InputValidatorMapper.INSTANCE.map(collectionRequest));
-            List<VoteResponse> all = voteRepository.getAll(collectionRequest.getPagination()
+            List<VoteResponse> all = voteRepository.getAll(collectionRequest.getFilter(),
+                                                           collectionRequest.getPagination()
                                                                             .getPrevious(),
                                                            collectionRequest.getPagination()
                                                                             .getSize())

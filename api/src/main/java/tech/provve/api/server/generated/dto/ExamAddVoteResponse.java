@@ -1,9 +1,8 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamAddVoteResponse {
@@ -63,8 +62,8 @@ public class ExamAddVoteResponse {
         }
         ExamAddVoteResponse examAddVoteResponse = (ExamAddVoteResponse) o;
         return Objects.equals(skillName, examAddVoteResponse.skillName) &&
-                Objects.equals(description, examAddVoteResponse.description) &&
-                Objects.equals(publicArchiveUrl, examAddVoteResponse.publicArchiveUrl);
+               Objects.equals(description, examAddVoteResponse.description) &&
+               Objects.equals(publicArchiveUrl, examAddVoteResponse.publicArchiveUrl);
     }
 
     @Override
