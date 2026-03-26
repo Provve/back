@@ -24,6 +24,29 @@ CREATE INDEX idx_vote_tags ON skill.vote USING GIN(tags);
 
 
 
+CREATE TABLE skill.ts_vote_ru (
+    vote_name VARCHAR(100) REFERENCES skill.vote(name) ON DELETE CASCADE,
+    arguments TSVECTOR NOT NULL
+);
+COMMENT ON TABLE skill.ts_vote_ru IS 'Хранит подготовленные для поиска значения vote в русской локали';
+COMMENT ON COLUMN skill.ts_vote_ru.arguments IS 'Подготовленный для поиска vote.arguments';
+
+CREATE INDEX ts_vote_ru_idx ON skill.ts_vote_ru USING GIN (arguments);
+
+CREATE OR REPLACE FUNCTION INSERT_INTO_TS_VOTE() RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO skill.ts_vote_ru (vote_name, arguments)
+    VALUES (NEW.name, to_tsvector('russian', NEW.arguments));
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER AFTER_INSERT_VOTE
+AFTER INSERT ON skill.vote FOR EACH ROW
+EXECUTE FUNCTION INSERT_INTO_TS_VOTE();
+
+
+
 CREATE TABLE skill.skill (
     name VARCHAR(100) PRIMARY KEY,
     tags TEXT[]
@@ -82,6 +105,31 @@ COMMENT ON COLUMN skill.exam.skill_name IS 'Какой навык экзамен
 COMMENT ON COLUMN skill.exam.description IS 'Постановка задания для экзаменуемых';
 COMMENT ON COLUMN skill.exam.private_archive_url IS 'Проверяющая часть экзамена';
 COMMENT ON COLUMN skill.exam.public_archive_url IS 'Проверяемая часть экзамена, задание';
+
+
+
+CREATE TABLE skill.ts_exam_ru (
+    exam_name VARCHAR(100) REFERENCES skill.exam(name) ON DELETE CASCADE,
+    description TSVECTOR NOT NULL
+);
+COMMENT ON TABLE skill.ts_exam_ru IS 'Хранит подготовленные для поиска значения exam в русской локали';
+COMMENT ON COLUMN skill.ts_exam_ru.description IS 'Подготовленный для поиска exam.description';
+
+CREATE INDEX ts_exam_ru_idx ON skill.ts_exam_ru USING GIN (description);
+
+CREATE OR REPLACE FUNCTION INSERT_INTO_TS_EXAM() RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO skill.ts_exam_ru (exam_name, description)
+    VALUES (NEW.name, to_tsvector('russian', NEW.description));
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER AFTER_INSERT_EXAM
+AFTER INSERT ON skill.exam FOR EACH ROW
+EXECUTE FUNCTION INSERT_INTO_TS_EXAM();
+
+
 
 CREATE TABLE skill.result (
      exam_name VARCHAR(100) REFERENCES skill.skill(name) ON DELETE CASCADE,
