@@ -7,6 +7,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
+import org.jooq.impl.DSL;
 import org.jspecify.annotations.NullMarked;
 import tech.provve.api.server.generated.dto.Filter;
 import tech.provve.skill.db.generated.tables.records.SkillRecord;
@@ -19,6 +20,7 @@ import java.util.function.Function;
 
 import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.Skill.SKILL_;
+import static tech.provve.skill.db.generated.tables.TsSkillRu.TS_SKILL_RU;
 
 @NullMarked
 @Singleton
@@ -27,21 +29,6 @@ public class SkillRepository extends Filtering {
 
     @External
     private final DSLContext dsl;
-
-    private static final Map<String, Function<tech.provve.api.server.generated.dto.Condition, Condition>> FIELD_CONDITION_MAPPERS = Map.of(
-            "name", condition -> switch (condition.getOperator()) {
-                case EQ -> SKILL_.NAME.eq(condition.getValue());
-                case LIKE -> SKILL_.NAME.like(condition.getValue());
-            },
-            "tags", condition -> switch (condition.getOperator()) {
-                case EQ -> SKILL_.TAGS.in(condition.getValue()
-                                                   .substring(1,
-                                                              condition.getValue()
-                                                                       .length() - 1) // remove [ ]
-                                                   .split(",\\s?"));
-                case LIKE -> SKILL_.TAGS.like(condition.getValue());
-            }
-    );
 
     private final RecordMapper<Record, Skill> outputMapper = record -> new Skill(
             record.get(SKILL_.NAME),
@@ -95,6 +82,22 @@ public class SkillRepository extends Filtering {
 
     @Override
     protected Map<String, Function<tech.provve.api.server.generated.dto.Condition, Condition>> fieldConditionMappers() {
-        return FIELD_CONDITION_MAPPERS;
+        return Map.of(
+                "name", condition -> switch (condition.getOperator()) {
+                    case EQ -> SKILL_.NAME.eq(condition.getValue());
+                    case LIKE -> DSL.exists(dsl.select()
+                                               .from(TS_SKILL_RU)
+                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                                                Boolean.class,
+                                                                TS_SKILL_RU.TS_SKILL_NAME, DSL.inline(condition.getValue()))));
+                },
+                "tags", condition -> switch (condition.getOperator()) {
+                    case EQ, LIKE -> SKILL_.TAGS.in(condition.getValue()
+                                                             .substring(1,
+                                                                        condition.getValue()
+                                                                                 .length() - 1) // remove [ ]
+                                                             .split(",\\s?"));
+                }
+        );
     }
 }

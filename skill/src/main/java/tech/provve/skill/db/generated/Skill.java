@@ -52,6 +52,7 @@ public class Skill extends SchemaImpl {
                 Session.SESSION,
                 tech.provve.skill.db.generated.tables.Skill.SKILL_,
                 TsExamRu.TS_EXAM_RU,
+                TsSkillRu.TS_SKILL_RU,
                 TsVoteRu.TS_VOTE_RU,
                 Vote.VOTE
         );

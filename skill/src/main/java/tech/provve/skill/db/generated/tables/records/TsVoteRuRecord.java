@@ -32,30 +32,37 @@ public class TsVoteRuRecord extends TableRecordImpl<TsVoteRuRecord> {
     }
 
     /**
-     * @deprecated Unknown data type. If this is a qualified, user-defined type,
-     * it may have been excluded from code generation. If this is a built-in
-     * type, you can define an explicit {@link org.jooq.Binding} to specify how
-     * this type should be handled. Deprecation can be turned off using
-     * {@literal <deprecationOnUnknownTypes/>} in your code generator
-     * configuration.
+     * Setter for <code>skill.ts_vote_ru.ts_vote_name</code>. Подготовленный для
+     * поиска vote.name
      */
-    @Deprecated
-    public TsVoteRuRecord setArguments(Object value) {
+    public TsVoteRuRecord setTsVoteName(Object value) {
         set(1, value);
         return this;
     }
 
     /**
-     * @deprecated Unknown data type. If this is a qualified, user-defined type,
-     * it may have been excluded from code generation. If this is a built-in
-     * type, you can define an explicit {@link org.jooq.Binding} to specify how
-     * this type should be handled. Deprecation can be turned off using
-     * {@literal <deprecationOnUnknownTypes/>} in your code generator
-     * configuration.
+     * Getter for <code>skill.ts_vote_ru.ts_vote_name</code>. Подготовленный для
+     * поиска vote.name
      */
-    @Deprecated
-    public Object getArguments() {
+    public Object getTsVoteName() {
         return get(1);
+    }
+
+    /**
+     * Setter for <code>skill.ts_vote_ru.arguments</code>. Подготовленный для
+     * поиска vote.arguments
+     */
+    public TsVoteRuRecord setArguments(Object value) {
+        set(2, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>skill.ts_vote_ru.arguments</code>. Подготовленный для
+     * поиска vote.arguments
+     */
+    public Object getArguments() {
+        return get(2);
     }
 
     // -------------------------------------------------------------------------
@@ -72,10 +79,11 @@ public class TsVoteRuRecord extends TableRecordImpl<TsVoteRuRecord> {
     /**
      * Create a detached, initialised TsVoteRuRecord
      */
-    public TsVoteRuRecord(String voteName, Object arguments) {
+    public TsVoteRuRecord(String voteName, Object tsVoteName, Object arguments) {
         super(TsVoteRu.TS_VOTE_RU);
 
         setVoteName(voteName);
+        setTsVoteName(tsVoteName);
         setArguments(arguments);
         resetTouchedOnNotNull();
     }

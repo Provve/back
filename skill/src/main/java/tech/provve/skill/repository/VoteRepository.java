@@ -153,15 +153,17 @@ public class VoteRepository extends Filtering {
         return Map.of(
                 "name", condition -> switch (condition.getOperator()) {
                     case EQ -> VOTE.NAME.eq(condition.getValue());
-                    case LIKE -> VOTE.NAME.like(condition.getValue());
+                    case LIKE -> DSL.exists(dsl.select()
+                                               .from(TS_VOTE_RU)
+                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                                                Boolean.class,
+                                                                TS_VOTE_RU.TS_VOTE_NAME, DSL.inline(condition.getValue()))));
                 },
                 "active", condition -> switch (condition.getOperator()) {
-                    case EQ -> VOTE.ACTIVE.eq(Boolean.parseBoolean(condition.getValue()));
-                    case LIKE -> VOTE.ACTIVE.like(condition.getValue());
+                    case EQ, LIKE -> VOTE.ACTIVE.eq(Boolean.parseBoolean(condition.getValue()));
                 },
                 "author", condition -> switch (condition.getOperator()) {
-                    case EQ -> VOTE.AUTHOR.eq(condition.getValue());
-                    case LIKE -> VOTE.AUTHOR.like(condition.getValue());
+                    case EQ, LIKE -> VOTE.AUTHOR.eq(condition.getValue());
                 },
                 "arguments", condition -> switch (condition.getOperator()) {
                     case EQ -> VOTE.ARGUMENTS.eq(condition.getValue());
@@ -172,12 +174,11 @@ public class VoteRepository extends Filtering {
                                                                 TS_VOTE_RU.ARGUMENTS, DSL.inline(condition.getValue()))));
                 },
                 "tags", condition -> switch (condition.getOperator()) {
-                    case EQ -> VOTE.TAGS.in(condition.getValue()
+                    case EQ, LIKE -> VOTE.TAGS.in(condition.getValue()
                                                      .substring(1,
                                                                 condition.getValue()
                                                                          .length() - 1) // remove [ ]
                                                      .split(",\\s?"));
-                    case LIKE -> VOTE.TAGS.like(condition.getValue());
                 }
         );
     }

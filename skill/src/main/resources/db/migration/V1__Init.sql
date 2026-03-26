@@ -26,17 +26,20 @@ CREATE INDEX idx_vote_tags ON skill.vote USING GIN(tags);
 
 CREATE TABLE skill.ts_vote_ru (
     vote_name VARCHAR(100) REFERENCES skill.vote(name) ON DELETE CASCADE,
+    ts_vote_name TSVECTOR NOT NULL,
     arguments TSVECTOR NOT NULL
 );
 COMMENT ON TABLE skill.ts_vote_ru IS 'Хранит подготовленные для поиска значения vote в русской локали';
+COMMENT ON COLUMN skill.ts_vote_ru.ts_vote_name IS 'Подготовленный для поиска vote.name';
 COMMENT ON COLUMN skill.ts_vote_ru.arguments IS 'Подготовленный для поиска vote.arguments';
 
-CREATE INDEX ts_vote_ru_idx ON skill.ts_vote_ru USING GIN (arguments);
+CREATE INDEX ts_vote_name_ru_idx ON skill.ts_vote_ru USING GIN (ts_vote_name);
+CREATE INDEX ts_vote_arguments_ru_idx ON skill.ts_vote_ru USING GIN (arguments);
 
 CREATE OR REPLACE FUNCTION INSERT_INTO_TS_VOTE() RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO skill.ts_vote_ru (vote_name, arguments)
-    VALUES (NEW.name, to_tsvector('russian', NEW.arguments));
+    INSERT INTO skill.ts_vote_ru (vote_name, ts_vote_name, arguments)
+    VALUES (NEW.name, to_tsvector('russian', NEW.name), to_tsvector('russian', NEW.arguments));
     RETURN NEW;
 END;
 $$ LANGUAGE PLPGSQL;
@@ -56,6 +59,29 @@ COMMENT ON COLUMN skill.skill.name IS 'Название навыка';
 COMMENT ON COLUMN skill.skill.tags IS 'Поисковые теги';
 
 CREATE INDEX idx_skill_tags ON skill.skill USING GIN(tags);
+
+
+
+CREATE TABLE skill.ts_skill_ru (
+    skill_name VARCHAR(100) REFERENCES skill.skill(name) ON DELETE CASCADE,
+    ts_skill_name TSVECTOR NOT NULL
+);
+COMMENT ON TABLE skill.ts_skill_ru IS 'Хранит подготовленные для поиска значения skill в русской локали';
+COMMENT ON COLUMN skill.ts_skill_ru.ts_skill_name IS 'Подготовленный для поиска skill.name';
+
+CREATE INDEX ts_skill_name_ru_idx ON skill.ts_skill_ru USING GIN (ts_skill_name);
+
+CREATE OR REPLACE FUNCTION INSERT_INTO_TS_SKILL() RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO skill.ts_skill_ru (skill_name, ts_skill_name)
+    VALUES (NEW.name, to_tsvector('russian', NEW.name));
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER AFTER_INSERT_SKILL
+AFTER INSERT ON skill.skill FOR EACH ROW
+EXECUTE FUNCTION INSERT_INTO_TS_SKILL();
 
 
 
@@ -110,17 +136,20 @@ COMMENT ON COLUMN skill.exam.public_archive_url IS 'Проверяемая ча�
 
 CREATE TABLE skill.ts_exam_ru (
     exam_name VARCHAR(100) REFERENCES skill.exam(name) ON DELETE CASCADE,
+    ts_exam_name TSVECTOR NOT NULL,
     description TSVECTOR NOT NULL
 );
 COMMENT ON TABLE skill.ts_exam_ru IS 'Хранит подготовленные для поиска значения exam в русской локали';
+COMMENT ON COLUMN skill.ts_exam_ru.ts_exam_name IS 'Подготовленный для поиска exam.name';
 COMMENT ON COLUMN skill.ts_exam_ru.description IS 'Подготовленный для поиска exam.description';
 
-CREATE INDEX ts_exam_ru_idx ON skill.ts_exam_ru USING GIN (description);
+CREATE INDEX ts_exam_name_ru_idx ON skill.ts_exam_ru USING GIN (ts_exam_name);
+CREATE INDEX ts_exam_description_ru_idx ON skill.ts_exam_ru USING GIN (description);
 
 CREATE OR REPLACE FUNCTION INSERT_INTO_TS_EXAM() RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO skill.ts_exam_ru (exam_name, description)
-    VALUES (NEW.name, to_tsvector('russian', NEW.description));
+    INSERT INTO skill.ts_exam_ru (exam_name, ts_exam_name, description)
+    VALUES (NEW.name, to_tsvector('russian', NEW.name), to_tsvector('russian', NEW.description));
     RETURN NEW;
 END;
 $$ LANGUAGE PLPGSQL;

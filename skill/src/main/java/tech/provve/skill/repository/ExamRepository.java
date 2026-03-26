@@ -78,11 +78,14 @@ public class ExamRepository extends Filtering {
         return Map.of(
                 "name", condition -> switch (condition.getOperator()) {
                     case EQ -> EXAM.NAME.eq(condition.getValue());
-                    case LIKE -> EXAM.NAME.like(condition.getValue());
+                    case LIKE -> DSL.exists(dsl.select()
+                                               .from(TS_EXAM_RU)
+                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                                                Boolean.class,
+                                                                TS_EXAM_RU.TS_EXAM_NAME, DSL.inline(condition.getValue()))));
                 },
                 "skill_name", condition -> switch (condition.getOperator()) {
-                    case EQ -> EXAM.SKILL_NAME.eq(condition.getValue());
-                    case LIKE -> EXAM.SKILL_NAME.like(condition.getValue());
+                    case EQ, LIKE -> EXAM.SKILL_NAME.eq(condition.getValue());
                 },
                 "description", condition -> switch (condition.getOperator()) {
                     case EQ -> EXAM.DESCRIPTION.eq(condition.getValue());

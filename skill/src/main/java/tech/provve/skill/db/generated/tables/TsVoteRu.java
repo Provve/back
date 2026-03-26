@@ -42,14 +42,19 @@ public class TsVoteRu extends TableImpl<TsVoteRuRecord> {
     public final TableField<TsVoteRuRecord, String> VOTE_NAME = createField(DSL.name("vote_name"), SQLDataType.VARCHAR(100), this, "");
 
     /**
-     * @deprecated Unknown data type. If this is a qualified, user-defined type,
-     * it may have been excluded from code generation. If this is a built-in
-     * type, you can define an explicit {@link org.jooq.Binding} to specify how
-     * this type should be handled. Deprecation can be turned off using
-     * {@literal <deprecationOnUnknownTypes/>} in your code generator
-     * configuration.
+     * The column <code>skill.ts_vote_ru.ts_vote_name</code>. Подготовленный для
+     * поиска vote.name
      */
-    @Deprecated
+    public final TableField<TsVoteRuRecord, Object> TS_VOTE_NAME = createField(DSL.name("ts_vote_name"),
+                                                                               DefaultDataType.getDefaultDataType("\"pg_catalog\".\"tsvector\"")
+                                                                                              .nullable(false),
+                                                                               this,
+                                                                               "Подготовленный для поиска vote.name");
+
+    /**
+     * The column <code>skill.ts_vote_ru.arguments</code>. Подготовленный для
+     * поиска vote.arguments
+     */
     public final TableField<TsVoteRuRecord, Object> ARGUMENTS = createField(DSL.name("arguments"),
                                                                             DefaultDataType.getDefaultDataType("\"pg_catalog\".\"tsvector\"")
                                                                                            .nullable(false),
@@ -93,7 +98,8 @@ public class TsVoteRu extends TableImpl<TsVoteRuRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.asList(
-                Internal.createIndex(DSL.name("ts_vote_ru_idx"), TsVoteRu.TS_VOTE_RU, new OrderField[]{TsVoteRu.TS_VOTE_RU.ARGUMENTS}, false)
+                Internal.createIndex(DSL.name("ts_vote_arguments_ru_idx"), TsVoteRu.TS_VOTE_RU, new OrderField[]{TsVoteRu.TS_VOTE_RU.ARGUMENTS}, false),
+                Internal.createIndex(DSL.name("ts_vote_name_ru_idx"), TsVoteRu.TS_VOTE_RU, new OrderField[]{TsVoteRu.TS_VOTE_RU.TS_VOTE_NAME}, false)
         );
     }
 

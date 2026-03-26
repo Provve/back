@@ -32,30 +32,37 @@ public class TsExamRuRecord extends TableRecordImpl<TsExamRuRecord> {
     }
 
     /**
-     * @deprecated Unknown data type. If this is a qualified, user-defined type,
-     * it may have been excluded from code generation. If this is a built-in
-     * type, you can define an explicit {@link org.jooq.Binding} to specify how
-     * this type should be handled. Deprecation can be turned off using
-     * {@literal <deprecationOnUnknownTypes/>} in your code generator
-     * configuration.
+     * Setter for <code>skill.ts_exam_ru.ts_exam_name</code>. Подготовленный для
+     * поиска exam.name
      */
-    @Deprecated
-    public TsExamRuRecord setDescription(Object value) {
+    public TsExamRuRecord setTsExamName(Object value) {
         set(1, value);
         return this;
     }
 
     /**
-     * @deprecated Unknown data type. If this is a qualified, user-defined type,
-     * it may have been excluded from code generation. If this is a built-in
-     * type, you can define an explicit {@link org.jooq.Binding} to specify how
-     * this type should be handled. Deprecation can be turned off using
-     * {@literal <deprecationOnUnknownTypes/>} in your code generator
-     * configuration.
+     * Getter for <code>skill.ts_exam_ru.ts_exam_name</code>. Подготовленный для
+     * поиска exam.name
      */
-    @Deprecated
-    public Object getDescription() {
+    public Object getTsExamName() {
         return get(1);
+    }
+
+    /**
+     * Setter for <code>skill.ts_exam_ru.description</code>. Подготовленный для
+     * поиска exam.description
+     */
+    public TsExamRuRecord setDescription(Object value) {
+        set(2, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>skill.ts_exam_ru.description</code>. Подготовленный для
+     * поиска exam.description
+     */
+    public Object getDescription() {
+        return get(2);
     }
 
     // -------------------------------------------------------------------------
@@ -72,10 +79,11 @@ public class TsExamRuRecord extends TableRecordImpl<TsExamRuRecord> {
     /**
      * Create a detached, initialised TsExamRuRecord
      */
-    public TsExamRuRecord(String examName, Object description) {
+    public TsExamRuRecord(String examName, Object tsExamName, Object description) {
         super(TsExamRu.TS_EXAM_RU);
 
         setExamName(examName);
+        setTsExamName(tsExamName);
         setDescription(description);
         resetTouchedOnNotNull();
     }

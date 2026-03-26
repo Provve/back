@@ -42,14 +42,19 @@ public class TsExamRu extends TableImpl<TsExamRuRecord> {
     public final TableField<TsExamRuRecord, String> EXAM_NAME = createField(DSL.name("exam_name"), SQLDataType.VARCHAR(100), this, "");
 
     /**
-     * @deprecated Unknown data type. If this is a qualified, user-defined type,
-     * it may have been excluded from code generation. If this is a built-in
-     * type, you can define an explicit {@link org.jooq.Binding} to specify how
-     * this type should be handled. Deprecation can be turned off using
-     * {@literal <deprecationOnUnknownTypes/>} in your code generator
-     * configuration.
+     * The column <code>skill.ts_exam_ru.ts_exam_name</code>. Подготовленный для
+     * поиска exam.name
      */
-    @Deprecated
+    public final TableField<TsExamRuRecord, Object> TS_EXAM_NAME = createField(DSL.name("ts_exam_name"),
+                                                                               DefaultDataType.getDefaultDataType("\"pg_catalog\".\"tsvector\"")
+                                                                                              .nullable(false),
+                                                                               this,
+                                                                               "Подготовленный для поиска exam.name");
+
+    /**
+     * The column <code>skill.ts_exam_ru.description</code>. Подготовленный для
+     * поиска exam.description
+     */
     public final TableField<TsExamRuRecord, Object> DESCRIPTION = createField(DSL.name("description"),
                                                                               DefaultDataType.getDefaultDataType("\"pg_catalog\".\"tsvector\"")
                                                                                              .nullable(false),
@@ -93,7 +98,8 @@ public class TsExamRu extends TableImpl<TsExamRuRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.asList(
-                Internal.createIndex(DSL.name("ts_exam_ru_idx"), TsExamRu.TS_EXAM_RU, new OrderField[]{TsExamRu.TS_EXAM_RU.DESCRIPTION}, false)
+                Internal.createIndex(DSL.name("ts_exam_description_ru_idx"), TsExamRu.TS_EXAM_RU, new OrderField[]{TsExamRu.TS_EXAM_RU.DESCRIPTION}, false),
+                Internal.createIndex(DSL.name("ts_exam_name_ru_idx"), TsExamRu.TS_EXAM_RU, new OrderField[]{TsExamRu.TS_EXAM_RU.TS_EXAM_NAME}, false)
         );
     }
 
