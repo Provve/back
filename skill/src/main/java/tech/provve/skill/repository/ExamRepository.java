@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
+import org.jooq.impl.DSL;
 import org.jspecify.annotations.NullMarked;
 import tech.provve.api.server.generated.dto.Condition;
 import tech.provve.api.server.generated.dto.Filter;
@@ -19,6 +20,7 @@ import java.util.function.Function;
 
 import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.Exam.EXAM;
+import static tech.provve.skill.db.generated.tables.TsExamRu.TS_EXAM_RU;
 
 @NullMarked
 @Singleton
@@ -27,21 +29,6 @@ public class ExamRepository extends Filtering {
 
     @External
     private final DSLContext dsl;
-
-    private static final Map<String, Function<tech.provve.api.server.generated.dto.Condition, org.jooq.Condition>> FIELD_CONDITION_MAPPERS = Map.of(
-            "name", condition -> switch (condition.getOperator()) {
-                case EQ -> EXAM.NAME.eq(condition.getValue());
-                case LIKE -> EXAM.NAME.like(condition.getValue());
-            },
-            "skill_name", condition -> switch (condition.getOperator()) {
-                case EQ -> EXAM.SKILL_NAME.eq(condition.getValue());
-                case LIKE -> EXAM.SKILL_NAME.like(condition.getValue());
-            },
-            "description", condition -> switch (condition.getOperator()) {
-                case EQ -> EXAM.DESCRIPTION.eq(condition.getValue());
-                case LIKE -> EXAM.DESCRIPTION.like(condition.getValue());
-            }
-    );
 
     private final RecordMapper<Record, Exam> outputMapper = record -> new Exam(
             record.get(EXAM.NAME),
@@ -88,6 +75,23 @@ public class ExamRepository extends Filtering {
 
     @Override
     protected Map<String, Function<Condition, org.jooq.Condition>> fieldConditionMappers() {
-        return FIELD_CONDITION_MAPPERS;
+        return Map.of(
+                "name", condition -> switch (condition.getOperator()) {
+                    case EQ -> EXAM.NAME.eq(condition.getValue());
+                    case LIKE -> EXAM.NAME.like(condition.getValue());
+                },
+                "skill_name", condition -> switch (condition.getOperator()) {
+                    case EQ -> EXAM.SKILL_NAME.eq(condition.getValue());
+                    case LIKE -> EXAM.SKILL_NAME.like(condition.getValue());
+                },
+                "description", condition -> switch (condition.getOperator()) {
+                    case EQ -> EXAM.DESCRIPTION.eq(condition.getValue());
+                    case LIKE -> DSL.exists(dsl.select()
+                                               .from(TS_EXAM_RU)
+                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                                                Boolean.class,
+                                                                TS_EXAM_RU.DESCRIPTION, DSL.inline(condition.getValue()))));
+                }
+        );
     }
 }

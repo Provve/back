@@ -7,6 +7,7 @@ import org.jooq.Converter;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
+import org.jooq.impl.DSL;
 import org.jspecify.annotations.NullMarked;
 import tech.provve.api.server.generated.dto.Condition;
 import tech.provve.api.server.generated.dto.Filter;
@@ -25,6 +26,7 @@ import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.ExamAddVote.EXAM_ADD_VOTE;
 import static tech.provve.skill.db.generated.tables.GetReactionsTotal.GET_REACTIONS_TOTAL;
 import static tech.provve.skill.db.generated.tables.Reactions.REACTIONS;
+import static tech.provve.skill.db.generated.tables.TsVoteRu.TS_VOTE_RU;
 import static tech.provve.skill.db.generated.tables.Vote.VOTE;
 import static tech.provve.skill.domain.entity.Vote.Type.ADD_EXAM;
 
@@ -35,33 +37,6 @@ public class VoteRepository extends Filtering {
 
     @External
     private final DSLContext dsl;
-
-    private static final Map<String, Function<tech.provve.api.server.generated.dto.Condition, org.jooq.Condition>> FIELD_CONDITION_MAPPERS = Map.of(
-            "name", condition -> switch (condition.getOperator()) {
-                case EQ -> VOTE.NAME.eq(condition.getValue());
-                case LIKE -> VOTE.NAME.like(condition.getValue());
-            },
-            "active", condition -> switch (condition.getOperator()) {
-                case EQ -> VOTE.ACTIVE.eq(Boolean.parseBoolean(condition.getValue()));
-                case LIKE -> VOTE.ACTIVE.like(condition.getValue());
-            },
-            "author", condition -> switch (condition.getOperator()) {
-                case EQ -> VOTE.AUTHOR.eq(condition.getValue());
-                case LIKE -> VOTE.AUTHOR.like(condition.getValue());
-            },
-            "arguments", condition -> switch (condition.getOperator()) {
-                case EQ -> VOTE.ARGUMENTS.eq(condition.getValue());
-                case LIKE -> VOTE.ARGUMENTS.like(condition.getValue());
-            },
-            "tags", condition -> switch (condition.getOperator()) {
-                case EQ -> VOTE.TAGS.in(condition.getValue()
-                                                 .substring(1,
-                                                            condition.getValue()
-                                                                     .length() - 1) // remove [ ]
-                                                 .split(",\\s?"));
-                case LIKE -> VOTE.TAGS.like(condition.getValue());
-            }
-    );
 
     private final RecordMapper<Record, Vote> outputMapper = record -> {
         Exam exam = record.map(_ -> new Exam(
@@ -175,6 +150,35 @@ public class VoteRepository extends Filtering {
 
     @Override
     protected Map<String, Function<Condition, org.jooq.Condition>> fieldConditionMappers() {
-        return FIELD_CONDITION_MAPPERS;
+        return Map.of(
+                "name", condition -> switch (condition.getOperator()) {
+                    case EQ -> VOTE.NAME.eq(condition.getValue());
+                    case LIKE -> VOTE.NAME.like(condition.getValue());
+                },
+                "active", condition -> switch (condition.getOperator()) {
+                    case EQ -> VOTE.ACTIVE.eq(Boolean.parseBoolean(condition.getValue()));
+                    case LIKE -> VOTE.ACTIVE.like(condition.getValue());
+                },
+                "author", condition -> switch (condition.getOperator()) {
+                    case EQ -> VOTE.AUTHOR.eq(condition.getValue());
+                    case LIKE -> VOTE.AUTHOR.like(condition.getValue());
+                },
+                "arguments", condition -> switch (condition.getOperator()) {
+                    case EQ -> VOTE.ARGUMENTS.eq(condition.getValue());
+                    case LIKE -> DSL.exists(dsl.select()
+                                               .from(TS_VOTE_RU)
+                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                                                Boolean.class,
+                                                                TS_VOTE_RU.ARGUMENTS, DSL.inline(condition.getValue()))));
+                },
+                "tags", condition -> switch (condition.getOperator()) {
+                    case EQ -> VOTE.TAGS.in(condition.getValue()
+                                                     .substring(1,
+                                                                condition.getValue()
+                                                                         .length() - 1) // remove [ ]
+                                                     .split(",\\s?"));
+                    case LIKE -> VOTE.TAGS.like(condition.getValue());
+                }
+        );
     }
 }

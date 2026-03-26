@@ -91,7 +91,7 @@ flyway {
     url = 'jdbc:postgresql://localhost:5432/provve'
     user = 'postgres'
     password = '1'
-    schemas = ['public']
+    schemas = ['public_history', 'public']
 }
 
 // run 'build' task to get specs
