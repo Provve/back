@@ -73,7 +73,7 @@ public class ApiServer extends AbstractVerticle {
                          var root = Router.router(vertx)
                                           .errorHandler(400, this::handlerStatus400)
                                           .errorHandler(500, this::handlerStatus500);
-                         root.route("/api/v1/*")
+                         root.route("/v1/*")
                              .handler(rateLimiter)
                              .subRouter(api);
 
