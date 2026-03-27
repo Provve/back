@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamAddVoteResponse {
-
+  
   private String skillName;
   private String description;
   private String publicArchiveUrl;
@@ -27,7 +27,6 @@ public class ExamAddVoteResponse {
   public String getSkillName() {
     return skillName;
   }
-
   public void setSkillName(String skillName) {
     this.skillName = skillName;
   }
@@ -37,7 +36,6 @@ public class ExamAddVoteResponse {
   public String getDescription() {
     return description;
   }
-
   public void setDescription(String description) {
     this.description = description;
   }
@@ -47,7 +45,6 @@ public class ExamAddVoteResponse {
   public String getPublicArchiveUrl() {
     return publicArchiveUrl;
   }
-
   public void setPublicArchiveUrl(String publicArchiveUrl) {
     this.publicArchiveUrl = publicArchiveUrl;
   }

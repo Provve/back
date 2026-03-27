@@ -11,15 +11,15 @@ import java.util.Objects;
 public class Exams {
 
     private List<ExamResponse> exams = new ArrayList<>();
-    private Pagination pagination;
+    private Cursor cursor;
 
     public Exams() {
 
     }
 
-    public Exams(List<ExamResponse> exams, Pagination pagination) {
+    public Exams(List<ExamResponse> exams, Cursor cursor) {
         this.exams = exams;
-        this.pagination = pagination;
+        this.cursor = cursor;
     }
 
 
@@ -33,13 +33,13 @@ public class Exams {
     }
 
 
-    @JsonProperty("pagination")
-    public Pagination getPagination() {
-        return pagination;
+    @JsonProperty("cursor")
+    public Cursor getCursor() {
+        return cursor;
     }
 
-    public void setPagination(Pagination pagination) {
-        this.pagination = pagination;
+    public void setCursor(Cursor cursor) {
+        this.cursor = cursor;
     }
 
 
@@ -53,12 +53,12 @@ public class Exams {
         }
         Exams exams = (Exams) o;
         return Objects.equals(exams, exams.exams) &&
-               Objects.equals(pagination, exams.pagination);
+               Objects.equals(cursor, exams.cursor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(exams, pagination);
+        return Objects.hash(exams, cursor);
     }
 
     @Override
@@ -69,8 +69,8 @@ public class Exams {
         sb.append("    exams: ")
           .append(toIndentedString(exams))
           .append("\n");
-        sb.append("    pagination: ")
-          .append(toIndentedString(pagination))
+        sb.append("    cursor: ")
+          .append(toIndentedString(cursor))
           .append("\n");
         sb.append("}");
         return sb.toString();

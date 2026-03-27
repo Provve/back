@@ -11,15 +11,15 @@ import java.util.Objects;
 public class Notifications {
 
     private List<Notification> notifications = new ArrayList<>();
-    private Pagination pagination;
+    private Cursor cursor;
 
     public Notifications() {
 
     }
 
-    public Notifications(List<Notification> notifications, Pagination pagination) {
+    public Notifications(List<Notification> notifications, Cursor cursor) {
         this.notifications = notifications;
-        this.pagination = pagination;
+        this.cursor = cursor;
     }
 
 
@@ -33,13 +33,13 @@ public class Notifications {
     }
 
 
-    @JsonProperty("pagination")
-    public Pagination getPagination() {
-        return pagination;
+    @JsonProperty("cursor")
+    public Cursor getCursor() {
+        return cursor;
     }
 
-    public void setPagination(Pagination pagination) {
-        this.pagination = pagination;
+    public void setCursor(Cursor cursor) {
+        this.cursor = cursor;
     }
 
 
@@ -53,12 +53,12 @@ public class Notifications {
         }
         Notifications notifications = (Notifications) o;
         return Objects.equals(notifications, notifications.notifications) &&
-               Objects.equals(pagination, notifications.pagination);
+               Objects.equals(cursor, notifications.cursor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(notifications, pagination);
+        return Objects.hash(notifications, cursor);
     }
 
     @Override
@@ -69,8 +69,8 @@ public class Notifications {
         sb.append("    notifications: ")
           .append(toIndentedString(notifications))
           .append("\n");
-        sb.append("    pagination: ")
-          .append(toIndentedString(pagination))
+        sb.append("    cursor: ")
+          .append(toIndentedString(cursor))
           .append("\n");
         sb.append("}");
         return sb.toString();

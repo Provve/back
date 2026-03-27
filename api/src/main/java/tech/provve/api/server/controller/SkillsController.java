@@ -45,9 +45,9 @@ public class SkillsController implements SkillsApi {
                                                    .stream()
                                                    .map(ExamResponseMapper.INST::map)
                                                    .toList();
-            var pagination = new Pagination(all.getLast()
-                                               .getName(), 0);
-            return Future.succeededFuture(new ApiResponse<>(200, new Exams(all, pagination)));
+            var cursor = new Cursor(all.getLast()
+                                       .getName());
+            return Future.succeededFuture(new ApiResponse<>(200, new Exams(all, cursor)));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
         }
@@ -67,9 +67,9 @@ public class SkillsController implements SkillsApi {
                                                        .stream()
                                                        .map(ResultResponseMapper.INST::map)
                                                        .toList();
-            var pagination = new Pagination(all.getLast()
-                                               .getExamName(), 0);
-            return Future.succeededFuture(new ApiResponse<>(200, new Results(all, pagination)));
+            var cursor = new Cursor(all.getLast()
+                                       .getExamName());
+            return Future.succeededFuture(new ApiResponse<>(200, new Results(all, cursor)));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
         }
@@ -87,9 +87,9 @@ public class SkillsController implements SkillsApi {
                                                      .stream()
                                                      .map(skill -> new SkillResponse(skill.name(), skill.tags()))
                                                      .toList();
-            var pagination = new Pagination(all.getLast()
-                                               .getName(), 0);
-            return Future.succeededFuture(new ApiResponse<>(200, new Skills(all, pagination)));
+            var cursor = new Cursor(all.getLast()
+                                       .getName());
+            return Future.succeededFuture(new ApiResponse<>(200, new Skills(all, cursor)));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
         }

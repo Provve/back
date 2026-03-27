@@ -11,15 +11,15 @@ import java.util.Objects;
 public class Skills {
 
     private List<SkillResponse> skills = new ArrayList<>();
-    private Pagination pagination;
+    private Cursor cursor;
 
     public Skills() {
 
     }
 
-    public Skills(List<SkillResponse> skills, Pagination pagination) {
+    public Skills(List<SkillResponse> skills, Cursor cursor) {
         this.skills = skills;
-        this.pagination = pagination;
+        this.cursor = cursor;
     }
 
 
@@ -33,13 +33,13 @@ public class Skills {
     }
 
 
-    @JsonProperty("pagination")
-    public Pagination getPagination() {
-        return pagination;
+    @JsonProperty("cursor")
+    public Cursor getCursor() {
+        return cursor;
     }
 
-    public void setPagination(Pagination pagination) {
-        this.pagination = pagination;
+    public void setCursor(Cursor cursor) {
+        this.cursor = cursor;
     }
 
 
@@ -53,12 +53,12 @@ public class Skills {
         }
         Skills skills = (Skills) o;
         return Objects.equals(skills, skills.skills) &&
-               Objects.equals(pagination, skills.pagination);
+               Objects.equals(cursor, skills.cursor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(skills, pagination);
+        return Objects.hash(skills, cursor);
     }
 
     @Override
@@ -69,8 +69,8 @@ public class Skills {
         sb.append("    skills: ")
           .append(toIndentedString(skills))
           .append("\n");
-        sb.append("    pagination: ")
-          .append(toIndentedString(pagination))
+        sb.append("    cursor: ")
+          .append(toIndentedString(cursor))
           .append("\n");
         sb.append("}");
         return sb.toString();

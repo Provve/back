@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CollectionRequest {
-
+  
   private Pagination pagination;
   private Filter filter;
   private String authToken;
@@ -27,7 +27,6 @@ public class CollectionRequest {
   public Pagination getPagination() {
     return pagination;
   }
-
   public void setPagination(Pagination pagination) {
     this.pagination = pagination;
   }
@@ -37,7 +36,6 @@ public class CollectionRequest {
   public Filter getFilter() {
     return filter;
   }
-
   public void setFilter(Filter filter) {
     this.filter = filter;
   }
@@ -47,7 +45,6 @@ public class CollectionRequest {
   public String getAuthToken() {
     return authToken;
   }
-
   public void setAuthToken(String authToken) {
     this.authToken = authToken;
   }

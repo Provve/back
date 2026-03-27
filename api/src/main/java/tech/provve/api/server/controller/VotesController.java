@@ -128,9 +128,9 @@ public class VotesController implements VotesApi {
                                                    .stream()
                                                    .map(VoteResponseMapper.INST::map)
                                                    .toList();
-            var pagination = new Pagination(all.getLast()
-                                               .getName(), 0);
-            return Future.succeededFuture(new ApiResponse<>(200, new Votes(all, pagination)));
+            var cursor = new Cursor(all.getLast()
+                                       .getName());
+            return Future.succeededFuture(new ApiResponse<>(200, new Votes(all, cursor)));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
         }

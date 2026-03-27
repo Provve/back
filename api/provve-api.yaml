@@ -808,12 +808,22 @@ components:
       properties:
         previous:
           type: string
-          description: ID последнего элемента страницы
+          description: ID последнего элемента предыдущей страницы
         size:
           type: integer
           minimum: 1
           maximum: 100
-          description: Количество элементов на странице
+          description: Требуемый размер страницы
+
+    Cursor:
+      description: Указатель на последний элемент предыдущей страницы
+      type: object
+      required:
+        - previous
+      properties:
+        previous:
+          type: string
+          description: ID последнего элемента страницы
 
     Skills:
       type: object
@@ -822,8 +832,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Skill.response"
-        pagination:
-          $ref: "#/components/schemas/Pagination"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
 
     Skill.response:
       type: object
@@ -844,8 +854,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Exam.response"
-        pagination:
-          $ref: "#/components/schemas/Pagination"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
 
     Exam.response:
       type: object
@@ -867,8 +877,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Result.response"
-        pagination:
-          $ref: "#/components/schemas/Pagination"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
 
     Result.response:
       description: Успешный результат
@@ -944,8 +954,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Vote.response"
-        pagination:
-          $ref: "#/components/schemas/Pagination"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
 
     Vote.response:
       description: Всеохватывающее представление голосования
@@ -1041,8 +1051,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Notification"
-        pagination:
-          $ref: "#/components/schemas/Pagination"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
 
     Notification:
       type: object

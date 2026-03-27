@@ -10,7 +10,7 @@ import java.util.Objects;
  **/
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultResponse {
-
+  
   private String examName;
   private Long time;
 
@@ -28,7 +28,6 @@ public class ResultResponse {
   public String getExamName() {
     return examName;
   }
-
   public void setExamName(String examName) {
     this.examName = examName;
   }
@@ -38,7 +37,6 @@ public class ResultResponse {
   public Long getTime() {
     return time;
   }
-
   public void setTime(Long time) {
     this.time = time;
   }

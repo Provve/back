@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamAddVote {
-
+  
   private String name;
   private String arguments;
   private List<String> tags = new ArrayList<>();
@@ -47,7 +47,6 @@ public class ExamAddVote {
   public String getName() {
     return name;
   }
-
   public void setName(String name) {
     this.name = name;
   }
@@ -57,7 +56,6 @@ public class ExamAddVote {
   public String getArguments() {
     return arguments;
   }
-
   public void setArguments(String arguments) {
     this.arguments = arguments;
   }
@@ -67,7 +65,6 @@ public class ExamAddVote {
   public List<String> getTags() {
     return tags;
   }
-
   public void setTags(List<String> tags) {
     this.tags = tags;
   }
@@ -77,7 +74,6 @@ public class ExamAddVote {
   public String getAuthToken() {
     return authToken;
   }
-
   public void setAuthToken(String authToken) {
     this.authToken = authToken;
   }
@@ -87,7 +83,6 @@ public class ExamAddVote {
   public String getSkillName() {
     return skillName;
   }
-
   public void setSkillName(String skillName) {
     this.skillName = skillName;
   }
@@ -97,7 +92,6 @@ public class ExamAddVote {
   public String getDescription() {
     return description;
   }
-
   public void setDescription(String description) {
     this.description = description;
   }
@@ -107,7 +101,6 @@ public class ExamAddVote {
   public FileUpload getPublicArchive() {
     return publicArchive;
   }
-
   public void setPublicArchive(FileUpload publicArchive) {
     this.publicArchive = publicArchive;
   }
@@ -117,7 +110,6 @@ public class ExamAddVote {
   public FileUpload getPrivateArchive() {
     return privateArchive;
   }
-
   public void setPrivateArchive(FileUpload privateArchive) {
     this.privateArchive = privateArchive;
   }

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Pagination {
-
+  
   private String previous;
   private Integer size;
 
@@ -25,7 +25,6 @@ public class Pagination {
   public String getPrevious() {
     return previous;
   }
-
   public void setPrevious(String previous) {
     this.previous = previous;
   }
@@ -35,7 +34,6 @@ public class Pagination {
   public Integer getSize() {
     return size;
   }
-
   public void setSize(Integer size) {
     this.size = size;
   }

@@ -11,15 +11,15 @@ import java.util.Objects;
 public class Results {
 
     private List<ResultResponse> results = new ArrayList<>();
-    private Pagination pagination;
+    private Cursor cursor;
 
     public Results() {
 
     }
 
-    public Results(List<ResultResponse> results, Pagination pagination) {
+    public Results(List<ResultResponse> results, Cursor cursor) {
         this.results = results;
-        this.pagination = pagination;
+        this.cursor = cursor;
     }
 
 
@@ -33,13 +33,13 @@ public class Results {
     }
 
 
-    @JsonProperty("pagination")
-    public Pagination getPagination() {
-        return pagination;
+    @JsonProperty("cursor")
+    public Cursor getCursor() {
+        return cursor;
     }
 
-    public void setPagination(Pagination pagination) {
-        this.pagination = pagination;
+    public void setCursor(Cursor cursor) {
+        this.cursor = cursor;
     }
 
 
@@ -53,12 +53,12 @@ public class Results {
         }
         Results results = (Results) o;
         return Objects.equals(results, results.results) &&
-               Objects.equals(pagination, results.pagination);
+               Objects.equals(cursor, results.cursor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(results, pagination);
+        return Objects.hash(results, cursor);
     }
 
     @Override
@@ -69,8 +69,8 @@ public class Results {
         sb.append("    results: ")
           .append(toIndentedString(results))
           .append("\n");
-        sb.append("    pagination: ")
-          .append(toIndentedString(pagination))
+        sb.append("    cursor: ")
+          .append(toIndentedString(cursor))
           .append("\n");
         sb.append("}");
         return sb.toString();

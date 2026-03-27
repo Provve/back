@@ -10,9 +10,9 @@ import tech.provve.api.server.exception.ValidationError;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.NotificationsApi;
 import tech.provve.api.server.generated.dto.CollectionRequest;
+import tech.provve.api.server.generated.dto.Cursor;
 import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.api.server.generated.dto.Notifications;
-import tech.provve.api.server.generated.dto.Pagination;
 import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.notification.repository.NotificationRepository;
@@ -43,9 +43,9 @@ public class NotificationsController implements NotificationsApi {
                                                                                        .getSize())
                                                            .stream()
                                                            .toList();
-            var pagination = new Pagination(String.valueOf(all.getLast()
-                                                              .getId()), 0);
-            return Future.succeededFuture(new ApiResponse<>(200, new Notifications(all, pagination)));
+            var cursor = new Cursor(String.valueOf(all.getLast()
+                                                      .getId()));
+            return Future.succeededFuture(new ApiResponse<>(200, new Notifications(all, cursor)));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
         }
