@@ -93,7 +93,7 @@ public class Vote {
         /**
          * Удаление навыка.
          */
-        DELETE_SKILL(1),
+        DEL_SKILL(1),
 
         /**
          * Добавление экзамена.

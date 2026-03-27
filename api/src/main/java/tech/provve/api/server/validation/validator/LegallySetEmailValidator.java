@@ -4,8 +4,6 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import tech.provve.api.server.validation.dto.RegisterAccountRequest;
 
-import static tech.provve.api.server.predicate.StringPredicate.isBlank;
-
 public class LegallySetEmailValidator implements ConstraintValidator<LegalEmail, RegisterAccountRequest> {
 
     private static final String EMAIL_PATTERN =
@@ -21,5 +19,10 @@ public class LegallySetEmailValidator implements ConstraintValidator<LegalEmail,
                 && value.email()
                         .matches(EMAIL_PATTERN)
                 && value.consentPersonalData());
+    }
+
+    private boolean isBlank(final String string) {
+        return string == null || string.trim()
+                                       .isEmpty();
     }
 }

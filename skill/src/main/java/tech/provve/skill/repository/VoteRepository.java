@@ -14,7 +14,7 @@ import tech.provve.api.server.generated.dto.Filter;
 import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.domain.value.VoteReactions;
-import tech.provve.skill.mapper.VoteMapper;
+import tech.provve.skill.mapper.vote.VoteJooqMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -74,12 +74,12 @@ public class VoteRepository extends Filtering {
 
     public void save(Vote vote) {
         dsl.insertInto(VOTE)
-           .set(VoteMapper.INSTANCE.map(vote))
+           .set(VoteJooqMapper.INSTANCE.map(vote))
            .execute();
 
         if (ADD_EXAM.equals(vote.getType())) {
             dsl.insertInto(EXAM_ADD_VOTE)
-               .set(VoteMapper.INSTANCE.map(
+               .set(VoteJooqMapper.INSTANCE.map(
                        Objects.requireNonNull(vote.getExam()),
                        vote.getName()
                ))

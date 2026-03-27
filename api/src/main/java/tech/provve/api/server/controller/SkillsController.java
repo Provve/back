@@ -14,6 +14,8 @@ import tech.provve.api.server.generated.dto.*;
 import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.api.server.validation.dto.CollectionRequestAuthenticated;
+import tech.provve.skill.mapper.ResultResponseMapper;
+import tech.provve.skill.mapper.exam.ExamResponseMapper;
 import tech.provve.skill.repository.ExamRepository;
 import tech.provve.skill.repository.ResultRepository;
 import tech.provve.skill.repository.SkillRepository;
@@ -41,7 +43,7 @@ public class SkillsController implements SkillsApi {
                                                            collectionRequest.getPagination()
                                                                             .getSize())
                                                    .stream()
-                                                   .map(exam -> new ExamResponse(exam.name(), exam.description(), exam.publicArchiveUrl()))
+                                                   .map(ExamResponseMapper.INST::map)
                                                    .toList();
             var pagination = new Pagination(all.getLast()
                                                .getName(), 0);
@@ -63,7 +65,7 @@ public class SkillsController implements SkillsApi {
                                                                 collectionRequest.getPagination()
                                                                                  .getSize())
                                                        .stream()
-                                                       .map(result -> new ResultResponse())
+                                                       .map(ResultResponseMapper.INST::map)
                                                        .toList();
             var pagination = new Pagination(all.getLast()
                                                .getExamName(), 0);

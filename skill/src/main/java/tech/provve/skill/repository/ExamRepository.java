@@ -11,7 +11,7 @@ import org.jspecify.annotations.NullMarked;
 import tech.provve.api.server.generated.dto.Condition;
 import tech.provve.api.server.generated.dto.Filter;
 import tech.provve.skill.domain.entity.Exam;
-import tech.provve.skill.mapper.ExamMapper;
+import tech.provve.skill.mapper.exam.ExamJooqMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class ExamRepository extends Filtering {
 
     public void save(Exam exam) {
         dsl.insertInto(EXAM)
-           .set(ExamMapper.INSTANCE.map(exam))
+           .set(ExamJooqMapper.INSTANCE.map(exam))
            .execute();
     }
 

@@ -880,7 +880,7 @@ components:
         time:
           description: Затраченное время, в минутах
           type: integer
-          format: int32
+          format: int64
 
     Vote:
       description: Простая форма голосования
@@ -955,11 +955,11 @@ components:
           properties:
             type:
               type: string
-              enum: [ skill_add, skill_del, exam_add ]
+              enum: [ add_skill, del_skill, add_exam ]
               description: |
-                skill_add — добавление навыка,
-                skill_del — удаление навыка,
-                exam_add — добавление экзамена
+                add_skill — добавление навыка,
+                del_skill — удаление навыка,
+                add_exam — добавление экзамена
             reactions:
               type: object
               description: Голоса

@@ -17,13 +17,12 @@ import tech.provve.skill.domain.entity.Skill;
 import tech.provve.skill.domain.entity.Vote;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static tech.provve.skill.domain.entity.Vote.Type.ADD_EXAM;
-import static tech.provve.skill.domain.entity.Vote.Type.DELETE_SKILL;
+import static tech.provve.skill.domain.entity.Vote.Type.DEL_SKILL;
 
 @InjectTest
 class VoteRepositoryTest extends PostgresIntegrationTest {
@@ -127,7 +126,7 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
                     .author("a")
                     .deadline(now)
                     .arguments("xyz!")
-                    .type(Vote.Type.DELETE_SKILL)
+                    .type(Vote.Type.DEL_SKILL)
                     .tags(List.of("1"))
                     .exam(examAddvote)
                     .build()
@@ -140,7 +139,7 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         var savedVotes = voteRepository.getAll(new Filter(emptyList()), "", 1);
         assertThat(savedVotes).extracting(Vote::getType)
                               .anyMatch(ADD_EXAM::equals)
-                              .anyMatch(DELETE_SKILL::equals);
+                              .anyMatch(DEL_SKILL::equals);
     }
 
 }

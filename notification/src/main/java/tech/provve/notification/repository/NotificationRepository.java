@@ -8,7 +8,7 @@ import org.jooq.Record;
 import org.jooq.RecordMapper;
 import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.notification.domain.entity.InputNotification;
-import tech.provve.notification.mapper.NotificationMapper;
+import tech.provve.notification.mapper.NotificationJooqMapper;
 
 import java.util.List;
 
@@ -24,14 +24,14 @@ public class NotificationRepository {
     private final RecordMapper<Record, Notification> outputMapper = result ->
             new Notification(
                     result.get(NOTIFICATION_.ID),
-                    NotificationMapper.INSTANCE.level(result.get(NOTIFICATION_.LEVEL)),
+                    NotificationJooqMapper.INSTANCE.level(result.get(NOTIFICATION_.LEVEL)),
                     result.get(NOTIFICATION_.MESSAGE),
                     result.get(NOTIFICATION_.CREATED_AT)
             );
 
     public void save(InputNotification inputNotification) {
         dsl.insertInto(NOTIFICATION_)
-           .set(NotificationMapper.INSTANCE.map(inputNotification))
+           .set(NotificationJooqMapper.INSTANCE.map(inputNotification))
            .execute();
     }
 

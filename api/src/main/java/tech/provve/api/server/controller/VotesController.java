@@ -13,11 +13,11 @@ import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.api.server.validation.dto.CastVote;
 import tech.provve.skill.exception.*;
+import tech.provve.skill.mapper.vote.VoteResponseMapper;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.domain.VoteService;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Singleton
@@ -126,23 +126,7 @@ public class VotesController implements VotesApi {
                                                            collectionRequest.getPagination()
                                                                             .getSize())
                                                    .stream()
-                                                   .map(vote -> new VoteResponse(vote.getName(),
-                                                                                 vote.getArguments(),
-                                                                                 vote.getTags(),
-                                                                                 VoteResponse.TypeEnum.valueOf(vote.getType()
-                                                                                                                   .name()),
-                                                                                 new VoteResponseAllOfReactions(vote.getReactions()
-                                                                                                                    .positive(), vote.getReactions()
-                                                                                                                                     .negative()),
-                                                                                 vote.getDeadline()
-                                                                                     .atOffset(
-                                                                                             ZoneOffset.UTC),
-                                                                                 new ExamAddVoteResponse(vote.getExam()
-                                                                                                             .skillName(),
-                                                                                                         vote.getExam()
-                                                                                                             .description(),
-                                                                                                         vote.getExam()
-                                                                                                             .publicArchiveUrl())))
+                                                   .map(VoteResponseMapper.INST::map)
                                                    .toList();
             var pagination = new Pagination(all.getLast()
                                                .getName(), 0);

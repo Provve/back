@@ -105,7 +105,7 @@ public class VoteServiceImpl implements VoteService {
                        .author(author)
                        .deadline(deadline)
                        .arguments(sanitize(skillDelVote.getArguments()))
-                       .type(DELETE_SKILL)
+                       .type(DEL_SKILL)
                        .tags(skillDelVote.getTags()
                                          .stream()
                                          .map(XssSanitizer::sanitize)

@@ -42,8 +42,6 @@ public class NotificationsController implements NotificationsApi {
                                                                       collectionRequest.getPagination()
                                                                                        .getSize())
                                                            .stream()
-                                                           .map(notification -> new Notification(notification.getId(), notification.getLevel(),
-                                                                                                 notification.getMessage(), notification.getCreatedAt()))
                                                            .toList();
             var pagination = new Pagination(String.valueOf(all.getLast()
                                                               .getId()), 0);
