@@ -12,6 +12,7 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.dto.CollectionAuthenticatedRequest;
 import tech.provve.api.server.generated.dto.CollectionRequest;
 
 @Singleton
@@ -77,14 +78,15 @@ public class SkillsApiHandler implements RouteHandler {
         String skillName = requestParameters.pathParameter("skill_name") != null ? requestParameters.pathParameter("skill_name")
                                                                                                     .getString() : null;
         RequestParameter body = requestParameters.body();
-        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
-                                                                          }) : null;
+        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null ? DatabindCodec.mapper()
+                                                                                                    .convertValue(body.get(),
+                                                                                                                  new TypeReference<CollectionAuthenticatedRequest>() {
+                                                                                                                  }) : null;
 
         logger.debug("Parameter skillName is {}", skillName);
-        logger.debug("Parameter collectionRequest is {}", collectionRequest);
+        logger.debug("Parameter collectionAuthenticatedRequest is {}", collectionAuthenticatedRequest);
 
-        api.listResults(skillName, collectionRequest)
+        api.listResults(skillName, collectionAuthenticatedRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

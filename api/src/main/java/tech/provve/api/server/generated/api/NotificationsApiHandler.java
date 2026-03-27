@@ -11,7 +11,7 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.provve.api.server.RouteHandler;
-import tech.provve.api.server.generated.dto.CollectionRequest;
+import tech.provve.api.server.generated.dto.CollectionAuthenticatedRequest;
 
 @Singleton
 public class NotificationsApiHandler implements RouteHandler {
@@ -59,13 +59,14 @@ public class NotificationsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
-                                                                          }) : null;
+        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null ? DatabindCodec.mapper()
+                                                                                                    .convertValue(body.get(),
+                                                                                                                  new TypeReference<CollectionAuthenticatedRequest>() {
+                                                                                                                  }) : null;
 
-        logger.debug("Parameter collectionRequest is {}", collectionRequest);
+        logger.debug("Parameter collectionAuthenticatedRequest is {}", collectionAuthenticatedRequest);
 
-        api.listNotifications(collectionRequest)
+        api.listNotifications(collectionAuthenticatedRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

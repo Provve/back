@@ -10,16 +10,14 @@ public class CollectionRequest {
   
   private Pagination pagination;
   private Filter filter;
-  private String authToken;
 
   public CollectionRequest() {
 
   }
 
-  public CollectionRequest(Pagination pagination, Filter filter, String authToken) {
+  public CollectionRequest(Pagination pagination, Filter filter) {
     this.pagination = pagination;
     this.filter = filter;
-    this.authToken = authToken;
   }
 
 
@@ -41,15 +39,6 @@ public class CollectionRequest {
   }
 
 
-  @JsonProperty("auth_token")
-  public String getAuthToken() {
-    return authToken;
-  }
-  public void setAuthToken(String authToken) {
-    this.authToken = authToken;
-  }
-
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -60,13 +49,12 @@ public class CollectionRequest {
     }
     CollectionRequest collectionRequest = (CollectionRequest) o;
     return Objects.equals(pagination, collectionRequest.pagination) &&
-           Objects.equals(filter, collectionRequest.filter) &&
-           Objects.equals(authToken, collectionRequest.authToken);
+           Objects.equals(filter, collectionRequest.filter);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pagination, filter, authToken);
+    return Objects.hash(pagination, filter);
   }
 
   @Override
@@ -79,9 +67,6 @@ public class CollectionRequest {
       .append("\n");
     sb.append("    filter: ")
       .append(toIndentedString(filter))
-      .append("\n");
-    sb.append("    authToken: ")
-      .append(toIndentedString(authToken))
       .append("\n");
     sb.append("}");
     return sb.toString();

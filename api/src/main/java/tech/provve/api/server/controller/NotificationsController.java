@@ -9,7 +9,7 @@ import tech.provve.api.server.exception.HttpException;
 import tech.provve.api.server.exception.ValidationError;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.NotificationsApi;
-import tech.provve.api.server.generated.dto.CollectionRequest;
+import tech.provve.api.server.generated.dto.CollectionAuthenticatedRequest;
 import tech.provve.api.server.generated.dto.Cursor;
 import tech.provve.api.server.generated.dto.Notification;
 import tech.provve.api.server.generated.dto.Notifications;
@@ -33,14 +33,14 @@ public class NotificationsController implements NotificationsApi {
     }
 
     @Override
-    public Future<ApiResponse<Notifications>> listNotifications(CollectionRequest collectionRequest) {
+    public Future<ApiResponse<Notifications>> listNotifications(CollectionAuthenticatedRequest request) {
         try {
-            inputValidator.validate(InputValidatorMapper.INSTANCE.map(collectionRequest));
-            var login = jwsParsingService.parseAuth(collectionRequest.getAuthToken(), JwsParsingService.JWT_SUBJECT);
-            List<Notification> all = notificationRepository.findAllBy(login, collectionRequest.getPagination()
-                                                                                              .getPrevious(),
-                                                                      collectionRequest.getPagination()
-                                                                                       .getSize())
+            inputValidator.validate(InputValidatorMapper.INSTANCE.map(request));
+            var login = jwsParsingService.parseAuth(request.getAuthToken(), JwsParsingService.JWT_SUBJECT);
+            List<Notification> all = notificationRepository.findAllBy(login, request.getPagination()
+                                                                                    .getPrevious(),
+                                                                      request.getPagination()
+                                                                             .getSize())
                                                            .stream()
                                                            .toList();
             var cursor = new Cursor(String.valueOf(all.getLast()

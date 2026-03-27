@@ -13,7 +13,6 @@ import tech.provve.api.server.generated.api.SkillsApi;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
-import tech.provve.api.server.validation.dto.CollectionRequestAuthenticated;
 import tech.provve.skill.mapper.ResultResponseMapper;
 import tech.provve.skill.mapper.exam.ExamResponseMapper;
 import tech.provve.skill.repository.ExamRepository;
@@ -54,16 +53,15 @@ public class SkillsController implements SkillsApi {
     }
 
     @Override
-    public Future<ApiResponse<Results>> listResults(String skillName, CollectionRequest collectionRequest) {
+    public Future<ApiResponse<Results>> listResults(String skillName, CollectionAuthenticatedRequest request) {
         try {
-            inputValidator.validate(new CollectionRequestAuthenticated(InputValidatorMapper.INSTANCE.map(collectionRequest),
-                                                                       collectionRequest.getAuthToken()));
-            var login = jwsParsingService.parseAuth(collectionRequest.getAuthToken(), JwsParsingService.JWT_SUBJECT);
-            List<ResultResponse> all = resultRepository.findAll(collectionRequest.getFilter(),
-                                                                login, collectionRequest.getPagination()
-                                                                                        .getPrevious(),
-                                                                collectionRequest.getPagination()
-                                                                                 .getSize())
+            inputValidator.validate(InputValidatorMapper.INSTANCE.map(request));
+            var login = jwsParsingService.parseAuth(request.getAuthToken(), JwsParsingService.JWT_SUBJECT);
+            List<ResultResponse> all = resultRepository.findAll(request.getFilter(),
+                                                                login, request.getPagination()
+                                                                              .getPrevious(),
+                                                                request.getPagination()
+                                                                       .getSize())
                                                        .stream()
                                                        .map(ResultResponseMapper.INST::map)
                                                        .toList();

@@ -418,7 +418,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Collection.request"
+              $ref: "#/components/schemas/CollectionAuthenticated.request"
       responses:
         '200':
           description: Список результатов успешно получен
@@ -716,7 +716,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Collection.request"
+              $ref: "#/components/schemas/CollectionAuthenticated.request"
       responses:
         '200':
           description: Список уведомлений успешно получен
@@ -1087,10 +1087,19 @@ components:
           $ref: "#/components/schemas/Pagination"
         filter:
           $ref: "#/components/schemas/Filter"
-        auth_token:
-          $ref: "#/components/schemas/AuthToken"
       required:
         - pagination
+        - filter
+
+    CollectionAuthenticated.request:
+      allOf:
+        - $ref: "#/components/schemas/Collection.request"
+        - type: object
+          properties:
+            auth_token:
+              $ref: "#/components/schemas/AuthToken"
+          required:
+            - auth_token
 
     RegisterAccount.request:
       type: object
