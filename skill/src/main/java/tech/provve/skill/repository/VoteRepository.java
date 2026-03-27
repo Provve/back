@@ -155,7 +155,7 @@ public class VoteRepository extends Filtering {
                     case EQ -> VOTE.NAME.eq(condition.getValue());
                     case LIKE -> DSL.exists(dsl.select()
                                                .from(TS_VOTE_RU)
-                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                               .where(DSL.field("{0} @@ plainto_tsquery('russian', {1})",
                                                                 Boolean.class,
                                                                 TS_VOTE_RU.TS_VOTE_NAME, DSL.inline(condition.getValue()))));
                 },
@@ -169,16 +169,12 @@ public class VoteRepository extends Filtering {
                     case EQ -> VOTE.ARGUMENTS.eq(condition.getValue());
                     case LIKE -> DSL.exists(dsl.select()
                                                .from(TS_VOTE_RU)
-                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                               .where(DSL.field("{0} @@ plainto_tsquery('russian', {1})",
                                                                 Boolean.class,
                                                                 TS_VOTE_RU.ARGUMENTS, DSL.inline(condition.getValue()))));
                 },
                 "tags", condition -> switch (condition.getOperator()) {
-                    case EQ, LIKE -> VOTE.TAGS.in(condition.getValue()
-                                                     .substring(1,
-                                                                condition.getValue()
-                                                                         .length() - 1) // remove [ ]
-                                                     .split(",\\s?"));
+                    case EQ, LIKE -> DSL.condition("{0} && {1}", VOTE.TAGS, DSL.inline("{%s}".formatted(condition.getValue())));
                 }
         );
     }

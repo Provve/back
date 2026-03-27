@@ -28,13 +28,6 @@ public class ResultRepository extends Filtering {
     @External
     private final DSLContext dsl;
 
-    private static final Map<String, Function<tech.provve.api.server.generated.dto.Condition, org.jooq.Condition>> FIELD_CONDITION_MAPPERS = Map.of(
-            "exam_name", condition -> switch (condition.getOperator()) {
-                case EQ -> RESULT.EXAM_NAME.eq(condition.getValue());
-                case LIKE -> RESULT.EXAM_NAME.like(condition.getValue());
-            }
-    );
-
     private final RecordMapper<Record, Result> outputMapper = record -> new Result(
             record.get(RESULT.EXAM_NAME),
             record.get(RESULT.EXAMINEE),
@@ -77,6 +70,10 @@ public class ResultRepository extends Filtering {
 
     @Override
     protected Map<String, Function<tech.provve.api.server.generated.dto.Condition, Condition>> fieldConditionMappers() {
-        return FIELD_CONDITION_MAPPERS;
+        return Map.of(
+                "exam_name", condition -> switch (condition.getOperator()) {
+                    case EQ, LIKE -> RESULT.EXAM_NAME.eq(condition.getValue());
+                }
+        );
     }
 }

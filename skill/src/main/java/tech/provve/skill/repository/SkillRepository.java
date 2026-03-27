@@ -87,16 +87,13 @@ public class SkillRepository extends Filtering {
                     case EQ -> SKILL_.NAME.eq(condition.getValue());
                     case LIKE -> DSL.exists(dsl.select()
                                                .from(TS_SKILL_RU)
-                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                               .where(DSL.field("{0} @@ plainto_tsquery('russian', {1})",
                                                                 Boolean.class,
-                                                                TS_SKILL_RU.TS_SKILL_NAME, DSL.inline(condition.getValue()))));
+                                                                TS_SKILL_RU.TS_SKILL_NAME, DSL.inline(condition.getValue())))
+                                               .and(TS_SKILL_RU.SKILL_NAME.eq(SKILL_.NAME)));
                 },
                 "tags", condition -> switch (condition.getOperator()) {
-                    case EQ, LIKE -> SKILL_.TAGS.in(condition.getValue()
-                                                             .substring(1,
-                                                                        condition.getValue()
-                                                                                 .length() - 1) // remove [ ]
-                                                             .split(",\\s?"));
+                    case EQ, LIKE -> DSL.condition("{0} && {1}", SKILL_.TAGS, DSL.inline("{%s}".formatted(condition.getValue())));
                 }
         );
     }

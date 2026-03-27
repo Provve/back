@@ -80,7 +80,7 @@ public class ExamRepository extends Filtering {
                     case EQ -> EXAM.NAME.eq(condition.getValue());
                     case LIKE -> DSL.exists(dsl.select()
                                                .from(TS_EXAM_RU)
-                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                               .where(DSL.field("{0} @@ plainto_tsquery('russian', {1})",
                                                                 Boolean.class,
                                                                 TS_EXAM_RU.TS_EXAM_NAME, DSL.inline(condition.getValue()))));
                 },
@@ -91,7 +91,7 @@ public class ExamRepository extends Filtering {
                     case EQ -> EXAM.DESCRIPTION.eq(condition.getValue());
                     case LIKE -> DSL.exists(dsl.select()
                                                .from(TS_EXAM_RU)
-                                               .where(DSL.field("{0} @@ plainto_tsquery({1})",
+                                               .where(DSL.field("{0} @@ plainto_tsquery('russian', {1})",
                                                                 Boolean.class,
                                                                 TS_EXAM_RU.DESCRIPTION, DSL.inline(condition.getValue()))));
                 }
