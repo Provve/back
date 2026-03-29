@@ -1,13 +1,14 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.net.URI;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateSessionResponse {
-
+  
   private URI redirect;
   private Boolean lossRisk;
   private String nonce;
@@ -27,7 +28,6 @@ public class CreateSessionResponse {
   public URI getRedirect() {
     return redirect;
   }
-
   public void setRedirect(URI redirect) {
     this.redirect = redirect;
   }
@@ -37,7 +37,6 @@ public class CreateSessionResponse {
   public Boolean getLossRisk() {
     return lossRisk;
   }
-
   public void setLossRisk(Boolean lossRisk) {
     this.lossRisk = lossRisk;
   }
@@ -47,7 +46,6 @@ public class CreateSessionResponse {
   public String getNonce() {
     return nonce;
   }
-
   public void setNonce(String nonce) {
     this.nonce = nonce;
   }
@@ -63,8 +61,8 @@ public class CreateSessionResponse {
     }
     CreateSessionResponse createSessionResponse = (CreateSessionResponse) o;
     return Objects.equals(redirect, createSessionResponse.redirect) &&
-            Objects.equals(lossRisk, createSessionResponse.lossRisk) &&
-            Objects.equals(nonce, createSessionResponse.nonce);
+           Objects.equals(lossRisk, createSessionResponse.lossRisk) &&
+           Objects.equals(nonce, createSessionResponse.nonce);
   }
 
   @Override

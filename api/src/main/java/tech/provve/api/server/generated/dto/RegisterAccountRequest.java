@@ -1,8 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RegisterAccountRequest {
@@ -86,10 +87,10 @@ public class RegisterAccountRequest {
         }
         RegisterAccountRequest registerAccountRequest = (RegisterAccountRequest) o;
         return Objects.equals(login, registerAccountRequest.login) &&
-                Objects.equals(email, registerAccountRequest.email) &&
-                Objects.equals(password, registerAccountRequest.password) &&
-                Objects.equals(consentPersonalData, registerAccountRequest.consentPersonalData) &&
-                Objects.equals(username, registerAccountRequest.username);
+               Objects.equals(email, registerAccountRequest.email) &&
+               Objects.equals(password, registerAccountRequest.password) &&
+               Objects.equals(consentPersonalData, registerAccountRequest.consentPersonalData) &&
+               Objects.equals(username, registerAccountRequest.username);
     }
 
     @Override

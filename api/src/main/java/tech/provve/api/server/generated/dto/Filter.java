@@ -1,43 +1,33 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tech.provve.api.server.generated.dto.FilterPredicate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Filter {
 
-    private String field;
-    private FilterPredicate predicate;
+    private List<Condition> conditions = new ArrayList<>();
 
     public Filter() {
 
     }
 
-    public Filter(String field, FilterPredicate predicate) {
-        this.field = field;
-        this.predicate = predicate;
+    public Filter(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
 
-    @JsonProperty("field")
-    public String getField() {
-        return field;
+    @JsonProperty("conditions")
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    public void setField(String field) {
-        this.field = field;
-    }
-
-
-    @JsonProperty("predicate")
-    public FilterPredicate getPredicate() {
-        return predicate;
-    }
-
-    public void setPredicate(FilterPredicate predicate) {
-        this.predicate = predicate;
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
 
@@ -50,13 +40,12 @@ public class Filter {
             return false;
         }
         Filter filter = (Filter) o;
-        return Objects.equals(field, filter.field) &&
-                Objects.equals(predicate, filter.predicate);
+        return Objects.equals(conditions, filter.conditions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(field, predicate);
+        return Objects.hash(conditions);
     }
 
     @Override
@@ -64,11 +53,8 @@ public class Filter {
         StringBuilder sb = new StringBuilder();
         sb.append("class Filter {\n");
 
-        sb.append("    field: ")
-          .append(toIndentedString(field))
-          .append("\n");
-        sb.append("    predicate: ")
-          .append(toIndentedString(predicate))
+        sb.append("    conditions: ")
+          .append(toIndentedString(conditions))
           .append("\n");
         sb.append("}");
         return sb.toString();

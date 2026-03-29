@@ -1,27 +1,19 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.ExamResponse;
-import io.vertx.ext.web.FileUpload;
-import tech.provve.api.server.generated.dto.Filter;
-import tech.provve.api.server.generated.dto.Pagination;
-import tech.provve.api.server.generated.dto.ResultResponse;
-import tech.provve.api.server.generated.dto.SkillResponse;
-
-import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.ValidationHandler;
+import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import jakarta.inject.Singleton;
-
-import java.util.List;
-import java.util.Map;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.dto.CollectionAuthenticatedRequest;
+import tech.provve.api.server.generated.dto.CollectionRequest;
 
 @Singleton
 public class SkillsApiHandler implements RouteHandler {
@@ -35,10 +27,10 @@ public class SkillsApiHandler implements RouteHandler {
     }
 
     public void mount(RouterBuilder builder) {
-        builder.operation("getResultsBySkill")
-               .handler(this::getResultsBySkill);
-        builder.operation("listExamsBySkill")
-               .handler(this::listExamsBySkill);
+        builder.operation("listExams")
+               .handler(this::listExams);
+        builder.operation("listResults")
+               .handler(this::listResults);
         builder.operation("listSkills")
                .handler(this::listSkills);
         builder.operation("submitExamSolution")
@@ -47,30 +39,23 @@ public class SkillsApiHandler implements RouteHandler {
                .handler(this::viewExamResult);
     }
 
-    private void getResultsBySkill(RoutingContext routingContext) {
-        logger.info("getResultsBySkill()");
+    private void listExams(RoutingContext routingContext) {
+        logger.info("listExams()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         String skillName = requestParameters.pathParameter("skill_name") != null ? requestParameters.pathParameter("skill_name")
                                                                                                     .getString() : null;
-        Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                      .convertValue(requestParameters.queryParameter(
-                                                                                                                                             "pagination")
-                                                                                                                                     .get(),
-                                                                                                                    new TypeReference<Pagination>() {
-                                                                                                                    }) : null;
-        Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                          .convertValue(requestParameters.queryParameter("filter")
-                                                                                                                         .get(), new TypeReference<Filter>() {
-                                                                                          }) : null;
+        RequestParameter body = requestParameters.body();
+        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
+                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
+                                                                          }) : null;
 
         logger.debug("Parameter skillName is {}", skillName);
-        logger.debug("Parameter pagination is {}", pagination);
-        logger.debug("Parameter filter is {}", filter);
+        logger.debug("Parameter collectionRequest is {}", collectionRequest);
 
-        api.getResultsBySkill(skillName, pagination, filter)
+        api.listExams(skillName, collectionRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -84,27 +69,24 @@ public class SkillsApiHandler implements RouteHandler {
            .onFailure(routingContext::fail);
     }
 
-    private void listExamsBySkill(RoutingContext routingContext) {
-        logger.info("listExamsBySkill()");
+    private void listResults(RoutingContext routingContext) {
+        logger.info("listResults()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                      .convertValue(requestParameters.queryParameter(
-                                                                                                                                             "pagination")
-                                                                                                                                     .get(),
-                                                                                                                    new TypeReference<Pagination>() {
-                                                                                                                    }) : null;
-        Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                          .convertValue(requestParameters.queryParameter("filter")
-                                                                                                                         .get(), new TypeReference<Filter>() {
-                                                                                          }) : null;
+        String skillName = requestParameters.pathParameter("skill_name") != null ? requestParameters.pathParameter("skill_name")
+                                                                                                    .getString() : null;
+        RequestParameter body = requestParameters.body();
+        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null ? DatabindCodec.mapper()
+                                                                                                    .convertValue(body.get(),
+                                                                                                                  new TypeReference<CollectionAuthenticatedRequest>() {
+                                                                                                                  }) : null;
 
-        logger.debug("Parameter pagination is {}", pagination);
-        logger.debug("Parameter filter is {}", filter);
+        logger.debug("Parameter skillName is {}", skillName);
+        logger.debug("Parameter collectionAuthenticatedRequest is {}", collectionAuthenticatedRequest);
 
-        api.listExamsBySkill(pagination, filter)
+        api.listResults(skillName, collectionAuthenticatedRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -124,21 +106,14 @@ public class SkillsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                      .convertValue(requestParameters.queryParameter(
-                                                                                                                                             "pagination")
-                                                                                                                                     .get(),
-                                                                                                                    new TypeReference<Pagination>() {
-                                                                                                                    }) : null;
-        Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                          .convertValue(requestParameters.queryParameter("filter")
-                                                                                                                         .get(), new TypeReference<Filter>() {
-                                                                                          }) : null;
+        RequestParameter body = requestParameters.body();
+        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
+                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
+                                                                          }) : null;
 
-        logger.debug("Parameter pagination is {}", pagination);
-        logger.debug("Parameter filter is {}", filter);
+        logger.debug("Parameter collectionRequest is {}", collectionRequest);
 
-        api.listSkills(pagination, filter)
+        api.listSkills(collectionRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

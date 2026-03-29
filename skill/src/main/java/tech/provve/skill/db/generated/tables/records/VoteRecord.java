@@ -4,11 +4,12 @@
 package tech.provve.skill.db.generated.tables.records;
 
 
+import java.time.LocalDateTime;
+
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
-import tech.provve.skill.db.generated.tables.Vote;
 
-import java.time.LocalDateTime;
+import tech.provve.skill.db.generated.tables.Vote;
 
 
 /**
@@ -133,7 +134,7 @@ public class VoteRecord extends UpdatableRecordImpl<VoteRecord> {
     }
 
     /**
-     * Setter for <code>skill.vote.tags</code>.
+     * Setter for <code>skill.vote.tags</code>. Поисковые теги
      */
     public VoteRecord setTags(String[] value) {
         set(7, value);
@@ -141,7 +142,7 @@ public class VoteRecord extends UpdatableRecordImpl<VoteRecord> {
     }
 
     /**
-     * Getter for <code>skill.vote.tags</code>.
+     * Getter for <code>skill.vote.tags</code>. Поисковые теги
      */
     public String[] getTags() {
         return (String[]) get(7);

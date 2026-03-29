@@ -319,40 +319,55 @@ paths:
         - auth: [ ]
 
   /skills:
-    get:
+    post:
       tags:
         - skills
       summary: Получение списка навыков
       operationId: listSkills
-      parameters:
-        - $ref: "#/components/parameters/Pagination"
-        - $ref: "#/components/parameters/Filter"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collection.request"
       responses:
         '200':
           description: Успешно получен список навыков
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Skill.response"
+                $ref: "#/components/schemas/Skills"
+        '400':
+          $ref: "#/components/responses/ValidationError"
 
   /skills/{skill_name}/exams:
-    get:
+    post:
       tags:
         - skills
       summary: Получение списка экзаменов по навыку
-      operationId: listExamsBySkill
+      operationId: listExams
       parameters:
-        - $ref: "#/components/parameters/Pagination"
-        - $ref: "#/components/parameters/Filter"
+        - name: skill_name
+          in: path
+          required: true
+          schema:
+            type: string
+            description: ID навыка
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collection.request"
       responses:
         '200':
           description: Успешно получен список экзаменов
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Exam.response"
+                $ref: "#/components/schemas/Exams"
+        '400':
+          $ref: "#/components/responses/ValidationError"
 
   /exams/{name}/solution:
     post:
@@ -386,29 +401,33 @@ paths:
         - auth: [ ]
 
   /skills/{skill_name}/results:
-    get:
-      summary: Получение результатов по экзаменам навыка
+    post:
+      summary: Получение результатов по экзаменам навыка.
       tags:
         - skills
-      operationId: getResultsBySkill
+      operationId: listResults
       parameters:
         - name: skill_name
           in: path
           required: true
           schema:
             type: string
-          description: ID навыка
-        - $ref: "#/components/parameters/Pagination"
-        - $ref: "#/components/parameters/Filter"
+            description: ID навыка
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CollectionAuthenticated.request"
       responses:
         '200':
           description: Список результатов успешно получен
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Result.response"
+                $ref: "#/components/schemas/Results"
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
@@ -444,23 +463,26 @@ paths:
         - auth: [ ]
 
   /votes:
-    get:
+    post:
       summary: Получить список голосований
       tags:
         - votes
       operationId: listVotes
-      parameters:
-        - $ref: "#/components/parameters/Pagination"
-        - $ref: "#/components/parameters/Filter"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collection.request"
       responses:
         '200':
           description: Получены голосования
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Vote.response"
+                $ref: "#/components/schemas/Votes"
+        '400':
+          $ref: "#/components/responses/ValidationError"
 
   /votes/skill-add:
     post:
@@ -571,14 +593,14 @@ paths:
       security:
         - auth: [ ]
 
-  /votes/{name}/comments:
+  /votes/{vote_name}/comments:
     get:
       summary: Получить комментарии к голосованию
       tags:
         - votes
-      operationId: listCommentsOnVote
+      operationId: listComments
       parameters:
-        - name: name
+        - name: vote_name
           in: path
           required: true
           schema:
@@ -590,16 +612,18 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment.response"
+                $ref: "#/components/schemas/Comments"
+        '400':
+          $ref: "#/components/responses/ValidationError"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
     post:
       summary: Добавление комментария к голосованию
       tags:
         - votes
       operationId: addCommentOnVote
       parameters:
-        - name: name
+        - name: vote_name
           in: path
           required: true
           schema:
@@ -692,28 +716,28 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ListNotifications'
+              $ref: "#/components/schemas/CollectionAuthenticated.request"
       responses:
         '200':
           description: Список уведомлений успешно получен
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Notification"
+                $ref: "#/components/schemas/Notifications"
+        '400':
+          $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
     delete:
-      summary: Пометить уведомления прочитанными
+      summary: Очистить список уведомлений
       tags:
         - notifications
-      operationId: markNotificationsAsRead
+      operationId: clearNotifications
       responses:
         '200':
-          description: Уведомления удалены
+          description: Очищено
         '401':
           $ref: "#/components/responses/Unauthenticated"
       security:
@@ -756,40 +780,60 @@ components:
     Filter:
       type: object
       properties:
+        conditions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Condition"
+    Condition:
+      type: object
+      properties:
         field:
           type: string
-          description: Название фильтруемого поля
-        predicate:
-          type: object
-          properties:
-            operator:
-              type: string
-              enum: [ NOT, EQ, NOT_EQ, AND, OR, LIKE ]
-              description: Применяемый оператор
-            value:
-              type: string
-              description: Правый операнд
-          required:
-            - operator
-            - value
+          description: Фильтруемое поле
+        operator:
+          type: string
+          enum: [ EQ, LIKE ]
+        value:
+          type: string
+          description: Желаемое значение поля
       required:
         - field
-        - predicate
+        - operator
+        - value
     Pagination:
       type: object
       required:
-        - page
+        - previous
         - size
       properties:
-        page:
-          type: integer
-          minimum: 1
-          description: Номер страницы
+        previous:
+          type: string
+          description: ID последнего элемента предыдущей страницы
         size:
           type: integer
           minimum: 1
           maximum: 100
-          description: Количество элементов на странице
+          description: Требуемый размер страницы
+
+    Cursor:
+      description: Указатель на последний элемент предыдущей страницы
+      type: object
+      required:
+        - previous
+      properties:
+        previous:
+          type: string
+          description: ID последнего элемента страницы
+
+    Skills:
+      type: object
+      properties:
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/Skill.response"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
 
     Skill.response:
       type: object
@@ -797,12 +841,21 @@ components:
         name:
           type: string
           description: Название навыка
-        vote_name:
-          type: string
-          description: ID голосования, в результате которого навык был добавлен в систему.
+        tags:
+          $ref: "#/components/schemas/Tags"
       required:
         - name
-        - vote_name
+        - tags
+
+    Exams:
+      type: object
+      properties:
+        exams:
+          type: array
+          items:
+            $ref: "#/components/schemas/Exam.response"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
 
     Exam.response:
       type: object
@@ -813,6 +866,19 @@ components:
         description:
           type: string
           description: Описание для пользователей
+        public_archive_url:
+          type: string
+          description: Проверяемая часть экзамена, задание
+
+    Results:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Result.response"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
 
     Result.response:
       description: Успешный результат
@@ -824,9 +890,10 @@ components:
         time:
           description: Затраченное время, в минутах
           type: integer
-          format: int32
+          format: int64
 
-    Vote.request:
+    Vote:
+      description: Простая форма голосования
       type: object
       properties:
         name:
@@ -836,12 +903,15 @@ components:
           type: string
           description: Аргументы за совершение действия, предложенного в голосовании.
         tags:
-          type: array
-          items:
-            type: string
-          description: Поисковые теги
-        auth_token:
-          $ref: "#/components/schemas/AuthToken"
+          $ref: "#/components/schemas/Tags"
+
+    Vote.request:
+      allOf:
+        - $ref: "#/components/schemas/Vote"
+        - type: object
+          properties:
+            auth_token:
+              $ref: "#/components/schemas/AuthToken"
 
     SkillAddVote:
       allOf:
@@ -877,19 +947,29 @@ components:
             - public_archive
             - private_archive
 
+    Votes:
+      type: object
+      properties:
+        votes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Vote.response"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
+
     Vote.response:
       description: Всеохватывающее представление голосования
       allOf:
-        - $ref: '#/components/schemas/Vote.request'
+        - $ref: '#/components/schemas/Vote'
         - type: object
           properties:
             type:
               type: string
-              enum: [ skill_add, skill_del, exam_add ]
+              enum: [ add_skill, del_skill, add_exam ]
               description: |
-                skill_add — добавление навыка,
-                skill_del — удаление навыка,
-                exam_add — добавление экзамена
+                add_skill — добавление навыка,
+                del_skill — удаление навыка,
+                add_exam — добавление экзамена
             reactions:
               type: object
               description: Голоса
@@ -923,12 +1003,19 @@ components:
           description: Финальная постановка задания для экзаменуемых
         public_archive_url:
           type: string
-          format: binary
           description: Проверяемая часть экзамена, задание
       required:
         - skill_name
         - description
         - public_archive_url
+
+    Comments:
+      type: object
+      properties:
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment.response"
 
     Comment.response:
       type: object
@@ -957,6 +1044,16 @@ components:
           type: string
           description: Отображаемое имя профиля
 
+    Notifications:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Notification"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
+
     Notification:
       type: object
       description: Уведомление о событии в системе
@@ -982,6 +1079,26 @@ components:
         created_at:
           type: string
           format: date-time
+
+    Collection.request:
+      type: object
+      properties:
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+        filter:
+          $ref: "#/components/schemas/Filter"
+      required:
+        - pagination
+
+    CollectionAuthenticated.request:
+      allOf:
+        - $ref: "#/components/schemas/Collection.request"
+        - type: object
+          properties:
+            auth_token:
+              $ref: "#/components/schemas/AuthToken"
+          required:
+            - auth_token
 
     RegisterAccount.request:
       type: object
@@ -1187,20 +1304,18 @@ components:
         - InvId
         - SignatureValue
 
+    Tags:
+      type: array
+      items:
+        type: string
+      description: Поисковые теги
+
     Error:
       type: object
       properties:
         details:
           type: string
           description: Детали ошибки
-
-    ListNotifications:
-      type: object
-      properties:
-        auth_token:
-          $ref: "#/components/schemas/AuthToken"
-        pagination:
-          $ref: "#/components/schemas/Pagination"
 
     AuthToken:
       type: string

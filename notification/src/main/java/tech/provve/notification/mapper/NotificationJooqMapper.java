@@ -11,9 +11,9 @@ import tech.provve.notification.domain.value.NotificationLevel;
 import static tech.provve.api.server.generated.dto.Notification.LevelEnum.*;
 
 @Mapper
-public interface NotificationMapper {
+public interface NotificationJooqMapper {
 
-    NotificationMapper INSTANCE = Mappers.getMapper(NotificationMapper.class);
+    NotificationJooqMapper INSTANCE = Mappers.getMapper(NotificationJooqMapper.class);
 
     default Notification.LevelEnum level(Short from) {
         return switch (from) {

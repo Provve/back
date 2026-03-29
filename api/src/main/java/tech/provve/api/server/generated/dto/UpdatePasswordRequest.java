@@ -1,8 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdatePasswordRequest {
@@ -50,7 +51,7 @@ public class UpdatePasswordRequest {
         }
         UpdatePasswordRequest updatePasswordRequest = (UpdatePasswordRequest) o;
         return Objects.equals(resetToken, updatePasswordRequest.resetToken) &&
-                Objects.equals(newPassword, updatePasswordRequest.newPassword);
+               Objects.equals(newPassword, updatePasswordRequest.newPassword);
     }
 
     @Override

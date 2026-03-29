@@ -45,6 +45,7 @@ jooq {
                 globalKeyReferences = false
                 globalTableReferences = false
                 globalIndexReferences = false
+                deprecationOnUnknownTypes = false
             }
             target {
                 packageName = "tech.provve.${project.name}.db.generated"

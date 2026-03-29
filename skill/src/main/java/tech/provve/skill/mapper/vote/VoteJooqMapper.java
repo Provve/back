@@ -1,4 +1,4 @@
-package tech.provve.skill.mapper;
+package tech.provve.skill.mapper.vote;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,9 +9,9 @@ import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
 
 @Mapper
-public interface VoteMapper {
+public interface VoteJooqMapper {
 
-    VoteMapper INSTANCE = Mappers.getMapper(VoteMapper.class);
+    VoteJooqMapper INSTANCE = Mappers.getMapper(VoteJooqMapper.class);
 
     @Mapping(target = "type", expression = "java((short) from.getType().getCode())")
     VoteRecord map(Vote from);

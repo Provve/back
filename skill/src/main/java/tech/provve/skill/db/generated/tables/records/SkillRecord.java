@@ -6,6 +6,7 @@ package tech.provve.skill.db.generated.tables.records;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
+
 import tech.provve.skill.db.generated.tables.Skill;
 
 
@@ -33,7 +34,7 @@ public class SkillRecord extends UpdatableRecordImpl<SkillRecord> {
     }
 
     /**
-     * Setter for <code>skill.skill.tags</code>.
+     * Setter for <code>skill.skill.tags</code>. Поисковые теги
      */
     public SkillRecord setTags(String[] value) {
         set(1, value);
@@ -41,7 +42,7 @@ public class SkillRecord extends UpdatableRecordImpl<SkillRecord> {
     }
 
     /**
-     * Getter for <code>skill.skill.tags</code>.
+     * Getter for <code>skill.skill.tags</code>. Поисковые теги
      */
     public String[] getTags() {
         return (String[]) get(1);

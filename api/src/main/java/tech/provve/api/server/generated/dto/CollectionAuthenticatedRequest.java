@@ -1,32 +1,24 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tech.provve.api.server.generated.dto.Pagination;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ListNotifications {
+public class CollectionAuthenticatedRequest {
 
-    private String authToken;
     private Pagination pagination;
+    private Filter filter;
+    private String authToken;
 
-    public ListNotifications() {
+    public CollectionAuthenticatedRequest() {
 
     }
 
-    public ListNotifications(String authToken, Pagination pagination) {
-        this.authToken = authToken;
+    public CollectionAuthenticatedRequest(Pagination pagination, Filter filter, String authToken) {
         this.pagination = pagination;
-    }
-
-
-    @JsonProperty("auth_token")
-    public String getAuthToken() {
-        return authToken;
-    }
-
-    public void setAuthToken(String authToken) {
+        this.filter = filter;
         this.authToken = authToken;
     }
 
@@ -41,6 +33,26 @@ public class ListNotifications {
     }
 
 
+    @JsonProperty("filter")
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+    }
+
+
+    @JsonProperty("auth_token")
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -49,26 +61,30 @@ public class ListNotifications {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ListNotifications listNotifications = (ListNotifications) o;
-        return Objects.equals(authToken, listNotifications.authToken) &&
-                Objects.equals(pagination, listNotifications.pagination);
+        CollectionAuthenticatedRequest collectionAuthenticatedRequest = (CollectionAuthenticatedRequest) o;
+        return Objects.equals(pagination, collectionAuthenticatedRequest.pagination) &&
+               Objects.equals(filter, collectionAuthenticatedRequest.filter) &&
+               Objects.equals(authToken, collectionAuthenticatedRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authToken, pagination);
+        return Objects.hash(pagination, filter, authToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ListNotifications {\n");
+        sb.append("class CollectionAuthenticatedRequest {\n");
 
-        sb.append("    authToken: ")
-          .append(toIndentedString(authToken))
-          .append("\n");
         sb.append("    pagination: ")
           .append(toIndentedString(pagination))
+          .append("\n");
+        sb.append("    filter: ")
+          .append(toIndentedString(filter))
+          .append("\n");
+        sb.append("    authToken: ")
+          .append(toIndentedString(authToken))
           .append("\n");
         sb.append("}");
         return sb.toString();

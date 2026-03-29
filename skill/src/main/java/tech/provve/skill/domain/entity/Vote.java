@@ -93,7 +93,7 @@ public class Vote {
         /**
          * Удаление навыка.
          */
-        DELETE_SKILL(1),
+        DEL_SKILL(1),
 
         /**
          * Добавление экзамена.
@@ -117,6 +117,17 @@ public class Vote {
                          .findFirst()
                          .orElseThrow();
         }
+    }
+
+    /**
+     * Положительных голосов больше, т. е. голосование успешно?
+     */
+    public boolean succeeded() {
+        int negative = 0 == reactions.negative()
+                       ? 1
+                       : reactions.negative();
+        int positiveRelation = reactions.positive() / negative;
+        return positiveRelation >= 1;
     }
 
 }

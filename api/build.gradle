@@ -91,21 +91,37 @@ flyway {
     url = 'jdbc:postgresql://localhost:5432/provve'
     user = 'postgres'
     password = '1'
-    schemas = ['public']
+    schemas = ['public_history', 'public']
 }
 
-// run 'build' task to get specs
-configurations.spec.resolvedConfiguration.resolvedArtifacts.each {
-    if ('yaml' == it.extension) {
-        def specContent = it.file.getText(StandardCharsets.UTF_8 as String)
-        def destination = layout
-                .projectDirectory
-                .file("/build/specs/$it.name.$it.extension")
-                .asFile
-        Files.createDirectories(destination.parentFile.toPath())
-        destination.write(specContent)
+tasks.register('copyApiSpecs') {
+    configurations.spec.resolve()
+
+    configurations.spec.resolvedConfiguration.resolvedArtifacts.each {
+        if ('yaml' == it.extension) {
+            def specContent = it.file.getText(StandardCharsets.UTF_8 as String)
+            def destination = layout
+                    .projectDirectory
+                    .file("/build/specs/$it.name.$it.extension")
+                    .asFile
+            Files.createDirectories(destination.parentFile.toPath())
+            destination.write(specContent)
+        }
     }
 }
+
+processResources {
+    dependsOn(tasks.copyApiSpecs)
+
+    from("$rootProject.layout.projectDirectory") {
+        include 'provve-api.yaml'
+    }
+    from(rootProject.layout.buildDirectory.file('/specs')) {
+        include 'antifraud-api.yaml'
+        into('build/specs')
+    }
+}
+
 tasks.openApiGenerate {
     generatorName = 'java-vertx-web'
     inputSpec = "${layout.projectDirectory}/provve-api.yaml"
@@ -119,15 +135,6 @@ tasks.openApiGenerate {
     templateDir = "${layout.projectDirectory}/src/main/resources/templates"
 }
 
-processResources {
-    from("$rootProject.layout.projectDirectory") {
-        include 'provve-api.yaml'
-    }
-    from(rootProject.layout.buildDirectory.file('/specs')) {
-        include 'antifraud-api.yaml'
-        into('build/specs')
-    }
-}
 
 tasks.withType(Copy).configureEach {
     duplicatesStrategy = DuplicatesStrategy.INHERIT

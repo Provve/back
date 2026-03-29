@@ -7,27 +7,33 @@ import org.jooq.Converter;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
+import org.jooq.impl.DSL;
 import org.jspecify.annotations.NullMarked;
+import tech.provve.api.server.generated.dto.Condition;
+import tech.provve.api.server.generated.dto.Filter;
 import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.domain.value.VoteReactions;
-import tech.provve.skill.mapper.VoteMapper;
+import tech.provve.skill.mapper.vote.VoteJooqMapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.ExamAddVote.EXAM_ADD_VOTE;
 import static tech.provve.skill.db.generated.tables.GetReactionsTotal.GET_REACTIONS_TOTAL;
 import static tech.provve.skill.db.generated.tables.Reactions.REACTIONS;
+import static tech.provve.skill.db.generated.tables.TsVoteRu.TS_VOTE_RU;
 import static tech.provve.skill.db.generated.tables.Vote.VOTE;
 import static tech.provve.skill.domain.entity.Vote.Type.ADD_EXAM;
 
 @NullMarked
 @Singleton
 @RequiredArgsConstructor
-public class VoteRepository {
+public class VoteRepository extends Filtering {
 
     @External
     private final DSLContext dsl;
@@ -68,17 +74,23 @@ public class VoteRepository {
 
     public void save(Vote vote) {
         dsl.insertInto(VOTE)
-           .set(VoteMapper.INSTANCE.map(vote))
+           .set(VoteJooqMapper.INSTANCE.map(vote))
            .execute();
 
         if (ADD_EXAM.equals(vote.getType())) {
             dsl.insertInto(EXAM_ADD_VOTE)
-               .set(VoteMapper.INSTANCE.map(
+               .set(VoteJooqMapper.INSTANCE.map(
                        Objects.requireNonNull(vote.getExam()),
                        vote.getName()
                ))
                .execute();
         }
+    }
+
+    public void delete(String name) {
+        dsl.deleteFrom(VOTE)
+           .where(VOTE.NAME.eq(name))
+           .execute();
     }
 
     public Optional<Vote> findByName(String name) {
@@ -99,12 +111,16 @@ public class VoteRepository {
     }
 
     @SuppressWarnings("all")
-    public List<Vote> getAll() {
+    public List<Vote> getAll(Filter filter, String previous, int pageSize) {
         var select = dsl.select()
                         .from(VOTE)
                         .leftJoin(EXAM_ADD_VOTE)
                         .on(EXAM_ADD_VOTE.VOTE_NAME.eq(VOTE.NAME))
-                        .crossJoin(GET_REACTIONS_TOTAL.call(VOTE.NAME));
+                        .crossJoin(GET_REACTIONS_TOTAL.call(VOTE.NAME))
+                        .where(jooqConditions(filter))
+                        .orderBy(VOTE.NAME)
+                        .seek(previous)
+                        .limit(pageSize);
         return dsl.fetchStream(select)
                   .map(result -> result.map(outputMapper))
                   .toList();
@@ -138,4 +154,34 @@ public class VoteRepository {
            .execute();
     }
 
+    @Override
+    protected Map<String, Function<Condition, org.jooq.Condition>> fieldConditionMappers() {
+        return Map.of(
+                "name", condition -> switch (condition.getOperator()) {
+                    case EQ -> VOTE.NAME.eq(condition.getValue());
+                    case LIKE -> DSL.exists(dsl.select()
+                                               .from(TS_VOTE_RU)
+                                               .where(DSL.field("{0} @@ plainto_tsquery('russian', {1})",
+                                                                Boolean.class,
+                                                                TS_VOTE_RU.TS_VOTE_NAME, DSL.inline(condition.getValue()))));
+                },
+                "active", condition -> switch (condition.getOperator()) {
+                    case EQ, LIKE -> VOTE.ACTIVE.eq(Boolean.parseBoolean(condition.getValue()));
+                },
+                "author", condition -> switch (condition.getOperator()) {
+                    case EQ, LIKE -> VOTE.AUTHOR.eq(condition.getValue());
+                },
+                "arguments", condition -> switch (condition.getOperator()) {
+                    case EQ -> VOTE.ARGUMENTS.eq(condition.getValue());
+                    case LIKE -> DSL.exists(dsl.select()
+                                               .from(TS_VOTE_RU)
+                                               .where(DSL.field("{0} @@ plainto_tsquery('russian', {1})",
+                                                                Boolean.class,
+                                                                TS_VOTE_RU.ARGUMENTS, DSL.inline(condition.getValue()))));
+                },
+                "tags", condition -> switch (condition.getOperator()) {
+                    case EQ, LIKE -> DSL.condition("{0} && {1}", VOTE.TAGS, DSL.inline("{%s}".formatted(condition.getValue())));
+                }
+        );
+    }
 }

@@ -54,7 +54,7 @@ public class VoteResponseAllOfReactions {
         }
         VoteResponseAllOfReactions voteResponseAllOfReactions = (VoteResponseAllOfReactions) o;
         return Objects.equals(positive, voteResponseAllOfReactions.positive) &&
-                Objects.equals(negative, voteResponseAllOfReactions.negative);
+               Objects.equals(negative, voteResponseAllOfReactions.negative);
     }
 
     @Override

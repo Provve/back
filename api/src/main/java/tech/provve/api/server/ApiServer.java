@@ -24,19 +24,13 @@ import static tech.provve.api.server.factory.RateLimit.RATE_LIMITER;
 public class ApiServer extends AbstractVerticle {
 
     public static final int PORT = 8080;
-
     private static final String SPEC_FILE = "provve-api.yaml";
-
     private static final String AUTH_SECURITY_SCHEME = "auth";
-
     private static final String RESET_SECURITY_SCHEME = "reset";
 
     private List<RouteHandler> handlers;
-
     private JWTAuthHandler jwtAuthHandler;
-
     private JWTAuthHandler jwtResetHandler;
-
     private Handler<RoutingContext> rateLimiter;
 
     public ApiServer() {
@@ -79,7 +73,7 @@ public class ApiServer extends AbstractVerticle {
                          var root = Router.router(vertx)
                                           .errorHandler(400, this::handlerStatus400)
                                           .errorHandler(500, this::handlerStatus500);
-                         root.route("/api/v1/*")
+                         root.route("/v1/*")
                              .handler(rateLimiter)
                              .subRouter(api);
 

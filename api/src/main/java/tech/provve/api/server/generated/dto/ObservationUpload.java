@@ -1,9 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tech.provve.api.server.generated.dto.Observation;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ObservationUpload {
@@ -63,8 +63,8 @@ public class ObservationUpload {
         }
         ObservationUpload observationUpload = (ObservationUpload) o;
         return Objects.equals(observation, observationUpload.observation) &&
-                Objects.equals(nonce, observationUpload.nonce) &&
-                Objects.equals(sig, observationUpload.sig);
+               Objects.equals(nonce, observationUpload.nonce) &&
+               Objects.equals(sig, observationUpload.sig);
     }
 
     @Override

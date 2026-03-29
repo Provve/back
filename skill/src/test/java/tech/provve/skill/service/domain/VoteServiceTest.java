@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @InjectTest
-public class VoteServiceTest {
+class VoteServiceTest {
 
     @Mock(stubOnly = true)
     SkillRepository skillRepository;

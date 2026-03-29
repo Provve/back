@@ -1,11 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkillAddVote {
@@ -77,9 +77,9 @@ public class SkillAddVote {
         }
         SkillAddVote skillAddVote = (SkillAddVote) o;
         return Objects.equals(name, skillAddVote.name) &&
-                Objects.equals(arguments, skillAddVote.arguments) &&
-                Objects.equals(tags, skillAddVote.tags) &&
-                Objects.equals(authToken, skillAddVote.authToken);
+               Objects.equals(arguments, skillAddVote.arguments) &&
+               Objects.equals(tags, skillAddVote.tags) &&
+               Objects.equals(authToken, skillAddVote.authToken);
     }
 
     @Override

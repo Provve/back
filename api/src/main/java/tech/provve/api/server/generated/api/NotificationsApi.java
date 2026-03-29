@@ -1,17 +1,12 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.ListNotifications;
-import tech.provve.api.server.generated.dto.Notification;
-
-import tech.provve.api.server.generated.ApiResponse;
-
 import io.vertx.core.Future;
-import io.vertx.core.json.JsonObject;
-
-import java.util.List;
-import java.util.Map;
+import tech.provve.api.server.generated.ApiResponse;
+import tech.provve.api.server.generated.dto.CollectionAuthenticatedRequest;
+import tech.provve.api.server.generated.dto.Notifications;
 
 public interface NotificationsApi {
-    Future<ApiResponse<List<Notification>>> listNotifications(ListNotifications listNotifications);
-    Future<ApiResponse<Void>> markNotificationsAsRead();
+    Future<ApiResponse<Void>> clearNotifications();
+
+    Future<ApiResponse<Notifications>> listNotifications(CollectionAuthenticatedRequest collectionAuthenticatedRequest);
 }

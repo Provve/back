@@ -1,23 +1,17 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.ListNotifications;
-import tech.provve.api.server.generated.dto.Notification;
-
-import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.ValidationHandler;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import jakarta.inject.Singleton;
-
-import java.util.List;
-import java.util.Map;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.dto.CollectionAuthenticatedRequest;
 
 @Singleton
 public class NotificationsApiHandler implements RouteHandler {
@@ -31,26 +25,20 @@ public class NotificationsApiHandler implements RouteHandler {
     }
 
     public void mount(RouterBuilder builder) {
+        builder.operation("clearNotifications")
+               .handler(this::clearNotifications);
         builder.operation("listNotifications")
                .handler(this::listNotifications);
-        builder.operation("markNotificationsAsRead")
-               .handler(this::markNotificationsAsRead);
     }
 
-    private void listNotifications(RoutingContext routingContext) {
-        logger.info("listNotifications()");
+    private void clearNotifications(RoutingContext routingContext) {
+        logger.info("clearNotifications()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        RequestParameter body = requestParameters.body();
-        ListNotifications listNotifications = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(body.get(), new TypeReference<ListNotifications>() {
-                                                                          }) : null;
 
-        logger.debug("Parameter listNotifications is {}", listNotifications);
-
-        api.listNotifications(listNotifications)
+        api.clearNotifications()
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -64,14 +52,21 @@ public class NotificationsApiHandler implements RouteHandler {
            .onFailure(routingContext::fail);
     }
 
-    private void markNotificationsAsRead(RoutingContext routingContext) {
-        logger.info("markNotificationsAsRead()");
+    private void listNotifications(RoutingContext routingContext) {
+        logger.info("listNotifications()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
+        RequestParameter body = requestParameters.body();
+        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null ? DatabindCodec.mapper()
+                                                                                                    .convertValue(body.get(),
+                                                                                                                  new TypeReference<CollectionAuthenticatedRequest>() {
+                                                                                                                  }) : null;
 
-        api.markNotificationsAsRead()
+        logger.debug("Parameter collectionAuthenticatedRequest is {}", collectionAuthenticatedRequest);
+
+        api.listNotifications(collectionAuthenticatedRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

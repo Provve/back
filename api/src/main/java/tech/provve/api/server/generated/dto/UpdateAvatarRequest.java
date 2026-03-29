@@ -1,9 +1,10 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.ext.web.FileUpload;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdateAvatarRequest {
@@ -11,17 +12,17 @@ public class UpdateAvatarRequest {
   private FileUpload avatar;
   private String authToken;
 
-    public UpdateAvatarRequest() {
+  public UpdateAvatarRequest() {
 
   }
 
-    public UpdateAvatarRequest(FileUpload avatar, String authToken) {
+  public UpdateAvatarRequest(FileUpload avatar, String authToken) {
     this.avatar = avatar;
     this.authToken = authToken;
   }
 
 
-    @JsonProperty("avatar")
+  @JsonProperty("avatar")
   public FileUpload getAvatar() {
     return avatar;
   }
@@ -30,7 +31,7 @@ public class UpdateAvatarRequest {
   }
 
 
-    @JsonProperty("auth_token")
+  @JsonProperty("auth_token")
   public String getAuthToken() {
     return authToken;
   }
@@ -49,7 +50,7 @@ public class UpdateAvatarRequest {
     }
     UpdateAvatarRequest updateAvatarRequest = (UpdateAvatarRequest) o;
     return Objects.equals(avatar, updateAvatarRequest.avatar) &&
-            Objects.equals(authToken, updateAvatarRequest.authToken);
+           Objects.equals(authToken, updateAvatarRequest.authToken);
   }
 
   @Override
@@ -62,12 +63,12 @@ public class UpdateAvatarRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class UpdateAvatarRequest {\n");
 
-      sb.append("    avatar: ")
-        .append(toIndentedString(avatar))
-        .append("\n");
-      sb.append("    authToken: ")
-        .append(toIndentedString(authToken))
-        .append("\n");
+    sb.append("    avatar: ")
+      .append(toIndentedString(avatar))
+      .append("\n");
+    sb.append("    authToken: ")
+      .append(toIndentedString(authToken))
+      .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -80,7 +81,7 @@ public class UpdateAvatarRequest {
     if (o == null) {
       return "null";
     }
-      return o.toString()
-              .replace("\n", "\n    ");
+    return o.toString()
+            .replace("\n", "\n    ");
   }
 }

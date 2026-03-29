@@ -1,8 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdatePersonalDataConsentRequest {
@@ -50,7 +51,7 @@ public class UpdatePersonalDataConsentRequest {
         }
         UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest = (UpdatePersonalDataConsentRequest) o;
         return Objects.equals(consentPersonalData, updatePersonalDataConsentRequest.consentPersonalData) &&
-                Objects.equals(authToken, updatePersonalDataConsentRequest.authToken);
+               Objects.equals(authToken, updatePersonalDataConsentRequest.authToken);
     }
 
     @Override

@@ -1,22 +1,25 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamResponse {
 
     private String name;
     private String description;
+    private String publicArchiveUrl;
 
     public ExamResponse() {
 
     }
 
-    public ExamResponse(String name, String description) {
+    public ExamResponse(String name, String description, String publicArchiveUrl) {
         this.name = name;
         this.description = description;
+        this.publicArchiveUrl = publicArchiveUrl;
     }
 
 
@@ -40,6 +43,16 @@ public class ExamResponse {
     }
 
 
+    @JsonProperty("public_archive_url")
+    public String getPublicArchiveUrl() {
+        return publicArchiveUrl;
+    }
+
+    public void setPublicArchiveUrl(String publicArchiveUrl) {
+        this.publicArchiveUrl = publicArchiveUrl;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -50,12 +63,13 @@ public class ExamResponse {
         }
         ExamResponse examResponse = (ExamResponse) o;
         return Objects.equals(name, examResponse.name) &&
-                Objects.equals(description, examResponse.description);
+               Objects.equals(description, examResponse.description) &&
+               Objects.equals(publicArchiveUrl, examResponse.publicArchiveUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description);
+        return Objects.hash(name, description, publicArchiveUrl);
     }
 
     @Override
@@ -68,6 +82,9 @@ public class ExamResponse {
           .append("\n");
         sb.append("    description: ")
           .append(toIndentedString(description))
+          .append("\n");
+        sb.append("    publicArchiveUrl: ")
+          .append(toIndentedString(publicArchiveUrl))
           .append("\n");
         sb.append("}");
         return sb.toString();

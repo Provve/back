@@ -10,14 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.jooq.exception.IntegrityConstraintViolationException;
 import tech.provve.accounts.service.JwsParsingService;
-import tech.provve.api.server.generated.dto.CastVoteRequest;
-import tech.provve.api.server.generated.dto.ExamAddVote;
-import tech.provve.api.server.generated.dto.SkillAddVote;
-import tech.provve.api.server.generated.dto.SkillDelVote;
+import tech.provve.api.server.generated.dto.*;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.exception.*;
+import tech.provve.skill.mapper.vote.VoteResponseMapper;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.XssSanitizer;
@@ -28,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -105,7 +104,7 @@ public class VoteServiceImpl implements VoteService {
                        .author(author)
                        .deadline(deadline)
                        .arguments(sanitize(skillDelVote.getArguments()))
-                       .type(DELETE_SKILL)
+                       .type(DEL_SKILL)
                        .tags(skillDelVote.getTags()
                                          .stream()
                                          .map(XssSanitizer::sanitize)
@@ -161,6 +160,25 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    public Votes list(CollectionRequest collectionRequest) {
+        List<VoteResponse> all = voteRepository.getAll(collectionRequest.getFilter(),
+                                                       collectionRequest.getPagination()
+                                                                        .getPrevious(),
+                                                       collectionRequest.getPagination()
+                                                                        .getSize())
+                                               .stream()
+                                               .map(VoteResponseMapper.INST::map)
+                                               .toList();
+        if (all.isEmpty()) {
+            return new Votes(all, new Cursor(""));
+        }
+        ;
+        var cursor = new Cursor(all.getLast()
+                                   .getName());
+        return new Votes(all, cursor);
+    }
+
+    @Override
     public void cast(String voteName, CastVoteRequest castVote) {
         var voter = jwsParsingService.parseAuth(castVote.getAuthToken(), JWT_SUBJECT);
         voteRepository.findByName(voteName)
@@ -188,20 +206,12 @@ public class VoteServiceImpl implements VoteService {
     @SuppressWarnings("all")
     public boolean end(String voteName) {
         Optional<Vote> optionalVote = voteRepository.findByName(voteName);
-
         if (optionalVote.isEmpty()) return false;
 
         var vote = optionalVote.get();
-        int positiveRelation = vote.getReactions()
-                                   .positive() / (0 == vote.getReactions()
-                                                           .negative() ? 1 : vote.getReactions()
-                                                                                 .negative());
-        if (positiveRelation >= 1) {
-            voteRepository.updateSuccess(voteName, true);
-            return true;
-        } else {
-            voteRepository.updateSuccess(voteName, false);
-            return false;
-        }
+        boolean succeeded = vote.succeeded();
+        voteRepository.updateSuccess(voteName, succeeded);
+
+        return succeeded;
     }
 }

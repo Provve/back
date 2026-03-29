@@ -1,22 +1,25 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkillResponse {
 
     private String name;
-    private String voteName;
+    private List<String> tags = new ArrayList<>();
 
     public SkillResponse() {
 
     }
 
-    public SkillResponse(String name, String voteName) {
+    public SkillResponse(String name, List<String> tags) {
         this.name = name;
-        this.voteName = voteName;
+        this.tags = tags;
     }
 
 
@@ -30,13 +33,13 @@ public class SkillResponse {
     }
 
 
-    @JsonProperty("vote_name")
-    public String getVoteName() {
-        return voteName;
+    @JsonProperty("tags")
+    public List<String> getTags() {
+        return tags;
     }
 
-    public void setVoteName(String voteName) {
-        this.voteName = voteName;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
 
@@ -50,12 +53,12 @@ public class SkillResponse {
         }
         SkillResponse skillResponse = (SkillResponse) o;
         return Objects.equals(name, skillResponse.name) &&
-                Objects.equals(voteName, skillResponse.voteName);
+               Objects.equals(tags, skillResponse.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, voteName);
+        return Objects.hash(name, tags);
     }
 
     @Override
@@ -66,8 +69,8 @@ public class SkillResponse {
         sb.append("    name: ")
           .append(toIndentedString(name))
           .append("\n");
-        sb.append("    voteName: ")
-          .append(toIndentedString(voteName))
+        sb.append("    tags: ")
+          .append(toIndentedString(tags))
           .append("\n");
         sb.append("}");
         return sb.toString();

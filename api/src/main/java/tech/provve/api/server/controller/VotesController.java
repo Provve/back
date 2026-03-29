@@ -13,10 +13,9 @@ import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.api.server.validation.dto.CastVote;
 import tech.provve.skill.exception.*;
+import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.domain.VoteService;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
-
-import java.util.List;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
@@ -24,6 +23,7 @@ public class VotesController implements VotesApi {
 
     private final InputValidator validatingService;
     private final VoteService voteService;
+    private final VoteRepository voteRepository;
 
     @Override
     public Future<ApiResponse<Void>> addCommentOnVote(String name, AddCommentOnVoteRequest addCommentOnVoteRequest) {
@@ -68,6 +68,7 @@ public class VotesController implements VotesApi {
             validatingService.validate(new tech.provve.api.server.validation.dto.SkillAddVote(
                     skillAddVote.getName(),
                     skillAddVote.getArguments(),
+                    skillAddVote.getTags(),
                     skillAddVote.getAuthToken()
             ));
             voteService.create(skillAddVote);
@@ -85,6 +86,7 @@ public class VotesController implements VotesApi {
             validatingService.validate(new tech.provve.api.server.validation.dto.SkillDelVote(
                     skillDelVote.getName(),
                     skillDelVote.getArguments(),
+                    skillDelVote.getTags(),
                     skillDelVote.getAuthToken()
             ));
             voteService.create(skillDelVote);
@@ -107,12 +109,18 @@ public class VotesController implements VotesApi {
     }
 
     @Override
-    public Future<ApiResponse<List<CommentResponse>>> listCommentsOnVote(String name) {
+    public Future<ApiResponse<Comments>> listComments(String name) {
         return null;
     }
 
     @Override
-    public Future<ApiResponse<List<VoteResponse>>> listVotes(Pagination pagination, Filter filter) {
-        return null;
+    public Future<ApiResponse<Votes>> listVotes(CollectionRequest collectionRequest) {
+        try {
+            validatingService.validate(InputValidatorMapper.INSTANCE.map(collectionRequest));
+            return Future.succeededFuture(new ApiResponse<>(200, voteService.list(collectionRequest)));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
+
 }

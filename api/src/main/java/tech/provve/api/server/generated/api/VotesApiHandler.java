@@ -39,8 +39,8 @@ public class VotesApiHandler implements RouteHandler {
                .handler(this::deleteCommentOnVote);
         builder.operation("editCommentOnVote")
                .handler(this::editCommentOnVote);
-        builder.operation("listCommentsOnVote")
-               .handler(this::listCommentsOnVote);
+        builder.operation("listComments")
+               .handler(this::listComments);
         builder.operation("listVotes")
                .handler(this::listVotes);
     }
@@ -51,17 +51,17 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String name = requestParameters.pathParameter("name") != null ? requestParameters.pathParameter("name")
-                                                                                         .getString() : null;
+        String voteName = requestParameters.pathParameter("vote_name") != null ? requestParameters.pathParameter("vote_name")
+                                                                                                  .getString() : null;
         RequestParameter body = requestParameters.body();
         AddCommentOnVoteRequest addCommentOnVoteRequest = body != null ? DatabindCodec.mapper()
                                                                                       .convertValue(body.get(), new TypeReference<AddCommentOnVoteRequest>() {
                                                                                       }) : null;
 
-        logger.debug("Parameter name is {}", name);
+        logger.debug("Parameter voteName is {}", voteName);
         logger.debug("Parameter addCommentOnVoteRequest is {}", addCommentOnVoteRequest);
 
-        api.addCommentOnVote(name, addCommentOnVoteRequest)
+        api.addCommentOnVote(voteName, addCommentOnVoteRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -242,18 +242,18 @@ public class VotesApiHandler implements RouteHandler {
            .onFailure(routingContext::fail);
     }
 
-    private void listCommentsOnVote(RoutingContext routingContext) {
-        logger.info("listCommentsOnVote()");
+    private void listComments(RoutingContext routingContext) {
+        logger.info("listComments()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String name = requestParameters.pathParameter("name") != null ? requestParameters.pathParameter("name")
-                                                                                         .getString() : null;
+        String voteName = requestParameters.pathParameter("vote_name") != null ? requestParameters.pathParameter("vote_name")
+                                                                                                  .getString() : null;
 
-        logger.debug("Parameter name is {}", name);
+        logger.debug("Parameter voteName is {}", voteName);
 
-        api.listCommentsOnVote(name)
+        api.listComments(voteName)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -273,21 +273,14 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        Pagination pagination = requestParameters.queryParameter("pagination") != null ? DatabindCodec.mapper()
-                                                                                                      .convertValue(requestParameters.queryParameter(
-                                                                                                                                             "pagination")
-                                                                                                                                     .get(),
-                                                                                                                    new TypeReference<Pagination>() {
-                                                                                                                    }) : null;
-        Filter filter = requestParameters.queryParameter("filter") != null ? DatabindCodec.mapper()
-                                                                                          .convertValue(requestParameters.queryParameter("filter")
-                                                                                                                         .get(), new TypeReference<Filter>() {
-                                                                                          }) : null;
+        RequestParameter body = requestParameters.body();
+        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
+                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
+                                                                          }) : null;
 
-        logger.debug("Parameter pagination is {}", pagination);
-        logger.debug("Parameter filter is {}", filter);
+        logger.debug("Parameter collectionRequest is {}", collectionRequest);
 
-        api.listVotes(pagination, filter)
+        api.listVotes(collectionRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
