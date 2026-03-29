@@ -52,7 +52,7 @@ public class ResultRepository extends Filtering {
 
     @SuppressWarnings("all")
     public List<Result> getAll(Filter filter, String examinee, String previous, int pageSize) {
-        List<Condition> conditions = jooqConditions(filter.getConditions());
+        List<Condition> conditions = jooqConditions(filter);
         conditions.add(RESULT.EXAMINEE.eq(examinee));
 
         var select = dsl.select()

@@ -31,6 +31,10 @@ public class ResultServiceImpl implements ResultService {
                                                    .stream()
                                                    .map(ResultResponseMapper.INST::map)
                                                    .toList();
+        if (all.isEmpty()) {
+            return new Results(all, new Cursor(""));
+        }
+        ;
         var cursor = new Cursor(all.getLast()
                                    .getExamName());
         return new Results(all, cursor);

@@ -26,7 +26,6 @@ import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.ExamAddVote.EXAM_ADD_VOTE;
 import static tech.provve.skill.db.generated.tables.GetReactionsTotal.GET_REACTIONS_TOTAL;
 import static tech.provve.skill.db.generated.tables.Reactions.REACTIONS;
-import static tech.provve.skill.db.generated.tables.Skill.SKILL_;
 import static tech.provve.skill.db.generated.tables.TsVoteRu.TS_VOTE_RU;
 import static tech.provve.skill.db.generated.tables.Vote.VOTE;
 import static tech.provve.skill.domain.entity.Vote.Type.ADD_EXAM;
@@ -118,7 +117,7 @@ public class VoteRepository extends Filtering {
                         .leftJoin(EXAM_ADD_VOTE)
                         .on(EXAM_ADD_VOTE.VOTE_NAME.eq(VOTE.NAME))
                         .crossJoin(GET_REACTIONS_TOTAL.call(VOTE.NAME))
-                        .where(jooqConditions(filter.getConditions()))
+                        .where(jooqConditions(filter))
                         .orderBy(VOTE.NAME)
                         .seek(previous)
                         .limit(pageSize);

@@ -34,6 +34,11 @@ public class SkillServiceImpl implements SkillService {
                                                  .stream()
                                                  .map(skill -> new SkillResponse(skill.name(), skill.tags()))
                                                  .toList();
+        if (all.isEmpty()) {
+            return new Skills(all, new Cursor(""));
+        }
+        ;
+
         var cursor = new Cursor(all.getLast()
                                    .getName());
         return new Skills(all, cursor);

@@ -81,6 +81,10 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
                                                              .getSize())
                                            .stream()
                                            .toList();
+        if (all.isEmpty()) {
+            return new Notifications(all, new Cursor(""));
+        }
+        ;
         var cursor = new Cursor(String.valueOf(all.getLast()
                                                   .getId()));
         return new Notifications(all, cursor);

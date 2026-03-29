@@ -12,13 +12,9 @@ import tech.provve.api.server.generated.api.SkillsApi;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
-import tech.provve.skill.mapper.exam.ExamResponseMapper;
-import tech.provve.skill.repository.ExamRepository;
 import tech.provve.skill.service.domain.ExamService;
 import tech.provve.skill.service.domain.ResultService;
 import tech.provve.skill.service.domain.SkillService;
-
-import java.util.List;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

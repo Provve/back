@@ -169,6 +169,10 @@ public class VoteServiceImpl implements VoteService {
                                                .stream()
                                                .map(VoteResponseMapper.INST::map)
                                                .toList();
+        if (all.isEmpty()) {
+            return new Votes(all, new Cursor(""));
+        }
+        ;
         var cursor = new Cursor(all.getLast()
                                    .getName());
         return new Votes(all, cursor);

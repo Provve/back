@@ -1,10 +1,12 @@
 package tech.provve.skill.repository;
 
 import org.jooq.Condition;
+import tech.provve.api.server.generated.dto.Filter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 public abstract class Filtering {
@@ -14,11 +16,17 @@ public abstract class Filtering {
      */
     protected abstract Map<String, Function<tech.provve.api.server.generated.dto.Condition, Condition>> fieldConditionMappers();
 
-    protected List<Condition> jooqConditions(List<tech.provve.api.server.generated.dto.Condition> conditions) {
-        var result = new ArrayList<Condition>(conditions.size());
-        conditions.stream()
-                  .map(this::jooqCondition)
-                  .forEach(result::add);
+    protected List<Condition> jooqConditions(Filter filter) {
+        if (Objects.isNull(filter)) {
+            return new ArrayList<>();
+        }
+
+        var result = new ArrayList<Condition>(filter.getConditions()
+                                                    .size());
+        filter.getConditions()
+              .stream()
+              .map(this::jooqCondition)
+              .forEach(result::add);
         return result;
     }
 

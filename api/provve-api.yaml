@@ -1089,7 +1089,6 @@ components:
           $ref: "#/components/schemas/Filter"
       required:
         - pagination
-        - filter
 
     CollectionAuthenticated.request:
       allOf:

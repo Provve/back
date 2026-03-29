@@ -62,7 +62,7 @@ public class ExamRepository extends Filtering {
     public List<Exam> getAll(Filter filter, String previous, int pageSize) {
         var select = dsl.select()
                         .from(EXAM)
-                        .where(jooqConditions(filter.getConditions()))
+                        .where(jooqConditions(filter))
                         .orderBy(EXAM.NAME)
                         .seek(previous)
                         .limit(pageSize);

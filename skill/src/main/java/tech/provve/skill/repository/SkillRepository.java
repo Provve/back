@@ -63,7 +63,7 @@ public class SkillRepository extends Filtering {
     public List<Skill> getAll(Filter filter, String previous, int pageSize) {
         var select = dsl.select()
                         .from(SKILL_)
-                        .where(jooqConditions(filter.getConditions()))
+                        .where(jooqConditions(filter))
                         .orderBy(SKILL_.NAME)
                         .seek(previous)
                         .limit(pageSize);
