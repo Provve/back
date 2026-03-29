@@ -69,7 +69,7 @@ public class Scheduling {
                         boolean success = voteService.end(task.getId());
                         if (success) {
                             voteRepository.findByName(task.getId())
-                                          .ifPresent(skillService::create);
+                                          .ifPresent(skillService::createFrom);
                         }
                     });
     }

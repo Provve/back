@@ -28,10 +28,7 @@ import tech.provve.payment.service.application.PaymentServiceImpl;
 import tech.provve.skill.repository.*;
 import tech.provve.skill.service.application.SessionService;
 import tech.provve.skill.service.application.SessionServiceImpl;
-import tech.provve.skill.service.domain.SkillService;
-import tech.provve.skill.service.domain.SkillServiceImpl;
-import tech.provve.skill.service.domain.VoteService;
-import tech.provve.skill.service.domain.VoteServiceImpl;
+import tech.provve.skill.service.domain.*;
 import tech.provve.statemachine.repository.CheckSolutionRepository;
 import tech.provve.statemachine.repository.SaveExamRepository;
 import tech.provve.statemachine.service.ZipManipulator;
@@ -56,6 +53,16 @@ import static tech.provve.statemachine.SaveExamMachine.*;
  */
 @Factory
 public class Services {
+
+    @Bean
+    public ExamService examService(ExamRepository examRepository) {
+        return new ExamServiceImpl(examRepository);
+    }
+
+    @Bean
+    public ResultService resultService(ResultRepository repository, JwsParsingService jwsParsingService) {
+        return new ResultServiceImpl(repository, jwsParsingService);
+    }
 
     @Bean
     public SessionService sessionService(ResultRepository resultRepository,

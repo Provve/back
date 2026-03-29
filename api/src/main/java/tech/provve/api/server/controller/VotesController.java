@@ -13,12 +13,9 @@ import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.api.server.validation.dto.CastVote;
 import tech.provve.skill.exception.*;
-import tech.provve.skill.mapper.vote.VoteResponseMapper;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.domain.VoteService;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
-
-import java.util.List;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
@@ -120,17 +117,7 @@ public class VotesController implements VotesApi {
     public Future<ApiResponse<Votes>> listVotes(CollectionRequest collectionRequest) {
         try {
             validatingService.validate(InputValidatorMapper.INSTANCE.map(collectionRequest));
-            List<VoteResponse> all = voteRepository.getAll(collectionRequest.getFilter(),
-                                                           collectionRequest.getPagination()
-                                                                            .getPrevious(),
-                                                           collectionRequest.getPagination()
-                                                                            .getSize())
-                                                   .stream()
-                                                   .map(VoteResponseMapper.INST::map)
-                                                   .toList();
-            var cursor = new Cursor(all.getLast()
-                                       .getName());
-            return Future.succeededFuture(new ApiResponse<>(200, new Votes(all, cursor)));
+            return Future.succeededFuture(new ApiResponse<>(200, voteService.list(collectionRequest)));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
         }

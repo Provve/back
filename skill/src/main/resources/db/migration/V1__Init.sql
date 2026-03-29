@@ -161,7 +161,7 @@ EXECUTE FUNCTION INSERT_INTO_TS_EXAM();
 
 
 CREATE TABLE skill.result (
-     exam_name VARCHAR(100) REFERENCES skill.skill(name) ON DELETE CASCADE,
+     exam_name VARCHAR(100) REFERENCES skill.exam(name) ON DELETE CASCADE,
      examinee VARCHAR(50) REFERENCES accounts.accounts(login) ON DELETE CASCADE,
      duration INTERVAL NOT NULL
 );

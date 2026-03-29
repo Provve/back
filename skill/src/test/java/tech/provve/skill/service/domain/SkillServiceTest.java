@@ -23,7 +23,7 @@ class SkillServiceTest {
     SkillService skillService;
 
     @Test
-    void create_givenVote_createdSkillWithNameFromVote() {
+    void create_From_givenVote_createdSkillWithNameFromVote() {
         // arrange
         var name = "v";
         var tags = List.of("x", "y");
@@ -39,7 +39,7 @@ class SkillServiceTest {
                        .build();
 
         // act
-        skillService.create(vote);
+        skillService.createFrom(vote);
 
         // assert
         verify(skillRepository).save(new Skill(vote.getName(), vote.getTags()));

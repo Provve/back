@@ -1,9 +1,6 @@
 package tech.provve.skill.service.domain;
 
-import tech.provve.api.server.generated.dto.CastVoteRequest;
-import tech.provve.api.server.generated.dto.ExamAddVote;
-import tech.provve.api.server.generated.dto.SkillAddVote;
-import tech.provve.api.server.generated.dto.SkillDelVote;
+import tech.provve.api.server.generated.dto.*;
 import tech.provve.skill.exception.AuthorCannotVote;
 import tech.provve.skill.exception.CastAlreadyExists;
 import tech.provve.skill.exception.VoteAlreadyExists;
@@ -17,6 +14,8 @@ public interface VoteService {
 
     void create(ExamAddVote examAddVote) throws VoteAlreadyExists;
 
+    Votes list(CollectionRequest collectionRequest);
+
     /**
      * Give a vote on vote.
      */
@@ -25,7 +24,7 @@ public interface VoteService {
     /**
      * Complete the vote
      *
-     * @return true if the vote is existing and has more positive reactions
+     * @return true if the vote is succeeded
      */
     boolean end(String voteName);
 

@@ -4,12 +4,16 @@ import io.avaje.inject.BeanScopeBuilder;
 import io.avaje.inject.test.InjectTest;
 import io.avaje.inject.test.Setup;
 import jakarta.inject.Inject;
+import org.assertj.core.util.Lists;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.repository.AccountRepository;
+import tech.provve.api.server.generated.dto.Condition;
 import tech.provve.api.server.generated.dto.Filter;
 import tech.provve.skill.PostgresIntegrationTest;
 import tech.provve.skill.domain.entity.Exam;
@@ -105,14 +109,14 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         accountRepository.save(new Account(author_login, "a", "1", true, "q", null, null, false));
         skillRepository.save(new Skill(author_login, List.of("a")));
 
-        var examAddvote = new Exam("b", "a", "d", "", "");
+        var examAddvote = new Exam("b", author_login, "d", "", "");
         var now = LocalDateTime.now();
         var votes = List.of(
                 Vote.builder()
                     .name("8734")
                     .active(true)
                     .success(false)
-                    .author("a")
+                    .author(author_login)
                     .deadline(now)
                     .arguments("xyz!")
                     .type(Vote.Type.ADD_EXAM)
@@ -123,7 +127,7 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
                     .name("b")
                     .active(true)
                     .success(false)
-                    .author("a")
+                    .author(author_login)
                     .deadline(now)
                     .arguments("xyz!")
                     .type(Vote.Type.DEL_SKILL)
@@ -136,10 +140,79 @@ class VoteRepositoryTest extends PostgresIntegrationTest {
         votes.forEach(voteRepository::save);
 
         // assert
-        var savedVotes = voteRepository.getAll(new Filter(emptyList()), "", 1);
+        var savedVotes = voteRepository.getAll(new Filter(), "", 2);
         assertThat(savedVotes).extracting(Vote::getType)
                               .anyMatch(ADD_EXAM::equals)
                               .anyMatch(DEL_SKILL::equals);
+    }
+
+    @ParameterizedTest
+    @CsvSource("""
+            name, a
+            active, true
+            author, v
+            arguments, w
+            tags, 'a, b, c'
+            tags, 'c, b'
+            """)
+    void getAll_equalFilterByFIELD_found(String searchField, String searchValue) {
+        // arrange
+        accountRepository.save(new Account(searchValue, "a", "1", true, "q", null, null, false));
+        var tags = List.of("a", "b", "c");
+        skillRepository.save(new Skill(searchValue, tags));
+        var vote = Vote.builder()
+                       .name(searchValue)
+                       .active(Boolean.parseBoolean(searchValue))
+                       .success(false)
+                       .author(searchValue)
+                       .deadline(LocalDateTime.now())
+                       .arguments(searchValue)
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(tags)
+                       .build();
+        voteRepository.save(vote);
+
+        var filter = new Filter(List.of(new Condition(searchField, Condition.OperatorEnum.EQ, searchValue)));
+
+        // act
+        List<Vote> found = voteRepository.getAll(filter, "", 1);
+
+        // assert
+        assertThat(found).isNotEmpty();
+    }
+
+    @ParameterizedTest
+    @CsvSource("""
+            name, перцептрон
+            arguments, нейросети важно
+            """)
+    void getAll_likeFilterByFIELD_found(String searchField, String searchValue) {
+        // arrange
+        accountRepository.save(new Account(searchValue, "a", "1", true, "q", null, null, false));
+        var tags = List.of("a", "b", "c");
+        skillRepository.save(new Skill(searchValue, tags));
+        var vote = Vote.builder()
+                       .name("Создание перцептрона")
+                       .active(Boolean.parseBoolean(searchValue))
+                       .success(false)
+                       .author(searchValue)
+                       .deadline(LocalDateTime.now())
+                       .arguments("Базовое понимание работы нейросетей важно")
+                       .type(Vote.Type.ADD_SKILL)
+                       .tags(tags)
+                       .build();
+        voteRepository.save(vote);
+
+        var filter = new Filter(List.of(new Condition(searchField, Condition.OperatorEnum.LIKE, searchValue)));
+
+        // act
+        List<Vote> found = voteRepository.getAll(filter, "", 1);
+
+        // assert
+        assertThat(found).isNotEmpty();
+
+        // cleanup
+        voteRepository.delete(vote.getName());
     }
 
 }

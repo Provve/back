@@ -51,7 +51,7 @@ public class ResultRepository extends Filtering {
     }
 
     @SuppressWarnings("all")
-    public List<Result> findAll(Filter filter, String examinee, String previous, int pageSize) {
+    public List<Result> getAll(Filter filter, String examinee, String previous, int pageSize) {
         List<Condition> conditions = jooqConditions(filter.getConditions());
         conditions.add(RESULT.EXAMINEE.eq(examinee));
 

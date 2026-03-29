@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @InjectTest
-public class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
+class VoteService_VoteRepository__IT extends PostgresIntegrationTest {
 
     @Setup
     void set(BeanScopeBuilder b) {

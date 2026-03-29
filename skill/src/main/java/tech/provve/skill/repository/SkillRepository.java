@@ -89,8 +89,7 @@ public class SkillRepository extends Filtering {
                                                .from(TS_SKILL_RU)
                                                .where(DSL.field("{0} @@ plainto_tsquery('russian', {1})",
                                                                 Boolean.class,
-                                                                TS_SKILL_RU.TS_SKILL_NAME, DSL.inline(condition.getValue())))
-                                               .and(TS_SKILL_RU.SKILL_NAME.eq(SKILL_.NAME)));
+                                                                TS_SKILL_RU.TS_SKILL_NAME, DSL.inline(condition.getValue()))));
                 },
                 "tags", condition -> switch (condition.getOperator()) {
                     case EQ, LIKE -> DSL.condition("{0} && {1}", SKILL_.TAGS, DSL.inline("{%s}".formatted(condition.getValue())));

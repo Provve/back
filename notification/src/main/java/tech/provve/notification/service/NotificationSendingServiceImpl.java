@@ -6,10 +6,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.email.EmailBuilder;
+import tech.provve.api.server.generated.dto.CollectionAuthenticatedRequest;
+import tech.provve.api.server.generated.dto.Cursor;
+import tech.provve.api.server.generated.dto.Notification;
+import tech.provve.api.server.generated.dto.Notifications;
 import tech.provve.notification.domain.entity.InputNotification;
 import tech.provve.notification.domain.value.NotifyCommand;
 import tech.provve.notification.repository.NotificationRepository;
 
+import java.util.List;
 import java.util.Objects;
 
 import static tech.provve.notification.domain.value.NotifyCommand.Address.EMAIL;
@@ -35,10 +40,10 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
         var receipeeEmail = notifyCommand.requisites()
                                          .email();
         boolean canSkipProcessing = receipeeEmail == null
-                && notifyCommand.addresses()
-                                .size() == 1
-                && notifyCommand.addresses()
-                                .contains(EMAIL);
+                                    && notifyCommand.addresses()
+                                                    .size() == 1
+                                    && notifyCommand.addresses()
+                                                    .contains(EMAIL);
         if (canSkipProcessing) {
             return;
         }
@@ -66,6 +71,19 @@ public class NotificationSendingServiceImpl implements NotificationSendingServic
                     )
             );
         }
+    }
+
+    @Override
+    public Notifications list(String login, CollectionAuthenticatedRequest request) {
+        List<Notification> all = repository.findAllBy(login, request.getPagination()
+                                                                    .getPrevious(),
+                                                      request.getPagination()
+                                                             .getSize())
+                                           .stream()
+                                           .toList();
+        var cursor = new Cursor(String.valueOf(all.getLast()
+                                                  .getId()));
+        return new Notifications(all, cursor);
     }
 
     @SneakyThrows

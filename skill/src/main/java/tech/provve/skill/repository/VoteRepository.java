@@ -26,6 +26,7 @@ import static java.util.Objects.nonNull;
 import static tech.provve.skill.db.generated.tables.ExamAddVote.EXAM_ADD_VOTE;
 import static tech.provve.skill.db.generated.tables.GetReactionsTotal.GET_REACTIONS_TOTAL;
 import static tech.provve.skill.db.generated.tables.Reactions.REACTIONS;
+import static tech.provve.skill.db.generated.tables.Skill.SKILL_;
 import static tech.provve.skill.db.generated.tables.TsVoteRu.TS_VOTE_RU;
 import static tech.provve.skill.db.generated.tables.Vote.VOTE;
 import static tech.provve.skill.domain.entity.Vote.Type.ADD_EXAM;
@@ -85,6 +86,12 @@ public class VoteRepository extends Filtering {
                ))
                .execute();
         }
+    }
+
+    public void delete(String name) {
+        dsl.deleteFrom(VOTE)
+           .where(VOTE.NAME.eq(name))
+           .execute();
     }
 
     public Optional<Vote> findByName(String name) {
