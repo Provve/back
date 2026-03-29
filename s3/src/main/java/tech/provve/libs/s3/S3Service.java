@@ -1,4 +1,4 @@
-package terch.provve.libs.s3;
+package tech.provve.libs.s3;
 
 import com.uwyn.urlencoder.UrlEncoder;
 import io.avaje.inject.External;

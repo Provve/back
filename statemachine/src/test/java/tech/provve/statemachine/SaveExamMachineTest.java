@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
+import tech.provve.libs.s3.S3Service;
 import tech.provve.statemachine.repository.SaveExamRepository;
 import tech.provve.statemachine.service.ZipManipulator;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
-import terch.provve.libs.s3.S3Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

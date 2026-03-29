@@ -8,17 +8,15 @@ import io.vertx.core.Vertx;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwsParsingServiceImpl;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.accounts.service.application.AccountService;
+import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.statemachine.service.domain.StatemachineService;
-import tech.provve.statemachine.service.domain.StatemachineServiceImpl;
-import terch.provve.libs.s3.S3Service;
 
 import java.sql.*;
 import java.time.LocalDateTime;

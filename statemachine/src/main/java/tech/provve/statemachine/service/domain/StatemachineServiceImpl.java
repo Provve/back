@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import tech.provve.libs.s3.S3Service;
 import tech.provve.statemachine.CheckSolutionMachine;
 import tech.provve.statemachine.SaveExamMachine;
 import tech.provve.statemachine.domain.entity.CheckSolution;
@@ -15,7 +16,6 @@ import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 import tech.provve.statemachine.repository.CheckSolutionRepository;
 import tech.provve.statemachine.repository.SaveExamRepository;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
-import terch.provve.libs.s3.S3Service;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;

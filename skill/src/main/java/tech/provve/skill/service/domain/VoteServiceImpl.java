@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import org.jooq.exception.IntegrityConstraintViolationException;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.*;
+import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
@@ -20,7 +21,6 @@ import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.XssSanitizer;
 import tech.provve.statemachine.service.domain.StatemachineService;
-import terch.provve.libs.s3.S3Service;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

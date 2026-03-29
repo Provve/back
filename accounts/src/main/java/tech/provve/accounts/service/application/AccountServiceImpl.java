@@ -13,13 +13,13 @@ import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.accounts.service.PasswordHashingService;
 import tech.provve.api.server.generated.dto.*;
+import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.domain.value.AccountDowngraded;
 import tech.provve.notification.domain.value.AccountUpgraded;
 import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
 import tech.provve.notification.service.NotificationSendingService;
-import terch.provve.libs.s3.S3Service;
 
 import java.time.Clock;
 import java.time.Instant;

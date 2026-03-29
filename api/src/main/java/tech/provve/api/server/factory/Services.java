@@ -17,6 +17,7 @@ import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.*;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.accounts.service.application.AccountServiceImpl;
+import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.repository.NotificationRepository;
 import tech.provve.notification.service.NotificationSendingService;
@@ -35,7 +36,6 @@ import tech.provve.statemachine.service.ZipManipulator;
 import tech.provve.statemachine.service.domain.StatemachineService;
 import tech.provve.statemachine.service.domain.StatemachineServiceImpl;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
-import terch.provve.libs.s3.S3Service;
 
 import java.net.URI;
 import java.net.http.HttpClient;

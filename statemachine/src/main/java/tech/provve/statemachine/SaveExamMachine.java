@@ -8,12 +8,12 @@ import lombok.SneakyThrows;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.model.FileHeader;
 import net.lingala.zip4j.model.ZipParameters;
+import tech.provve.libs.s3.S3Service;
 import tech.provve.statemachine.domain.entity.SaveExam;
 import tech.provve.statemachine.domain.value.SaveExamEvent;
 import tech.provve.statemachine.domain.value.SaveExamState;
 import tech.provve.statemachine.repository.SaveExamRepository;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
-import terch.provve.libs.s3.S3Service;
 
 import java.io.*;
 import java.nio.file.Files;
