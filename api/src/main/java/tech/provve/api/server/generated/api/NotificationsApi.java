@@ -7,6 +7,5 @@ import tech.provve.api.server.generated.dto.Notifications;
 
 public interface NotificationsApi {
     Future<ApiResponse<Void>> clearNotifications();
-
     Future<ApiResponse<Notifications>> listNotifications(CollectionAuthenticatedRequest collectionAuthenticatedRequest);
 }

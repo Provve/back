@@ -10,6 +10,13 @@ import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.auth.jwt.JWTAuthOptions;
 import io.vertx.ext.web.handler.JWTAuthHandler;
 import jakarta.inject.Named;
+import jakarta.inject.Provider;
+import lombok.SneakyThrows;
+
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 @Factory
 public class Security {
@@ -56,4 +63,49 @@ public class Security {
         return JWTAuth.create(vertx, options);
     }
 
+    @Bean
+    @SuppressWarnings("all")
+    public Provider<PublicKey> publicKeyProvider() {
+        // Avaje-inject увидит только создание этого фабричного объекта.
+        // Ошибки компиляции не возникнет, так как метод create() не вызывается здесь.
+        String key = Config.get("antifraud.legit-check.pubkey");
+        final Ed25519PublicKeyFactory factory = new Ed25519PublicKeyFactory(key);
+
+        return new Provider<>() {
+            @Override
+            @SneakyThrows
+            public PublicKey get() {
+                return factory.create();
+            }
+        };
+    }
+
+
+    public static class Ed25519PublicKeyFactory {
+
+        /**
+         * Ключ в формате base64 без PEM-заголовков.
+         */
+        private final String base64PublicKey;
+
+        public Ed25519PublicKeyFactory(String base64PublicKey) {
+            this.base64PublicKey = base64PublicKey;
+        }
+
+        /**
+         * Метод создает и возвращает PublicKey.
+         * Логика здесь будет выполняться в рантайме, что обходит проблему компиляции avaje-inject.
+         * Без этого падает ошибка this is a preview feature, причиной которой импорт java.security.DEREncodable; в генерируремом модуле Avaje.
+         */
+        @SneakyThrows
+        public PublicKey create() {
+            byte[] decodedKey = Base64.getDecoder()
+                                      .decode(base64PublicKey);
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decodedKey);
+
+            KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
+
+            return keyFactory.generatePublic(keySpec);
+        }
+    }
 }

@@ -45,12 +45,16 @@ public class SkillsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String skillName = requestParameters.pathParameter("skill_name") != null ? requestParameters.pathParameter("skill_name")
-                                                                                                    .getString() : null;
+        String skillName = requestParameters.pathParameter("skill_name") != null
+                           ? requestParameters.pathParameter("skill_name")
+                                              .getString()
+                           : null;
         RequestParameter body = requestParameters.body();
-        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
-                                                                          }) : null;
+        CollectionRequest collectionRequest = body != null
+                                              ? DatabindCodec.mapper()
+                                                             .convertValue(body.get(), new TypeReference<CollectionRequest>() {
+                                                             })
+                                              : null;
 
         logger.debug("Parameter skillName is {}", skillName);
         logger.debug("Parameter collectionRequest is {}", collectionRequest);
@@ -75,13 +79,17 @@ public class SkillsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String skillName = requestParameters.pathParameter("skill_name") != null ? requestParameters.pathParameter("skill_name")
-                                                                                                    .getString() : null;
+        String skillName = requestParameters.pathParameter("skill_name") != null
+                           ? requestParameters.pathParameter("skill_name")
+                                              .getString()
+                           : null;
         RequestParameter body = requestParameters.body();
-        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null ? DatabindCodec.mapper()
-                                                                                                    .convertValue(body.get(),
-                                                                                                                  new TypeReference<CollectionAuthenticatedRequest>() {
-                                                                                                                  }) : null;
+        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null
+                                                                        ? DatabindCodec.mapper()
+                                                                                       .convertValue(body.get(),
+                                                                                                     new TypeReference<CollectionAuthenticatedRequest>() {
+                                                                                                     })
+                                                                        : null;
 
         logger.debug("Parameter skillName is {}", skillName);
         logger.debug("Parameter collectionAuthenticatedRequest is {}", collectionAuthenticatedRequest);
@@ -107,9 +115,11 @@ public class SkillsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
-                                                                          }) : null;
+        CollectionRequest collectionRequest = body != null
+                                              ? DatabindCodec.mapper()
+                                                             .convertValue(body.get(), new TypeReference<CollectionRequest>() {
+                                                             })
+                                              : null;
 
         logger.debug("Parameter collectionRequest is {}", collectionRequest);
 
@@ -133,8 +143,10 @@ public class SkillsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String name = requestParameters.pathParameter("name") != null ? requestParameters.pathParameter("name")
-                                                                                         .getString() : null;
+        String name = requestParameters.pathParameter("name") != null
+                      ? requestParameters.pathParameter("name")
+                                         .getString()
+                      : null;
         FileUpload solution = routingContext.fileUploads()
                                             .iterator()
                                             .next();
@@ -162,8 +174,10 @@ public class SkillsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String examName = requestParameters.pathParameter("exam_name") != null ? requestParameters.pathParameter("exam_name")
-                                                                                                  .getString() : null;
+        String examName = requestParameters.pathParameter("exam_name") != null
+                          ? requestParameters.pathParameter("exam_name")
+                                             .getString()
+                          : null;
 
         logger.debug("Parameter examName is {}", examName);
 

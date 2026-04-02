@@ -120,6 +120,13 @@ processResources {
         include 'antifraud-api.yaml'
         into('build/specs')
     }
+
+    filesMatching("application.yaml") {
+        expand([
+                legit_priv: System.getenv('LEGIT_PRIV'),
+                legit_pub : System.getenv('LEGIT_PUB')
+        ])
+    }
 }
 
 tasks.openApiGenerate {

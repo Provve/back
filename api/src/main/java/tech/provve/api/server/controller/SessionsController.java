@@ -1,17 +1,19 @@
 package tech.provve.api.server.controller;
 
 import io.vertx.core.Future;
-import io.vertx.ext.web.handler.HttpException;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import tech.provve.api.server.exception.HttpException;
 import tech.provve.api.server.exception.ValidationError;
 import tech.provve.api.server.generated.ApiResponse;
 import tech.provve.api.server.generated.api.SessionsApi;
 import tech.provve.api.server.generated.dto.CreateSessionRequest;
 import tech.provve.api.server.generated.dto.CreateSessionResponse;
-import tech.provve.api.server.generated.dto.ObservationUpload;
+import tech.provve.api.server.generated.dto.ObservationUploadRequest;
+import tech.provve.api.server.generated.dto.ObservationUploadResponse;
 import tech.provve.api.server.mapper.InputValidatorMapper;
+import tech.provve.api.server.service.AntifraudLegitimacyChecker;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.skill.exception.ExamNotFound;
 import tech.provve.skill.exception.ExamPassTwice;
@@ -21,6 +23,7 @@ import tech.provve.skill.service.application.SessionService;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SessionsController implements SessionsApi {
 
+    private final AntifraudLegitimacyChecker antifraudLegitimacyChecker;
     private final SessionService sessionService;
     private final InputValidator validator;
 
@@ -39,8 +42,15 @@ public class SessionsController implements SessionsApi {
         }
     }
 
-    public Future<ApiResponse<Void>> uploadObservation(ObservationUpload observationUpload) {
-        return Future.failedFuture(new HttpException(501));
+    @Override
+    public Future<ApiResponse<ObservationUploadResponse>> uploadObservation(ObservationUploadRequest observationUploadRequest) {
+        boolean legit = antifraudLegitimacyChecker.check(observationUploadRequest.getSig(),
+                                                         observationUploadRequest.getNonce(),
+                                                         observationUploadRequest.getObservation());
+        if (!legit) {
+            return Future.failedFuture(new HttpException(403));
+        }
+        return Future.succeededFuture(new ApiResponse<>(200));
     }
 
 }

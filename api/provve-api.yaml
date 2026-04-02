@@ -307,10 +307,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "build/specs/antifraud-api.yaml#/components/schemas/ObservationUpload"
+              $ref: "build/specs/antifraud-api.yaml#/components/schemas/ObservationUpload.request"
       responses:
         '200':
           description: Данные наблюдения загружены
+          content:
+            application/json:
+              schema:
+                $ref: "build/specs/antifraud-api.yaml#/components/schemas/ObservationUpload.response"
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '403':
@@ -1245,8 +1249,16 @@ components:
           type: string
           format: binary
           description: Архив с решением (загружается как файл)
+        upload_redirect:
+          type: string
+          description: Ссылка на страницу загрузки решения
+        trust_token:
+          type: string
+          description: Доверительный токен подтверждает, что перенаправление осуществлено от легитимного Антифрода и наблюдение показало отсутствие нарушений.
       required:
         - solution
+        - upload_redirect
+        - trust_token
 
     CastVote.request:
       type: object

@@ -1,31 +1,17 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
-import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
-import tech.provve.api.server.generated.dto.DeleteAccountRequest;
-import tech.provve.api.server.generated.dto.Error;
-import tech.provve.api.server.generated.dto.RegisterAccountRequest;
-import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
-import tech.provve.api.server.generated.dto.UpdateContactsRequest;
-import tech.provve.api.server.generated.dto.UpdateEmailRequest;
-import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
-import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
-
-import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.ValidationHandler;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import jakarta.inject.Singleton;
-
-import java.util.List;
-import java.util.Map;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.dto.*;
 
 @Singleton
 public class AccountsApiHandler implements RouteHandler {
@@ -68,9 +54,11 @@ public class AccountsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        AuthenticateUserRequest authenticateUserRequest = body != null ? DatabindCodec.mapper()
-                                                                                      .convertValue(body.get(), new TypeReference<AuthenticateUserRequest>() {
-                                                                                      }) : null;
+        AuthenticateUserRequest authenticateUserRequest = body != null
+                                                          ? DatabindCodec.mapper()
+                                                                         .convertValue(body.get(), new TypeReference<AuthenticateUserRequest>() {
+                                                                         })
+                                                          : null;
 
         logger.debug("Parameter authenticateUserRequest is {}", authenticateUserRequest);
 
@@ -95,9 +83,11 @@ public class AccountsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        DeleteAccountRequest deleteAccountRequest = body != null ? DatabindCodec.mapper()
-                                                                                .convertValue(body.get(), new TypeReference<DeleteAccountRequest>() {
-                                                                                }) : null;
+        DeleteAccountRequest deleteAccountRequest = body != null
+                                                    ? DatabindCodec.mapper()
+                                                                   .convertValue(body.get(), new TypeReference<DeleteAccountRequest>() {
+                                                                   })
+                                                    : null;
 
         logger.debug("Parameter deleteAccountRequest is {}", deleteAccountRequest);
 
@@ -122,9 +112,11 @@ public class AccountsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        RegisterAccountRequest registerAccountRequest = body != null ? DatabindCodec.mapper()
-                                                                                    .convertValue(body.get(), new TypeReference<RegisterAccountRequest>() {
-                                                                                    }) : null;
+        RegisterAccountRequest registerAccountRequest = body != null
+                                                        ? DatabindCodec.mapper()
+                                                                       .convertValue(body.get(), new TypeReference<RegisterAccountRequest>() {
+                                                                       })
+                                                        : null;
 
         logger.debug("Parameter registerAccountRequest is {}", registerAccountRequest);
 
@@ -148,8 +140,10 @@ public class AccountsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String email = requestParameters.queryParameter("email") != null ? requestParameters.queryParameter("email")
-                                                                                            .getString() : null;
+        String email = requestParameters.queryParameter("email") != null
+                       ? requestParameters.queryParameter("email")
+                                          .getString()
+                       : null;
 
         logger.debug("Parameter email is {}", email);
 
@@ -174,9 +168,11 @@ public class AccountsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        UpdateAvatarRequest updateAvatarRequest = body != null ? DatabindCodec.mapper()
-                                                                              .convertValue(body.get(), new TypeReference<UpdateAvatarRequest>() {
-                                                                              }) : null;
+        UpdateAvatarRequest updateAvatarRequest = body != null
+                                                  ? DatabindCodec.mapper()
+                                                                 .convertValue(body.get(), new TypeReference<UpdateAvatarRequest>() {
+                                                                 })
+                                                  : null;
 
         logger.debug("Parameter updateAvatarRequest is {}", updateAvatarRequest);
 
@@ -201,9 +197,11 @@ public class AccountsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        UpdateContactsRequest updateContactsRequest = body != null ? DatabindCodec.mapper()
-                                                                                  .convertValue(body.get(), new TypeReference<UpdateContactsRequest>() {
-                                                                                  }) : null;
+        UpdateContactsRequest updateContactsRequest = body != null
+                                                      ? DatabindCodec.mapper()
+                                                                     .convertValue(body.get(), new TypeReference<UpdateContactsRequest>() {
+                                                                     })
+                                                      : null;
 
         logger.debug("Parameter updateContactsRequest is {}", updateContactsRequest);
 
@@ -228,9 +226,11 @@ public class AccountsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        UpdateEmailRequest updateEmailRequest = body != null ? DatabindCodec.mapper()
-                                                                            .convertValue(body.get(), new TypeReference<UpdateEmailRequest>() {
-                                                                            }) : null;
+        UpdateEmailRequest updateEmailRequest = body != null
+                                                ? DatabindCodec.mapper()
+                                                               .convertValue(body.get(), new TypeReference<UpdateEmailRequest>() {
+                                                               })
+                                                : null;
 
         logger.debug("Parameter updateEmailRequest is {}", updateEmailRequest);
 
@@ -255,9 +255,11 @@ public class AccountsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        UpdatePasswordRequest updatePasswordRequest = body != null ? DatabindCodec.mapper()
-                                                                                  .convertValue(body.get(), new TypeReference<UpdatePasswordRequest>() {
-                                                                                  }) : null;
+        UpdatePasswordRequest updatePasswordRequest = body != null
+                                                      ? DatabindCodec.mapper()
+                                                                     .convertValue(body.get(), new TypeReference<UpdatePasswordRequest>() {
+                                                                     })
+                                                      : null;
 
         logger.debug("Parameter updatePasswordRequest is {}", updatePasswordRequest);
 
@@ -282,10 +284,12 @@ public class AccountsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest = body != null ? DatabindCodec.mapper()
-                                                                                                        .convertValue(body.get(),
-                                                                                                                      new TypeReference<UpdatePersonalDataConsentRequest>() {
-                                                                                                                      }) : null;
+        UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest = body != null
+                                                                            ? DatabindCodec.mapper()
+                                                                                           .convertValue(body.get(),
+                                                                                                         new TypeReference<UpdatePersonalDataConsentRequest>() {
+                                                                                                         })
+                                                                            : null;
 
         logger.debug("Parameter updatePersonalDataConsentRequest is {}", updatePersonalDataConsentRequest);
 
@@ -309,8 +313,10 @@ public class AccountsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String login = requestParameters.queryParameter("login") != null ? requestParameters.queryParameter("login")
-                                                                                            .getString() : null;
+        String login = requestParameters.queryParameter("login") != null
+                       ? requestParameters.queryParameter("login")
+                                          .getString()
+                       : null;
 
         logger.debug("Parameter login is {}", login);
 

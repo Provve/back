@@ -59,10 +59,12 @@ public class NotificationsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null ? DatabindCodec.mapper()
-                                                                                                    .convertValue(body.get(),
-                                                                                                                  new TypeReference<CollectionAuthenticatedRequest>() {
-                                                                                                                  }) : null;
+        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null
+                                                                        ? DatabindCodec.mapper()
+                                                                                       .convertValue(body.get(),
+                                                                                                     new TypeReference<CollectionAuthenticatedRequest>() {
+                                                                                                     })
+                                                                        : null;
 
         logger.debug("Parameter collectionAuthenticatedRequest is {}", collectionAuthenticatedRequest);
 
