@@ -18,6 +18,7 @@ import tech.provve.api.server.service.InputValidator;
 import tech.provve.skill.exception.ExamNotFound;
 import tech.provve.skill.exception.ExamPassTwice;
 import tech.provve.skill.service.application.SessionService;
+import tech.provve.validation.service.domain.ValidationService;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
@@ -26,6 +27,7 @@ public class SessionsController implements SessionsApi {
     private final AntifraudLegitimacyChecker antifraudLegitimacyChecker;
     private final SessionService sessionService;
     private final InputValidator validator;
+    private final ValidationService validationService;
 
     @Override
     public Future<ApiResponse<CreateSessionResponse>> createSession(CreateSessionRequest createSessionRequest) {
@@ -50,7 +52,12 @@ public class SessionsController implements SessionsApi {
         if (!legit) {
             return Future.failedFuture(new HttpException(403));
         }
-        return Future.succeededFuture(new ApiResponse<>(200));
+        validationService.observed(observationUploadRequest.getObservation());
+
+        String uploadPageRedirect = "фронтенд должен обладать знанием, куда перенаправить пользователя в ответ на этот API";
+        String trustToken = "нужно добавить метод сервиса JwtIssuingService";
+        var response = new ObservationUploadResponse(uploadPageRedirect, trustToken);
+        return Future.succeededFuture(new ApiResponse<>(200, response));
     }
 
 }

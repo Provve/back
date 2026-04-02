@@ -213,7 +213,7 @@ CREATE INDEX idx_comment_vote_name ON skill.comment(vote_name);
 
 
 CREATE TABLE skill.session (
-    owner VARCHAR(50) REFERENCES accounts.accounts(login),
+    owner VARCHAR(50) REFERENCES accounts.accounts(login) ON DELETE CASCADE,
     exam_name VARCHAR(100) REFERENCES skill.exam(name),
     created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

@@ -36,6 +36,9 @@ import tech.provve.statemachine.service.ZipManipulator;
 import tech.provve.statemachine.service.domain.StatemachineService;
 import tech.provve.statemachine.service.domain.StatemachineServiceImpl;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
+import tech.provve.validation.repository.ObservationRepository;
+import tech.provve.validation.service.domain.ValidationService;
+import tech.provve.validation.service.domain.ValidationServiceImpl;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -53,6 +56,16 @@ import static tech.provve.statemachine.SaveExamMachine.*;
  */
 @Factory
 public class Services {
+
+    @Bean
+    public ValidationService validationService(ObservationRepository observationRepository) {
+        return new ValidationServiceImpl(observationRepository);
+    }
+
+    @Bean
+    public ObservationRepository observationRepository(DSLContext dsl) {
+        return new ObservationRepository(dsl);
+    }
 
     @Bean
     public ExamService examService(ExamRepository examRepository) {
