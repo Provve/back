@@ -1,25 +1,27 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tech.provve.api.server.generated.dto.Observation;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ObservationUploadRequest {
-
+  
   private Observation observation;
   private String nonce;
   private String sig;
+  private String authToken;
 
   public ObservationUploadRequest() {
 
   }
 
-  public ObservationUploadRequest(Observation observation, String nonce, String sig) {
+  public ObservationUploadRequest(Observation observation, String nonce, String sig, String authToken) {
     this.observation = observation;
     this.nonce = nonce;
     this.sig = sig;
+    this.authToken = authToken;
   }
 
 
@@ -27,7 +29,6 @@ public class ObservationUploadRequest {
   public Observation getObservation() {
     return observation;
   }
-
   public void setObservation(Observation observation) {
     this.observation = observation;
   }
@@ -37,7 +38,6 @@ public class ObservationUploadRequest {
   public String getNonce() {
     return nonce;
   }
-
   public void setNonce(String nonce) {
     this.nonce = nonce;
   }
@@ -47,9 +47,18 @@ public class ObservationUploadRequest {
   public String getSig() {
     return sig;
   }
-
   public void setSig(String sig) {
     this.sig = sig;
+  }
+
+
+  @JsonProperty("auth_token")
+  public String getAuthToken() {
+    return authToken;
+  }
+
+  public void setAuthToken(String authToken) {
+    this.authToken = authToken;
   }
 
 
@@ -64,12 +73,13 @@ public class ObservationUploadRequest {
     ObservationUploadRequest observationUploadRequest = (ObservationUploadRequest) o;
     return Objects.equals(observation, observationUploadRequest.observation) &&
            Objects.equals(nonce, observationUploadRequest.nonce) &&
-           Objects.equals(sig, observationUploadRequest.sig);
+           Objects.equals(sig, observationUploadRequest.sig) &&
+           Objects.equals(authToken, observationUploadRequest.authToken);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(observation, nonce, sig);
+    return Objects.hash(observation, nonce, sig, authToken);
   }
 
   @Override
@@ -85,6 +95,9 @@ public class ObservationUploadRequest {
       .append("\n");
     sb.append("    sig: ")
       .append(toIndentedString(sig))
+      .append("\n");
+    sb.append("    authToken: ")
+      .append(toIndentedString(authToken))
       .append("\n");
     sb.append("}");
     return sb.toString();

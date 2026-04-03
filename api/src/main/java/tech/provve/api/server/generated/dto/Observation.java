@@ -1,13 +1,13 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Observation {
 
-    private String examinee;
     private Boolean cheated;
     private String violations;
 
@@ -15,20 +15,9 @@ public class Observation {
 
     }
 
-    public Observation(String examinee, Boolean cheated, String violations) {
-        this.examinee = examinee;
+    public Observation(Boolean cheated, String violations) {
         this.cheated = cheated;
         this.violations = violations;
-    }
-
-
-    @JsonProperty("examinee")
-    public String getExaminee() {
-        return examinee;
-    }
-
-    public void setExaminee(String examinee) {
-        this.examinee = examinee;
     }
 
 
@@ -61,14 +50,13 @@ public class Observation {
             return false;
         }
         Observation observation = (Observation) o;
-        return Objects.equals(examinee, observation.examinee) &&
-               Objects.equals(cheated, observation.cheated) &&
+        return Objects.equals(cheated, observation.cheated) &&
                Objects.equals(violations, observation.violations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(examinee, cheated, violations);
+        return Objects.hash(cheated, violations);
     }
 
     @Override
@@ -76,9 +64,6 @@ public class Observation {
         StringBuilder sb = new StringBuilder();
         sb.append("class Observation {\n");
 
-        sb.append("    examinee: ")
-          .append(toIndentedString(examinee))
-          .append("\n");
         sb.append("    cheated: ")
           .append(toIndentedString(cheated))
           .append("\n");

@@ -4,6 +4,7 @@ import io.vertx.core.Future;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.exception.HttpException;
 import tech.provve.api.server.exception.ValidationError;
 import tech.provve.api.server.generated.ApiResponse;
@@ -21,6 +22,8 @@ import tech.provve.skill.exception.ExamPassTwice;
 import tech.provve.skill.service.application.SessionService;
 import tech.provve.validation.service.domain.ValidationService;
 
+import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
+
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SessionsController implements SessionsApi {
@@ -30,6 +33,7 @@ public class SessionsController implements SessionsApi {
     private final InputValidator validator;
     private final ValidationService validationService;
     private final AntifraudTrustTokenIssuer trustTokenIssuer;
+    private final JwsParsingService jwsParsingService;
 
     @Override
     public Future<ApiResponse<CreateSessionResponse>> createSession(CreateSessionRequest createSessionRequest) {
@@ -56,8 +60,8 @@ public class SessionsController implements SessionsApi {
         }
 
         validationService.observed(observationUploadRequest.getObservation());
-        String trustToken = trustTokenIssuer.trust(observationUploadRequest.getObservation()
-                                                                           .getExaminee());
+        var examinee = jwsParsingService.parseTrust(observationUploadRequest.getAuthToken(), JWT_SUBJECT);
+        var trustToken = trustTokenIssuer.trust(examinee);
         var response = new ObservationUploadResponse(trustToken);
         return Future.succeededFuture(new ApiResponse<>(200, response));
     }

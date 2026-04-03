@@ -18,4 +18,11 @@ public interface JwsParsingService {
      */
     <T> T parseAuth(String jws, T attribute);
 
+    /**
+     * Parse trust token from Antifraud
+     *
+     * @return the attribute`s value
+     */
+    <T> T parseTrust(String jws, T attribute);
+
 }
