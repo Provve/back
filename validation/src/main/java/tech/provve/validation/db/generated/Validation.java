@@ -4,14 +4,15 @@
 package tech.provve.validation.db.generated;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SchemaImpl;
-import tech.provve.validation.db.generated.tables.Observation;
 
-import java.util.Arrays;
-import java.util.List;
+import tech.provve.validation.db.generated.tables.Observation;
 
 
 /**

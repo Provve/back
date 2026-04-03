@@ -24,20 +24,21 @@ public class ObservationRepository {
     private final DSLContext dsl;
 
     private final RecordMapper<Record, Observation> outputMapper = record -> new Observation(
-            record.get(OBSERVATION.SESSION_OWNER),
+            record.get(OBSERVATION.EXAMINEE),
+            record.get(OBSERVATION.VIOLATIONS),
             record.get(OBSERVATION.CHEATED)
     );
 
     public void save(Observation observation) {
         dsl.insertInto(OBSERVATION)
-           .set(new ObservationRecord(observation.examinee(), observation.cheated()))
+           .set(new ObservationRecord(observation.examinee(), observation.violations(), observation.cheated()))
            .execute();
     }
 
     public Optional<Observation> find(String examinee) {
         return dsl.select()
                   .from(OBSERVATION)
-                  .where(OBSERVATION.SESSION_OWNER.eq(examinee))
+                  .where(OBSERVATION.EXAMINEE.eq(examinee))
                   .fetchOptional(outputMapper);
     }
 }

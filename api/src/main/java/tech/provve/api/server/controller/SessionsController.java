@@ -14,6 +14,7 @@ import tech.provve.api.server.generated.dto.ObservationUploadRequest;
 import tech.provve.api.server.generated.dto.ObservationUploadResponse;
 import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.AntifraudLegitimacyChecker;
+import tech.provve.api.server.service.AntifraudTrustTokenIssuer;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.skill.exception.ExamNotFound;
 import tech.provve.skill.exception.ExamPassTwice;
@@ -28,6 +29,7 @@ public class SessionsController implements SessionsApi {
     private final SessionService sessionService;
     private final InputValidator validator;
     private final ValidationService validationService;
+    private final AntifraudTrustTokenIssuer trustTokenIssuer;
 
     @Override
     public Future<ApiResponse<CreateSessionResponse>> createSession(CreateSessionRequest createSessionRequest) {
@@ -52,11 +54,11 @@ public class SessionsController implements SessionsApi {
         if (!legit) {
             return Future.failedFuture(new HttpException(403));
         }
-        validationService.observed(observationUploadRequest.getObservation());
 
-        String uploadPageRedirect = "фронтенд должен обладать знанием, куда перенаправить пользователя в ответ на этот API";
-        String trustToken = "нужно добавить метод сервиса JwtIssuingService";
-        var response = new ObservationUploadResponse(uploadPageRedirect, trustToken);
+        validationService.observed(observationUploadRequest.getObservation());
+        String trustToken = trustTokenIssuer.trust(observationUploadRequest.getObservation()
+                                                                           .getExaminee());
+        var response = new ObservationUploadResponse(trustToken);
         return Future.succeededFuture(new ApiResponse<>(200, response));
     }
 

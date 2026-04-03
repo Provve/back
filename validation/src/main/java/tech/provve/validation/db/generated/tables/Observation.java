@@ -4,14 +4,26 @@
 package tech.provve.validation.db.generated.tables;
 
 
-import org.jooq.*;
+import java.util.Collection;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+
 import tech.provve.validation.db.generated.Validation;
 import tech.provve.validation.db.generated.tables.records.ObservationRecord;
-
-import java.util.Collection;
 
 
 /**
@@ -37,13 +49,15 @@ public class Observation extends TableImpl<ObservationRecord> {
     }
 
     /**
-     * The column <code>validation.observation.session_owner</code>. За кем
-     * велось наблюдение.
+     * The column <code>validation.observation.examinee</code>. За кем велось
+     * наблюдение.
      */
-    public final TableField<ObservationRecord, String> SESSION_OWNER = createField(DSL.name("session_owner"),
-                                                                                   SQLDataType.VARCHAR(50),
-                                                                                   this,
-                                                                                   "За кем велось наблюдение.");
+    public final TableField<ObservationRecord, String> EXAMINEE = createField(DSL.name("examinee"), SQLDataType.VARCHAR(50), this, "За кем велось наблюдение.");
+
+    /**
+     * The column <code>validation.observation.violations</code>. Что нарушено
+     */
+    public final TableField<ObservationRecord, String> VIOLATIONS = createField(DSL.name("violations"), SQLDataType.CLOB.nullable(false), this, "Что нарушено");
 
     /**
      * The column <code>validation.observation.cheated</code>. Читерил ли

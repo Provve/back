@@ -1,23 +1,34 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Observation {
 
+    private String examinee;
     private Boolean cheated;
-    private String details;
+    private String violations;
 
     public Observation() {
 
     }
 
-    public Observation(Boolean cheated, String details) {
+    public Observation(String examinee, Boolean cheated, String violations) {
+        this.examinee = examinee;
         this.cheated = cheated;
-        this.details = details;
+        this.violations = violations;
+    }
+
+
+    @JsonProperty("examinee")
+    public String getExaminee() {
+        return examinee;
+    }
+
+    public void setExaminee(String examinee) {
+        this.examinee = examinee;
     }
 
 
@@ -31,13 +42,13 @@ public class Observation {
     }
 
 
-    @JsonProperty("details")
-    public String getDetails() {
-        return details;
+    @JsonProperty("violations")
+    public String getViolations() {
+        return violations;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setViolations(String violations) {
+        this.violations = violations;
     }
 
 
@@ -50,13 +61,14 @@ public class Observation {
             return false;
         }
         Observation observation = (Observation) o;
-        return Objects.equals(cheated, observation.cheated) &&
-               Objects.equals(details, observation.details);
+        return Objects.equals(examinee, observation.examinee) &&
+               Objects.equals(cheated, observation.cheated) &&
+               Objects.equals(violations, observation.violations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cheated, details);
+        return Objects.hash(examinee, cheated, violations);
     }
 
     @Override
@@ -64,11 +76,14 @@ public class Observation {
         StringBuilder sb = new StringBuilder();
         sb.append("class Observation {\n");
 
+        sb.append("    examinee: ")
+          .append(toIndentedString(examinee))
+          .append("\n");
         sb.append("    cheated: ")
           .append(toIndentedString(cheated))
           .append("\n");
-        sb.append("    details: ")
-          .append(toIndentedString(details))
+        sb.append("    violations: ")
+          .append(toIndentedString(violations))
           .append("\n");
         sb.append("}");
         return sb.toString();

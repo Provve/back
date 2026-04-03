@@ -1,20 +1,34 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.ext.web.FileUpload;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ObservationUploadResponse {
+public class SubmitExamSolutionRequest {
 
+    private FileUpload solution;
     private String trustToken;
 
-    public ObservationUploadResponse() {
+    public SubmitExamSolutionRequest() {
 
     }
 
-    public ObservationUploadResponse(String trustToken) {
+    public SubmitExamSolutionRequest(FileUpload solution, String trustToken) {
+        this.solution = solution;
         this.trustToken = trustToken;
+    }
+
+
+    @JsonProperty("solution")
+    public FileUpload getSolution() {
+        return solution;
+    }
+
+    public void setSolution(FileUpload solution) {
+        this.solution = solution;
     }
 
 
@@ -36,20 +50,24 @@ public class ObservationUploadResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ObservationUploadResponse observationUploadResponse = (ObservationUploadResponse) o;
-        return Objects.equals(trustToken, observationUploadResponse.trustToken);
+        SubmitExamSolutionRequest submitExamSolutionRequest = (SubmitExamSolutionRequest) o;
+        return Objects.equals(solution, submitExamSolutionRequest.solution) &&
+               Objects.equals(trustToken, submitExamSolutionRequest.trustToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(trustToken);
+        return Objects.hash(solution, trustToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ObservationUploadResponse {\n");
+        sb.append("class SubmitExamSolutionRequest {\n");
 
+        sb.append("    solution: ")
+          .append(toIndentedString(solution))
+          .append("\n");
         sb.append("    trustToken: ")
           .append(toIndentedString(trustToken))
           .append("\n");

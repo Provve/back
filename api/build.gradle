@@ -123,8 +123,9 @@ processResources {
 
     filesMatching("application.yaml") {
         expand([
-                legit_priv: System.getenv('LEGIT_PRIV'),
-                legit_pub : System.getenv('LEGIT_PUB')
+                legit_priv  : System.getenv('LEGIT_PRIV'),
+                legit_pub   : System.getenv('LEGIT_PUB'),
+                trust_secret: System.getenv('TRUST_JWT_SECRET')
         ])
     }
 }

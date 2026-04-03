@@ -5,6 +5,7 @@ package tech.provve.validation.db.generated.tables.records;
 
 
 import org.jooq.impl.TableRecordImpl;
+
 import tech.provve.validation.db.generated.tables.Observation;
 
 
@@ -18,20 +19,35 @@ public class ObservationRecord extends TableRecordImpl<ObservationRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>validation.observation.session_owner</code>. За кем
-     * велось наблюдение.
+     * Setter for <code>validation.observation.examinee</code>. За кем велось
+     * наблюдение.
      */
-    public ObservationRecord setSessionOwner(String value) {
+    public ObservationRecord setExaminee(String value) {
         set(0, value);
         return this;
     }
 
     /**
-     * Getter for <code>validation.observation.session_owner</code>. За кем
-     * велось наблюдение.
+     * Getter for <code>validation.observation.examinee</code>. За кем велось
+     * наблюдение.
      */
-    public String getSessionOwner() {
+    public String getExaminee() {
         return (String) get(0);
+    }
+
+    /**
+     * Setter for <code>validation.observation.violations</code>. Что нарушено
+     */
+    public ObservationRecord setViolations(String value) {
+        set(1, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>validation.observation.violations</code>. Что нарушено
+     */
+    public String getViolations() {
+        return (String) get(1);
     }
 
     /**
@@ -39,7 +55,7 @@ public class ObservationRecord extends TableRecordImpl<ObservationRecord> {
      * экзаменуемый.
      */
     public ObservationRecord setCheated(Boolean value) {
-        set(1, value);
+        set(2, value);
         return this;
     }
 
@@ -48,7 +64,7 @@ public class ObservationRecord extends TableRecordImpl<ObservationRecord> {
      * экзаменуемый.
      */
     public Boolean getCheated() {
-        return (Boolean) get(1);
+        return (Boolean) get(2);
     }
 
     // -------------------------------------------------------------------------
@@ -65,10 +81,11 @@ public class ObservationRecord extends TableRecordImpl<ObservationRecord> {
     /**
      * Create a detached, initialised ObservationRecord
      */
-    public ObservationRecord(String sessionOwner, Boolean cheated) {
+    public ObservationRecord(String examinee, String violations, Boolean cheated) {
         super(Observation.OBSERVATION);
 
-        setSessionOwner(sessionOwner);
+        setExaminee(examinee);
+        setViolations(violations);
         setCheated(cheated);
         resetTouchedOnNotNull();
     }

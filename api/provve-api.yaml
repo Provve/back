@@ -389,7 +389,7 @@ paths:
       requestBody:
         required: true
         content:
-          multipart/form-data:
+          application/json:
             schema:
               $ref: '#/components/schemas/SubmitExamSolution.request'
       responses:
@@ -402,7 +402,7 @@ paths:
         '403':
           description: Нет активной сессии
       security:
-        - auth: [ ]
+        - trust: [ ]
 
   /skills/{skill_name}/results:
     post:
@@ -1248,16 +1248,12 @@ components:
         solution:
           type: string
           format: binary
-          description: Архив с решением (загружается как файл)
-        upload_redirect:
-          type: string
-          description: Ссылка на страницу загрузки решения
+          description: Архив с решением
         trust_token:
           type: string
           description: Доверительный токен подтверждает, что перенаправление осуществлено от легитимного Антифрода и наблюдение показало отсутствие нарушений.
       required:
         - solution
-        - upload_redirect
         - trust_token
 
     CastVote.request:
@@ -1339,5 +1335,9 @@ components:
       scheme: bearer
     reset:
       description: Токен для сброса пароля, отправленный пользователю на почту
+      type: http
+      scheme: bearer
+    trust:
+      description: Доверительный токен, подтверждающий легитимность загруженных Антифродом наблюдений. Наличие токена гарантирует, что пользователь ранее аутентифицировался.
       type: http
       scheme: bearer

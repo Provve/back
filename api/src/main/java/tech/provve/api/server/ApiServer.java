@@ -13,11 +13,11 @@ import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.openapi.RouterBuilderOptions;
 import lombok.extern.slf4j.Slf4j;
 import tech.provve.api.server.exception.HttpException;
-import tech.provve.api.server.factory.Security;
 
 import java.util.List;
 
 import static tech.provve.api.server.factory.RateLimit.RATE_LIMITER;
+import static tech.provve.api.server.factory.Security.*;
 
 @Slf4j
 @SuppressWarnings("unused")
@@ -25,12 +25,11 @@ public class ApiServer extends AbstractVerticle {
 
     public static final int PORT = 8080;
     private static final String SPEC_FILE = "provve-api.yaml";
-    private static final String AUTH_SECURITY_SCHEME = "auth";
-    private static final String RESET_SECURITY_SCHEME = "reset";
 
     private List<RouteHandler> handlers;
     private JWTAuthHandler jwtAuthHandler;
     private JWTAuthHandler jwtResetHandler;
+    private JWTAuthHandler jwtTrustHandler;
     private Handler<RoutingContext> rateLimiter;
 
     public ApiServer() {
@@ -45,8 +44,9 @@ public class ApiServer extends AbstractVerticle {
 
     private void init(BeanScope beanScope) {
         this.handlers = beanScope.list(RouteHandler.class);
-        this.jwtAuthHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_AUTH);
-        this.jwtResetHandler = beanScope.get(JWTAuthHandler.class, Security.JWT_HANDLER_RESET);
+        this.jwtAuthHandler = beanScope.get(JWTAuthHandler.class, JWT_HANDLER_AUTH);
+        this.jwtResetHandler = beanScope.get(JWTAuthHandler.class, JWT_HANDLER_RESET);
+        this.jwtTrustHandler = beanScope.get(JWTAuthHandler.class, JWT_HANDLER_TRUST);
         this.rateLimiter = beanScope.<Handler<RoutingContext>>get(Handler.class, RATE_LIMITER);
     }
 
@@ -58,8 +58,9 @@ public class ApiServer extends AbstractVerticle {
 
                          return builder.setOptions(new RouterBuilderOptions()
                                                            .setRequireSecurityHandlers(true))
-                                       .securityHandler(AUTH_SECURITY_SCHEME, jwtAuthHandler)
-                                       .securityHandler(RESET_SECURITY_SCHEME, jwtResetHandler)
+                                       .securityHandler(JWT_PROVIDER_AUTH, jwtAuthHandler)
+                                       .securityHandler(JWT_PROVIDER_RESET, jwtResetHandler)
+                                       .securityHandler(JWT_PROVIDER_TRUST, jwtTrustHandler)
                                        .createRouter();
                      })
                      .map(api -> {

@@ -57,7 +57,7 @@ public class SkillsController implements SkillsApi {
     }
 
     @Override
-    public Future<ApiResponse<Void>> submitExamSolution(String name, FileUpload solution) {
+    public Future<ApiResponse<Void>> submitExamSolution(String name, SubmitExamSolutionRequest submitExamSolutionRequest) {
         // использовать tech.provve.api.server.factory.S3Factory.s3AsyncClient
         return null;
     }

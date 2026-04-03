@@ -22,23 +22,18 @@ import java.util.Base64;
 public class Security {
 
     public static final String JWT_PROVIDER_AUTH = "auth";
-
     public static final String JWT_HANDLER_AUTH = "auth-handler";
 
     public static final String JWT_PROVIDER_RESET = "reset";
-
     public static final String JWT_HANDLER_RESET = "reset-handler";
+
+    public static final String JWT_PROVIDER_TRUST = "trust";
+    public static final String JWT_HANDLER_TRUST = "trust-handler";
 
     @Bean
     @Named(JWT_HANDLER_AUTH)
     public JWTAuthHandler jwtAuthHandler(@Named(JWT_PROVIDER_AUTH) JWTAuth jwtAuth) {
         return JWTAuthHandler.create(jwtAuth);
-    }
-
-    @Bean
-    @Named(JWT_HANDLER_RESET)
-    public JWTAuthHandler jwtResetHandler(@Named(JWT_PROVIDER_RESET) JWTAuth jwtReset) {
-        return JWTAuthHandler.create(jwtReset);
     }
 
     @Bean
@@ -50,6 +45,29 @@ public class Security {
                                       .setBuffer(Config.get("security.jwt.auth.secret"))
                 );
         return JWTAuth.create(vertx, options);
+    }
+
+    @Bean
+    @Named(JWT_HANDLER_TRUST)
+    public JWTAuthHandler jwtTrustHandler(@Named(JWT_PROVIDER_TRUST) JWTAuth jwtReset) {
+        return JWTAuthHandler.create(jwtReset);
+    }
+
+    @Bean
+    @Named(JWT_PROVIDER_TRUST)
+    public JWTAuth jwtTrust(@External Vertx vertx) {
+        var options = new JWTAuthOptions()
+                .addPubSecKey(new PubSecKeyOptions()
+                                      .setAlgorithm("HS256")
+                                      .setBuffer(Config.get("antifraud.trust-token.secret"))
+                );
+        return JWTAuth.create(vertx, options);
+    }
+
+    @Bean
+    @Named(JWT_HANDLER_RESET)
+    public JWTAuthHandler jwtResetHandler(@Named(JWT_PROVIDER_RESET) JWTAuth jwtReset) {
+        return JWTAuthHandler.create(jwtReset);
     }
 
     @Bean
