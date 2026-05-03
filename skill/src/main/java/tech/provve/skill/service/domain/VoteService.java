@@ -16,6 +16,8 @@ public interface VoteService {
 
     Votes list(CollectionRequest collectionRequest);
 
+    void addComment(AddCommentRequest addCommentRequest, String voteName);
+
     /**
      * Give a vote on vote.
      */

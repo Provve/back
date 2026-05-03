@@ -95,6 +95,23 @@ public class CommentRecord extends UpdatableRecordImpl<CommentRecord> {
         return (String) get(4);
     }
 
+    /**
+     * Setter for <code>skill.comment.reply_for</code>. В ответ на какой
+     * комментарий написан этот?
+     */
+    public CommentRecord setReplyFor(Integer value) {
+        set(5, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>skill.comment.reply_for</code>. В ответ на какой
+     * комментарий написан этот?
+     */
+    public Integer getReplyFor() {
+        return (Integer) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -118,7 +135,7 @@ public class CommentRecord extends UpdatableRecordImpl<CommentRecord> {
     /**
      * Create a detached, initialised CommentRecord
      */
-    public CommentRecord(Integer id, String author, String content, OffsetDateTime created, String voteName) {
+    public CommentRecord(Integer id, String author, String content, OffsetDateTime created, String voteName, Integer replyFor) {
         super(Comment.COMMENT);
 
         setId(id);
@@ -126,6 +143,7 @@ public class CommentRecord extends UpdatableRecordImpl<CommentRecord> {
         setContent(content);
         setCreated(created);
         setVoteName(voteName);
+        setReplyFor(replyFor);
         resetTouchedOnNotNull();
     }
 }

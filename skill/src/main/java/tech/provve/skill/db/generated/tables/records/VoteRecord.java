@@ -4,11 +4,12 @@
 package tech.provve.skill.db.generated.tables.records;
 
 
+import java.time.LocalDateTime;
+
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
-import tech.provve.skill.db.generated.tables.Vote;
 
-import java.time.LocalDateTime;
+import tech.provve.skill.db.generated.tables.Vote;
 
 
 /**
@@ -20,7 +21,7 @@ public class VoteRecord extends UpdatableRecordImpl<VoteRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>skill.vote.examName</code>. Название голосования. Он же и id
+     * Setter for <code>skill.vote.name</code>. Название голосования. Он же и id
      * объекта голосования
      */
     public VoteRecord setName(String value) {
@@ -29,7 +30,7 @@ public class VoteRecord extends UpdatableRecordImpl<VoteRecord> {
     }
 
     /**
-     * Getter for <code>skill.vote.examName</code>. Название голосования. Он же и id
+     * Getter for <code>skill.vote.name</code>. Название голосования. Он же и id
      * объекта голосования
      */
     public String getName() {

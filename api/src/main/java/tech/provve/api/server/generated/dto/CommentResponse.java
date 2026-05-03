@@ -1,24 +1,44 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Objects;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import tech.provve.api.server.generated.dto.ProfileResponse;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentResponse {
 
+    private Integer id;
     private ProfileResponse author;
     private String content;
-    private Integer id;
+    private OffsetDateTime created;
+    private List<CommentResponse> replies = new ArrayList<>();
 
     public CommentResponse() {
 
     }
 
-    public CommentResponse(ProfileResponse author, String content, Integer id) {
+    public CommentResponse(Integer id, ProfileResponse author, String content, OffsetDateTime created, List<CommentResponse> replies) {
+        this.id = id;
         this.author = author;
         this.content = content;
+        this.created = created;
+        this.replies = replies;
+    }
+
+
+    @JsonProperty("id")
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -43,13 +63,23 @@ public class CommentResponse {
     }
 
 
-    @JsonProperty("id")
-    public Integer getId() {
-        return id;
+    @JsonProperty("created")
+    public OffsetDateTime getCreated() {
+        return created;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCreated(OffsetDateTime created) {
+        this.created = created;
+    }
+
+
+    @JsonProperty("replies")
+    public List<CommentResponse> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<CommentResponse> replies) {
+        this.replies = replies;
     }
 
 
@@ -62,14 +92,16 @@ public class CommentResponse {
             return false;
         }
         CommentResponse commentResponse = (CommentResponse) o;
-        return Objects.equals(author, commentResponse.author) &&
+        return Objects.equals(id, commentResponse.id) &&
+               Objects.equals(author, commentResponse.author) &&
                Objects.equals(content, commentResponse.content) &&
-               Objects.equals(id, commentResponse.id);
+               Objects.equals(created, commentResponse.created) &&
+               Objects.equals(replies, commentResponse.replies);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, content, id);
+        return Objects.hash(id, author, content, created, replies);
     }
 
     @Override
@@ -77,14 +109,20 @@ public class CommentResponse {
         StringBuilder sb = new StringBuilder();
         sb.append("class CommentResponse {\n");
 
+        sb.append("    id: ")
+          .append(toIndentedString(id))
+          .append("\n");
         sb.append("    author: ")
           .append(toIndentedString(author))
           .append("\n");
         sb.append("    content: ")
           .append(toIndentedString(content))
           .append("\n");
-        sb.append("    id: ")
-          .append(toIndentedString(id))
+        sb.append("    created: ")
+          .append(toIndentedString(created))
+          .append("\n");
+        sb.append("    replies: ")
+          .append(toIndentedString(replies))
           .append("\n");
         sb.append("}");
         return sb.toString();

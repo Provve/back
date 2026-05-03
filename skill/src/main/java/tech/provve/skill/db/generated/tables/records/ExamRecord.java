@@ -6,6 +6,7 @@ package tech.provve.skill.db.generated.tables.records;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
+
 import tech.provve.skill.db.generated.tables.Exam;
 
 
@@ -18,7 +19,7 @@ public class ExamRecord extends UpdatableRecordImpl<ExamRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>skill.exam.examName</code>. Название экзамена
+     * Setter for <code>skill.exam.name</code>. Название экзамена
      */
     public ExamRecord setName(String value) {
         set(0, value);
@@ -26,7 +27,7 @@ public class ExamRecord extends UpdatableRecordImpl<ExamRecord> {
     }
 
     /**
-     * Getter for <code>skill.exam.examName</code>. Название экзамена
+     * Getter for <code>skill.exam.name</code>. Название экзамена
      */
     public String getName() {
         return (String) get(0);

@@ -37,7 +37,6 @@ public class SkillServiceImpl implements SkillService {
         if (all.isEmpty()) {
             return new Skills(all, new Cursor(""));
         }
-        ;
 
         var cursor = new Cursor(all.getLast()
                                    .getName());

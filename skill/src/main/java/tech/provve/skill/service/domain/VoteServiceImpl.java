@@ -12,10 +12,12 @@ import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
+import tech.provve.skill.domain.entity.Comment;
 import tech.provve.skill.domain.entity.Exam;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.exception.*;
 import tech.provve.skill.mapper.vote.VoteResponseMapper;
+import tech.provve.skill.repository.CommentRepository;
 import tech.provve.skill.repository.SkillRepository;
 import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.XssSanitizer;
@@ -39,6 +41,7 @@ public class VoteServiceImpl implements VoteService {
 
     private final VoteRepository voteRepository;
     private final SkillRepository skillRepository;
+    private final CommentRepository commentRepository;
 
     @External
     private final ObjectMapper objectMapper;
@@ -172,6 +175,12 @@ public class VoteServiceImpl implements VoteService {
         var cursor = new Cursor(all.getLast()
                                    .getName());
         return new Votes(all, cursor);
+    }
+
+    @Override
+    public void addComment(AddCommentRequest addCommentRequest, String voteName) {
+        var author = jwsParsingService.parseAuth(addCommentRequest.getAuthToken(), JWT_SUBJECT);
+        commentRepository.save(new Comment(null, author, addCommentRequest.getComment(), LocalDateTime.now(), voteName, null));
     }
 
     @Override

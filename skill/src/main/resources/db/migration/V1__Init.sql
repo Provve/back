@@ -199,7 +199,8 @@ CREATE TABLE skill.comment (
     author VARCHAR(50) REFERENCES accounts.accounts(login),
     content VARCHAR(500) NOT NULL,
     created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    vote_name VARCHAR(100) REFERENCES skill.vote(name)
+    vote_name VARCHAR(100) REFERENCES skill.vote(name),
+    reply_for INTEGER
 );
 COMMENT ON TABLE skill.comment IS 'Комментарии к голосованиям';
 COMMENT ON COLUMN skill.comment.id IS 'Идентификатор комментария';
@@ -207,6 +208,7 @@ COMMENT ON COLUMN skill.comment.author IS 'Автор комментария';
 COMMENT ON COLUMN skill.comment.content IS 'Содержание комментария';
 COMMENT ON COLUMN skill.comment.created IS 'Время создания комментария';
 COMMENT ON COLUMN skill.comment.vote_name IS 'Связанное голосование';
+COMMENT ON COLUMN skill.comment.reply_for IS 'В ответ на какой комментарий написан этот?';
 
 CREATE INDEX idx_comment_vote_name ON skill.comment(vote_name);
 

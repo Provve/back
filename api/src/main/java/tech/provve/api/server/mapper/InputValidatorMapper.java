@@ -42,4 +42,6 @@ public interface InputValidatorMapper {
                                                   from.getAuthToken());
     }
 
+    AddCommentRequest map(tech.provve.api.server.generated.dto.AddCommentRequest from);
+
 }

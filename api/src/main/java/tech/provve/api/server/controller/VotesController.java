@@ -13,6 +13,7 @@ import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.api.server.validation.dto.CastVote;
 import tech.provve.skill.exception.*;
+import tech.provve.skill.service.XssSanitizer;
 import tech.provve.skill.service.domain.VoteService;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 
@@ -93,7 +94,15 @@ public class VotesController implements VotesApi {
 
     @Override
     public Future<ApiResponse<Void>> addComment(String voteName, AddCommentRequest addCommentRequest) {
-        return null;
+        try {
+            validatingService.validate(InputValidatorMapper.INSTANCE.map(addCommentRequest));
+            addCommentRequest.setComment(XssSanitizer.sanitize(addCommentRequest.getComment()));
+
+            voteService.addComment(addCommentRequest, voteName);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
 
     @Override
@@ -107,7 +116,7 @@ public class VotesController implements VotesApi {
     }
 
     @Override
-    public Future<ApiResponse<Comments>> listComments(String name) {
+    public Future<ApiResponse<Comments>> listComments(String voteName) {
         return null;
     }
 

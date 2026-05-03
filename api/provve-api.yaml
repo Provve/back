@@ -1024,15 +1024,23 @@ components:
     Comment.response:
       type: object
       properties:
+        id:
+          type: integer
+          format: int32
+          description: ID комментария
         author:
           $ref: "#/components/schemas/Profile.response"
           description: Автор комментария
         content:
           type: string
-        id:
-          type: integer
-          format: int32
-          description: ID комментария
+        created:
+          type: string
+          format: date-time
+        replies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment.response"
+
     Profile.response:
       type: object
       properties:
@@ -1276,6 +1284,8 @@ components:
         comment:
           type: string
           description: Содержимое комментария
+        auth_token:
+          $ref: "#/components/schemas/AuthToken"
 
     RobokassaConfirmPayment.request:
       type: object

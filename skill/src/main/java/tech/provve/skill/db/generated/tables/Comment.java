@@ -93,6 +93,15 @@ public class Comment extends TableImpl<CommentRecord> {
      */
     public final TableField<CommentRecord, String> VOTE_NAME = createField(DSL.name("vote_name"), SQLDataType.VARCHAR(100), this, "Связанное голосование");
 
+    /**
+     * The column <code>skill.comment.reply_for</code>. В ответ на какой
+     * комментарий написан этот?
+     */
+    public final TableField<CommentRecord, Integer> REPLY_FOR = createField(DSL.name("reply_for"),
+                                                                            SQLDataType.INTEGER,
+                                                                            this,
+                                                                            "В ответ на какой комментарий написан этот?");
+
     private Comment(Name alias, Table<CommentRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

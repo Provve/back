@@ -4,15 +4,28 @@
 package tech.provve.skill.db.generated.tables;
 
 
-import org.jooq.*;
+import java.util.Collection;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+
 import tech.provve.skill.db.generated.Skill;
 import tech.provve.skill.db.generated.tables.records.ExamRecord;
-
-import java.util.Collection;
 
 
 /**
@@ -37,9 +50,9 @@ public class Exam extends TableImpl<ExamRecord> {
     }
 
     /**
-     * The column <code>skill.exam.examName</code>. Название экзамена
+     * The column <code>skill.exam.name</code>. Название экзамена
      */
-    public final TableField<ExamRecord, String> NAME = createField(DSL.name("examName"),
+    public final TableField<ExamRecord, String> NAME = createField(DSL.name("name"),
                                                                    SQLDataType.VARCHAR(100)
                                                                               .nullable(false),
                                                                    this,
