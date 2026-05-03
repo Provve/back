@@ -8,6 +8,8 @@ import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 import tech.provve.statemachine.repository.CheckSolutionRepository;
 import tech.provve.statemachine.repository.SaveExamRepository;
 
+import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -39,7 +41,7 @@ class StatemachineServiceTest {
         when(checkSolutionRepository.exists(any())).thenReturn(true);
 
         // act assert
-        assertThrows(StatemachineAlreadyExists.class, () -> statemachineService.createCheckSolution("", ""));
+        assertThrows(StatemachineAlreadyExists.class, () -> statemachineService.createCheckSolution("", "", Path.of("")));
     }
 
 }

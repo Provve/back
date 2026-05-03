@@ -26,7 +26,7 @@ import static java.time.Duration.ofMinutes;
 import static tech.provve.libs.scheduling.Descriptors.*;
 
 /**
- * ID каждой таски = vote name
+ * ID каждой таски = vote examName
  */
 @Factory
 public class Scheduling {

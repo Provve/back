@@ -1,12 +1,12 @@
 package tech.provve.api.server.factory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dockerjava.api.DockerClient;
 import com.github.kagkarlsson.scheduler.Scheduler;
 import dev.failsafe.RetryPolicy;
 import io.avaje.inject.Bean;
 import io.avaje.inject.External;
 import io.avaje.inject.Factory;
-import io.vertx.core.Vertx;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import jakarta.inject.Named;
 import org.jooq.DSLContext;
@@ -36,16 +36,24 @@ import tech.provve.statemachine.service.ZipManipulator;
 import tech.provve.statemachine.service.domain.StatemachineService;
 import tech.provve.statemachine.service.domain.StatemachineServiceImpl;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
+import tech.provve.validation.domain.entity.Container;
+import tech.provve.validation.repository.ContainerRepository;
+import tech.provve.validation.repository.ObservationRepository;
+import tech.provve.validation.service.ValidationService;
+import tech.provve.validation.service.ValidationServiceImpl;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static tech.provve.api.server.factory.HttpClientFactory.GET_PAYMENT_LINK_URL;
+import static tech.provve.statemachine.CheckSolutionMachine.BUILD_IMAGE_FOR_EXAMINEE;
+import static tech.provve.statemachine.CheckSolutionMachine.PROCESS_CONTAINER;
 import static tech.provve.statemachine.SaveExamMachine.*;
 
 /**
@@ -53,6 +61,31 @@ import static tech.provve.statemachine.SaveExamMachine.*;
  */
 @Factory
 public class Services {
+
+    @Bean
+    public Container container(DockerClient dockerClient,
+                               ContainerRepository containerRepository,
+                               ResultRepository resultRepository,
+                               SessionRepository sessionRepository) {
+        return new Container(dockerClient, containerRepository, resultRepository, sessionRepository);
+    }
+
+    @Bean
+    public ContainerRepository containerRepository(DSLContext dsl) {
+        return new ContainerRepository(dsl);
+    }
+
+    @Bean
+    public ValidationService validationService(ObservationRepository observationRepository,
+                                               VoteRepository voteRepository,
+                                               StatemachineService statemachineService) {
+        return new ValidationServiceImpl(observationRepository, voteRepository, statemachineService);
+    }
+
+    @Bean
+    public ObservationRepository observationRepository(DSLContext dsl) {
+        return new ObservationRepository(dsl);
+    }
 
     @Bean
     public ExamService examService(ExamRepository examRepository) {
@@ -92,13 +125,23 @@ public class Services {
                                                    BiConsumer<String, String> validationErrorNotificationSender,
                                                    @Named(EXAM_SAVED_NOTIFICATION_SENDER)
                                                    BiConsumer<String, String> examSavedNotificationSender,
+                                                   @Named(BUILD_IMAGE_FOR_EXAMINEE)
+                                                       BiConsumer<String, Path> buildDockerImage,
+                                                   @Named(PROCESS_CONTAINER)
+                                                       BiConsumer<String, String> processContainer,
                                                    PrivateArchiveSpecification privateArchiveSpecification,
                                                    S3Service s3Service
     ) {
         return new StatemachineServiceImpl(
-                saveExamRepository, checkSolutionRepository, delayedExamVoteCreator, validationErrorNotificationSender, examSavedNotificationSender,
-                privateArchiveSpecification, s3Service
-        );
+                saveExamRepository,
+                checkSolutionRepository,
+                privateArchiveSpecification,
+                delayedExamVoteCreator,
+                validationErrorNotificationSender,
+                examSavedNotificationSender,
+                buildDockerImage,
+                processContainer,
+                s3Service);
     }
 
     @Bean
@@ -138,11 +181,10 @@ public class Services {
                                    Supplier<LocalDateTime> deadlineSupplier,
                                    Scheduling scheduling,
                                    S3Service s3Service,
-                                   Vertx vertx,
                                    StatemachineService statemachineService,
                                    ObjectMapper objectMapper) {
         return new VoteServiceImpl(
-                voteRepository, skillRepository, objectMapper, deadlineSupplier, jwsParsingService, scheduling, s3Service, vertx, statemachineService);
+                voteRepository, skillRepository, objectMapper, deadlineSupplier, jwsParsingService, scheduling, s3Service, statemachineService);
     }
 
     @Bean
@@ -185,7 +227,6 @@ public class Services {
                                          PasswordHashingService passwordHashingService,
                                          NotificationSendingService notificationSendingService,
                                          Scheduling scheduling,
-                                         Vertx vertx,
                                          S3Service s3Service) {
         return new AccountServiceImpl(
                 repository,
@@ -194,7 +235,6 @@ public class Services {
                 passwordHashingService,
                 notificationSendingService,
                 scheduling,
-                vertx,
                 s3Service
         );
     }

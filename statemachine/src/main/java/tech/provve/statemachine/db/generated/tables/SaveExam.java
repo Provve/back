@@ -38,9 +38,9 @@ public class SaveExam extends TableImpl<SaveExamRecord> {
     }
 
     /**
-     * The column <code>statemachine.save_exam.name</code>.
+     * The column <code>statemachine.save_exam.examName</code>.
      */
-    public final TableField<SaveExamRecord, String> NAME = createField(DSL.name("name"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<SaveExamRecord, String> NAME = createField(DSL.name("examName"), SQLDataType.CLOB.nullable(false), this, "");
 
     /**
      * The column <code>statemachine.save_exam.state</code>.

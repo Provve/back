@@ -19,3 +19,7 @@ premium-price: 20000 # в рублях
 robokassa:
   merchant-login: l
   jwt-secret: l:1
+
+antifraud:
+  legit-check:
+    pubkey: MCowBQYDK2VwAyEA9X2DL0XqBKMEhKGzvgg0yWN3wquwa4gSUyeMvzRVnf4=

@@ -3,7 +3,6 @@ package tech.provve.skill.service.domain;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.avaje.config.Config;
 import io.avaje.inject.External;
-import io.vertx.core.Vertx;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
@@ -54,10 +53,7 @@ public class VoteServiceImpl implements VoteService {
     private final Scheduling scheduling;
 
     @External
-    private final S3Service s3Service;
-
-    @External
-    private final Vertx vertx;
+    private final S3Service s3;
 
     @External
     private final StatemachineService statemachineService;
@@ -131,11 +127,11 @@ public class VoteServiceImpl implements VoteService {
                                            .uploadedFileName();
 
         String bucket = Config.get("s3.buckets.exams");
-        String privateArchiveUrl = s3Service.crtUpload(
+        String privateArchiveUrl = s3.crtUpload(
                 bucket, S3Service.privateArchiveKeygen(examAddVote.getName()),
                 Files.readAllBytes(Path.of(privateArchive))
         );
-        String publicArchiveUrl = s3Service.crtUpload(
+        String publicArchiveUrl = s3.crtUpload(
                 bucket, S3Service.publicArchiveKeygen(examAddVote.getName()),
                 Files.readAllBytes(Path.of(publicArchive))
         );

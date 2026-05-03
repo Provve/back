@@ -103,10 +103,24 @@ public class VoteRepository extends Filtering {
                   .fetchOptional(outputMapper);
     }
 
+    /**
+     * @return Существует ли голосование вообще?
+     */
     public boolean exists(String name) {
         return nonNull(dsl.select(VOTE.NAME)
                           .from(VOTE)
                           .where(VOTE.NAME.eq(name))
+                          .fetchOne());
+    }
+
+    /**
+     * @return Существует ли активное голосование?
+     */
+    public boolean exists(String name, boolean active) {
+        return nonNull(dsl.select(VOTE.NAME)
+                          .from(VOTE)
+                          .where(VOTE.NAME.eq(name),
+                                 VOTE.ACTIVE.eq(active))
                           .fetchOne());
     }
 
@@ -157,7 +171,7 @@ public class VoteRepository extends Filtering {
     @Override
     protected Map<String, Function<Condition, org.jooq.Condition>> fieldConditionMappers() {
         return Map.of(
-                "name", condition -> switch (condition.getOperator()) {
+                "examName", condition -> switch (condition.getOperator()) {
                     case EQ -> VOTE.NAME.eq(condition.getValue());
                     case LIKE -> DSL.exists(dsl.select()
                                                .from(TS_VOTE_RU)

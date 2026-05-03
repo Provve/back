@@ -43,7 +43,7 @@ public class SessionServiceImpl implements SessionService {
         if (notFirstAttempt) throw new ExamPassTwice(login,
                                                      request.getExamName());
 
-        boolean skillCanBeRemoved = voteRepository.exists(request.getExamName());
+        boolean skillCanBeRemoved = voteRepository.exists(request.getExamName(), true);
         var nonce = String.valueOf(SecureRandom.getInstanceStrong()
                                                .nextInt());
 

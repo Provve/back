@@ -25,8 +25,8 @@ public class VotesApiHandler implements RouteHandler {
     }
 
     public void mount(RouterBuilder builder) {
-        builder.operation("addCommentOnVote")
-               .handler(this::addCommentOnVote);
+        builder.operation("addComment")
+               .handler(this::addComment);
         builder.operation("castVote")
                .handler(this::castVote);
         builder.operation("createExamAddVote")
@@ -35,33 +35,37 @@ public class VotesApiHandler implements RouteHandler {
                .handler(this::createSkillAddVote);
         builder.operation("createSkillDelVote")
                .handler(this::createSkillDelVote);
-        builder.operation("deleteCommentOnVote")
-               .handler(this::deleteCommentOnVote);
-        builder.operation("editCommentOnVote")
-               .handler(this::editCommentOnVote);
+        builder.operation("deleteComment")
+               .handler(this::deleteComment);
+        builder.operation("editComment")
+               .handler(this::editComment);
         builder.operation("listComments")
                .handler(this::listComments);
         builder.operation("listVotes")
                .handler(this::listVotes);
     }
 
-    private void addCommentOnVote(RoutingContext routingContext) {
-        logger.info("addCommentOnVote()");
+    private void addComment(RoutingContext routingContext) {
+        logger.info("addComment()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String voteName = requestParameters.pathParameter("vote_name") != null ? requestParameters.pathParameter("vote_name")
-                                                                                                  .getString() : null;
+        String voteName = requestParameters.pathParameter("vote_name") != null
+                          ? requestParameters.pathParameter("vote_name")
+                                             .getString()
+                          : null;
         RequestParameter body = requestParameters.body();
-        AddCommentOnVoteRequest addCommentOnVoteRequest = body != null ? DatabindCodec.mapper()
-                                                                                      .convertValue(body.get(), new TypeReference<AddCommentOnVoteRequest>() {
-                                                                                      }) : null;
+        AddCommentRequest addCommentRequest = body != null
+                                              ? DatabindCodec.mapper()
+                                                             .convertValue(body.get(), new TypeReference<AddCommentRequest>() {
+                                                             })
+                                              : null;
 
         logger.debug("Parameter voteName is {}", voteName);
-        logger.debug("Parameter addCommentOnVoteRequest is {}", addCommentOnVoteRequest);
+        logger.debug("Parameter addCommentRequest is {}", addCommentRequest);
 
-        api.addCommentOnVote(voteName, addCommentOnVoteRequest)
+        api.addComment(voteName, addCommentRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -81,12 +85,16 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String name = requestParameters.pathParameter("name") != null ? requestParameters.pathParameter("name")
-                                                                                         .getString() : null;
+        String name = requestParameters.pathParameter("name") != null
+                      ? requestParameters.pathParameter("name")
+                                         .getString()
+                      : null;
         RequestParameter body = requestParameters.body();
-        CastVoteRequest castVoteRequest = body != null ? DatabindCodec.mapper()
-                                                                      .convertValue(body.get(), new TypeReference<CastVoteRequest>() {
-                                                                      }) : null;
+        CastVoteRequest castVoteRequest = body != null
+                                          ? DatabindCodec.mapper()
+                                                         .convertValue(body.get(), new TypeReference<CastVoteRequest>() {
+                                                         })
+                                          : null;
 
         logger.debug("Parameter name is {}", name);
         logger.debug("Parameter castVoteRequest is {}", castVoteRequest);
@@ -112,9 +120,11 @@ public class VotesApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        ExamAddVote examAddVote = body != null ? DatabindCodec.mapper()
-                                                              .convertValue(body.get(), new TypeReference<ExamAddVote>() {
-                                                              }) : null;
+        ExamAddVote examAddVote = body != null
+                                  ? DatabindCodec.mapper()
+                                                 .convertValue(body.get(), new TypeReference<ExamAddVote>() {
+                                                 })
+                                  : null;
 
         logger.debug("Parameter examAddVote is {}", examAddVote);
 
@@ -139,9 +149,11 @@ public class VotesApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        SkillAddVote skillAddVote = body != null ? DatabindCodec.mapper()
-                                                                .convertValue(body.get(), new TypeReference<SkillAddVote>() {
-                                                                }) : null;
+        SkillAddVote skillAddVote = body != null
+                                    ? DatabindCodec.mapper()
+                                                   .convertValue(body.get(), new TypeReference<SkillAddVote>() {
+                                                   })
+                                    : null;
 
         logger.debug("Parameter skillAddVote is {}", skillAddVote);
 
@@ -166,9 +178,11 @@ public class VotesApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        SkillDelVote skillDelVote = body != null ? DatabindCodec.mapper()
-                                                                .convertValue(body.get(), new TypeReference<SkillDelVote>() {
-                                                                }) : null;
+        SkillDelVote skillDelVote = body != null
+                                    ? DatabindCodec.mapper()
+                                                   .convertValue(body.get(), new TypeReference<SkillDelVote>() {
+                                                   })
+                                    : null;
 
         logger.debug("Parameter skillDelVote is {}", skillDelVote);
 
@@ -186,21 +200,25 @@ public class VotesApiHandler implements RouteHandler {
            .onFailure(routingContext::fail);
     }
 
-    private void deleteCommentOnVote(RoutingContext routingContext) {
-        logger.info("deleteCommentOnVote()");
+    private void deleteComment(RoutingContext routingContext) {
+        logger.info("deleteComment()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String voteName = requestParameters.pathParameter("vote_name") != null ? requestParameters.pathParameter("vote_name")
-                                                                                                  .getString() : null;
-        Integer commentId = requestParameters.pathParameter("comment_id") != null ? requestParameters.pathParameter("comment_id")
-                                                                                                     .getInteger() : null;
+        String voteName = requestParameters.pathParameter("vote_name") != null
+                          ? requestParameters.pathParameter("vote_name")
+                                             .getString()
+                          : null;
+        Integer commentId = requestParameters.pathParameter("comment_id") != null
+                            ? requestParameters.pathParameter("comment_id")
+                                               .getInteger()
+                            : null;
 
         logger.debug("Parameter voteName is {}", voteName);
         logger.debug("Parameter commentId is {}", commentId);
 
-        api.deleteCommentOnVote(voteName, commentId)
+        api.deleteComment(voteName, commentId)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -214,21 +232,25 @@ public class VotesApiHandler implements RouteHandler {
            .onFailure(routingContext::fail);
     }
 
-    private void editCommentOnVote(RoutingContext routingContext) {
-        logger.info("editCommentOnVote()");
+    private void editComment(RoutingContext routingContext) {
+        logger.info("editComment()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String voteName = requestParameters.pathParameter("vote_name") != null ? requestParameters.pathParameter("vote_name")
-                                                                                                  .getString() : null;
-        Integer commentId = requestParameters.pathParameter("comment_id") != null ? requestParameters.pathParameter("comment_id")
-                                                                                                     .getInteger() : null;
+        String voteName = requestParameters.pathParameter("vote_name") != null
+                          ? requestParameters.pathParameter("vote_name")
+                                             .getString()
+                          : null;
+        Integer commentId = requestParameters.pathParameter("comment_id") != null
+                            ? requestParameters.pathParameter("comment_id")
+                                               .getInteger()
+                            : null;
 
         logger.debug("Parameter voteName is {}", voteName);
         logger.debug("Parameter commentId is {}", commentId);
 
-        api.editCommentOnVote(voteName, commentId)
+        api.editComment(voteName, commentId)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -248,8 +270,10 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String voteName = requestParameters.pathParameter("vote_name") != null ? requestParameters.pathParameter("vote_name")
-                                                                                                  .getString() : null;
+        String voteName = requestParameters.pathParameter("vote_name") != null
+                          ? requestParameters.pathParameter("vote_name")
+                                             .getString()
+                          : null;
 
         logger.debug("Parameter voteName is {}", voteName);
 
@@ -274,9 +298,11 @@ public class VotesApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
-                                                                          }) : null;
+        CollectionRequest collectionRequest = body != null
+                                              ? DatabindCodec.mapper()
+                                                             .convertValue(body.get(), new TypeReference<CollectionRequest>() {
+                                                             })
+                                              : null;
 
         logger.debug("Parameter collectionRequest is {}", collectionRequest);
 

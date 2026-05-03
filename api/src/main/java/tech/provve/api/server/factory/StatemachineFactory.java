@@ -14,8 +14,11 @@ import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.repository.VoteRepository;
+import tech.provve.statemachine.CheckSolutionMachine;
 import tech.provve.statemachine.SaveExamMachine;
+import tech.provve.validation.domain.entity.Container;
 
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.function.BiConsumer;
@@ -23,6 +26,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Factory
+@SuppressWarnings("all")
 public class StatemachineFactory {
 
     @Bean
@@ -65,5 +69,16 @@ public class StatemachineFactory {
         };
     }
 
+    @Bean
+    @Named(CheckSolutionMachine.BUILD_IMAGE_FOR_EXAMINEE)
+    public BiConsumer<String, Path> buildDockerImage(Container container) {
+        return container::buildDockerImage;
+    }
+
+    @Bean
+    @Named(CheckSolutionMachine.PROCESS_CONTAINER)
+    public BiConsumer<String, String> processContainer(Container container) {
+        return container::processContainer;
+    }
 
 }

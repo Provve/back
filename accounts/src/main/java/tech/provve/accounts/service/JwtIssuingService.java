@@ -1,7 +1,7 @@
 package tech.provve.accounts.service;
 
 /**
- * Инфрастрктурный сервис для создания JWT
+ * Инфрастрктурный сервис для создания JWT для аккаунта
  */
 public interface JwtIssuingService {
 

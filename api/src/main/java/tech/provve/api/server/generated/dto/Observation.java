@@ -9,15 +9,15 @@ import java.util.Objects;
 public class Observation {
 
     private Boolean cheated;
-    private String details;
+    private String violations;
 
     public Observation() {
 
     }
 
-    public Observation(Boolean cheated, String details) {
+    public Observation(Boolean cheated, String violations) {
         this.cheated = cheated;
-        this.details = details;
+        this.violations = violations;
     }
 
 
@@ -31,13 +31,13 @@ public class Observation {
     }
 
 
-    @JsonProperty("details")
-    public String getDetails() {
-        return details;
+    @JsonProperty("violations")
+    public String getViolations() {
+        return violations;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setViolations(String violations) {
+        this.violations = violations;
     }
 
 
@@ -51,12 +51,12 @@ public class Observation {
         }
         Observation observation = (Observation) o;
         return Objects.equals(cheated, observation.cheated) &&
-               Objects.equals(details, observation.details);
+               Objects.equals(violations, observation.violations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cheated, details);
+        return Objects.hash(cheated, violations);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class Observation {
         sb.append("    cheated: ")
           .append(toIndentedString(cheated))
           .append("\n");
-        sb.append("    details: ")
-          .append(toIndentedString(details))
+        sb.append("    violations: ")
+          .append(toIndentedString(violations))
           .append("\n");
         sb.append("}");
         return sb.toString();

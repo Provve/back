@@ -3,12 +3,15 @@ package tech.provve.statemachine.specification;
 import jakarta.inject.Singleton;
 import tech.provve.statemachine.service.ZipManipulator;
 
+import static tech.provve.statemachine.domain.value.PrivateArchive.DOCKER_FILE;
+import static tech.provve.statemachine.domain.value.PrivateArchive.IGNORE_FILE;
+
 @Singleton
 public class PrivateArchiveSpecification {
 
     private static final String[] REQUIRED_FILES = new String[]{
-            "ignore.txt",
-            "Dockerfile"
+            IGNORE_FILE,
+            DOCKER_FILE
     };
 
     private final ZipManipulator zipManipulator;

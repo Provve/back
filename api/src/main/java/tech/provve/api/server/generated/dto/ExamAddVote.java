@@ -20,18 +20,18 @@ public class ExamAddVote {
   private FileUpload publicArchive;
   private FileUpload privateArchive;
 
-  public ExamAddVote() {
+    public ExamAddVote() {
 
   }
 
-  public ExamAddVote(String name,
-                     String arguments,
-                     List<String> tags,
-                     String authToken,
-                     String skillName,
-                     String description,
-                     FileUpload publicArchive,
-                     FileUpload privateArchive) {
+    public ExamAddVote(String name,
+                       String arguments,
+                       List<String> tags,
+                       String authToken,
+                       String skillName,
+                       String description,
+                       FileUpload publicArchive,
+                       FileUpload privateArchive) {
     this.name = name;
     this.arguments = arguments;
     this.tags = tags;
@@ -43,7 +43,7 @@ public class ExamAddVote {
   }
 
 
-  @JsonProperty("name")
+    @JsonProperty("name")
   public String getName() {
     return name;
   }
@@ -52,7 +52,7 @@ public class ExamAddVote {
   }
 
 
-  @JsonProperty("arguments")
+    @JsonProperty("arguments")
   public String getArguments() {
     return arguments;
   }
@@ -61,7 +61,7 @@ public class ExamAddVote {
   }
 
 
-  @JsonProperty("tags")
+    @JsonProperty("tags")
   public List<String> getTags() {
     return tags;
   }
@@ -70,7 +70,7 @@ public class ExamAddVote {
   }
 
 
-  @JsonProperty("auth_token")
+    @JsonProperty("auth_token")
   public String getAuthToken() {
     return authToken;
   }
@@ -79,7 +79,7 @@ public class ExamAddVote {
   }
 
 
-  @JsonProperty("skill_name")
+    @JsonProperty("skill_name")
   public String getSkillName() {
     return skillName;
   }
@@ -88,7 +88,7 @@ public class ExamAddVote {
   }
 
 
-  @JsonProperty("description")
+    @JsonProperty("description")
   public String getDescription() {
     return description;
   }
@@ -97,7 +97,7 @@ public class ExamAddVote {
   }
 
 
-  @JsonProperty("public_archive")
+    @JsonProperty("public_archive")
   public FileUpload getPublicArchive() {
     return publicArchive;
   }
@@ -106,7 +106,7 @@ public class ExamAddVote {
   }
 
 
-  @JsonProperty("private_archive")
+    @JsonProperty("private_archive")
   public FileUpload getPrivateArchive() {
     return privateArchive;
   }
@@ -144,30 +144,30 @@ public class ExamAddVote {
     StringBuilder sb = new StringBuilder();
     sb.append("class ExamAddVote {\n");
 
-    sb.append("    name: ")
-      .append(toIndentedString(name))
-      .append("\n");
-    sb.append("    arguments: ")
-      .append(toIndentedString(arguments))
-      .append("\n");
-    sb.append("    tags: ")
-      .append(toIndentedString(tags))
-      .append("\n");
-    sb.append("    authToken: ")
-      .append(toIndentedString(authToken))
-      .append("\n");
-    sb.append("    skillName: ")
-      .append(toIndentedString(skillName))
-      .append("\n");
-    sb.append("    description: ")
-      .append(toIndentedString(description))
-      .append("\n");
-    sb.append("    publicArchive: ")
-      .append(toIndentedString(publicArchive))
-      .append("\n");
-    sb.append("    privateArchive: ")
-      .append(toIndentedString(privateArchive))
-      .append("\n");
+      sb.append("    name: ")
+        .append(toIndentedString(name))
+        .append("\n");
+      sb.append("    arguments: ")
+        .append(toIndentedString(arguments))
+        .append("\n");
+      sb.append("    tags: ")
+        .append(toIndentedString(tags))
+        .append("\n");
+      sb.append("    authToken: ")
+        .append(toIndentedString(authToken))
+        .append("\n");
+      sb.append("    skillName: ")
+        .append(toIndentedString(skillName))
+        .append("\n");
+      sb.append("    description: ")
+        .append(toIndentedString(description))
+        .append("\n");
+      sb.append("    publicArchive: ")
+        .append(toIndentedString(publicArchive))
+        .append("\n");
+      sb.append("    privateArchive: ")
+        .append(toIndentedString(privateArchive))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -180,7 +180,7 @@ public class ExamAddVote {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

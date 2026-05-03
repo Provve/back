@@ -76,7 +76,7 @@ public class ExamRepository extends Filtering {
     @Override
     protected Map<String, Function<Condition, org.jooq.Condition>> fieldConditionMappers() {
         return Map.of(
-                "name", condition -> switch (condition.getOperator()) {
+                "examName", condition -> switch (condition.getOperator()) {
                     case EQ -> EXAM.NAME.eq(condition.getValue());
                     case LIKE -> DSL.exists(dsl.select()
                                                .from(TS_EXAM_RU)

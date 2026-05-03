@@ -50,6 +50,7 @@ dependencies {
     implementation project(':statemachine')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // для компиляции. todo нужно настроить shadow в :statemachine
+    implementation libs.bundles.docker
 
     implementation libs.db.scheduler
     implementation libs.hibernate.validation
@@ -119,6 +120,14 @@ processResources {
     from(rootProject.layout.buildDirectory.file('/specs')) {
         include 'antifraud-api.yaml'
         into('build/specs')
+    }
+
+    filesMatching("application.yaml") {
+        expand([
+                legit_priv  : System.getenv('LEGIT_PRIV'),
+                legit_pub   : System.getenv('LEGIT_PUB'),
+                trust_secret: System.getenv('TRUST_JWT_SECRET')
+        ])
     }
 }
 

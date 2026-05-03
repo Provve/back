@@ -2,9 +2,9 @@ package tech.provve.accounts.service.application;
 
 import io.avaje.config.Config;
 import io.avaje.inject.External;
-import io.vertx.core.Vertx;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.exception.*;
 import tech.provve.accounts.mapper.AccountMapper;
@@ -21,6 +21,8 @@ import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.domain.value.ResetCode;
 import tech.provve.notification.service.NotificationSendingService;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -45,9 +47,6 @@ public class AccountServiceImpl implements AccountService {
 
     @External
     private final Scheduling scheduling;
-
-    @External
-    private final Vertx vertx;
 
     @External
     private final S3Service s3Service;
@@ -141,27 +140,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @SneakyThrows
     public void updateAvatar(UpdateAvatarRequest updateAvatarRequest) {
         var login = jwsParsingService.parseAuth(updateAvatarRequest.getAuthToken(), JWT_SUBJECT);
-        String avatarFile = updateAvatarRequest.getAvatar()
+        String avatarPath = updateAvatarRequest.getAvatar()
                                                .uploadedFileName();
 
-        vertx.fileSystem()
-             .readFile(
-                     avatarFile, ar -> {
-                         if (ar.failed()) return;
-
-                         byte[] data = ar.result()
-                                         .getBytes();
-                         String bucket = Config.get("s3.buckets.images");
-                         String avatarUrl = s3Service.upload(
-                                 bucket,
-                                 S3Service.defaultKeygen(data),
-                                 data
-                         );
-                         repository.updateAvatarUrl(login, avatarUrl);
-                     }
-             );
+        byte[] avatar = Files.readAllBytes(Path.of(avatarPath));
+        String bucket = Config.get("s3.buckets.images");
+        String avatarUrl = s3Service.upload(
+                bucket,
+                S3Service.defaultKeygen(avatar),
+                avatar
+        );
+        repository.updateAvatarUrl(login, avatarUrl);
     }
 
     @Override

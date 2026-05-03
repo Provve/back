@@ -4,32 +4,15 @@
 package tech.provve.skill.db.generated.tables;
 
 
+import org.jooq.*;
+import org.jooq.impl.*;
+import org.jooq.impl.Internal;
+import tech.provve.skill.db.generated.Skill;
+import tech.provve.skill.db.generated.tables.records.TsExamRuRecord;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import org.jooq.Condition;
-import org.jooq.Field;
-import org.jooq.Index;
-import org.jooq.Name;
-import org.jooq.OrderField;
-import org.jooq.PlainSQL;
-import org.jooq.QueryPart;
-import org.jooq.SQL;
-import org.jooq.Schema;
-import org.jooq.Select;
-import org.jooq.Stringly;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
-import org.jooq.impl.DSL;
-import org.jooq.impl.DefaultDataType;
-import org.jooq.impl.Internal;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
-
-import tech.provve.skill.db.generated.Skill;
-import tech.provve.skill.db.generated.tables.records.TsExamRuRecord;
 
 
 /**
@@ -60,13 +43,13 @@ public class TsExamRu extends TableImpl<TsExamRuRecord> {
 
     /**
      * The column <code>skill.ts_exam_ru.ts_exam_name</code>. Подготовленный для
-     * поиска exam.name
+     * поиска exam.examName
      */
     public final TableField<TsExamRuRecord, Object> TS_EXAM_NAME = createField(DSL.name("ts_exam_name"),
                                                                                DefaultDataType.getDefaultDataType("\"pg_catalog\".\"tsvector\"")
                                                                                               .nullable(false),
                                                                                this,
-                                                                               "Подготовленный для поиска exam.name");
+                                                                               "Подготовленный для поиска exam.examName");
 
     /**
      * The column <code>skill.ts_exam_ru.description</code>. Подготовленный для

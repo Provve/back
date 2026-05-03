@@ -11,17 +11,17 @@ public class Pagination {
   private String previous;
   private Integer size;
 
-  public Pagination() {
+    public Pagination() {
 
   }
 
-  public Pagination(String previous, Integer size) {
+    public Pagination(String previous, Integer size) {
     this.previous = previous;
     this.size = size;
   }
 
 
-  @JsonProperty("previous")
+    @JsonProperty("previous")
   public String getPrevious() {
     return previous;
   }
@@ -30,7 +30,7 @@ public class Pagination {
   }
 
 
-  @JsonProperty("size")
+    @JsonProperty("size")
   public Integer getSize() {
     return size;
   }
@@ -62,12 +62,12 @@ public class Pagination {
     StringBuilder sb = new StringBuilder();
     sb.append("class Pagination {\n");
 
-    sb.append("    previous: ")
-      .append(toIndentedString(previous))
-      .append("\n");
-    sb.append("    size: ")
-      .append(toIndentedString(size))
-      .append("\n");
+      sb.append("    previous: ")
+        .append(toIndentedString(previous))
+        .append("\n");
+      sb.append("    size: ")
+        .append(toIndentedString(size))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -80,7 +80,7 @@ public class Pagination {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

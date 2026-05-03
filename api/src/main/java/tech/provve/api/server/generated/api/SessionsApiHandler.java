@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.provve.api.server.RouteHandler;
 import tech.provve.api.server.generated.dto.CreateSessionRequest;
-import tech.provve.api.server.generated.dto.ObservationUpload;
+import tech.provve.api.server.generated.dto.ObservationUploadRequest;
 
 @Singleton
 public class SessionsApiHandler implements RouteHandler {
@@ -39,9 +39,11 @@ public class SessionsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        CreateSessionRequest createSessionRequest = body != null ? DatabindCodec.mapper()
-                                                                                .convertValue(body.get(), new TypeReference<CreateSessionRequest>() {
-                                                                                }) : null;
+        CreateSessionRequest createSessionRequest = body != null
+                                                    ? DatabindCodec.mapper()
+                                                                   .convertValue(body.get(), new TypeReference<CreateSessionRequest>() {
+                                                                   })
+                                                    : null;
 
         logger.debug("Parameter createSessionRequest is {}", createSessionRequest);
 
@@ -66,13 +68,15 @@ public class SessionsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        ObservationUpload observationUpload = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(body.get(), new TypeReference<ObservationUpload>() {
-                                                                          }) : null;
+        ObservationUploadRequest observationUploadRequest = body != null
+                                                            ? DatabindCodec.mapper()
+                                                                           .convertValue(body.get(), new TypeReference<ObservationUploadRequest>() {
+                                                                           })
+                                                            : null;
 
-        logger.debug("Parameter observationUpload is {}", observationUpload);
+        logger.debug("Parameter observationUploadRequest is {}", observationUploadRequest);
 
-        api.uploadObservation(observationUpload)
+        api.uploadObservation(observationUploadRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

@@ -307,10 +307,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "build/specs/antifraud-api.yaml#/components/schemas/ObservationUpload"
+              $ref: "build/specs/antifraud-api.yaml#/components/schemas/ObservationUpload.request"
       responses:
         '200':
           description: Данные наблюдения загружены
+          content:
+            application/json:
+              schema:
+                $ref: "build/specs/antifraud-api.yaml#/components/schemas/ObservationUpload.response"
+        '400':
+          description: Результат наблюдения отрицательный
         '401':
           $ref: "#/components/responses/Unauthenticated"
         '403':
@@ -369,14 +375,14 @@ paths:
         '400':
           $ref: "#/components/responses/ValidationError"
 
-  /exams/{name}/solution:
+  /exams/{exam_name}/solution:
     post:
       tags:
         - skills
       summary: Отправка решения экзамена на проверку
       operationId: submitExamSolution
       parameters:
-        - name: name
+        - name: exam_name
           in: path
           required: true
           schema:
@@ -385,20 +391,18 @@ paths:
       requestBody:
         required: true
         content:
-          multipart/form-data:
+          application/json:
             schema:
               $ref: '#/components/schemas/SubmitExamSolution.request'
       responses:
         '202':
           description: Решение успешно принято на проверку
         '200':
-          description: Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка.
+          description: Приниято. Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка.
         '401':
           $ref: "#/components/responses/Unauthenticated"
-        '403':
-          description: Нет активной сессии
       security:
-        - auth: [ ]
+        - trust: [ ]
 
   /skills/{skill_name}/results:
     post:
@@ -438,7 +442,7 @@ paths:
       summary: Посмотреть результат
       tags:
         - skills
-      operationId: viewExamResult
+      operationId: getExamResult
       parameters:
         - name: exam_name
           in: path
@@ -621,7 +625,7 @@ paths:
       summary: Добавление комментария к голосованию
       tags:
         - votes
-      operationId: addCommentOnVote
+      operationId: addComment
       parameters:
         - name: vote_name
           in: path
@@ -634,7 +638,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddCommentOnVote.request'
+              $ref: '#/components/schemas/AddComment.request'
       responses:
         '200':
           description: Комментарий успешно добавлен
@@ -650,7 +654,7 @@ paths:
       summary: Редактирование комментария к голосованию
       tags:
         - votes
-      operationId: editCommentOnVote
+      operationId: editComment
       parameters:
         - name: vote_name
           in: path
@@ -680,7 +684,7 @@ paths:
       summary: Удаление комментария к голосованию
       tags:
         - votes
-      operationId: deleteCommentOnVote
+      operationId: deleteComment
       parameters:
         - name: vote_name
           in: path
@@ -1244,9 +1248,13 @@ components:
         solution:
           type: string
           format: binary
-          description: Архив с решением (загружается как файл)
+          description: Архив с решением
+        trust_token:
+          type: string
+          description: Доверительный токен подтверждает, что перенаправление осуществлено от легитимного Антифрода и наблюдение показало отсутствие нарушений.
       required:
         - solution
+        - trust_token
 
     CastVote.request:
       type: object
@@ -1260,7 +1268,7 @@ components:
         - positive_reaction
         - auth_token
 
-    AddCommentOnVote.request:
+    AddComment.request:
       type: object
       required:
         - comment
@@ -1327,5 +1335,9 @@ components:
       scheme: bearer
     reset:
       description: Токен для сброса пароля, отправленный пользователю на почту
+      type: http
+      scheme: bearer
+    trust:
+      description: Доверительный токен, подтверждающий легитимность загруженных Антифродом наблюдений. Наличие токена гарантирует, что пользователь ранее аутентифицировался.
       type: http
       scheme: bearer

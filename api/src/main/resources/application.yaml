@@ -12,3 +12,9 @@ s3:
     access-key: 1
     secret-key: 1
     region: ru-msk
+antifraud:
+  legit-check:
+    pubkey: ${legit_pub}
+  trust-token:
+    secret: ${trust_secret}
+    expires-in-seconds: 86400 # сутки

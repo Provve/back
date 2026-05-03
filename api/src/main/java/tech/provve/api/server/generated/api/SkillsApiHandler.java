@@ -2,7 +2,6 @@ package tech.provve.api.server.generated.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.validation.RequestParameter;
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import tech.provve.api.server.RouteHandler;
 import tech.provve.api.server.generated.dto.CollectionAuthenticatedRequest;
 import tech.provve.api.server.generated.dto.CollectionRequest;
+import tech.provve.api.server.generated.dto.SubmitExamSolutionRequest;
 
 @Singleton
 public class SkillsApiHandler implements RouteHandler {
@@ -27,6 +27,8 @@ public class SkillsApiHandler implements RouteHandler {
     }
 
     public void mount(RouterBuilder builder) {
+        builder.operation("getExamResult")
+               .handler(this::getExamResult);
         builder.operation("listExams")
                .handler(this::listExams);
         builder.operation("listResults")
@@ -35,8 +37,33 @@ public class SkillsApiHandler implements RouteHandler {
                .handler(this::listSkills);
         builder.operation("submitExamSolution")
                .handler(this::submitExamSolution);
-        builder.operation("viewExamResult")
-               .handler(this::viewExamResult);
+    }
+
+    private void getExamResult(RoutingContext routingContext) {
+        logger.info("getExamResult()");
+
+        // Param extraction
+        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
+
+        String examName = requestParameters.pathParameter("exam_name") != null
+                          ? requestParameters.pathParameter("exam_name")
+                                             .getString()
+                          : null;
+
+        logger.debug("Parameter examName is {}", examName);
+
+        api.getExamResult(examName)
+           .onSuccess(apiResponse -> {
+               routingContext.response()
+                             .setStatusCode(apiResponse.getStatusCode());
+               if (apiResponse.hasData()) {
+                   routingContext.json(apiResponse.getData());
+               } else {
+                   routingContext.response()
+                                 .end();
+               }
+           })
+           .onFailure(routingContext::fail);
     }
 
     private void listExams(RoutingContext routingContext) {
@@ -45,12 +72,16 @@ public class SkillsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String skillName = requestParameters.pathParameter("skill_name") != null ? requestParameters.pathParameter("skill_name")
-                                                                                                    .getString() : null;
+        String skillName = requestParameters.pathParameter("skill_name") != null
+                           ? requestParameters.pathParameter("skill_name")
+                                              .getString()
+                           : null;
         RequestParameter body = requestParameters.body();
-        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
-                                                                          }) : null;
+        CollectionRequest collectionRequest = body != null
+                                              ? DatabindCodec.mapper()
+                                                             .convertValue(body.get(), new TypeReference<CollectionRequest>() {
+                                                             })
+                                              : null;
 
         logger.debug("Parameter skillName is {}", skillName);
         logger.debug("Parameter collectionRequest is {}", collectionRequest);
@@ -75,13 +106,17 @@ public class SkillsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String skillName = requestParameters.pathParameter("skill_name") != null ? requestParameters.pathParameter("skill_name")
-                                                                                                    .getString() : null;
+        String skillName = requestParameters.pathParameter("skill_name") != null
+                           ? requestParameters.pathParameter("skill_name")
+                                              .getString()
+                           : null;
         RequestParameter body = requestParameters.body();
-        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null ? DatabindCodec.mapper()
-                                                                                                    .convertValue(body.get(),
-                                                                                                                  new TypeReference<CollectionAuthenticatedRequest>() {
-                                                                                                                  }) : null;
+        CollectionAuthenticatedRequest collectionAuthenticatedRequest = body != null
+                                                                        ? DatabindCodec.mapper()
+                                                                                       .convertValue(body.get(),
+                                                                                                     new TypeReference<CollectionAuthenticatedRequest>() {
+                                                                                                     })
+                                                                        : null;
 
         logger.debug("Parameter skillName is {}", skillName);
         logger.debug("Parameter collectionAuthenticatedRequest is {}", collectionAuthenticatedRequest);
@@ -107,9 +142,11 @@ public class SkillsApiHandler implements RouteHandler {
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        CollectionRequest collectionRequest = body != null ? DatabindCodec.mapper()
-                                                                          .convertValue(body.get(), new TypeReference<CollectionRequest>() {
-                                                                          }) : null;
+        CollectionRequest collectionRequest = body != null
+                                              ? DatabindCodec.mapper()
+                                                             .convertValue(body.get(), new TypeReference<CollectionRequest>() {
+                                                             })
+                                              : null;
 
         logger.debug("Parameter collectionRequest is {}", collectionRequest);
 
@@ -133,41 +170,21 @@ public class SkillsApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String name = requestParameters.pathParameter("name") != null ? requestParameters.pathParameter("name")
-                                                                                         .getString() : null;
-        FileUpload solution = routingContext.fileUploads()
-                                            .iterator()
-                                            .next();
-
-        logger.debug("Parameter name is {}", name);
-        logger.debug("Parameter solution is {}", solution);
-
-        api.submitExamSolution(name, solution)
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
-
-    private void viewExamResult(RoutingContext routingContext) {
-        logger.info("viewExamResult()");
-
-        // Param extraction
-        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
-
-        String examName = requestParameters.pathParameter("exam_name") != null ? requestParameters.pathParameter("exam_name")
-                                                                                                  .getString() : null;
+        String examName = requestParameters.pathParameter("exam_name") != null
+                          ? requestParameters.pathParameter("exam_name")
+                                             .getString()
+                          : null;
+        RequestParameter body = requestParameters.body();
+        SubmitExamSolutionRequest submitExamSolutionRequest = body != null
+                                                              ? DatabindCodec.mapper()
+                                                                             .convertValue(body.get(), new TypeReference<SubmitExamSolutionRequest>() {
+                                                                             })
+                                                              : null;
 
         logger.debug("Parameter examName is {}", examName);
+        logger.debug("Parameter submitExamSolutionRequest is {}", submitExamSolutionRequest);
 
-        api.viewExamResult(examName)
+        api.submitExamSolution(examName, submitExamSolutionRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
