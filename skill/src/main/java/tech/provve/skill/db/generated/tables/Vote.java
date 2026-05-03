@@ -4,34 +4,18 @@
 package tech.provve.skill.db.generated.tables;
 
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import org.jooq.Check;
-import org.jooq.Condition;
-import org.jooq.Field;
-import org.jooq.Index;
-import org.jooq.Name;
-import org.jooq.OrderField;
-import org.jooq.PlainSQL;
-import org.jooq.QueryPart;
-import org.jooq.SQL;
-import org.jooq.Schema;
-import org.jooq.Select;
-import org.jooq.Stringly;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-
 import tech.provve.skill.db.generated.Skill;
 import tech.provve.skill.db.generated.tables.records.VoteRecord;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -56,10 +40,10 @@ public class Vote extends TableImpl<VoteRecord> {
     }
 
     /**
-     * The column <code>skill.vote.name</code>. Название голосования. Он же и id
+     * The column <code>skill.vote.examName</code>. Название голосования. Он же и id
      * объекта голосования
      */
-    public final TableField<VoteRecord, String> NAME = createField(DSL.name("name"),
+    public final TableField<VoteRecord, String> NAME = createField(DSL.name("examName"),
                                                                    SQLDataType.VARCHAR(100)
                                                                               .nullable(false),
                                                                    this,

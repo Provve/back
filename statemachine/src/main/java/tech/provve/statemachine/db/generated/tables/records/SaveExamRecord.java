@@ -19,7 +19,7 @@ public class SaveExamRecord extends UpdatableRecordImpl<SaveExamRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>statemachine.save_exam.name</code>.
+     * Setter for <code>statemachine.save_exam.examName</code>.
      */
     public SaveExamRecord setName(String value) {
         set(0, value);
@@ -27,7 +27,7 @@ public class SaveExamRecord extends UpdatableRecordImpl<SaveExamRecord> {
     }
 
     /**
-     * Getter for <code>statemachine.save_exam.name</code>.
+     * Getter for <code>statemachine.save_exam.examName</code>.
      */
     public String getName() {
         return (String) get(0);

@@ -83,7 +83,7 @@ public class SkillRepository extends Filtering {
     @Override
     protected Map<String, Function<tech.provve.api.server.generated.dto.Condition, Condition>> fieldConditionMappers() {
         return Map.of(
-                "name", condition -> switch (condition.getOperator()) {
+                "examName", condition -> switch (condition.getOperator()) {
                     case EQ -> SKILL_.NAME.eq(condition.getValue());
                     case LIKE -> DSL.exists(dsl.select()
                                                .from(TS_SKILL_RU)

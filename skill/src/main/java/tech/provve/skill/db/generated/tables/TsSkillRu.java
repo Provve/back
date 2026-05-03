@@ -4,32 +4,15 @@
 package tech.provve.skill.db.generated.tables;
 
 
+import org.jooq.*;
+import org.jooq.impl.*;
+import org.jooq.impl.Internal;
+import tech.provve.skill.db.generated.Skill;
+import tech.provve.skill.db.generated.tables.records.TsSkillRuRecord;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import org.jooq.Condition;
-import org.jooq.Field;
-import org.jooq.Index;
-import org.jooq.Name;
-import org.jooq.OrderField;
-import org.jooq.PlainSQL;
-import org.jooq.QueryPart;
-import org.jooq.SQL;
-import org.jooq.Schema;
-import org.jooq.Select;
-import org.jooq.Stringly;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
-import org.jooq.impl.DSL;
-import org.jooq.impl.DefaultDataType;
-import org.jooq.impl.Internal;
-import org.jooq.impl.SQLDataType;
-import org.jooq.impl.TableImpl;
-
-import tech.provve.skill.db.generated.Skill;
-import tech.provve.skill.db.generated.tables.records.TsSkillRuRecord;
 
 
 /**
@@ -60,13 +43,13 @@ public class TsSkillRu extends TableImpl<TsSkillRuRecord> {
 
     /**
      * The column <code>skill.ts_skill_ru.ts_skill_name</code>. Подготовленный
-     * для поиска skill.name
+     * для поиска skill.examName
      */
     public final TableField<TsSkillRuRecord, Object> TS_SKILL_NAME = createField(DSL.name("ts_skill_name"),
                                                                                  DefaultDataType.getDefaultDataType("\"pg_catalog\".\"tsvector\"")
                                                                                                 .nullable(false),
                                                                                  this,
-                                                                                 "Подготовленный для поиска skill.name");
+                                                                                 "Подготовленный для поиска skill.examName");
 
     private TsSkillRu(Name alias, Table<TsSkillRuRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

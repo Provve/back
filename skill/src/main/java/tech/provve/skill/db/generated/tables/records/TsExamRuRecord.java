@@ -5,7 +5,6 @@ package tech.provve.skill.db.generated.tables.records;
 
 
 import org.jooq.impl.TableRecordImpl;
-
 import tech.provve.skill.db.generated.tables.TsExamRu;
 
 
@@ -34,7 +33,7 @@ public class TsExamRuRecord extends TableRecordImpl<TsExamRuRecord> {
 
     /**
      * Setter for <code>skill.ts_exam_ru.ts_exam_name</code>. Подготовленный для
-     * поиска exam.name
+     * поиска exam.examName
      */
     public TsExamRuRecord setTsExamName(Object value) {
         set(1, value);
@@ -43,7 +42,7 @@ public class TsExamRuRecord extends TableRecordImpl<TsExamRuRecord> {
 
     /**
      * Getter for <code>skill.ts_exam_ru.ts_exam_name</code>. Подготовленный для
-     * поиска exam.name
+     * поиска exam.examName
      */
     public Object getTsExamName() {
         return get(1);

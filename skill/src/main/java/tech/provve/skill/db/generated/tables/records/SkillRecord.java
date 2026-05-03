@@ -6,7 +6,6 @@ package tech.provve.skill.db.generated.tables.records;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
-
 import tech.provve.skill.db.generated.tables.Skill;
 
 
@@ -19,7 +18,7 @@ public class SkillRecord extends UpdatableRecordImpl<SkillRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>skill.skill.name</code>. Название навыка
+     * Setter for <code>skill.skill.examName</code>. Название навыка
      */
     public SkillRecord setName(String value) {
         set(0, value);
@@ -27,7 +26,7 @@ public class SkillRecord extends UpdatableRecordImpl<SkillRecord> {
     }
 
     /**
-     * Getter for <code>skill.skill.name</code>. Название навыка
+     * Getter for <code>skill.skill.examName</code>. Название навыка
      */
     public String getName() {
         return (String) get(0);

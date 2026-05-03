@@ -55,7 +55,7 @@ class SkillRepositoryTest extends PostgresIntegrationTest {
         skillRepository.save(skill);
 
         // act
-        List<Skill> found = skillRepository.getAll(new Filter(List.of(new Condition("name", Condition.OperatorEnum.EQ, skill.name()))), "", 1);
+        List<Skill> found = skillRepository.getAll(new Filter(List.of(new Condition("examName", Condition.OperatorEnum.EQ, skill.name()))), "", 1);
 
         // assert
         assertThat(skill).isIn(found);
@@ -92,7 +92,7 @@ class SkillRepositoryTest extends PostgresIntegrationTest {
         skillRepository.save(skill);
 
         // act
-        List<Skill> found = skillRepository.getAll(new Filter(List.of(new Condition("name", Condition.OperatorEnum.LIKE, "настройка nftables"))), "", 1);
+        List<Skill> found = skillRepository.getAll(new Filter(List.of(new Condition("examName", Condition.OperatorEnum.LIKE, "настройка nftables"))), "", 1);
 
         // assert
         assertThat(skill).isIn(found);

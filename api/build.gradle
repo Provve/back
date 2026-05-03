@@ -50,6 +50,7 @@ dependencies {
     implementation project(':statemachine')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // для компиляции. todo нужно настроить shadow в :statemachine
+    implementation libs.bundles.docker
 
     implementation libs.db.scheduler
     implementation libs.hibernate.validation

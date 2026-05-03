@@ -23,8 +23,7 @@ import java.util.function.Consumer;
 import java.util.zip.ZipInputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static tech.provve.statemachine.domain.value.PrivateArchive.INJECT_SECRET_FILE;
-import static tech.provve.statemachine.domain.value.PrivateArchive.INJECT_SECRET_PLACEHOLDER;
+import static tech.provve.statemachine.domain.value.PrivateArchive.*;
 import static tech.provve.statemachine.domain.value.SaveExamEvent.INVALIDATE;
 import static tech.provve.statemachine.domain.value.SaveExamEvent.PREPARE;
 import static tech.provve.statemachine.domain.value.SaveExamState.*;
@@ -37,9 +36,9 @@ import static tech.provve.statemachine.service.ZipManipulator.extractFromZip;
  */
 public class SaveExamMachine extends StateMachine<SaveExamState, SaveExamEvent> {
 
-    public static final String VALIDATION_ERROR_NOTIFICATION_SENDER = "1";
-    public static final String EXAM_SAVED_NOTIFICATION_SENDER = "2";
-    public static final String DELAYED_EXAM_VOTE_CREATOR = "3";
+    public static final String VALIDATION_ERROR_NOTIFICATION_SENDER = "Exam/1";
+    public static final String EXAM_SAVED_NOTIFICATION_SENDER = "Exam/2";
+    public static final String DELAYED_EXAM_VOTE_CREATOR = "Exam/3";
 
     private final Consumer<String> delayedExamVoteCreator;
     private final BiConsumer<String, String> validationErrorNotificationSender;
@@ -133,14 +132,13 @@ public class SaveExamMachine extends StateMachine<SaveExamState, SaveExamEvent> 
     }
 
     private void replacePlaceholderInDockerfile(ZipFile zipFile, byte[] data, String replacement) throws IOException {
-        var dockerFile = "Dockerfile";
         var dockerFileHeader = new FileHeader();
-        dockerFileHeader.setFileName(dockerFile);
+        dockerFileHeader.setFileName(DOCKER_FILE);
 
         try (
                 var zipInputStream = new ZipInputStream(new ByteArrayInputStream(data));
                 var reader = new BufferedReader(
-                        new InputStreamReader(new ByteArrayInputStream(extractFromZip(dockerFile, zipInputStream)), UTF_8));
+                        new InputStreamReader(new ByteArrayInputStream(extractFromZip(DOCKER_FILE, zipInputStream)), UTF_8));
                 var out = new ByteArrayOutputStream();
         ) {
             reader.lines()
@@ -150,7 +148,7 @@ public class SaveExamMachine extends StateMachine<SaveExamState, SaveExamEvent> 
                   .forEachOrdered(out::writeBytes);
 
             var params = new ZipParameters();
-            params.setFileNameInZip(dockerFile);
+            params.setFileNameInZip(DOCKER_FILE);
             zipFile.addStream(new ByteArrayInputStream(out.toByteArray()), params);
         }
     }

@@ -20,7 +20,7 @@ import tech.provve.api.server.service.InputValidator;
 import tech.provve.skill.exception.ExamNotFound;
 import tech.provve.skill.exception.ExamPassTwice;
 import tech.provve.skill.service.application.SessionService;
-import tech.provve.validation.service.domain.ValidationService;
+import tech.provve.validation.service.ValidationService;
 
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
 
@@ -55,6 +55,11 @@ public class SessionsController implements SessionsApi {
         boolean legit = antifraudLegitimacyChecker.check(observationUploadRequest.getSig(),
                                                          observationUploadRequest.getNonce(),
                                                          observationUploadRequest.getObservation());
+        if (observationUploadRequest.getObservation()
+                                    .getCheated()) {
+            return Future.failedFuture(new HttpException(400));
+        }
+
         if (!legit) {
             return Future.failedFuture(new HttpException(403));
         }

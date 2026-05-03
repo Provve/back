@@ -24,7 +24,7 @@ public class S3Service {
      */
     public static String privateArchiveKeygen(String examName) {
         return "private/" +
-                UrlEncoder.encode(examName);
+               UrlEncoder.encode(examName);
     }
 
     /**
@@ -33,7 +33,19 @@ public class S3Service {
      */
     public static String publicArchiveKeygen(String examName) {
         return "public/" +
-                UrlEncoder.encode(examName);
+               UrlEncoder.encode(examName);
+    }
+
+    public static String solutionArchiveKeygen(String examName, String examinee) {
+        return examinee + "/" + UrlEncoder.encode(examName);
+    }
+
+    /**
+     * Генерирует ключ для объединенного архива с проверяющей и проверяемой частью, содержащую решение от пользователя
+     */
+    public static String solutionExamArchiveKeygen(String examName, String examinee) {
+        return "merged/" +
+               examinee + "/" + UrlEncoder.encode(examName);
     }
 
     /**

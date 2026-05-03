@@ -13,7 +13,6 @@ import tech.provve.api.server.mapper.InputValidatorMapper;
 import tech.provve.api.server.service.InputValidator;
 import tech.provve.api.server.validation.dto.CastVote;
 import tech.provve.skill.exception.*;
-import tech.provve.skill.repository.VoteRepository;
 import tech.provve.skill.service.domain.VoteService;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 
@@ -23,12 +22,6 @@ public class VotesController implements VotesApi {
 
     private final InputValidator validatingService;
     private final VoteService voteService;
-    private final VoteRepository voteRepository;
-
-    @Override
-    public Future<ApiResponse<Void>> addCommentOnVote(String name, AddCommentOnVoteRequest addCommentOnVoteRequest) {
-        return null;
-    }
 
     @Override
     public Future<ApiResponse<Void>> castVote(String name, CastVoteRequest castVoteRequest) {
@@ -99,12 +92,17 @@ public class VotesController implements VotesApi {
     }
 
     @Override
-    public Future<ApiResponse<Void>> deleteCommentOnVote(String voteName, Integer commentId) {
+    public Future<ApiResponse<Void>> addComment(String voteName, AddCommentRequest addCommentRequest) {
         return null;
     }
 
     @Override
-    public Future<ApiResponse<Void>> editCommentOnVote(String voteName, Integer commentId) {
+    public Future<ApiResponse<Void>> deleteComment(String voteName, Integer commentId) {
+        return null;
+    }
+
+    @Override
+    public Future<ApiResponse<Void>> editComment(String voteName, Integer commentId) {
         return null;
     }
 

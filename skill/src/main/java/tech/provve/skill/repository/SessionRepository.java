@@ -40,10 +40,10 @@ public class SessionRepository {
            .execute();
     }
 
-    public Optional<Session> find(String name) {
+    public Optional<Session> find(String owner) {
         return dsl.select()
                   .from(SESSION)
-                  .where(SESSION.EXAM_NAME.eq(name))
+                  .where(SESSION.OWNER.eq(owner))
                   .fetchOptional(outputMapper);
     }
 

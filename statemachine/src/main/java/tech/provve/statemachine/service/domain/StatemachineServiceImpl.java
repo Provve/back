@@ -17,9 +17,12 @@ import tech.provve.statemachine.repository.CheckSolutionRepository;
 import tech.provve.statemachine.repository.SaveExamRepository;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
 
+import java.nio.file.Path;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static tech.provve.statemachine.CheckSolutionMachine.BUILD_IMAGE_FOR_EXAMINEE;
+import static tech.provve.statemachine.CheckSolutionMachine.PROCESS_CONTAINER;
 import static tech.provve.statemachine.SaveExamMachine.*;
 
 @Singleton
@@ -28,6 +31,7 @@ public class StatemachineServiceImpl implements StatemachineService {
 
     private final SaveExamRepository saveExamRepository;
     private final CheckSolutionRepository checkSolutionRepository;
+    private final PrivateArchiveSpecification privateArchiveSpecification;
 
     @External
     @Named(DELAYED_EXAM_VOTE_CREATOR)
@@ -41,7 +45,13 @@ public class StatemachineServiceImpl implements StatemachineService {
     @Named(EXAM_SAVED_NOTIFICATION_SENDER)
     private final BiConsumer<String, String> examSavedNotificationSender;
 
-    private final PrivateArchiveSpecification privateArchiveSpecification;
+    @External
+    @Named(BUILD_IMAGE_FOR_EXAMINEE)
+    private final BiConsumer<String, Path> buildDockerImage;
+
+    @External
+    @Named(PROCESS_CONTAINER)
+    private final BiConsumer<String, String> processContainer;
 
     @External
     private final S3Service s3Service;
@@ -56,7 +66,7 @@ public class StatemachineServiceImpl implements StatemachineService {
         checkSolutionRepository.list()
                                .stream()
                                .filter(s -> !CheckSolutionState.STOPPED.equals(s.state()))
-                               .forEach(this::createCheckSolution);
+                               .forEach(s -> createCheckSolution(s, Path.of("")));
     }
 
     @Override
@@ -74,17 +84,17 @@ public class StatemachineServiceImpl implements StatemachineService {
     }
 
     @Override
-    public void createCheckSolution(String name, String examinee) throws StatemachineAlreadyExists {
+    public void createCheckSolution(String name, String examinee, Path solutionArchivePath) throws StatemachineAlreadyExists {
         if (checkSolutionRepository.exists(name)) {
             throw new StatemachineAlreadyExists(name);
         }
-        createCheckSolution(new CheckSolution(name, CheckSolutionState.UNPREPARED, examinee));
+        createCheckSolution(new CheckSolution(name, CheckSolutionState.UNPREPARED, examinee), solutionArchivePath);
     }
 
-    private void createCheckSolution(CheckSolution checkSolution) {
+    private void createCheckSolution(CheckSolution checkSolution, Path solutionArchivePath) {
         var s = checkSolutionMachine();
         s.setInitialState(checkSolution.state());
-        s.init(checkSolution.name(), checkSolution.examinee());
+        s.init(checkSolution.name(), checkSolution.examinee(), solutionArchivePath);
     }
 
     private SaveExamMachine saveExamMachine() {
@@ -95,6 +105,6 @@ public class StatemachineServiceImpl implements StatemachineService {
     }
 
     private CheckSolutionMachine checkSolutionMachine() {
-        return new CheckSolutionMachine(checkSolutionRepository);
+        return new CheckSolutionMachine(checkSolutionRepository, s3Service, processContainer, buildDockerImage);
     }
 }
