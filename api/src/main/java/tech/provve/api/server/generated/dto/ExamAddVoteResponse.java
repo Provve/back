@@ -12,18 +12,18 @@ public class ExamAddVoteResponse {
   private String description;
   private String publicArchiveUrl;
 
-    public ExamAddVoteResponse() {
+  public ExamAddVoteResponse() {
 
   }
 
-    public ExamAddVoteResponse(String skillName, String description, String publicArchiveUrl) {
+  public ExamAddVoteResponse(String skillName, String description, String publicArchiveUrl) {
     this.skillName = skillName;
     this.description = description;
     this.publicArchiveUrl = publicArchiveUrl;
   }
 
 
-    @JsonProperty("skill_name")
+  @JsonProperty("skill_name")
   public String getSkillName() {
     return skillName;
   }
@@ -32,7 +32,7 @@ public class ExamAddVoteResponse {
   }
 
 
-    @JsonProperty("description")
+  @JsonProperty("description")
   public String getDescription() {
     return description;
   }
@@ -41,7 +41,7 @@ public class ExamAddVoteResponse {
   }
 
 
-    @JsonProperty("public_archive_url")
+  @JsonProperty("public_archive_url")
   public String getPublicArchiveUrl() {
     return publicArchiveUrl;
   }
@@ -74,15 +74,15 @@ public class ExamAddVoteResponse {
     StringBuilder sb = new StringBuilder();
     sb.append("class ExamAddVoteResponse {\n");
 
-      sb.append("    skillName: ")
-        .append(toIndentedString(skillName))
-        .append("\n");
-      sb.append("    description: ")
-        .append(toIndentedString(description))
-        .append("\n");
-      sb.append("    publicArchiveUrl: ")
-        .append(toIndentedString(publicArchiveUrl))
-        .append("\n");
+    sb.append("    skillName: ")
+      .append(toIndentedString(skillName))
+      .append("\n");
+    sb.append("    description: ")
+      .append(toIndentedString(description))
+      .append("\n");
+    sb.append("    publicArchiveUrl: ")
+      .append(toIndentedString(publicArchiveUrl))
+      .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -95,7 +95,7 @@ public class ExamAddVoteResponse {
     if (o == null) {
       return "null";
     }
-      return o.toString()
-              .replace("\n", "\n    ");
+    return o.toString()
+            .replace("\n", "\n    ");
   }
 }

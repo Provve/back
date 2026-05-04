@@ -684,6 +684,28 @@ paths:
       security:
         - auth: [ ]
 
+  /comments/replies:
+    post:
+      summary: Добавление ответного комментария
+      tags:
+        - votes
+      operationId: replyOnComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplyComment.request'
+      responses:
+        '200':
+          description: Комментарий успешно добавлен
+        '400':
+          $ref: "#/components/responses/ValidationError"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
+      security:
+        - auth: [ ]
+
   /notifications:
     post:
       summary: Получение уведомлений
@@ -1296,17 +1318,14 @@ components:
     ReplyComment.request:
       type: object
       required:
-        - id
         - target_id
         - comment
         - auth_token
       properties:
-        id:
-          type: integer
         target_id:
           type: integer
           description: ID целевого комментария
-        comment:
+        content:
           type: string
           description: Содержимое ответного комментария
         auth_token:

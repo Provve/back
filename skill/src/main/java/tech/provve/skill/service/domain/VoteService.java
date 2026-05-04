@@ -12,8 +12,9 @@ public interface VoteService {
 
     void addComment(AddCommentRequest request, String voteName);
     void editComment(EditCommentRequest request) throws CommentFromAnotherAuthor;
-
     void deleteComment(DeleteCommentRequest request) throws CommentFromAnotherAuthor;
+
+    void replyOnComment(ReplyCommentRequest request);
 
     /**
      * Give a vote on vote.

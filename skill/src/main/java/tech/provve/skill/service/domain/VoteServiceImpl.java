@@ -171,16 +171,16 @@ public class VoteServiceImpl implements VoteService {
         if (all.isEmpty()) {
             return new Votes(all, new Cursor(""));
         }
-        ;
+
         var cursor = new Cursor(all.getLast()
                                    .getName());
         return new Votes(all, cursor);
     }
 
     @Override
-    public void addComment(AddCommentRequest addCommentRequest, String voteName) {
-        var author = jwsParsingService.parseAuth(addCommentRequest.getAuthToken(), JWT_SUBJECT);
-        commentRepository.save(new Comment(null, author, addCommentRequest.getContent(), LocalDateTime.now(), voteName, null));
+    public void addComment(AddCommentRequest request, String voteName) {
+        var author = jwsParsingService.parseAuth(request.getAuthToken(), JWT_SUBJECT);
+        commentRepository.save(new Comment(null, author, request.getContent(), null, voteName, null));
     }
 
     @Override
@@ -203,6 +203,18 @@ public class VoteServiceImpl implements VoteService {
 
                              commentRepository.delete(request.getId());
                          });
+    }
+
+    @Override
+    public void replyOnComment(ReplyCommentRequest request) {
+        var author = jwsParsingService.parseAuth(request.getAuthToken(), JWT_SUBJECT);
+        commentRepository.get(request.getTargetId())
+                         .ifPresent(comment -> commentRepository.save(new Comment(null,
+                                                                                  author,
+                                                                                  request.getContent(),
+                                                                                  null,
+                                                                                  comment.voteName(),
+                                                                                  request.getTargetId())));
     }
 
     @Override

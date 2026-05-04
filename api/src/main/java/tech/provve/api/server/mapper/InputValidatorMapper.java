@@ -48,4 +48,6 @@ public interface InputValidatorMapper {
 
     DeleteCommentRequest map(tech.provve.api.server.generated.dto.DeleteCommentRequest from);
 
+    ReplyCommentRequest map(tech.provve.api.server.generated.dto.ReplyCommentRequest from);
+
 }

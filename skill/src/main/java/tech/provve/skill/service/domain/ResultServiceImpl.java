@@ -34,7 +34,7 @@ public class ResultServiceImpl implements ResultService {
         if (all.isEmpty()) {
             return new Results(all, new Cursor(""));
         }
-        ;
+
         var cursor = new Cursor(all.getLast()
                                    .getExamName());
         return new Results(all, cursor);

@@ -43,6 +43,8 @@ public class VotesApiHandler implements RouteHandler {
                .handler(this::listComments);
         builder.operation("listVotes")
                .handler(this::listVotes);
+        builder.operation("replyOnComment")
+               .handler(this::replyOnComment);
     }
 
     private void addComment(RoutingContext routingContext) {
@@ -296,6 +298,35 @@ public class VotesApiHandler implements RouteHandler {
         logger.debug("Parameter collectionRequest is {}", collectionRequest);
 
         api.listVotes(collectionRequest)
+           .onSuccess(apiResponse -> {
+               routingContext.response()
+                             .setStatusCode(apiResponse.getStatusCode());
+               if (apiResponse.hasData()) {
+                   routingContext.json(apiResponse.getData());
+               } else {
+                   routingContext.response()
+                                 .end();
+               }
+           })
+           .onFailure(routingContext::fail);
+    }
+
+    private void replyOnComment(RoutingContext routingContext) {
+        logger.info("replyOnComment()");
+
+        // Param extraction
+        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
+
+        RequestParameter body = requestParameters.body();
+        ReplyCommentRequest replyCommentRequest = body != null
+                                                  ? DatabindCodec.mapper()
+                                                                 .convertValue(body.get(), new TypeReference<ReplyCommentRequest>() {
+                                                                 })
+                                                  : null;
+
+        logger.debug("Parameter replyCommentRequest is {}", replyCommentRequest);
+
+        api.replyOnComment(replyCommentRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

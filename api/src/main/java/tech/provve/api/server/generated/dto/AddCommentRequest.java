@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddCommentRequest {
-
+  
   private String voteName;
   private String content;
   private String authToken;
@@ -26,7 +26,6 @@ public class AddCommentRequest {
   public String getVoteName() {
     return voteName;
   }
-
   public void setVoteName(String voteName) {
     this.voteName = voteName;
   }
@@ -36,7 +35,6 @@ public class AddCommentRequest {
   public String getContent() {
     return content;
   }
-
   public void setContent(String content) {
     this.content = content;
   }

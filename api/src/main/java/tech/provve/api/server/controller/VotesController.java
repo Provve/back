@@ -135,6 +135,19 @@ public class VotesController implements VotesApi {
     }
 
     @Override
+    public Future<ApiResponse<Void>> replyOnComment(ReplyCommentRequest replyCommentRequest) {
+        try {
+            validatingService.validate(InputValidatorMapper.INSTANCE.map(replyCommentRequest));
+            replyCommentRequest.setContent(XssSanitizer.sanitize(replyCommentRequest.getContent()));
+
+            voteService.replyOnComment(replyCommentRequest);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
+    }
+
+    @Override
     public Future<ApiResponse<Comments>> listComments(String voteName) {
         return null;
     }

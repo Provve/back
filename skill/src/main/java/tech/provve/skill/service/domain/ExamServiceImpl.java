@@ -31,7 +31,7 @@ public class ExamServiceImpl implements ExamService {
         if (all.isEmpty()) {
             return new Exams(all, new Cursor(""));
         }
-        ;
+
         var cursor = new Cursor(all.getLast()
                                    .getName());
         return new Exams(all, cursor);

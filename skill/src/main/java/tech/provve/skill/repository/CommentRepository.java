@@ -8,7 +8,6 @@ import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jspecify.annotations.NullMarked;
 import tech.provve.skill.domain.entity.Comment;
-import tech.provve.skill.mapper.comment.CommentJooqMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +34,10 @@ public class CommentRepository {
 
     public void save(Comment comment) {
         dsl.insertInto(COMMENT)
-           .set(CommentJooqMapper.INSTANCE.map(comment))
+           .set(COMMENT.AUTHOR, comment.author())
+           .set(COMMENT.CONTENT, comment.content())
+           .set(COMMENT.VOTE_NAME, comment.voteName())
+           .set(COMMENT.REPLY_FOR, comment.replyFor())
            .execute();
     }
 
