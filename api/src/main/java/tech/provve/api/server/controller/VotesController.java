@@ -94,7 +94,16 @@ public class VotesController implements VotesApi {
 
     @Override
     public Future<ApiResponse<Void>> deleteComment(DeleteCommentRequest deleteCommentRequest) {
-        return null;
+        try {
+            validatingService.validate(InputValidatorMapper.INSTANCE.map(deleteCommentRequest));
+
+            voteService.deleteComment(deleteCommentRequest);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        } catch (CommentFromAnotherAuthor e) {
+            return Future.failedFuture(new HttpException(e, 403));
+        }
     }
 
     @Override

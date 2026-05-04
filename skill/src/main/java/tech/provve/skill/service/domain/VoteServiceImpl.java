@@ -195,6 +195,17 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    public void deleteComment(DeleteCommentRequest request) throws CommentFromAnotherAuthor {
+        var author = jwsParsingService.parseAuth(request.getAuthToken(), JWT_SUBJECT);
+        commentRepository.get(request.getId())
+                         .ifPresent(comment -> {
+                             if (!comment.writtenBy(author)) throw new CommentFromAnotherAuthor();
+
+                             commentRepository.delete(request.getId());
+                         });
+    }
+
+    @Override
     public void cast(String voteName, CastVoteRequest castVote) {
         var voter = jwsParsingService.parseAuth(castVote.getAuthToken(), JWT_SUBJECT);
         voteRepository.findByName(voteName)
