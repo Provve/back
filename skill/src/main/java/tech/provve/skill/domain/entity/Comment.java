@@ -3,6 +3,7 @@ package tech.provve.skill.domain.entity;
 import org.jspecify.annotations.NullUnmarked;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Комментарий к голосованию.
@@ -16,4 +17,7 @@ import java.time.LocalDateTime;
  */
 public record Comment(@NullUnmarked Integer id, String author, String content, LocalDateTime created, String voteName, Integer replyFor) {
 
+    public boolean writtenBy(String author) {
+        return Objects.equals(this.author, author);
+    }
 }

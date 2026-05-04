@@ -1,30 +1,17 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.AddCommentRequest;
-import tech.provve.api.server.generated.dto.CastVoteRequest;
-import tech.provve.api.server.generated.dto.CollectionRequest;
-import tech.provve.api.server.generated.dto.Comments;
-import tech.provve.api.server.generated.dto.Error;
-import tech.provve.api.server.generated.dto.ExamAddVote;
-import tech.provve.api.server.generated.dto.SkillAddVote;
-import tech.provve.api.server.generated.dto.SkillDelVote;
-import tech.provve.api.server.generated.dto.Votes;
-
-import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.ValidationHandler;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import jakarta.inject.Singleton;
-
-import java.util.List;
-import java.util.Map;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.dto.*;
 
 @Singleton
 public class VotesApiHandler implements RouteHandler {
@@ -64,10 +51,6 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String voteName = requestParameters.pathParameter("vote_name") != null
-                          ? requestParameters.pathParameter("vote_name")
-                                             .getString()
-                          : null;
         RequestParameter body = requestParameters.body();
         AddCommentRequest addCommentRequest = body != null
                                               ? DatabindCodec.mapper()
@@ -75,10 +58,9 @@ public class VotesApiHandler implements RouteHandler {
                                                              })
                                               : null;
 
-        logger.debug("Parameter voteName is {}", voteName);
         logger.debug("Parameter addCommentRequest is {}", addCommentRequest);
 
-        api.addComment(voteName, addCommentRequest)
+        api.addComment(addCommentRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -219,19 +201,16 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String voteName = requestParameters.pathParameter("vote_name") != null
-                          ? requestParameters.pathParameter("vote_name")
-                                             .getString()
-                          : null;
-        Integer commentId = requestParameters.pathParameter("comment_id") != null
-                            ? requestParameters.pathParameter("comment_id")
-                                               .getInteger()
-                            : null;
+        RequestParameter body = requestParameters.body();
+        DeleteCommentRequest deleteCommentRequest = body != null
+                                                    ? DatabindCodec.mapper()
+                                                                   .convertValue(body.get(), new TypeReference<DeleteCommentRequest>() {
+                                                                   })
+                                                    : null;
 
-        logger.debug("Parameter voteName is {}", voteName);
-        logger.debug("Parameter commentId is {}", commentId);
+        logger.debug("Parameter deleteCommentRequest is {}", deleteCommentRequest);
 
-        api.deleteComment(voteName, commentId)
+        api.deleteComment(deleteCommentRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());
@@ -251,19 +230,16 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String voteName = requestParameters.pathParameter("vote_name") != null
-                          ? requestParameters.pathParameter("vote_name")
-                                             .getString()
-                          : null;
-        Integer commentId = requestParameters.pathParameter("comment_id") != null
-                            ? requestParameters.pathParameter("comment_id")
-                                               .getInteger()
-                            : null;
+        RequestParameter body = requestParameters.body();
+        EditCommentRequest editCommentRequest = body != null
+                                                ? DatabindCodec.mapper()
+                                                               .convertValue(body.get(), new TypeReference<EditCommentRequest>() {
+                                                               })
+                                                : null;
 
-        logger.debug("Parameter voteName is {}", voteName);
-        logger.debug("Parameter commentId is {}", commentId);
+        logger.debug("Parameter editCommentRequest is {}", editCommentRequest);
 
-        api.editComment(voteName, commentId)
+        api.editComment(editCommentRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

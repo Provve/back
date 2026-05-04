@@ -44,4 +44,6 @@ public interface InputValidatorMapper {
 
     AddCommentRequest map(tech.provve.api.server.generated.dto.AddCommentRequest from);
 
+    EditCommentRequest map(tech.provve.api.server.generated.dto.EditCommentRequest from);
+
 }

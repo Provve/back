@@ -182,9 +182,23 @@ public class Services {
                                    Scheduling scheduling,
                                    S3Service s3Service,
                                    StatemachineService statemachineService,
-                                   ObjectMapper objectMapper) {
+                                   ObjectMapper objectMapper,
+                                   CommentRepository commentRepository) {
         return new VoteServiceImpl(
-                voteRepository, skillRepository, objectMapper, deadlineSupplier, jwsParsingService, scheduling, s3Service, statemachineService);
+                voteRepository,
+                skillRepository,
+                commentRepository,
+                objectMapper,
+                deadlineSupplier,
+                jwsParsingService,
+                scheduling,
+                s3Service,
+                statemachineService);
+    }
+
+    @Bean
+    public CommentRepository commentRepository(DSLContext dsl) {
+        return new CommentRepository(dsl);
     }
 
     @Bean

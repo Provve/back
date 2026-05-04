@@ -1,10 +1,7 @@
 package tech.provve.skill.service.domain;
 
 import tech.provve.api.server.generated.dto.*;
-import tech.provve.skill.exception.AuthorCannotVote;
-import tech.provve.skill.exception.CastAlreadyExists;
-import tech.provve.skill.exception.VoteAlreadyExists;
-import tech.provve.skill.exception.VoteNotFound;
+import tech.provve.skill.exception.*;
 
 public interface VoteService {
 
@@ -16,7 +13,9 @@ public interface VoteService {
 
     Votes list(CollectionRequest collectionRequest);
 
-    void addComment(AddCommentRequest addCommentRequest, String voteName);
+    void addComment(AddCommentRequest request, String voteName);
+
+    void editComment(EditCommentRequest request) throws CommentFromAnotherAuthor;
 
     /**
      * Give a vote on vote.

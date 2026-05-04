@@ -597,7 +597,7 @@ paths:
       security:
         - auth: [ ]
 
-  /votes/{vote_name}/comments:
+  /comments:
     get:
       summary: Получить комментарии к голосованию
       tags:
@@ -626,13 +626,6 @@ paths:
       tags:
         - votes
       operationId: addComment
-      parameters:
-        - name: vote_name
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID голосования
       requestBody:
         required: true
         content:
@@ -648,27 +641,17 @@ paths:
           $ref: "#/components/responses/Unauthenticated"
       security:
         - auth: [ ]
-
-  /votes/{vote_name}/comments/{comment_id}:
     put:
       summary: Редактирование комментария к голосованию
       tags:
         - votes
       operationId: editComment
-      parameters:
-        - name: vote_name
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID голосования
-        - name: comment_id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-          description: ID комментария
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditComment.request'
       responses:
         '200':
           description: Комментарий успешно отредактирован
@@ -685,20 +668,12 @@ paths:
       tags:
         - votes
       operationId: deleteComment
-      parameters:
-        - name: vote_name
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID голосования
-        - name: comment_id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-          description: ID комментария
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteComment.request'
       responses:
         '200':
           description: Комментарий успешно удалён
@@ -1279,11 +1254,61 @@ components:
     AddComment.request:
       type: object
       required:
+        - vote_name
         - comment
+        - auth_token
       properties:
-        comment:
+        vote_name:
+          type: string
+          description: ID голосования
+        content:
           type: string
           description: Содержимое комментария
+        auth_token:
+          $ref: "#/components/schemas/AuthToken"
+
+    EditComment.request:
+      type: object
+      required:
+        - id
+        - comment
+        - auth_token
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+          description: Содержимое комментария
+        auth_token:
+          $ref: "#/components/schemas/AuthToken"
+
+    DeleteComment.request:
+      type: object
+      required:
+        - id
+        - auth_token
+      properties:
+        id:
+          type: integer
+        auth_token:
+          $ref: "#/components/schemas/AuthToken"
+
+    ReplyComment.request:
+      type: object
+      required:
+        - id
+        - target_id
+        - comment
+        - auth_token
+      properties:
+        id:
+          type: integer
+        target_id:
+          type: integer
+          description: ID целевого комментария
+        comment:
+          type: string
+          description: Содержимое ответного комментария
         auth_token:
           $ref: "#/components/schemas/AuthToken"
 

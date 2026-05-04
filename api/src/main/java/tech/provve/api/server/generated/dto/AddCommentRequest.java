@@ -7,26 +7,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddCommentRequest {
 
-  private String comment;
+  private String voteName;
+  private String content;
   private String authToken;
 
   public AddCommentRequest() {
 
   }
 
-  public AddCommentRequest(String comment, String authToken) {
-    this.comment = comment;
+  public AddCommentRequest(String voteName, String content, String authToken) {
+    this.voteName = voteName;
+    this.content = content;
     this.authToken = authToken;
   }
 
 
-  @JsonProperty("comment")
-  public String getComment() {
-    return comment;
+  @JsonProperty("vote_name")
+  public String getVoteName() {
+    return voteName;
   }
 
-  public void setComment(String comment) {
-    this.comment = comment;
+  public void setVoteName(String voteName) {
+    this.voteName = voteName;
+  }
+
+
+  @JsonProperty("content")
+  public String getContent() {
+    return content;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
   }
 
 
@@ -34,7 +46,6 @@ public class AddCommentRequest {
   public String getAuthToken() {
     return authToken;
   }
-
   public void setAuthToken(String authToken) {
     this.authToken = authToken;
   }
@@ -49,13 +60,14 @@ public class AddCommentRequest {
       return false;
     }
     AddCommentRequest addCommentRequest = (AddCommentRequest) o;
-    return Objects.equals(comment, addCommentRequest.comment) &&
+    return Objects.equals(voteName, addCommentRequest.voteName) &&
+           Objects.equals(content, addCommentRequest.content) &&
            Objects.equals(authToken, addCommentRequest.authToken);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(comment, authToken);
+    return Objects.hash(voteName, content, authToken);
   }
 
   @Override
@@ -63,8 +75,11 @@ public class AddCommentRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class AddCommentRequest {\n");
 
-    sb.append("    comment: ")
-      .append(toIndentedString(comment))
+    sb.append("    voteName: ")
+      .append(toIndentedString(voteName))
+      .append("\n");
+    sb.append("    content: ")
+      .append(toIndentedString(content))
       .append("\n");
     sb.append("    authToken: ")
       .append(toIndentedString(authToken))

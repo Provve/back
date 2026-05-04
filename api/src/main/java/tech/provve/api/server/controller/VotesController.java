@@ -93,26 +93,36 @@ public class VotesController implements VotesApi {
     }
 
     @Override
-    public Future<ApiResponse<Void>> addComment(String voteName, AddCommentRequest addCommentRequest) {
-        try {
-            validatingService.validate(InputValidatorMapper.INSTANCE.map(addCommentRequest));
-            addCommentRequest.setComment(XssSanitizer.sanitize(addCommentRequest.getComment()));
+    public Future<ApiResponse<Void>> deleteComment(DeleteCommentRequest deleteCommentRequest) {
+        return null;
+    }
 
-            voteService.addComment(addCommentRequest, voteName);
+    @Override
+    public Future<ApiResponse<Void>> editComment(EditCommentRequest editCommentRequest) {
+        try {
+            validatingService.validate(InputValidatorMapper.INSTANCE.map(editCommentRequest));
+            editCommentRequest.setContent(XssSanitizer.sanitize(editCommentRequest.getContent()));
+
+            voteService.editComment(editCommentRequest);
             return Future.succeededFuture(new ApiResponse<>(200));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
+        } catch (CommentFromAnotherAuthor e) {
+            return Future.failedFuture(new HttpException(e, 403));
         }
     }
 
     @Override
-    public Future<ApiResponse<Void>> deleteComment(String voteName, Integer commentId) {
-        return null;
-    }
+    public Future<ApiResponse<Void>> addComment(AddCommentRequest addCommentRequest) {
+        try {
+            validatingService.validate(InputValidatorMapper.INSTANCE.map(addCommentRequest));
+            addCommentRequest.setContent(XssSanitizer.sanitize(addCommentRequest.getContent()));
 
-    @Override
-    public Future<ApiResponse<Void>> editComment(String voteName, Integer commentId) {
-        return null;
+            voteService.addComment(addCommentRequest, addCommentRequest.getVoteName());
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
     }
 
     @Override

@@ -6,40 +6,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CollectionAuthenticatedRequest {
+public class EditCommentRequest {
 
-    private Pagination pagination;
-    private Filter filter;
+    private Integer id;
+    private String content;
     private String authToken;
 
-    public CollectionAuthenticatedRequest() {
+    public EditCommentRequest() {
 
     }
 
-    public CollectionAuthenticatedRequest(Pagination pagination, Filter filter, String authToken) {
-        this.pagination = pagination;
-        this.filter = filter;
+    public EditCommentRequest(Integer id, String content, String authToken) {
+        this.id = id;
+        this.content = content;
         this.authToken = authToken;
     }
 
 
-    @JsonProperty("pagination")
-    public Pagination getPagination() {
-        return pagination;
+    @JsonProperty("id")
+    public Integer getId() {
+        return id;
     }
 
-    public void setPagination(Pagination pagination) {
-        this.pagination = pagination;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 
-    @JsonProperty("filter")
-    public Filter getFilter() {
-        return filter;
+    @JsonProperty("content")
+    public String getContent() {
+        return content;
     }
 
-    public void setFilter(Filter filter) {
-        this.filter = filter;
+    public void setContent(String content) {
+        this.content = content;
     }
 
 
@@ -61,27 +61,27 @@ public class CollectionAuthenticatedRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CollectionAuthenticatedRequest collectionAuthenticatedRequest = (CollectionAuthenticatedRequest) o;
-        return Objects.equals(pagination, collectionAuthenticatedRequest.pagination) &&
-               Objects.equals(filter, collectionAuthenticatedRequest.filter) &&
-               Objects.equals(authToken, collectionAuthenticatedRequest.authToken);
+        EditCommentRequest editCommentRequest = (EditCommentRequest) o;
+        return Objects.equals(id, editCommentRequest.id) &&
+               Objects.equals(content, editCommentRequest.content) &&
+               Objects.equals(authToken, editCommentRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pagination, filter, authToken);
+        return Objects.hash(id, content, authToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CollectionAuthenticatedRequest {\n");
+        sb.append("class EditCommentRequest {\n");
 
-        sb.append("    pagination: ")
-          .append(toIndentedString(pagination))
+        sb.append("    id: ")
+          .append(toIndentedString(id))
           .append("\n");
-        sb.append("    filter: ")
-          .append(toIndentedString(filter))
+        sb.append("    content: ")
+          .append(toIndentedString(content))
           .append("\n");
         sb.append("    authToken: ")
           .append(toIndentedString(authToken))

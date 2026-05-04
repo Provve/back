@@ -11,6 +11,7 @@ import tech.provve.skill.domain.entity.Comment;
 import tech.provve.skill.mapper.comment.CommentJooqMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import static tech.provve.skill.db.generated.tables.Comment.COMMENT;
 
@@ -38,10 +39,25 @@ public class CommentRepository {
            .execute();
     }
 
+    public void update(Integer id, String content) {
+        dsl.update(COMMENT)
+           .set(COMMENT.CONTENT, content)
+           .where(COMMENT.ID.eq(id))
+           .execute();
+    }
+
     public void delete(Integer id) {
         dsl.deleteFrom(COMMENT)
            .where(COMMENT.ID.eq(id))
            .execute();
+    }
+
+    public Optional<Comment> get(Integer id) {
+        return dsl.select()
+                  .from(COMMENT)
+                  .where(COMMENT.ID.eq(id))
+                  .fetchOptional()
+                  .map(outputMapper);
     }
 
     @SuppressWarnings("all")

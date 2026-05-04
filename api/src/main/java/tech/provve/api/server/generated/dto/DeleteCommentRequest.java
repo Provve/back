@@ -6,40 +6,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CollectionAuthenticatedRequest {
+public class DeleteCommentRequest {
 
-    private Pagination pagination;
-    private Filter filter;
+    private Integer id;
     private String authToken;
 
-    public CollectionAuthenticatedRequest() {
+    public DeleteCommentRequest() {
 
     }
 
-    public CollectionAuthenticatedRequest(Pagination pagination, Filter filter, String authToken) {
-        this.pagination = pagination;
-        this.filter = filter;
+    public DeleteCommentRequest(Integer id, String authToken) {
+        this.id = id;
         this.authToken = authToken;
     }
 
 
-    @JsonProperty("pagination")
-    public Pagination getPagination() {
-        return pagination;
+    @JsonProperty("id")
+    public Integer getId() {
+        return id;
     }
 
-    public void setPagination(Pagination pagination) {
-        this.pagination = pagination;
-    }
-
-
-    @JsonProperty("filter")
-    public Filter getFilter() {
-        return filter;
-    }
-
-    public void setFilter(Filter filter) {
-        this.filter = filter;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 
@@ -61,27 +49,23 @@ public class CollectionAuthenticatedRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CollectionAuthenticatedRequest collectionAuthenticatedRequest = (CollectionAuthenticatedRequest) o;
-        return Objects.equals(pagination, collectionAuthenticatedRequest.pagination) &&
-               Objects.equals(filter, collectionAuthenticatedRequest.filter) &&
-               Objects.equals(authToken, collectionAuthenticatedRequest.authToken);
+        DeleteCommentRequest deleteCommentRequest = (DeleteCommentRequest) o;
+        return Objects.equals(id, deleteCommentRequest.id) &&
+               Objects.equals(authToken, deleteCommentRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pagination, filter, authToken);
+        return Objects.hash(id, authToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CollectionAuthenticatedRequest {\n");
+        sb.append("class DeleteCommentRequest {\n");
 
-        sb.append("    pagination: ")
-          .append(toIndentedString(pagination))
-          .append("\n");
-        sb.append("    filter: ")
-          .append(toIndentedString(filter))
+        sb.append("    id: ")
+          .append(toIndentedString(id))
           .append("\n");
         sb.append("    authToken: ")
           .append(toIndentedString(authToken))

@@ -206,7 +206,7 @@ COMMENT ON TABLE skill.comment IS 'Комментарии к голосован�
 COMMENT ON COLUMN skill.comment.id IS 'Идентификатор комментария';
 COMMENT ON COLUMN skill.comment.author IS 'Автор комментария';
 COMMENT ON COLUMN skill.comment.content IS 'Содержание комментария';
-COMMENT ON COLUMN skill.comment.created IS 'Время создания комментария';
+COMMENT ON COLUMN skill.comment.created IS 'Время создания комментария. Записывается в БД';
 COMMENT ON COLUMN skill.comment.vote_name IS 'Связанное голосование';
 COMMENT ON COLUMN skill.comment.reply_for IS 'В ответ на какой комментарий написан этот?';
 

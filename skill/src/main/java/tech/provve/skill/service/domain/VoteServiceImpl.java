@@ -180,7 +180,18 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public void addComment(AddCommentRequest addCommentRequest, String voteName) {
         var author = jwsParsingService.parseAuth(addCommentRequest.getAuthToken(), JWT_SUBJECT);
-        commentRepository.save(new Comment(null, author, addCommentRequest.getComment(), LocalDateTime.now(), voteName, null));
+        commentRepository.save(new Comment(null, author, addCommentRequest.getContent(), LocalDateTime.now(), voteName, null));
+    }
+
+    @Override
+    public void editComment(EditCommentRequest request) {
+        var author = jwsParsingService.parseAuth(request.getAuthToken(), JWT_SUBJECT);
+        commentRepository.get(request.getId())
+                         .ifPresent(comment -> {
+                             if (!comment.writtenBy(author)) throw new CommentFromAnotherAuthor();
+
+                             commentRepository.update(request.getId(), request.getContent());
+                         });
     }
 
     @Override
