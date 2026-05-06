@@ -122,6 +122,11 @@ public class VotesController implements VotesApi {
     }
 
     @Override
+    public Future<ApiResponse<Comments>> listComments(ListCommentsRequest listCommentsRequest) {
+        return Future.succeededFuture(new ApiResponse<>(200, voteService.listComments(listCommentsRequest)));
+    }
+
+    @Override
     public Future<ApiResponse<Void>> addComment(AddCommentRequest addCommentRequest) {
         try {
             validatingService.validate(InputValidatorMapper.INSTANCE.map(addCommentRequest));
@@ -145,11 +150,6 @@ public class VotesController implements VotesApi {
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
         }
-    }
-
-    @Override
-    public Future<ApiResponse<Comments>> listComments(String voteName) {
-        return null;
     }
 
     @Override

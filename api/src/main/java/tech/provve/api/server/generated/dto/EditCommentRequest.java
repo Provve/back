@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EditCommentRequest {
-
+  
   private Integer id;
   private String content;
   private String authToken;
@@ -27,7 +27,6 @@ public class EditCommentRequest {
   public Integer getId() {
     return id;
   }
-
   public void setId(Integer id) {
     this.id = id;
   }
@@ -37,7 +36,6 @@ public class EditCommentRequest {
   public String getContent() {
     return content;
   }
-
   public void setContent(String content) {
     this.content = content;
   }
@@ -47,7 +45,6 @@ public class EditCommentRequest {
   public String getAuthToken() {
     return authToken;
   }
-
   public void setAuthToken(String authToken) {
     this.authToken = authToken;
   }

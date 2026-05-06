@@ -8,37 +8,15 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProfileResponse {
 
-    private String id;
-    private String avatarUrl;
     private String username;
+    private String avatarUrl;
 
     public ProfileResponse() {
 
     }
 
-    public ProfileResponse(String id, String avatarUrl, String username) {
-        this.id = id;
-        this.avatarUrl = avatarUrl;
+    public ProfileResponse(String username, String avatarUrl) {
         this.username = username;
-    }
-
-
-    @JsonProperty("id")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-
-    @JsonProperty("avatar_url")
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
 
@@ -53,6 +31,16 @@ public class ProfileResponse {
     }
 
 
+    @JsonProperty("avatar_url")
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -62,14 +50,13 @@ public class ProfileResponse {
             return false;
         }
         ProfileResponse profileResponse = (ProfileResponse) o;
-        return Objects.equals(id, profileResponse.id) &&
-               Objects.equals(avatarUrl, profileResponse.avatarUrl) &&
-               Objects.equals(username, profileResponse.username);
+        return Objects.equals(username, profileResponse.username) &&
+               Objects.equals(avatarUrl, profileResponse.avatarUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, avatarUrl, username);
+        return Objects.hash(username, avatarUrl);
     }
 
     @Override
@@ -77,14 +64,11 @@ public class ProfileResponse {
         StringBuilder sb = new StringBuilder();
         sb.append("class ProfileResponse {\n");
 
-        sb.append("    id: ")
-          .append(toIndentedString(id))
+        sb.append("    username: ")
+          .append(toIndentedString(username))
           .append("\n");
         sb.append("    avatarUrl: ")
           .append(toIndentedString(avatarUrl))
-          .append("\n");
-        sb.append("    username: ")
-          .append(toIndentedString(username))
           .append("\n");
         sb.append("}");
         return sb.toString();

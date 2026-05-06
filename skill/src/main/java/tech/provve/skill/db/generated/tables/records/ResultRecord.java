@@ -6,7 +6,6 @@ package tech.provve.skill.db.generated.tables.records;
 
 import org.jooq.impl.TableRecordImpl;
 import org.jooq.types.YearToSecond;
-
 import tech.provve.skill.db.generated.tables.Result;
 
 

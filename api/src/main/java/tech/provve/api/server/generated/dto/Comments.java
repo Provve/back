@@ -11,13 +11,15 @@ import java.util.Objects;
 public class Comments {
 
     private List<CommentResponse> comments = new ArrayList<>();
+    private Cursor cursor;
 
     public Comments() {
 
     }
 
-    public Comments(List<CommentResponse> comments) {
+    public Comments(List<CommentResponse> comments, Cursor cursor) {
         this.comments = comments;
+        this.cursor = cursor;
     }
 
 
@@ -31,6 +33,16 @@ public class Comments {
     }
 
 
+    @JsonProperty("cursor")
+    public Cursor getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(Cursor cursor) {
+        this.cursor = cursor;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -40,12 +52,13 @@ public class Comments {
             return false;
         }
         Comments comments = (Comments) o;
-        return Objects.equals(comments, comments.comments);
+        return Objects.equals(comments, comments.comments) &&
+               Objects.equals(cursor, comments.cursor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(comments);
+        return Objects.hash(comments, cursor);
     }
 
     @Override
@@ -55,6 +68,9 @@ public class Comments {
 
         sb.append("    comments: ")
           .append(toIndentedString(comments))
+          .append("\n");
+        sb.append("    cursor: ")
+          .append(toIndentedString(cursor))
           .append("\n");
         sb.append("}");
         return sb.toString();

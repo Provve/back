@@ -4,12 +4,11 @@
 package tech.provve.skill.db.generated.tables.records;
 
 
-import java.time.LocalDateTime;
-
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
-
 import tech.provve.skill.db.generated.tables.Vote;
+
+import java.time.LocalDateTime;
 
 
 /**

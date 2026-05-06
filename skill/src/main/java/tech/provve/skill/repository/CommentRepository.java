@@ -9,10 +9,10 @@ import org.jooq.RecordMapper;
 import org.jspecify.annotations.NullMarked;
 import tech.provve.skill.domain.entity.Comment;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static tech.provve.skill.db.generated.tables.Comment.COMMENT;
+import static tech.provve.skill.db.generated.tables.GetCommentsTree.GET_COMMENTS_TREE;
 
 @NullMarked
 @Singleton
@@ -29,7 +29,7 @@ public class CommentRepository {
             record.get(COMMENT.CREATED)
                   .toLocalDateTime(),
             record.get(COMMENT.VOTE_NAME),
-            record.get(COMMENT.REPLY_FOR)
+            record.get(COMMENT.PARENT_ID)
     );
 
     public void save(Comment comment) {
@@ -37,7 +37,7 @@ public class CommentRepository {
            .set(COMMENT.AUTHOR, comment.author())
            .set(COMMENT.CONTENT, comment.content())
            .set(COMMENT.VOTE_NAME, comment.voteName())
-           .set(COMMENT.REPLY_FOR, comment.replyFor())
+           .set(COMMENT.PARENT_ID, comment.parentId())
            .execute();
     }
 
@@ -62,16 +62,36 @@ public class CommentRepository {
                   .map(outputMapper);
     }
 
+    /**
+     * @return key — anchror <br>
+     * value — list of replies
+     */
     @SuppressWarnings("all")
-    public List<Comment> getAll(String previous, int pageSize) {
-        var select = dsl.select()
-                        .from(COMMENT)
-                        .orderBy(COMMENT.CREATED)
-                        .limit(pageSize);
-        return dsl.fetchMany(select)
-                  .stream()
-                  .map(result -> result.map(outputMapper))
-                  .findAny()
-                  .get();
+    public Map<Comment, List<Comment>> getAll(String previous, int pageSize, String voteName) {
+        var select = dsl.select(GET_COMMENTS_TREE.call(Integer.parseInt(previous), voteName, pageSize));
+        List<Comment> anchorsAndReplies = dsl.fetchMany(select)
+                                             .stream()
+                                             .map(result -> result.map(outputMapper))
+                                             .findAny()
+                                             .get();
+
+        List<Comment> anchors = anchorsAndReplies.stream()
+                                                 .filter(c -> null == c.parentId())
+                                                 .toList();
+        List<Comment> replies = anchorsAndReplies.stream()
+                                                 .filter(c -> null != c.parentId())
+                                                 .toList();
+
+        Map<Comment, List<Comment>> tree = new HashMap<>(anchors.size());
+        anchors.stream()
+               .map(anchor -> {
+                   var repliesForAnchor = replies.stream()
+                                                 .filter(reply -> Objects.equals(anchor.id(), reply.parentId()))
+                                                 .toList();
+                   return Map.of(anchor, repliesForAnchor);
+               })
+               .forEach(tree::putAll);
+
+        return tree;
     }
 }

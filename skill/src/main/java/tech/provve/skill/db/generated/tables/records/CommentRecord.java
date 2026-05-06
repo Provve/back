@@ -4,12 +4,11 @@
 package tech.provve.skill.db.generated.tables.records;
 
 
-import java.time.OffsetDateTime;
-
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
-
 import tech.provve.skill.db.generated.tables.Comment;
+
+import java.time.OffsetDateTime;
 
 
 /**
@@ -66,7 +65,8 @@ public class CommentRecord extends UpdatableRecordImpl<CommentRecord> {
     }
 
     /**
-     * Setter for <code>skill.comment.created</code>. Время создания комментария
+     * Setter for <code>skill.comment.created</code>. Время создания
+     * комментария. Записывается в БД
      */
     public CommentRecord setCreated(OffsetDateTime value) {
         set(3, value);
@@ -74,7 +74,8 @@ public class CommentRecord extends UpdatableRecordImpl<CommentRecord> {
     }
 
     /**
-     * Getter for <code>skill.comment.created</code>. Время создания комментария
+     * Getter for <code>skill.comment.created</code>. Время создания
+     * комментария. Записывается в БД
      */
     public OffsetDateTime getCreated() {
         return (OffsetDateTime) get(3);
@@ -96,19 +97,19 @@ public class CommentRecord extends UpdatableRecordImpl<CommentRecord> {
     }
 
     /**
-     * Setter for <code>skill.comment.reply_for</code>. В ответ на какой
+     * Setter for <code>skill.comment.parent_id</code>. В ответ на какой
      * комментарий написан этот?
      */
-    public CommentRecord setReplyFor(Integer value) {
+    public CommentRecord setParentId(Integer value) {
         set(5, value);
         return this;
     }
 
     /**
-     * Getter for <code>skill.comment.reply_for</code>. В ответ на какой
+     * Getter for <code>skill.comment.parent_id</code>. В ответ на какой
      * комментарий написан этот?
      */
-    public Integer getReplyFor() {
+    public Integer getParentId() {
         return (Integer) get(5);
     }
 
@@ -135,7 +136,7 @@ public class CommentRecord extends UpdatableRecordImpl<CommentRecord> {
     /**
      * Create a detached, initialised CommentRecord
      */
-    public CommentRecord(Integer id, String author, String content, OffsetDateTime created, String voteName, Integer replyFor) {
+    public CommentRecord(Integer id, String author, String content, OffsetDateTime created, String voteName, Integer parentId) {
         super(Comment.COMMENT);
 
         setId(id);
@@ -143,7 +144,7 @@ public class CommentRecord extends UpdatableRecordImpl<CommentRecord> {
         setContent(content);
         setCreated(created);
         setVoteName(voteName);
-        setReplyFor(replyFor);
+        setParentId(parentId);
         resetTouchedOnNotNull();
     }
 }

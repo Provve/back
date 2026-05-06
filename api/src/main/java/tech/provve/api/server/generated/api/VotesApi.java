@@ -12,8 +12,8 @@ public interface VotesApi {
     Future<ApiResponse<Void>> createSkillDelVote(SkillDelVote skillDelVote);
     Future<ApiResponse<Void>> deleteComment(DeleteCommentRequest deleteCommentRequest);
     Future<ApiResponse<Void>> editComment(EditCommentRequest editCommentRequest);
-    Future<ApiResponse<Comments>> listComments(String voteName);
-    Future<ApiResponse<Votes>> listVotes(CollectionRequest collectionRequest);
 
+    Future<ApiResponse<Comments>> listComments(ListCommentsRequest listCommentsRequest);
+    Future<ApiResponse<Votes>> listVotes(CollectionRequest collectionRequest);
     Future<ApiResponse<Void>> replyOnComment(ReplyCommentRequest replyCommentRequest);
 }

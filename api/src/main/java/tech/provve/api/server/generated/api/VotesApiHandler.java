@@ -261,14 +261,16 @@ public class VotesApiHandler implements RouteHandler {
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
-        String voteName = requestParameters.pathParameter("vote_name") != null
-                          ? requestParameters.pathParameter("vote_name")
-                                             .getString()
-                          : null;
+        RequestParameter body = requestParameters.body();
+        ListCommentsRequest listCommentsRequest = body != null
+                                                  ? DatabindCodec.mapper()
+                                                                 .convertValue(body.get(), new TypeReference<ListCommentsRequest>() {
+                                                                 })
+                                                  : null;
 
-        logger.debug("Parameter voteName is {}", voteName);
+        logger.debug("Parameter listCommentsRequest is {}", listCommentsRequest);
 
-        api.listComments(voteName)
+        api.listComments(listCommentsRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

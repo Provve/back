@@ -4,25 +4,14 @@
 package tech.provve.skill.db.generated;
 
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SchemaImpl;
+import tech.provve.skill.db.generated.tables.*;
 
-import tech.provve.skill.db.generated.tables.Comment;
-import tech.provve.skill.db.generated.tables.Exam;
-import tech.provve.skill.db.generated.tables.ExamAddVote;
-import tech.provve.skill.db.generated.tables.GetReactionsTotal;
-import tech.provve.skill.db.generated.tables.Reactions;
-import tech.provve.skill.db.generated.tables.Result;
-import tech.provve.skill.db.generated.tables.Session;
-import tech.provve.skill.db.generated.tables.TsExamRu;
-import tech.provve.skill.db.generated.tables.TsSkillRu;
-import tech.provve.skill.db.generated.tables.TsVoteRu;
-import tech.provve.skill.db.generated.tables.Vote;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -57,6 +46,7 @@ public class Skill extends SchemaImpl {
                 Comment.COMMENT,
                 Exam.EXAM,
                 ExamAddVote.EXAM_ADD_VOTE,
+                GetCommentsTree.GET_COMMENTS_TREE,
                 GetReactionsTotal.GET_REACTIONS_TOTAL,
                 Reactions.REACTIONS,
                 Result.RESULT,

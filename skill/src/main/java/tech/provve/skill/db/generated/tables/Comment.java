@@ -4,34 +4,18 @@
 package tech.provve.skill.db.generated.tables;
 
 
-import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import org.jooq.Condition;
-import org.jooq.Field;
-import org.jooq.Identity;
-import org.jooq.Index;
-import org.jooq.Name;
-import org.jooq.OrderField;
-import org.jooq.PlainSQL;
-import org.jooq.QueryPart;
-import org.jooq.SQL;
-import org.jooq.Schema;
-import org.jooq.Select;
-import org.jooq.Stringly;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.TableOptions;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-
 import tech.provve.skill.db.generated.Skill;
 import tech.provve.skill.db.generated.tables.records.CommentRecord;
+
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -79,14 +63,15 @@ public class Comment extends TableImpl<CommentRecord> {
                                                                          "Содержание комментария");
 
     /**
-     * The column <code>skill.comment.created</code>. Время создания комментария
+     * The column <code>skill.comment.created</code>. Время создания
+     * комментария. Записывается в БД
      */
     public final TableField<CommentRecord, OffsetDateTime> CREATED = createField(DSL.name("created"),
                                                                                  SQLDataType.TIMESTAMPWITHTIMEZONE(6)
                                                                                             .defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"),
                                                                                                                     SQLDataType.TIMESTAMPWITHTIMEZONE)),
                                                                                  this,
-                                                                                 "Время создания комментария");
+                                                                                 "Время создания комментария. Записывается в БД");
 
     /**
      * The column <code>skill.comment.vote_name</code>. Связанное голосование
@@ -94,10 +79,10 @@ public class Comment extends TableImpl<CommentRecord> {
     public final TableField<CommentRecord, String> VOTE_NAME = createField(DSL.name("vote_name"), SQLDataType.VARCHAR(100), this, "Связанное голосование");
 
     /**
-     * The column <code>skill.comment.reply_for</code>. В ответ на какой
+     * The column <code>skill.comment.parent_id</code>. В ответ на какой
      * комментарий написан этот?
      */
-    public final TableField<CommentRecord, Integer> REPLY_FOR = createField(DSL.name("reply_for"),
+    public final TableField<CommentRecord, Integer> PARENT_ID = createField(DSL.name("parent_id"),
                                                                             SQLDataType.INTEGER,
                                                                             this,
                                                                             "В ответ на какой комментарий написан этот?");

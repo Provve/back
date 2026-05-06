@@ -603,13 +603,12 @@ paths:
       tags:
         - votes
       operationId: listComments
-      parameters:
-        - name: vote_name
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID голосования
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListComments.request'
       responses:
         '200':
           description: Получен список комментариев
@@ -1017,6 +1016,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Comment.response"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
 
     Comment.response:
       type: object
@@ -1041,17 +1042,12 @@ components:
     Profile.response:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          example: d8cbb1f0-f4eb-46b4-b1b6-c0a670544254
-          description: Id профиля
-        avatar_url:
-          type: string
-          description: URL на аватар профиля
         username:
           type: string
           description: Отображаемое имя профиля
+        avatar_url:
+          type: string
+          description: URL на аватар профиля
 
     Notifications:
       type: object
@@ -1108,6 +1104,16 @@ components:
               $ref: "#/components/schemas/AuthToken"
           required:
             - auth_token
+
+    ListComments.request:
+      type: object
+      properties:
+        vote_name:
+          type: string
+          description: ID голосавания
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
 
     RegisterAccount.request:
       type: object

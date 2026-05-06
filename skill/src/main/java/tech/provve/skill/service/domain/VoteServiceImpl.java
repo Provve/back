@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.jooq.exception.IntegrityConstraintViolationException;
 import tech.provve.accounts.service.JwsParsingService;
+import tech.provve.accounts.service.application.AccountService;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
@@ -28,9 +29,11 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static java.util.Collections.emptyList;
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
 import static tech.provve.skill.domain.entity.Vote.Type.*;
 import static tech.provve.skill.service.XssSanitizer.sanitize;
@@ -42,6 +45,9 @@ public class VoteServiceImpl implements VoteService {
     private final VoteRepository voteRepository;
     private final SkillRepository skillRepository;
     private final CommentRepository commentRepository;
+
+    @External
+    private final AccountService accountService;
 
     @External
     private final ObjectMapper objectMapper;
@@ -213,8 +219,52 @@ public class VoteServiceImpl implements VoteService {
                                                                                   author,
                                                                                   request.getContent(),
                                                                                   null,
-                                                                                  comment.voteName(),
+                                                                                  null,
                                                                                   request.getTargetId())));
+    }
+
+    @Override
+    public Comments listComments(ListCommentsRequest request) {
+        Map<Comment, List<Comment>> tree = commentRepository.getAll(request.getPagination()
+                                                                           .getPrevious(),
+                                                                    request.getPagination()
+                                                                           .getSize(),
+                                                                    request.getVoteName());
+        List<CommentResponse> all = tree.entrySet()
+                                        .stream()
+                                        .map(entry -> {
+                                            var comment = entry.getKey();
+                                            var mappedReplies = entry.getValue()
+                                                                     .stream()
+                                                                     .map(this::mapReply)
+                                                                     .toList();
+                                            var author = accountService.getProfile(comment.author());
+                                            return new CommentResponse(comment.id(),
+                                                                       author,
+                                                                       comment.content(),
+                                                                       comment.created()
+                                                                              .atOffset(ZoneOffset.UTC),
+                                                                       mappedReplies
+                                            );
+                                        })
+                                        .toList();
+        if (all.isEmpty()) {
+            return new Comments(all, new Cursor(""));
+        }
+
+        var cursor = new Cursor(String.valueOf(all.getLast()
+                                                  .getId()));
+        return new Comments(all, cursor);
+    }
+
+    private CommentResponse mapReply(Comment from) {
+        var author = accountService.getProfile(from.author());
+        return new CommentResponse(from.id(),
+                                   author,
+                                   from.content(),
+                                   from.created()
+                                       .atOffset(ZoneOffset.UTC),
+                                   emptyList());
     }
 
     @Override

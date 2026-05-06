@@ -199,8 +199,8 @@ CREATE TABLE skill.comment (
     author VARCHAR(50) REFERENCES accounts.accounts(login),
     content VARCHAR(500) NOT NULL,
     created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    vote_name VARCHAR(100) REFERENCES skill.vote(name),
-    reply_for INTEGER
+    vote_name VARCHAR(100),
+    parent_id INTEGER
 );
 COMMENT ON TABLE skill.comment IS 'Комментарии к голосованиям';
 COMMENT ON COLUMN skill.comment.id IS 'Идентификатор комментария';
@@ -208,9 +208,87 @@ COMMENT ON COLUMN skill.comment.author IS 'Автор комментария';
 COMMENT ON COLUMN skill.comment.content IS 'Содержание комментария';
 COMMENT ON COLUMN skill.comment.created IS 'Время создания комментария. Записывается в БД';
 COMMENT ON COLUMN skill.comment.vote_name IS 'Связанное голосование';
-COMMENT ON COLUMN skill.comment.reply_for IS 'В ответ на какой комментарий написан этот?';
+COMMENT ON COLUMN skill.comment.parent_id IS 'В ответ на какой комментарий написан этот?';
 
 CREATE INDEX idx_comment_vote_name ON skill.comment(vote_name);
+
+CREATE FUNCTION skill.get_comments_tree(
+    min_id INT,
+    vote VARCHAR(100),
+    page_size INT
+)
+RETURNS TABLE (
+    id INTEGER,
+    author VARCHAR(50),
+    content VARCHAR(500),
+    created TIMESTAMP WITH TIME ZONE,
+    vote_name VARCHAR(100),
+    parent_id INTEGER,
+    sort_key BIGINT
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    WITH
+        anchor_comments AS (
+            SELECT
+                c.id,
+                c.author,
+                c.content,
+                c.created,
+                c.vote_name,
+                c.parent_id
+            FROM skill.comment c
+            WHERE
+                c.parent_id IS NULL
+                AND c.id > min_id
+                AND c.vote_name = vote
+            LIMIT page_size
+        ),
+        replies AS (
+            SELECT
+                r.id,
+                r.author,
+                r.content,
+                r.created,
+                r.vote_name,
+                r.parent_id
+            FROM skill.comment r
+            INNER JOIN anchor_comments ac ON ac.id = r.parent_id
+        )
+    SELECT
+        id,
+        author,
+        content,
+        created,
+        vote_name,
+        parent_id,
+        CASE
+            WHEN parent_id IS NULL THEN id
+            ELSE parent_id
+        END AS sort_key
+    FROM anchor_comments
+
+    UNION ALL
+
+    SELECT
+        id,
+        author,
+        content,
+        created,
+        vote_name,
+        parent_id,
+        CASE
+            WHEN parent_id IS NULL THEN id
+            ELSE parent_id
+        END AS sort_key
+    FROM replies
+
+    ORDER BY
+        sort_key,
+        parent_id DESC;
+END;
+$$ LANGUAGE plpgsql;
 
 
 

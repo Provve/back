@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReplyCommentRequest {
-
+  
   private Integer targetId;
   private String content;
   private String authToken;
@@ -27,7 +27,6 @@ public class ReplyCommentRequest {
   public Integer getTargetId() {
     return targetId;
   }
-
   public void setTargetId(Integer targetId) {
     this.targetId = targetId;
   }
@@ -37,7 +36,6 @@ public class ReplyCommentRequest {
   public String getContent() {
     return content;
   }
-
   public void setContent(String content) {
     this.content = content;
   }
@@ -47,7 +45,6 @@ public class ReplyCommentRequest {
   public String getAuthToken() {
     return authToken;
   }
-
   public void setAuthToken(String authToken) {
     this.authToken = authToken;
   }

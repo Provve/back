@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 import static java.lang.Boolean.FALSE;
+import static java.util.Objects.requireNonNullElseGet;
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
 
 @Singleton
@@ -204,5 +205,15 @@ public class AccountServiceImpl implements AccountService {
                               account.email()
                       )));
                   });
+    }
+
+    @Override
+    public ProfileResponse getProfile(String login) {
+        var accountOptional = repository.findByLogin(login);
+        String avatarUrl = accountOptional.map(Account::avatarUrl)
+                                          .orElse(null);
+        String username = accountOptional.map(account -> requireNonNullElseGet(account.username(), account::login))
+                                         .orElse(null);
+        return new ProfileResponse(username, avatarUrl);
     }
 }

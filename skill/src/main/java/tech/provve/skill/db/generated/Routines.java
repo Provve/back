@@ -7,8 +7,9 @@ package tech.provve.skill.db.generated;
 import org.jooq.Configuration;
 import org.jooq.Field;
 import org.jooq.Result;
-
+import tech.provve.skill.db.generated.tables.GetCommentsTree;
 import tech.provve.skill.db.generated.tables.GetReactionsTotal;
+import tech.provve.skill.db.generated.tables.records.GetCommentsTreeRecord;
 import tech.provve.skill.db.generated.tables.records.GetReactionsTotalRecord;
 
 
@@ -17,6 +18,54 @@ import tech.provve.skill.db.generated.tables.records.GetReactionsTotalRecord;
  */
 @SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class Routines {
+
+    /**
+     * Call <code>skill.get_comments_tree</code>.
+     */
+    public static Result<GetCommentsTreeRecord> getCommentsTree(
+            Configuration configuration
+            , Integer minId
+            , String vote
+            , Integer pageSize
+    ) {
+        return configuration.dsl()
+                            .selectFrom(tech.provve.skill.db.generated.tables.GetCommentsTree.GET_COMMENTS_TREE.call(
+                                    minId
+                                    , vote
+                                    , pageSize
+                            ))
+                            .fetch();
+    }
+
+    /**
+     * Get <code>skill.get_comments_tree</code> as a table.
+     */
+    public static GetCommentsTree getCommentsTree(
+            Integer minId
+            , String vote
+            , Integer pageSize
+    ) {
+        return tech.provve.skill.db.generated.tables.GetCommentsTree.GET_COMMENTS_TREE.call(
+                minId,
+                vote,
+                pageSize
+        );
+    }
+
+    /**
+     * Get <code>skill.get_comments_tree</code> as a table.
+     */
+    public static GetCommentsTree getCommentsTree(
+            Field<Integer> minId
+            , Field<String> vote
+            , Field<Integer> pageSize
+    ) {
+        return tech.provve.skill.db.generated.tables.GetCommentsTree.GET_COMMENTS_TREE.call(
+                minId,
+                vote,
+                pageSize
+        );
+    }
 
     /**
      * Call <code>skill.get_reactions_total</code>.

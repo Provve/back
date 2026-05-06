@@ -177,6 +177,7 @@ public class Services {
     @Bean
     public VoteService voteService(VoteRepository voteRepository,
                                    SkillRepository skillRepository,
+                                   AccountService accountService,
                                    JwsParsingService jwsParsingService,
                                    Supplier<LocalDateTime> deadlineSupplier,
                                    Scheduling scheduling,
@@ -188,6 +189,7 @@ public class Services {
                 voteRepository,
                 skillRepository,
                 commentRepository,
+                accountService,
                 objectMapper,
                 deadlineSupplier,
                 jwsParsingService,

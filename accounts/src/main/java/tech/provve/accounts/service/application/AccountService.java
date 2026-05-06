@@ -46,4 +46,5 @@ public interface AccountService {
      */
     void downgrade(String login);
 
+    ProfileResponse getProfile(String login);
 }
