@@ -46,5 +46,7 @@ public interface AccountService {
      */
     void downgrade(String login);
 
-    ProfileResponse getProfile(String login);
+    ProfilePublicView viewPublicProfile(String login);
+
+    ProfilePrivateView viewPrivateProfile(ViewPrivateProfile request) throws AccessDenied, AccountNotFound;
 }

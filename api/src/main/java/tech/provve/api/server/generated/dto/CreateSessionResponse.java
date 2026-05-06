@@ -1,10 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.net.URI;
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateSessionResponse {
@@ -13,18 +12,18 @@ public class CreateSessionResponse {
   private Boolean lossRisk;
   private String nonce;
 
-  public CreateSessionResponse() {
+    public CreateSessionResponse() {
 
   }
 
-  public CreateSessionResponse(URI redirect, Boolean lossRisk, String nonce) {
+    public CreateSessionResponse(URI redirect, Boolean lossRisk, String nonce) {
     this.redirect = redirect;
     this.lossRisk = lossRisk;
     this.nonce = nonce;
   }
 
 
-  @JsonProperty("redirect")
+    @JsonProperty("redirect")
   public URI getRedirect() {
     return redirect;
   }
@@ -33,7 +32,7 @@ public class CreateSessionResponse {
   }
 
 
-  @JsonProperty("loss_risk")
+    @JsonProperty("loss_risk")
   public Boolean getLossRisk() {
     return lossRisk;
   }
@@ -42,7 +41,7 @@ public class CreateSessionResponse {
   }
 
 
-  @JsonProperty("nonce")
+    @JsonProperty("nonce")
   public String getNonce() {
     return nonce;
   }
@@ -75,15 +74,15 @@ public class CreateSessionResponse {
     StringBuilder sb = new StringBuilder();
     sb.append("class CreateSessionResponse {\n");
 
-    sb.append("    redirect: ")
-      .append(toIndentedString(redirect))
-      .append("\n");
-    sb.append("    lossRisk: ")
-      .append(toIndentedString(lossRisk))
-      .append("\n");
-    sb.append("    nonce: ")
-      .append(toIndentedString(nonce))
-      .append("\n");
+      sb.append("    redirect: ")
+        .append(toIndentedString(redirect))
+        .append("\n");
+      sb.append("    lossRisk: ")
+        .append(toIndentedString(lossRisk))
+        .append("\n");
+      sb.append("    nonce: ")
+        .append(toIndentedString(nonce))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -96,7 +95,7 @@ public class CreateSessionResponse {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

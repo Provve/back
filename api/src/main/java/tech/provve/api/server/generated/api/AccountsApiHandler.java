@@ -4,12 +4,14 @@ import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.DeleteAccountRequest;
 import tech.provve.api.server.generated.dto.Error;
+import tech.provve.api.server.generated.dto.ProfilePrivateView;
 import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
 import tech.provve.api.server.generated.dto.UpdateContactsRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
+import tech.provve.api.server.generated.dto.ViewPrivateProfile;
 
 import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -59,6 +61,8 @@ public class AccountsApiHandler implements RouteHandler {
                .handler(this::updatePersonalDataConsent);
         builder.operation("upgradeAccount")
                .handler(this::upgradeAccount);
+        builder.operation("viewProfile")
+               .handler(this::viewProfile);
     }
 
     private void authenticateUser(RoutingContext routingContext) {
@@ -335,6 +339,35 @@ public class AccountsApiHandler implements RouteHandler {
         logger.debug("Parameter login is {}", login);
 
         api.upgradeAccount(login)
+           .onSuccess(apiResponse -> {
+               routingContext.response()
+                             .setStatusCode(apiResponse.getStatusCode());
+               if (apiResponse.hasData()) {
+                   routingContext.json(apiResponse.getData());
+               } else {
+                   routingContext.response()
+                                 .end();
+               }
+           })
+           .onFailure(routingContext::fail);
+    }
+
+    private void viewProfile(RoutingContext routingContext) {
+        logger.info("viewProfile()");
+
+        // Param extraction
+        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
+
+        RequestParameter body = requestParameters.body();
+        ViewPrivateProfile viewPrivateProfile = body != null
+                                                ? DatabindCodec.mapper()
+                                                               .convertValue(body.get(), new TypeReference<ViewPrivateProfile>() {
+                                                               })
+                                                : null;
+
+        logger.debug("Parameter viewPrivateProfile is {}", viewPrivateProfile);
+
+        api.viewProfile(viewPrivateProfile)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

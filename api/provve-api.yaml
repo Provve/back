@@ -3,8 +3,8 @@ info:
   title: Provve API
   version: "0.0.1"
 servers:
-  - url: http://localhost:8080/api/v1
-  - url: https://provve.tech/api/v1
+  - url: http://localhost:8080/v1/
+  - url: https://provve.tech/v1/
 tags:
   - name: accounts
   - name: notifications
@@ -78,6 +78,32 @@ paths:
           description: Пользователь не найден
         '403':
           description: Аккаунт существует, но данные неверны
+
+  /profiles:
+    get:
+      tags:
+        - accounts
+      summary: Получить частные данные профиля (для дальнейшего редактирования)
+      operationId: viewProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ViewPrivateProfile"
+      responses:
+        '200':
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfilePrivateView"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
+        '403':
+          description: Запрещено смотреть данные чужого профиля
+      security:
+        - auth: [ ]
 
   /upgrade:
     get:
@@ -1027,7 +1053,7 @@ components:
           format: int32
           description: ID комментария
         author:
-          $ref: "#/components/schemas/Profile.response"
+          $ref: "#/components/schemas/ProfilePublicView"
           description: Автор комментария
         content:
           type: string
@@ -1039,8 +1065,9 @@ components:
           items:
             $ref: "#/components/schemas/Comment.response"
 
-    Profile.response:
+    ProfilePublicView:
       type: object
+      description: Краткая информация о профиле
       properties:
         username:
           type: string
@@ -1048,6 +1075,38 @@ components:
         avatar_url:
           type: string
           description: URL на аватар профиля
+        contact_info:
+          type: string
+          description: Дополнительная контактная информация пользователя
+
+    ProfilePrivateView:
+      allOf:
+        - $ref: "#/components/schemas/ProfilePublicView"
+        - type: object
+          description: Краткая информация о профиле
+          properties:
+            login:
+              type: string
+              description: Логин пользователя (уникальный идентификатор для входа)
+            email:
+              type: string
+              format: email
+              description: Электронная почта пользователя
+            is_consent_personal_data:
+              type: boolean
+              description: Дано ли согласие на обработку персональных данных
+            is_premium:
+              type: boolean
+              description: Является ли пользователь обладателем премиум-статуса
+
+    ViewPrivateProfile:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Логин аккаунта, владеющего профилем
+        auth_token:
+          $ref: "#/components/schemas/AuthToken"
 
     Notifications:
       type: object

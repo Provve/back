@@ -1,18 +1,20 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+
+import tech.provve.api.server.generated.dto.ProfilePublicView;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentResponse {
 
     private Integer id;
-    private ProfileResponse author;
+    private ProfilePublicView author;
     private String content;
     private OffsetDateTime created;
     private List<CommentResponse> replies = new ArrayList<>();
@@ -21,7 +23,7 @@ public class CommentResponse {
 
     }
 
-    public CommentResponse(Integer id, ProfileResponse author, String content, OffsetDateTime created, List<CommentResponse> replies) {
+    public CommentResponse(Integer id, ProfilePublicView author, String content, OffsetDateTime created, List<CommentResponse> replies) {
         this.id = id;
         this.author = author;
         this.content = content;
@@ -41,11 +43,11 @@ public class CommentResponse {
 
 
     @JsonProperty("author")
-    public ProfileResponse getAuthor() {
+    public ProfilePublicView getAuthor() {
         return author;
     }
 
-    public void setAuthor(ProfileResponse author) {
+    public void setAuthor(ProfilePublicView author) {
         this.author = author;
     }
 

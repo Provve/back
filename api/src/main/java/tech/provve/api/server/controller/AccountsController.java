@@ -22,11 +22,10 @@ import tech.provve.payment.service.application.PaymentService;
 public class AccountsController implements AccountsApi {
 
     private final AccountService accountService;
+    private final InputValidator validatingService;
 
     @External
     private final PaymentService paymentService;
-
-    private final InputValidator validatingService;
 
     public Future<ApiResponse<AuthenticateUser200Response>> authenticateUser(AuthenticateUserRequest authenticateUserRequest) {
         try {
@@ -146,6 +145,17 @@ public class AccountsController implements AccountsApi {
             return Future.failedFuture(new HttpException(e, 409));
         } catch (PaymentGatewayNotAccessible e) {
             return Future.failedFuture(new HttpException(e, 504));
+        }
+    }
+
+    @Override
+    public Future<ApiResponse<ProfilePrivateView>> viewProfile(ViewPrivateProfile viewPrivateProfile) {
+        try {
+            return Future.succeededFuture(new ApiResponse<>(200, accountService.viewPrivateProfile(viewPrivateProfile)));
+        } catch (AccessDenied e) {
+            return Future.failedFuture(new HttpException(e, 403));
+        } catch (AccountNotFound e) {
+            return Future.failedFuture(new HttpException(e, 404));
         }
     }
 

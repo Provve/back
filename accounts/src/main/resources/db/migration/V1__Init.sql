@@ -12,7 +12,7 @@ CREATE TABLE accounts.accounts (
 );
 
 CREATE INDEX idx_accounts_email
-ON accounts.accounts USING BTREE(email);
+ON accounts.accounts USING HASH(email);
 
 COMMENT ON TABLE accounts.accounts IS 'Таблица для хранения учетных записей пользователей';
 COMMENT ON COLUMN accounts.accounts.login IS 'Логин пользователя';

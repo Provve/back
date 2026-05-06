@@ -11,18 +11,18 @@ public class AddCommentRequest {
   private String content;
   private String authToken;
 
-  public AddCommentRequest() {
+    public AddCommentRequest() {
 
   }
 
-  public AddCommentRequest(String voteName, String content, String authToken) {
+    public AddCommentRequest(String voteName, String content, String authToken) {
     this.voteName = voteName;
     this.content = content;
     this.authToken = authToken;
   }
 
 
-  @JsonProperty("vote_name")
+    @JsonProperty("vote_name")
   public String getVoteName() {
     return voteName;
   }
@@ -31,7 +31,7 @@ public class AddCommentRequest {
   }
 
 
-  @JsonProperty("content")
+    @JsonProperty("content")
   public String getContent() {
     return content;
   }
@@ -40,7 +40,7 @@ public class AddCommentRequest {
   }
 
 
-  @JsonProperty("auth_token")
+    @JsonProperty("auth_token")
   public String getAuthToken() {
     return authToken;
   }
@@ -73,15 +73,15 @@ public class AddCommentRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class AddCommentRequest {\n");
 
-    sb.append("    voteName: ")
-      .append(toIndentedString(voteName))
-      .append("\n");
-    sb.append("    content: ")
-      .append(toIndentedString(content))
-      .append("\n");
-    sb.append("    authToken: ")
-      .append(toIndentedString(authToken))
-      .append("\n");
+      sb.append("    voteName: ")
+        .append(toIndentedString(voteName))
+        .append("\n");
+      sb.append("    content: ")
+        .append(toIndentedString(content))
+        .append("\n");
+      sb.append("    authToken: ")
+        .append(toIndentedString(authToken))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -94,7 +94,7 @@ public class AddCommentRequest {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

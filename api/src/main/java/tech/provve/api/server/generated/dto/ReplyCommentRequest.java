@@ -1,9 +1,8 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReplyCommentRequest {
@@ -12,18 +11,18 @@ public class ReplyCommentRequest {
   private String content;
   private String authToken;
 
-  public ReplyCommentRequest() {
+    public ReplyCommentRequest() {
 
   }
 
-  public ReplyCommentRequest(Integer targetId, String content, String authToken) {
+    public ReplyCommentRequest(Integer targetId, String content, String authToken) {
     this.targetId = targetId;
     this.content = content;
     this.authToken = authToken;
   }
 
 
-  @JsonProperty("target_id")
+    @JsonProperty("target_id")
   public Integer getTargetId() {
     return targetId;
   }
@@ -32,7 +31,7 @@ public class ReplyCommentRequest {
   }
 
 
-  @JsonProperty("content")
+    @JsonProperty("content")
   public String getContent() {
     return content;
   }
@@ -41,7 +40,7 @@ public class ReplyCommentRequest {
   }
 
 
-  @JsonProperty("auth_token")
+    @JsonProperty("auth_token")
   public String getAuthToken() {
     return authToken;
   }
@@ -74,15 +73,15 @@ public class ReplyCommentRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class ReplyCommentRequest {\n");
 
-    sb.append("    targetId: ")
-      .append(toIndentedString(targetId))
-      .append("\n");
-    sb.append("    content: ")
-      .append(toIndentedString(content))
-      .append("\n");
-    sb.append("    authToken: ")
-      .append(toIndentedString(authToken))
-      .append("\n");
+      sb.append("    targetId: ")
+        .append(toIndentedString(targetId))
+        .append("\n");
+      sb.append("    content: ")
+        .append(toIndentedString(content))
+        .append("\n");
+      sb.append("    authToken: ")
+        .append(toIndentedString(authToken))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -95,7 +94,7 @@ public class ReplyCommentRequest {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

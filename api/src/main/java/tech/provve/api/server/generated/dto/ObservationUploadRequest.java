@@ -1,9 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
+import tech.provve.api.server.generated.dto.Observation;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ObservationUploadRequest {
@@ -13,11 +13,11 @@ public class ObservationUploadRequest {
   private String sig;
   private String authToken;
 
-  public ObservationUploadRequest() {
+    public ObservationUploadRequest() {
 
   }
 
-  public ObservationUploadRequest(Observation observation, String nonce, String sig, String authToken) {
+    public ObservationUploadRequest(Observation observation, String nonce, String sig, String authToken) {
     this.observation = observation;
     this.nonce = nonce;
     this.sig = sig;
@@ -25,7 +25,7 @@ public class ObservationUploadRequest {
   }
 
 
-  @JsonProperty("observation")
+    @JsonProperty("observation")
   public Observation getObservation() {
     return observation;
   }
@@ -34,7 +34,7 @@ public class ObservationUploadRequest {
   }
 
 
-  @JsonProperty("nonce")
+    @JsonProperty("nonce")
   public String getNonce() {
     return nonce;
   }
@@ -43,7 +43,7 @@ public class ObservationUploadRequest {
   }
 
 
-  @JsonProperty("sig")
+    @JsonProperty("sig")
   public String getSig() {
     return sig;
   }
@@ -52,7 +52,7 @@ public class ObservationUploadRequest {
   }
 
 
-  @JsonProperty("auth_token")
+    @JsonProperty("auth_token")
   public String getAuthToken() {
     return authToken;
   }
@@ -86,18 +86,18 @@ public class ObservationUploadRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class ObservationUploadRequest {\n");
 
-    sb.append("    observation: ")
-      .append(toIndentedString(observation))
-      .append("\n");
-    sb.append("    nonce: ")
-      .append(toIndentedString(nonce))
-      .append("\n");
-    sb.append("    sig: ")
-      .append(toIndentedString(sig))
-      .append("\n");
-    sb.append("    authToken: ")
-      .append(toIndentedString(authToken))
-      .append("\n");
+      sb.append("    observation: ")
+        .append(toIndentedString(observation))
+        .append("\n");
+      sb.append("    nonce: ")
+        .append(toIndentedString(nonce))
+        .append("\n");
+      sb.append("    sig: ")
+        .append(toIndentedString(sig))
+        .append("\n");
+      sb.append("    authToken: ")
+        .append(toIndentedString(authToken))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -110,7 +110,7 @@ public class ObservationUploadRequest {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }
