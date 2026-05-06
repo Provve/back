@@ -1,9 +1,10 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
+import tech.provve.api.server.generated.dto.Filter;
+import tech.provve.api.server.generated.dto.Pagination;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CollectionRequest {
@@ -11,17 +12,17 @@ public class CollectionRequest {
   private Pagination pagination;
   private Filter filter;
 
-  public CollectionRequest() {
+    public CollectionRequest() {
 
   }
 
-  public CollectionRequest(Pagination pagination, Filter filter) {
+    public CollectionRequest(Pagination pagination, Filter filter) {
     this.pagination = pagination;
     this.filter = filter;
   }
 
 
-  @JsonProperty("pagination")
+    @JsonProperty("pagination")
   public Pagination getPagination() {
     return pagination;
   }
@@ -30,7 +31,7 @@ public class CollectionRequest {
   }
 
 
-  @JsonProperty("filter")
+    @JsonProperty("filter")
   public Filter getFilter() {
     return filter;
   }
@@ -62,12 +63,12 @@ public class CollectionRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class CollectionRequest {\n");
 
-    sb.append("    pagination: ")
-      .append(toIndentedString(pagination))
-      .append("\n");
-    sb.append("    filter: ")
-      .append(toIndentedString(filter))
-      .append("\n");
+      sb.append("    pagination: ")
+        .append(toIndentedString(pagination))
+        .append("\n");
+      sb.append("    filter: ")
+        .append(toIndentedString(filter))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -80,7 +81,7 @@ public class CollectionRequest {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

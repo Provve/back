@@ -1,9 +1,8 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 /**
  * Успешный результат
@@ -14,17 +13,17 @@ public class ResultResponse {
   private String examName;
   private Long time;
 
-  public ResultResponse() {
+    public ResultResponse() {
 
   }
 
-  public ResultResponse(String examName, Long time) {
+    public ResultResponse(String examName, Long time) {
     this.examName = examName;
     this.time = time;
   }
 
 
-  @JsonProperty("exam_name")
+    @JsonProperty("exam_name")
   public String getExamName() {
     return examName;
   }
@@ -33,7 +32,7 @@ public class ResultResponse {
   }
 
 
-  @JsonProperty("time")
+    @JsonProperty("time")
   public Long getTime() {
     return time;
   }
@@ -65,12 +64,12 @@ public class ResultResponse {
     StringBuilder sb = new StringBuilder();
     sb.append("class ResultResponse {\n");
 
-    sb.append("    examName: ")
-      .append(toIndentedString(examName))
-      .append("\n");
-    sb.append("    time: ")
-      .append(toIndentedString(time))
-      .append("\n");
+      sb.append("    examName: ")
+        .append(toIndentedString(examName))
+        .append("\n");
+      sb.append("    time: ")
+        .append(toIndentedString(time))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -83,7 +82,7 @@ public class ResultResponse {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

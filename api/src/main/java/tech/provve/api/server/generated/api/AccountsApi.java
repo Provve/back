@@ -4,12 +4,14 @@ import tech.provve.api.server.generated.dto.AuthenticateUser200Response;
 import tech.provve.api.server.generated.dto.AuthenticateUserRequest;
 import tech.provve.api.server.generated.dto.DeleteAccountRequest;
 import tech.provve.api.server.generated.dto.Error;
+import tech.provve.api.server.generated.dto.ProfilePrivateView;
 import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
 import tech.provve.api.server.generated.dto.UpdateContactsRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
+import tech.provve.api.server.generated.dto.ViewPrivateProfile;
 
 import tech.provve.api.server.generated.ApiResponse;
 
@@ -30,4 +32,6 @@ public interface AccountsApi {
     Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest);
     Future<ApiResponse<Void>> updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest);
     Future<ApiResponse<String>> upgradeAccount(String login);
+
+    Future<ApiResponse<ProfilePrivateView>> viewProfile(ViewPrivateProfile viewPrivateProfile);
 }

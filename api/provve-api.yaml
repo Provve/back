@@ -3,8 +3,8 @@ info:
   title: Provve API
   version: "0.0.1"
 servers:
-  - url: http://localhost:8080/api/v1
-  - url: https://provve.tech/api/v1
+  - url: http://localhost:8080/v1/
+  - url: https://provve.tech/v1/
 tags:
   - name: accounts
   - name: notifications
@@ -78,6 +78,32 @@ paths:
           description: Пользователь не найден
         '403':
           description: Аккаунт существует, но данные неверны
+
+  /profiles:
+    get:
+      tags:
+        - accounts
+      summary: Получить частные данные профиля (для дальнейшего редактирования)
+      operationId: viewProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ViewPrivateProfile"
+      responses:
+        '200':
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfilePrivateView"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
+        '403':
+          description: Запрещено смотреть данные чужого профиля
+      security:
+        - auth: [ ]
 
   /upgrade:
     get:
@@ -1072,6 +1098,15 @@ components:
             is_premium:
               type: boolean
               description: Является ли пользователь обладателем премиум-статуса
+
+    ViewPrivateProfile:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Логин аккаунта, владеющего профилем
+        auth_token:
+          $ref: "#/components/schemas/AuthToken"
 
     Notifications:
       type: object

@@ -1,0 +1,174 @@
+package tech.provve.api.server.generated.dto;
+
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ProfilePrivateView {
+
+    private String username;
+    private String avatarUrl;
+    private String contactInfo;
+    private String login;
+    private String email;
+    private Boolean isConsentPersonalData;
+    private Boolean isPremium;
+
+    public ProfilePrivateView() {
+
+    }
+
+    public ProfilePrivateView(String username,
+                              String avatarUrl,
+                              String contactInfo,
+                              String login,
+                              String email,
+                              Boolean isConsentPersonalData,
+                              Boolean isPremium) {
+        this.username = username;
+        this.avatarUrl = avatarUrl;
+        this.contactInfo = contactInfo;
+        this.login = login;
+        this.email = email;
+        this.isConsentPersonalData = isConsentPersonalData;
+        this.isPremium = isPremium;
+    }
+
+
+    @JsonProperty("username")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
+    @JsonProperty("avatar_url")
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+
+    @JsonProperty("contact_info")
+    public String getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+
+    @JsonProperty("login")
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+
+    @JsonProperty("email")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    @JsonProperty("is_consent_personal_data")
+    public Boolean getIsConsentPersonalData() {
+        return isConsentPersonalData;
+    }
+
+    public void setIsConsentPersonalData(Boolean isConsentPersonalData) {
+        this.isConsentPersonalData = isConsentPersonalData;
+    }
+
+
+    @JsonProperty("is_premium")
+    public Boolean getIsPremium() {
+        return isPremium;
+    }
+
+    public void setIsPremium(Boolean isPremium) {
+        this.isPremium = isPremium;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ProfilePrivateView profilePrivateView = (ProfilePrivateView) o;
+        return Objects.equals(username, profilePrivateView.username) &&
+               Objects.equals(avatarUrl, profilePrivateView.avatarUrl) &&
+               Objects.equals(contactInfo, profilePrivateView.contactInfo) &&
+               Objects.equals(login, profilePrivateView.login) &&
+               Objects.equals(email, profilePrivateView.email) &&
+               Objects.equals(isConsentPersonalData, profilePrivateView.isConsentPersonalData) &&
+               Objects.equals(isPremium, profilePrivateView.isPremium);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, avatarUrl, contactInfo, login, email, isConsentPersonalData, isPremium);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ProfilePrivateView {\n");
+
+        sb.append("    username: ")
+          .append(toIndentedString(username))
+          .append("\n");
+        sb.append("    avatarUrl: ")
+          .append(toIndentedString(avatarUrl))
+          .append("\n");
+        sb.append("    contactInfo: ")
+          .append(toIndentedString(contactInfo))
+          .append("\n");
+        sb.append("    login: ")
+          .append(toIndentedString(login))
+          .append("\n");
+        sb.append("    email: ")
+          .append(toIndentedString(email))
+          .append("\n");
+        sb.append("    isConsentPersonalData: ")
+          .append(toIndentedString(isConsentPersonalData))
+          .append("\n");
+        sb.append("    isPremium: ")
+          .append(toIndentedString(isPremium))
+          .append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString()
+                .replace("\n", "\n    ");
+    }
+}

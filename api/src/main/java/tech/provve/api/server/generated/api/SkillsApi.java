@@ -1,8 +1,21 @@
 package tech.provve.api.server.generated.api;
 
-import io.vertx.core.Future;
+import tech.provve.api.server.generated.dto.CollectionAuthenticatedRequest;
+import tech.provve.api.server.generated.dto.CollectionRequest;
+import tech.provve.api.server.generated.dto.Error;
+import tech.provve.api.server.generated.dto.Exams;
+import tech.provve.api.server.generated.dto.ResultResponse;
+import tech.provve.api.server.generated.dto.Results;
+import tech.provve.api.server.generated.dto.Skills;
+import tech.provve.api.server.generated.dto.SubmitExamSolutionRequest;
+
 import tech.provve.api.server.generated.ApiResponse;
-import tech.provve.api.server.generated.dto.*;
+
+import io.vertx.core.Future;
+import io.vertx.core.json.JsonObject;
+
+import java.util.List;
+import java.util.Map;
 
 public interface SkillsApi {
     Future<ApiResponse<ResultResponse>> getExamResult(String examName);

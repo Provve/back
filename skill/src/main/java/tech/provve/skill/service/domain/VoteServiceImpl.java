@@ -238,7 +238,7 @@ public class VoteServiceImpl implements VoteService {
                                                                      .stream()
                                                                      .map(this::mapReply)
                                                                      .toList();
-                                            var author = accountService.getProfile(comment.author());
+                                            var author = accountService.viewPublicProfile(comment.author());
                                             return new CommentResponse(comment.id(),
                                                                        author,
                                                                        comment.content(),
@@ -258,7 +258,7 @@ public class VoteServiceImpl implements VoteService {
     }
 
     private CommentResponse mapReply(Comment from) {
-        var author = accountService.getProfile(from.author());
+        var author = accountService.viewPublicProfile(from.author());
         return new CommentResponse(from.id(),
                                    author,
                                    from.content(),

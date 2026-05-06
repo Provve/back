@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.exception.*;
 import tech.provve.accounts.mapper.AccountMapper;
+import tech.provve.accounts.mapper.AccountResponseMapper;
 import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.JwtIssuingService;
@@ -26,8 +27,8 @@ import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
-import static java.lang.Boolean.FALSE;
 import static java.util.Objects.requireNonNullElseGet;
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
 
@@ -169,11 +170,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest) {
         var login = jwsParsingService.parseAuth(updatePersonalDataConsentRequest.getAuthToken(), JWT_SUBJECT);
-        if (FALSE.equals(updatePersonalDataConsentRequest.getConsentPersonalData())) {
-            repository.updatePersonalDataConsent(login, updatePersonalDataConsentRequest.getConsentPersonalData());
+        boolean consent = updatePersonalDataConsentRequest.getConsentPersonalData();
+
+        repository.updatePersonalDataConsent(login, consent);
+        if (!consent) {
             repository.updateEmail(login, null);
-        } else {
-            repository.updatePersonalDataConsent(login, updatePersonalDataConsentRequest.getConsentPersonalData());
         }
     }
 
@@ -208,12 +209,30 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public ProfileResponse getProfile(String login) {
+    public ProfilePublicView viewPublicProfile(String login) {
         var accountOptional = repository.findByLogin(login);
         String avatarUrl = accountOptional.map(Account::avatarUrl)
                                           .orElse(null);
         String username = accountOptional.map(account -> requireNonNullElseGet(account.username(), account::login))
                                          .orElse(null);
-        return new ProfileResponse(username, avatarUrl);
+        String contactInfo = accountOptional.map(Account::contactInfo)
+                                            .orElse(null);
+
+        return new ProfilePublicView(username, avatarUrl, contactInfo);
     }
+
+    @Override
+    public ProfilePrivateView viewPrivateProfile(ViewPrivateProfile request) {
+        var actualLogin = jwsParsingService.parseAuth(request.getAuthToken(), JWT_SUBJECT);
+        var login = request.getLogin();
+
+        if (!Objects.equals(login, actualLogin)) {
+            throw new AccessDenied("The Profile is not yours.");
+        }
+        var account = repository.findByLogin(login)
+                                .orElseThrow(AccountNotFound::new); // маловероятно, пусть будет для инфомративности
+
+        return AccountResponseMapper.INST.map(account);
+    }
+
 }

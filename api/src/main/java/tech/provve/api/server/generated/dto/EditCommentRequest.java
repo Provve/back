@@ -1,9 +1,8 @@
 package tech.provve.api.server.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EditCommentRequest {
@@ -12,18 +11,18 @@ public class EditCommentRequest {
   private String content;
   private String authToken;
 
-  public EditCommentRequest() {
+    public EditCommentRequest() {
 
   }
 
-  public EditCommentRequest(Integer id, String content, String authToken) {
+    public EditCommentRequest(Integer id, String content, String authToken) {
     this.id = id;
     this.content = content;
     this.authToken = authToken;
   }
 
 
-  @JsonProperty("id")
+    @JsonProperty("id")
   public Integer getId() {
     return id;
   }
@@ -32,7 +31,7 @@ public class EditCommentRequest {
   }
 
 
-  @JsonProperty("content")
+    @JsonProperty("content")
   public String getContent() {
     return content;
   }
@@ -41,7 +40,7 @@ public class EditCommentRequest {
   }
 
 
-  @JsonProperty("auth_token")
+    @JsonProperty("auth_token")
   public String getAuthToken() {
     return authToken;
   }
@@ -74,15 +73,15 @@ public class EditCommentRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class EditCommentRequest {\n");
 
-    sb.append("    id: ")
-      .append(toIndentedString(id))
-      .append("\n");
-    sb.append("    content: ")
-      .append(toIndentedString(content))
-      .append("\n");
-    sb.append("    authToken: ")
-      .append(toIndentedString(authToken))
-      .append("\n");
+      sb.append("    id: ")
+        .append(toIndentedString(id))
+        .append("\n");
+      sb.append("    content: ")
+        .append(toIndentedString(content))
+        .append("\n");
+      sb.append("    authToken: ")
+        .append(toIndentedString(authToken))
+        .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -95,7 +94,7 @@ public class EditCommentRequest {
     if (o == null) {
       return "null";
     }
-    return o.toString()
-            .replace("\n", "\n    ");
+      return o.toString()
+              .replace("\n", "\n    ");
   }
 }

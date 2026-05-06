@@ -1,20 +1,33 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DeleteAccountRequest {
+public class ViewPrivateProfile {
 
+    private String login;
     private String authToken;
 
-    public DeleteAccountRequest() {
+    public ViewPrivateProfile() {
 
     }
 
-    public DeleteAccountRequest(String authToken) {
+    public ViewPrivateProfile(String login, String authToken) {
+        this.login = login;
         this.authToken = authToken;
+    }
+
+
+    @JsonProperty("login")
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
 
@@ -36,20 +49,24 @@ public class DeleteAccountRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DeleteAccountRequest deleteAccountRequest = (DeleteAccountRequest) o;
-        return Objects.equals(authToken, deleteAccountRequest.authToken);
+        ViewPrivateProfile viewPrivateProfile = (ViewPrivateProfile) o;
+        return Objects.equals(login, viewPrivateProfile.login) &&
+               Objects.equals(authToken, viewPrivateProfile.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authToken);
+        return Objects.hash(login, authToken);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class DeleteAccountRequest {\n");
+        sb.append("class ViewPrivateProfile {\n");
 
+        sb.append("    login: ")
+          .append(toIndentedString(login))
+          .append("\n");
         sb.append("    authToken: ")
           .append(toIndentedString(authToken))
           .append("\n");
