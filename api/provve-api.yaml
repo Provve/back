@@ -1027,7 +1027,7 @@ components:
           format: int32
           description: ID комментария
         author:
-          $ref: "#/components/schemas/Profile.response"
+          $ref: "#/components/schemas/ProfilePublicView"
           description: Автор комментария
         content:
           type: string
@@ -1039,8 +1039,9 @@ components:
           items:
             $ref: "#/components/schemas/Comment.response"
 
-    Profile.response:
+    ProfilePublicView:
       type: object
+      description: Краткая информация о профиле
       properties:
         username:
           type: string
@@ -1048,6 +1049,29 @@ components:
         avatar_url:
           type: string
           description: URL на аватар профиля
+        contact_info:
+          type: string
+          description: Дополнительная контактная информация пользователя
+
+    ProfilePrivateView:
+      allOf:
+        - $ref: "#/components/schemas/ProfilePublicView"
+        - type: object
+          description: Краткая информация о профиле
+          properties:
+            login:
+              type: string
+              description: Логин пользователя (уникальный идентификатор для входа)
+            email:
+              type: string
+              format: email
+              description: Электронная почта пользователя
+            is_consent_personal_data:
+              type: boolean
+              description: Дано ли согласие на обработку персональных данных
+            is_premium:
+              type: boolean
+              description: Является ли пользователь обладателем премиум-статуса
 
     Notifications:
       type: object
