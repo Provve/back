@@ -2,16 +2,17 @@ CREATE SCHEMA IF NOT EXISTS accounts;
 
 CREATE TABLE accounts.accounts (
     login VARCHAR(50) PRIMARY KEY,
-    email VARCHAR(254),
+    email VARCHAR(254), -- RFC 5321
     avatar_url TEXT,
     premium BOOLEAN DEFAULT FALSE,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash TEXT NOT NULL,
     consent_personal_data BOOLEAN DEFAULT FALSE,
-    username VARCHAR(30) NOT NULL
+    username VARCHAR(30) NOT NULL,
+    contact_info TEXT
 );
 
 CREATE INDEX idx_accounts_email
-ON accounts.accounts USING BTREE(email);
+ON accounts.accounts USING HASH(email);
 
 COMMENT ON TABLE accounts.accounts IS 'Таблица для хранения учетных записей пользователей';
 COMMENT ON COLUMN accounts.accounts.login IS 'Логин пользователя';
@@ -21,3 +22,4 @@ COMMENT ON COLUMN accounts.accounts.premium IS 'Является ли польз
 COMMENT ON COLUMN accounts.accounts.password_hash IS 'Хэшированный пароль пользователя';
 COMMENT ON COLUMN accounts.accounts.consent_personal_data IS 'Флаг согласия пользователя на обработку персональных данных';
 COMMENT ON COLUMN accounts.accounts.username IS 'Отображаемое имя пользователя';
+COMMENT ON COLUMN accounts.accounts.contact_info IS 'Произвальная информация с контакными данными';
