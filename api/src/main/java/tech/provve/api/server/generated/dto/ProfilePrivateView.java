@@ -1,17 +1,15 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProfilePrivateView {
 
-    private String username;
+    private String login;
     private String avatarUrl;
     private String contactInfo;
-    private String login;
     private String email;
     private Boolean isConsentPersonalData;
     private Boolean isPremium;
@@ -20,30 +18,23 @@ public class ProfilePrivateView {
 
     }
 
-    public ProfilePrivateView(String username,
-                              String avatarUrl,
-                              String contactInfo,
-                              String login,
-                              String email,
-                              Boolean isConsentPersonalData,
-                              Boolean isPremium) {
-        this.username = username;
+    public ProfilePrivateView(String login, String avatarUrl, String contactInfo, String email, Boolean isConsentPersonalData, Boolean isPremium) {
+        this.login = login;
         this.avatarUrl = avatarUrl;
         this.contactInfo = contactInfo;
-        this.login = login;
         this.email = email;
         this.isConsentPersonalData = isConsentPersonalData;
         this.isPremium = isPremium;
     }
 
 
-    @JsonProperty("username")
-    public String getUsername() {
-        return username;
+    @JsonProperty("login")
+    public String getLogin() {
+        return login;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
 
@@ -64,16 +55,6 @@ public class ProfilePrivateView {
 
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
-    }
-
-
-    @JsonProperty("login")
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
 
@@ -116,10 +97,9 @@ public class ProfilePrivateView {
             return false;
         }
         ProfilePrivateView profilePrivateView = (ProfilePrivateView) o;
-        return Objects.equals(username, profilePrivateView.username) &&
+        return Objects.equals(login, profilePrivateView.login) &&
                Objects.equals(avatarUrl, profilePrivateView.avatarUrl) &&
                Objects.equals(contactInfo, profilePrivateView.contactInfo) &&
-               Objects.equals(login, profilePrivateView.login) &&
                Objects.equals(email, profilePrivateView.email) &&
                Objects.equals(isConsentPersonalData, profilePrivateView.isConsentPersonalData) &&
                Objects.equals(isPremium, profilePrivateView.isPremium);
@@ -127,7 +107,7 @@ public class ProfilePrivateView {
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, avatarUrl, contactInfo, login, email, isConsentPersonalData, isPremium);
+        return Objects.hash(login, avatarUrl, contactInfo, email, isConsentPersonalData, isPremium);
     }
 
     @Override
@@ -135,17 +115,14 @@ public class ProfilePrivateView {
         StringBuilder sb = new StringBuilder();
         sb.append("class ProfilePrivateView {\n");
 
-        sb.append("    username: ")
-          .append(toIndentedString(username))
+        sb.append("    login: ")
+          .append(toIndentedString(login))
           .append("\n");
         sb.append("    avatarUrl: ")
           .append(toIndentedString(avatarUrl))
           .append("\n");
         sb.append("    contactInfo: ")
           .append(toIndentedString(contactInfo))
-          .append("\n");
-        sb.append("    login: ")
-          .append(toIndentedString(login))
           .append("\n");
         sb.append("    email: ")
           .append(toIndentedString(email))

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import tech.provve.api.server.generated.dto.Cursor;
 import tech.provve.api.server.generated.dto.ExamResponse;
 

@@ -45,7 +45,7 @@ class ResultRepositoryTest extends PostgresIntegrationTest {
     AccountRepository accountRepository;
 
     @Test
-    void getAll_equalFilterByExamName_found() {
+    void getAllForExaminee_equalFilterByExamName_found() {
         // arrange
         var skill = new Skill("s", emptyList());
         skillRepository.save(skill);
@@ -62,7 +62,7 @@ class ResultRepositoryTest extends PostgresIntegrationTest {
         var filter = new Filter(List.of(new Condition("exam_name", Condition.OperatorEnum.EQ, exam.name())));
 
         // act
-        List<Result> found = resultRepository.getAll(filter, account.login(), "", 1);
+        List<Result> found = resultRepository.getAllForExaminee(filter, account.login(), "", 1);
 
         // assert
         assertThat(result).isIn(found);

@@ -32,6 +32,5 @@ public interface AccountsApi {
     Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest);
     Future<ApiResponse<Void>> updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest);
     Future<ApiResponse<String>> upgradeAccount(String login);
-
     Future<ApiResponse<ProfilePrivateView>> viewProfile(ViewPrivateProfile viewPrivateProfile);
 }

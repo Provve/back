@@ -4,6 +4,7 @@ import io.vertx.core.Future;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import tech.provve.accounts.exception.AccessDenied;
 import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.exception.HttpException;
 import tech.provve.api.server.exception.ValidationError;
@@ -35,6 +36,18 @@ public class SkillsController implements SkillsApi {
     @Override
     public Future<ApiResponse<ResultResponse>> getExamResult(String examName) {
         return null;
+    }
+
+    @Override
+    public Future<ApiResponse<Examinees>> listExaminees(CollectionAuthenticatedRequest collectionAuthenticatedRequest) {
+        try {
+            inputValidator.validate(InputValidatorMapper.INSTANCE.map(collectionAuthenticatedRequest));
+            return Future.succeededFuture(new ApiResponse<>(200, resultService.listExaminees(collectionAuthenticatedRequest)));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        } catch (AccessDenied e) {
+            return Future.failedFuture(new HttpException(e, 403));
+        }
     }
 
     @Override

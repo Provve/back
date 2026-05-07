@@ -163,7 +163,7 @@ EXECUTE FUNCTION INSERT_INTO_TS_EXAM();
 CREATE TABLE skill.result (
      exam_name VARCHAR(100) REFERENCES skill.exam(name) ON DELETE CASCADE,
      examinee VARCHAR(50) REFERENCES accounts.accounts(login) ON DELETE CASCADE,
-     duration INTERVAL NOT NULL
+     duration_minutes INTERVAL NOT NULL
 );
 
 
@@ -196,7 +196,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE TABLE skill.comment (
     id SERIAL PRIMARY KEY,
-    author VARCHAR(50) REFERENCES accounts.accounts(login),
+    author VARCHAR(50),
     content VARCHAR(500) NOT NULL,
     created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     vote_name VARCHAR(100),

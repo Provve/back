@@ -3,6 +3,7 @@ package tech.provve.accounts.service;
 public interface JwsParsingService {
 
     String JWT_SUBJECT = "sub";
+    String PREMIUM = "premium";
 
     /**
      * Parse Reset Token generated in {@link JwtIssuingService}

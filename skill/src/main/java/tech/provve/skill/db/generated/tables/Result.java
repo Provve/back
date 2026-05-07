@@ -4,15 +4,27 @@
 package tech.provve.skill.db.generated.tables;
 
 
-import org.jooq.*;
+import java.util.Collection;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Name;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 import org.jooq.types.YearToSecond;
+
 import tech.provve.skill.db.generated.Skill;
 import tech.provve.skill.db.generated.tables.records.ResultRecord;
-
-import java.util.Collection;
 
 
 /**
@@ -47,9 +59,12 @@ public class Result extends TableImpl<ResultRecord> {
     public final TableField<ResultRecord, String> EXAMINEE = createField(DSL.name("examinee"), SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>skill.result.duration</code>.
+     * The column <code>skill.result.duration_minutes</code>.
      */
-    public final TableField<ResultRecord, YearToSecond> DURATION = createField(DSL.name("duration"), SQLDataType.INTERVAL.nullable(false), this, "");
+    public final TableField<ResultRecord, YearToSecond> DURATION_MINUTES = createField(DSL.name("duration_minutes"),
+                                                                                       SQLDataType.INTERVAL.nullable(false),
+                                                                                       this,
+                                                                                       "");
 
     private Result(Name alias, Table<ResultRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

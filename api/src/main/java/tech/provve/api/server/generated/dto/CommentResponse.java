@@ -7,7 +7,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import tech.provve.api.server.generated.dto.ProfilePublicView;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

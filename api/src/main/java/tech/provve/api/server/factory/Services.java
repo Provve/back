@@ -93,8 +93,8 @@ public class Services {
     }
 
     @Bean
-    public ResultService resultService(ResultRepository repository, JwsParsingService jwsParsingService) {
-        return new ResultServiceImpl(repository, jwsParsingService);
+    public ResultService resultService(ResultRepository repository, JwsParsingService jwsParsingService, AccountService accountService) {
+        return new ResultServiceImpl(repository, jwsParsingService, accountService);
     }
 
     @Bean

@@ -1,8 +1,9 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 /**
  * Успешный результат
@@ -11,15 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ResultResponse {
   
   private String examName;
-  private Long time;
+    private Long durationMinutes;
 
     public ResultResponse() {
 
   }
 
-    public ResultResponse(String examName, Long time) {
+    public ResultResponse(String examName, Long durationMinutes) {
     this.examName = examName;
-    this.time = time;
+        this.durationMinutes = durationMinutes;
   }
 
 
@@ -32,12 +33,13 @@ public class ResultResponse {
   }
 
 
-    @JsonProperty("time")
-  public Long getTime() {
-    return time;
+    @JsonProperty("duration_minutes")
+    public Long getDurationMinutes() {
+        return durationMinutes;
   }
-  public void setTime(Long time) {
-    this.time = time;
+
+    public void setDurationMinutes(Long durationMinutes) {
+        this.durationMinutes = durationMinutes;
   }
 
 
@@ -51,12 +53,12 @@ public class ResultResponse {
     }
     ResultResponse resultResponse = (ResultResponse) o;
     return Objects.equals(examName, resultResponse.examName) &&
-           Objects.equals(time, resultResponse.time);
+           Objects.equals(durationMinutes, resultResponse.durationMinutes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(examName, time);
+      return Objects.hash(examName, durationMinutes);
   }
 
   @Override
@@ -67,8 +69,8 @@ public class ResultResponse {
       sb.append("    examName: ")
         .append(toIndentedString(examName))
         .append("\n");
-      sb.append("    time: ")
-        .append(toIndentedString(time))
+      sb.append("    durationMinutes: ")
+        .append(toIndentedString(durationMinutes))
         .append("\n");
     sb.append("}");
     return sb.toString();
