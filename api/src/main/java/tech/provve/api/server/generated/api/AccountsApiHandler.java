@@ -9,6 +9,7 @@ import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
 import tech.provve.api.server.generated.dto.UpdateContactsRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
+import tech.provve.api.server.generated.dto.UpdateInterestsRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
 import tech.provve.api.server.generated.dto.ViewPrivateProfile;
@@ -55,6 +56,8 @@ public class AccountsApiHandler implements RouteHandler {
                .handler(this::updateContacts);
         builder.operation("updateEmail")
                .handler(this::updateEmail);
+        builder.operation("updateInterests")
+               .handler(this::updateInterests);
         builder.operation("updatePassword")
                .handler(this::updatePassword);
         builder.operation("updatePersonalDataConsent")
@@ -253,6 +256,35 @@ public class AccountsApiHandler implements RouteHandler {
         logger.debug("Parameter updateEmailRequest is {}", updateEmailRequest);
 
         api.updateEmail(updateEmailRequest)
+           .onSuccess(apiResponse -> {
+               routingContext.response()
+                             .setStatusCode(apiResponse.getStatusCode());
+               if (apiResponse.hasData()) {
+                   routingContext.json(apiResponse.getData());
+               } else {
+                   routingContext.response()
+                                 .end();
+               }
+           })
+           .onFailure(routingContext::fail);
+    }
+
+    private void updateInterests(RoutingContext routingContext) {
+        logger.info("updateInterests()");
+
+        // Param extraction
+        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
+
+        RequestParameter body = requestParameters.body();
+        UpdateInterestsRequest updateInterestsRequest = body != null
+                                                        ? DatabindCodec.mapper()
+                                                                       .convertValue(body.get(), new TypeReference<UpdateInterestsRequest>() {
+                                                                       })
+                                                        : null;
+
+        logger.debug("Parameter updateInterestsRequest is {}", updateInterestsRequest);
+
+        api.updateInterests(updateInterestsRequest)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

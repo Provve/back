@@ -5,7 +5,6 @@ package tech.provve.skill.db.generated.tables.records;
 
 
 import org.jooq.impl.TableRecordImpl;
-
 import tech.provve.skill.db.generated.tables.GetReactionsTotal;
 
 

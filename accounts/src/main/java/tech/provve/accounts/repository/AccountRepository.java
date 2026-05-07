@@ -9,6 +9,7 @@ import org.jooq.RecordMapper;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.mapper.AccountMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 import static tech.provve.accounts.db.generated.tables.Accounts.ACCOUNTS_;
@@ -29,6 +30,7 @@ public class AccountRepository {
                     result.get(ACCOUNTS_.USERNAME),
                     result.get(ACCOUNTS_.AVATAR_URL),
                     result.get(ACCOUNTS_.CONTACT_INFO),
+                    List.of(result.get(ACCOUNTS_.INTERESTS)),
                     result.get(ACCOUNTS_.PREMIUM)
             );
 
@@ -88,6 +90,13 @@ public class AccountRepository {
     public void updateContactInfo(String login, String contactInfo) {
         dsl.update(ACCOUNTS_)
            .set(ACCOUNTS_.CONTACT_INFO, contactInfo)
+           .where(ACCOUNTS_.LOGIN.eq(login))
+           .execute();
+    }
+
+    public void updateInterests(String login, List<String> interests) {
+        dsl.update(ACCOUNTS_)
+           .set(ACCOUNTS_.INTERESTS, interests.toArray(new String[0]))
            .where(ACCOUNTS_.LOGIN.eq(login))
            .execute();
     }

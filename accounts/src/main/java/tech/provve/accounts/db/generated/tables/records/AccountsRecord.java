@@ -6,6 +6,7 @@ package tech.provve.accounts.db.generated.tables.records;
 
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
+
 import tech.provve.accounts.db.generated.tables.Accounts;
 
 
@@ -151,6 +152,23 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
         return (String) get(7);
     }
 
+    /**
+     * Setter for <code>accounts.accounts.interests</code>. Интересы
+     * пользователя
+     */
+    public AccountsRecord setInterests(String[] value) {
+        set(8, value);
+        return this;
+    }
+
+    /**
+     * Getter for <code>accounts.accounts.interests</code>. Интересы
+     * пользователя
+     */
+    public String[] getInterests() {
+        return (String[]) get(8);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -174,7 +192,15 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
     /**
      * Create a detached, initialised AccountsRecord
      */
-    public AccountsRecord(String login, String email, String avatarUrl, Boolean premium, String passwordHash, Boolean consentPersonalData, String username, String contactInfo) {
+    public AccountsRecord(String login,
+                          String email,
+                          String avatarUrl,
+                          Boolean premium,
+                          String passwordHash,
+                          Boolean consentPersonalData,
+                          String username,
+                          String contactInfo,
+                          String[] interests) {
         super(Accounts.ACCOUNTS_);
 
         setLogin(login);
@@ -185,6 +211,7 @@ public class AccountsRecord extends UpdatableRecordImpl<AccountsRecord> {
         setConsentPersonalData(consentPersonalData);
         setUsername(username);
         setContactInfo(contactInfo);
+        setInterests(interests);
         resetTouchedOnNotNull();
     }
 }

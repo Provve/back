@@ -27,11 +27,12 @@ import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNullElseGet;
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
-import static tech.provve.accounts.service.JwsParsingService.PREMIUM;
 
 @Singleton
 @RequiredArgsConstructor
@@ -169,6 +170,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void updateInterests(UpdateInterestsRequest request) {
+        var login = jwsParsingService.parseAuth(request.getAuthToken(), JWT_SUBJECT);
+        repository.updateInterests(login, request.getInterests());
+    }
+
+    @Override
     public void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest) {
         var login = jwsParsingService.parseAuth(updatePersonalDataConsentRequest.getAuthToken(), JWT_SUBJECT);
         boolean consent = updatePersonalDataConsentRequest.getConsentPersonalData();
@@ -218,8 +225,10 @@ public class AccountServiceImpl implements AccountService {
                                          .orElse(null);
         String contactInfo = accountOptional.map(Account::contactInfo)
                                             .orElse(null);
+        List<String> interests = accountOptional.map(Account::interests)
+                                                .orElse(emptyList());
 
-        return new ProfilePublicView(username, avatarUrl, contactInfo);
+        return new ProfilePublicView(username, avatarUrl, contactInfo, interests);
     }
 
     @Override

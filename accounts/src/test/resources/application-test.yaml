@@ -4,5 +4,12 @@ mail:
   username: a.b@c
   password: 1
 s3:
-  access-key: test
-  secret-key: test
+  credentials:
+    url: http://localhost:19000
+    access-key: 1
+    secret-key: 1
+    region: ru-msk
+  buckets:
+    images: i4s
+    exams: e3s
+    solutions: s7s

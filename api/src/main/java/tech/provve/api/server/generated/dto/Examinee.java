@@ -1,9 +1,12 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Examinee {
@@ -13,17 +16,19 @@ public class Examinee {
     private String login;
     private String avatarUrl;
     private String contactInfo;
+    private List<String> interests = new ArrayList<>();
 
     public Examinee() {
 
     }
 
-    public Examinee(String examName, Long durationMinutes, String login, String avatarUrl, String contactInfo) {
+    public Examinee(String examName, Long durationMinutes, String login, String avatarUrl, String contactInfo, List<String> interests) {
         this.examName = examName;
         this.durationMinutes = durationMinutes;
         this.login = login;
         this.avatarUrl = avatarUrl;
         this.contactInfo = contactInfo;
+        this.interests = interests;
     }
 
 
@@ -77,6 +82,16 @@ public class Examinee {
     }
 
 
+    @JsonProperty("interests")
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -90,12 +105,13 @@ public class Examinee {
                Objects.equals(durationMinutes, examinee.durationMinutes) &&
                Objects.equals(login, examinee.login) &&
                Objects.equals(avatarUrl, examinee.avatarUrl) &&
-               Objects.equals(contactInfo, examinee.contactInfo);
+               Objects.equals(contactInfo, examinee.contactInfo) &&
+               Objects.equals(interests, examinee.interests);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(examName, durationMinutes, login, avatarUrl, contactInfo);
+        return Objects.hash(examName, durationMinutes, login, avatarUrl, contactInfo, interests);
     }
 
     @Override
@@ -117,6 +133,9 @@ public class Examinee {
           .append("\n");
         sb.append("    contactInfo: ")
           .append(toIndentedString(contactInfo))
+          .append("\n");
+        sb.append("    interests: ")
+          .append(toIndentedString(interests))
           .append("\n");
         sb.append("}");
         return sb.toString();

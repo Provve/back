@@ -1,8 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Краткая информация о профиле
@@ -13,15 +16,17 @@ public class ProfilePublicView {
     private String login;
     private String avatarUrl;
     private String contactInfo;
+    private List<String> interests = new ArrayList<>();
 
     public ProfilePublicView() {
 
     }
 
-    public ProfilePublicView(String login, String avatarUrl, String contactInfo) {
+    public ProfilePublicView(String login, String avatarUrl, String contactInfo, List<String> interests) {
         this.login = login;
         this.avatarUrl = avatarUrl;
         this.contactInfo = contactInfo;
+        this.interests = interests;
     }
 
 
@@ -55,6 +60,16 @@ public class ProfilePublicView {
     }
 
 
+    @JsonProperty("interests")
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -66,12 +81,13 @@ public class ProfilePublicView {
         ProfilePublicView profilePublicView = (ProfilePublicView) o;
         return Objects.equals(login, profilePublicView.login) &&
                Objects.equals(avatarUrl, profilePublicView.avatarUrl) &&
-               Objects.equals(contactInfo, profilePublicView.contactInfo);
+               Objects.equals(contactInfo, profilePublicView.contactInfo) &&
+               Objects.equals(interests, profilePublicView.interests);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, avatarUrl, contactInfo);
+        return Objects.hash(login, avatarUrl, contactInfo, interests);
     }
 
     @Override
@@ -87,6 +103,9 @@ public class ProfilePublicView {
           .append("\n");
         sb.append("    contactInfo: ")
           .append(toIndentedString(contactInfo))
+          .append("\n");
+        sb.append("    interests: ")
+          .append(toIndentedString(interests))
           .append("\n");
         sb.append("}");
         return sb.toString();

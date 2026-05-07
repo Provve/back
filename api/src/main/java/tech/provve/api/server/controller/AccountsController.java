@@ -114,6 +114,17 @@ public class AccountsController implements AccountsApi {
         }
     }
 
+    @Override
+    public Future<ApiResponse<Void>> updateInterests(UpdateInterestsRequest updateInterestsRequest) {
+        try {
+            validatingService.validate(InputValidatorMapper.INSTANCE.map(updateInterestsRequest));
+            accountService.updateInterests(updateInterestsRequest);
+            return Future.succeededFuture(new ApiResponse<>(200));
+        } catch (ValidationError e) {
+            return Future.failedFuture(new HttpException(e, 400));
+        }
+    }
+
     public Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         try {
             validatingService.validate(InputValidatorMapper.INSTANCE.map(updatePasswordRequest));

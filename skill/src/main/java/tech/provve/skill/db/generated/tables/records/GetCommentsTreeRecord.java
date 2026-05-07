@@ -4,11 +4,10 @@
 package tech.provve.skill.db.generated.tables.records;
 
 
-import java.time.OffsetDateTime;
-
 import org.jooq.impl.TableRecordImpl;
-
 import tech.provve.skill.db.generated.tables.GetCommentsTree;
+
+import java.time.OffsetDateTime;
 
 
 /**

@@ -50,4 +50,6 @@ public interface InputValidatorMapper {
 
     ReplyCommentRequest map(tech.provve.api.server.generated.dto.ReplyCommentRequest from);
 
+    UpdateInterestsRequest map(tech.provve.api.server.generated.dto.UpdateInterestsRequest from);
+
 }

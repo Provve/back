@@ -34,6 +34,8 @@ public interface AccountService {
 
     void updateContacts(UpdateContactsRequest updateContactsRequest);
 
+    void updateInterests(UpdateInterestsRequest request);
+
     void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest);
 
     /**
