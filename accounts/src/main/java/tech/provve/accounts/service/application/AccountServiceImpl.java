@@ -16,10 +16,7 @@ import tech.provve.accounts.service.PasswordHashingService;
 import tech.provve.api.server.generated.dto.*;
 import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
-import tech.provve.notification.domain.value.AccountDowngraded;
-import tech.provve.notification.domain.value.AccountUpgraded;
-import tech.provve.notification.domain.value.RecipientRequisites;
-import tech.provve.notification.domain.value.ResetCode;
+import tech.provve.notification.domain.value.*;
 import tech.provve.notification.service.NotificationSendingService;
 
 import java.nio.file.Files;
@@ -27,11 +24,12 @@ import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNullElseGet;
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
-import static tech.provve.accounts.service.JwsParsingService.PREMIUM;
 
 @Singleton
 @RequiredArgsConstructor
@@ -169,6 +167,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void updateInterests(UpdateInterestsRequest request) {
+        var login = jwsParsingService.parseAuth(request.getAuthToken(), JWT_SUBJECT);
+        repository.updateInterests(login, request.getInterests());
+    }
+
+    @Override
     public void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest) {
         var login = jwsParsingService.parseAuth(updatePersonalDataConsentRequest.getAuthToken(), JWT_SUBJECT);
         boolean consent = updatePersonalDataConsentRequest.getConsentPersonalData();
@@ -218,8 +222,10 @@ public class AccountServiceImpl implements AccountService {
                                          .orElse(null);
         String contactInfo = accountOptional.map(Account::contactInfo)
                                             .orElse(null);
+        List<String> interests = accountOptional.map(Account::interests)
+                                                .orElse(emptyList());
 
-        return new ProfilePublicView(username, avatarUrl, contactInfo);
+        return new ProfilePublicView(username, avatarUrl, contactInfo, interests);
     }
 
     @Override
@@ -234,6 +240,15 @@ public class AccountServiceImpl implements AccountService {
                                 .orElseThrow(AccountNotFound::new); // маловероятно, пусть будет для информативности
 
         return AccountResponseMapper.INST.map(account);
+    }
+
+    @Override
+    public void notifyVoteStarted(String voteName, String skillName) {
+        repository.findInterestedIn(skillName)
+                  .forEach(account -> notificationService.send(new VoteStarted(
+                          new RecipientRequisites(account.login(), account.email()),
+                          voteName)
+                  ));
     }
 
 }

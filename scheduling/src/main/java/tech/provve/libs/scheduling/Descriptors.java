@@ -23,8 +23,9 @@ public final class Descriptors {
     public static final TaskDescriptor<Void> DELETE_SKILL_AFTER_VOTE = TaskDescriptor.of("SKILL_DELETE");
 
     /**
-     * Действие выполняемое по окончанию голосования за добавление экзамена к навыку
+     * Действие выполняемое по окончанию голосования за добавление экзамена к навыку. <br>
+     * data — название навыка (skill.name)
      */
-    public static final TaskDescriptor<Void> ADD_EXAM_AFTER_VOTE = TaskDescriptor.of("ADD_EXAM_AFTER_VOTE");
+    public static final TaskDescriptor<String> ADD_EXAM_AFTER_VOTE = TaskDescriptor.of("ADD_EXAM_AFTER_VOTE", String.class);
 
 }

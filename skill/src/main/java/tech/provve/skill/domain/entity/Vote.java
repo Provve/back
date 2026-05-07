@@ -127,7 +127,7 @@ public class Vote {
                        ? 1
                        : reactions.negative();
         int positiveRelation = reactions.positive() / negative;
-        return positiveRelation >= 1;
+        return positiveRelation > 1;
     }
 
 }

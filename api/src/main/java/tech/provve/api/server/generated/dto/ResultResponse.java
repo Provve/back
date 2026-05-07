@@ -12,19 +12,19 @@ import java.util.Objects;
 public class ResultResponse {
   
   private String examName;
-    private Long durationMinutes;
+  private Long durationMinutes;
 
-    public ResultResponse() {
+  public ResultResponse() {
 
   }
 
-    public ResultResponse(String examName, Long durationMinutes) {
+  public ResultResponse(String examName, Long durationMinutes) {
     this.examName = examName;
-        this.durationMinutes = durationMinutes;
+    this.durationMinutes = durationMinutes;
   }
 
 
-    @JsonProperty("exam_name")
+  @JsonProperty("exam_name")
   public String getExamName() {
     return examName;
   }
@@ -33,13 +33,13 @@ public class ResultResponse {
   }
 
 
-    @JsonProperty("duration_minutes")
-    public Long getDurationMinutes() {
-        return durationMinutes;
+  @JsonProperty("duration_minutes")
+  public Long getDurationMinutes() {
+    return durationMinutes;
   }
 
-    public void setDurationMinutes(Long durationMinutes) {
-        this.durationMinutes = durationMinutes;
+  public void setDurationMinutes(Long durationMinutes) {
+    this.durationMinutes = durationMinutes;
   }
 
 
@@ -58,7 +58,7 @@ public class ResultResponse {
 
   @Override
   public int hashCode() {
-      return Objects.hash(examName, durationMinutes);
+    return Objects.hash(examName, durationMinutes);
   }
 
   @Override
@@ -66,12 +66,12 @@ public class ResultResponse {
     StringBuilder sb = new StringBuilder();
     sb.append("class ResultResponse {\n");
 
-      sb.append("    examName: ")
-        .append(toIndentedString(examName))
-        .append("\n");
-      sb.append("    durationMinutes: ")
-        .append(toIndentedString(durationMinutes))
-        .append("\n");
+    sb.append("    examName: ")
+      .append(toIndentedString(examName))
+      .append("\n");
+    sb.append("    durationMinutes: ")
+      .append(toIndentedString(durationMinutes))
+      .append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -84,7 +84,7 @@ public class ResultResponse {
     if (o == null) {
       return "null";
     }
-      return o.toString()
-              .replace("\n", "\n    ");
+    return o.toString()
+            .replace("\n", "\n    ");
   }
 }

@@ -1,8 +1,11 @@
 package tech.provve.api.server.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProfilePrivateView {
@@ -10,6 +13,7 @@ public class ProfilePrivateView {
     private String login;
     private String avatarUrl;
     private String contactInfo;
+    private List<String> interests = new ArrayList<>();
     private String email;
     private Boolean isConsentPersonalData;
     private Boolean isPremium;
@@ -18,10 +22,17 @@ public class ProfilePrivateView {
 
     }
 
-    public ProfilePrivateView(String login, String avatarUrl, String contactInfo, String email, Boolean isConsentPersonalData, Boolean isPremium) {
+    public ProfilePrivateView(String login,
+                              String avatarUrl,
+                              String contactInfo,
+                              List<String> interests,
+                              String email,
+                              Boolean isConsentPersonalData,
+                              Boolean isPremium) {
         this.login = login;
         this.avatarUrl = avatarUrl;
         this.contactInfo = contactInfo;
+        this.interests = interests;
         this.email = email;
         this.isConsentPersonalData = isConsentPersonalData;
         this.isPremium = isPremium;
@@ -55,6 +66,16 @@ public class ProfilePrivateView {
 
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
+    }
+
+
+    @JsonProperty("interests")
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
     }
 
 
@@ -100,6 +121,7 @@ public class ProfilePrivateView {
         return Objects.equals(login, profilePrivateView.login) &&
                Objects.equals(avatarUrl, profilePrivateView.avatarUrl) &&
                Objects.equals(contactInfo, profilePrivateView.contactInfo) &&
+               Objects.equals(interests, profilePrivateView.interests) &&
                Objects.equals(email, profilePrivateView.email) &&
                Objects.equals(isConsentPersonalData, profilePrivateView.isConsentPersonalData) &&
                Objects.equals(isPremium, profilePrivateView.isPremium);
@@ -107,7 +129,7 @@ public class ProfilePrivateView {
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, avatarUrl, contactInfo, email, isConsentPersonalData, isPremium);
+        return Objects.hash(login, avatarUrl, contactInfo, interests, email, isConsentPersonalData, isPremium);
     }
 
     @Override
@@ -123,6 +145,9 @@ public class ProfilePrivateView {
           .append("\n");
         sb.append("    contactInfo: ")
           .append(toIndentedString(contactInfo))
+          .append("\n");
+        sb.append("    interests: ")
+          .append(toIndentedString(interests))
           .append("\n");
         sb.append("    email: ")
           .append(toIndentedString(email))

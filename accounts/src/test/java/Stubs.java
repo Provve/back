@@ -13,6 +13,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
 import tech.provve.accounts.service.JwtIssuingService;
+import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.notification.service.NotificationSendingServiceImpl;
@@ -26,6 +27,11 @@ import java.util.concurrent.Executor;
 @Factory
 @TestScope
 public class Stubs {
+
+    @Bean
+    public S3Service service() {
+        return Mockito.mock(S3Service.class);
+    }
 
     @Bean
     public Scheduling scheduling() {

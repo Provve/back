@@ -34,6 +34,8 @@ public interface AccountService {
 
     void updateContacts(UpdateContactsRequest updateContactsRequest);
 
+    void updateInterests(UpdateInterestsRequest request);
+
     void updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest);
 
     /**
@@ -48,4 +50,9 @@ public interface AccountService {
 
     ProfilePublicView viewPublicProfile(String login);
     ProfilePrivateView viewPrivateProfile(ViewPrivateProfile request) throws AccessDenied, AccountNotFound;
+
+    /**
+     * Notify all interested users that the vote just started
+     */
+    void notifyVoteStarted(String voteName, String skillName);
 }

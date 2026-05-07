@@ -282,6 +282,28 @@ paths:
       security:
         - auth: [ ]
 
+  /interests:
+    put:
+      summary: Указать интересы
+      tags:
+        - accounts
+      operationId: updateInterests
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInterests.request'
+      responses:
+        '200':
+          description: Успех
+        '400':
+          $ref: "#/components/responses/ValidationError"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
+      security:
+        - auth: [ ]
+
   /pd-consent:
     put:
       summary: Согласие с Политикой обработки персональных данных (ПД)
@@ -1123,6 +1145,8 @@ components:
         contact_info:
           type: string
           description: Дополнительная контактная информация пользователя
+        interests:
+          $ref: "#/components/schemas/Interests"
 
     ProfilePrivateView:
       allOf:
@@ -1313,6 +1337,14 @@ components:
             type: string
           description: Произвольные URL для связи
 
+    UpdateInterests.request:
+      type: object
+      properties:
+        interests:
+          $ref: "#/components/schemas/Interests"
+        auth_token:
+          $ref: "#/components/schemas/AuthToken"
+
     UpdatePersonalDataConsent.request:
       type: object
       required:
@@ -1478,6 +1510,12 @@ components:
       items:
         type: string
       description: Поисковые теги
+
+    Interests:
+      type: array
+      items:
+        type: string
+      description: Интересы Пользователя
 
     Error:
       type: object

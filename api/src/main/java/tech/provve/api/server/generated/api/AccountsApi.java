@@ -9,6 +9,7 @@ import tech.provve.api.server.generated.dto.RegisterAccountRequest;
 import tech.provve.api.server.generated.dto.UpdateAvatarRequest;
 import tech.provve.api.server.generated.dto.UpdateContactsRequest;
 import tech.provve.api.server.generated.dto.UpdateEmailRequest;
+import tech.provve.api.server.generated.dto.UpdateInterestsRequest;
 import tech.provve.api.server.generated.dto.UpdatePasswordRequest;
 import tech.provve.api.server.generated.dto.UpdatePersonalDataConsentRequest;
 import tech.provve.api.server.generated.dto.ViewPrivateProfile;
@@ -29,6 +30,8 @@ public interface AccountsApi {
     Future<ApiResponse<Void>> updateAvatar(UpdateAvatarRequest updateAvatarRequest);
     Future<ApiResponse<Void>> updateContacts(UpdateContactsRequest updateContactsRequest);
     Future<ApiResponse<Void>> updateEmail(UpdateEmailRequest updateEmailRequest);
+
+    Future<ApiResponse<Void>> updateInterests(UpdateInterestsRequest updateInterestsRequest);
     Future<ApiResponse<Void>> updatePassword(UpdatePasswordRequest updatePasswordRequest);
     Future<ApiResponse<Void>> updatePersonalDataConsent(UpdatePersonalDataConsentRequest updatePersonalDataConsentRequest);
     Future<ApiResponse<String>> upgradeAccount(String login);

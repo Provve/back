@@ -8,7 +8,8 @@ CREATE TABLE accounts.accounts (
     password_hash TEXT NOT NULL,
     consent_personal_data BOOLEAN DEFAULT FALSE,
     username VARCHAR(30) NOT NULL,
-    contact_info TEXT
+    contact_info TEXT,
+    interests VARCHAR(100)[]
 );
 
 CREATE INDEX idx_accounts_email
@@ -23,3 +24,4 @@ COMMENT ON COLUMN accounts.accounts.password_hash IS 'Хэшированный �
 COMMENT ON COLUMN accounts.accounts.consent_personal_data IS 'Флаг согласия пользователя на обработку персональных данных';
 COMMENT ON COLUMN accounts.accounts.username IS 'Отображаемое имя пользователя';
 COMMENT ON COLUMN accounts.accounts.contact_info IS 'Произвальная информация с контакными данными';
+COMMENT ON COLUMN accounts.accounts.interests IS 'Интересы пользователя. Значения равны skill.name';

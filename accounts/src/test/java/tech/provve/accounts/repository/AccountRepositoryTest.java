@@ -4,6 +4,7 @@ import io.avaje.inject.BeanScopeBuilder;
 import io.avaje.inject.test.InjectTest;
 import io.avaje.inject.test.Setup;
 import jakarta.inject.Inject;
+import org.assertj.core.api.Assertions;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.exception.IntegrityConstraintViolationException;
@@ -15,6 +16,7 @@ import tech.provve.accounts.domain.model.Account;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -98,6 +100,34 @@ class AccountRepositoryTest extends PostgresIntegrationTest {
 
         // act assert
         assertThrows(IntegrityConstraintViolationException.class, () -> repository.save(account));
+    }
+
+    @Test
+    void updateInterests_given_saved() {
+        // arrange
+        var interests = List.of("a", "b");
+        var account = new Account(
+                "a",
+                "",
+                "h",
+                true,
+                "n",
+                "p",
+                null,
+                interests,
+                false
+        );
+        repository.save(account);
+
+        // act
+        repository.updateInterests(account.login(), interests);
+        var saved = repository.findByLogin(account.login());
+
+        // assert
+        Assertions.assertThat(saved)
+                  .isPresent()
+                  .map(Account::interests)
+                  .contains(interests);
     }
 
 }

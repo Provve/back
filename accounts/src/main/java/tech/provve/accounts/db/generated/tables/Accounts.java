@@ -4,16 +4,31 @@
 package tech.provve.accounts.db.generated.tables;
 
 
-import org.jooq.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Index;
+import org.jooq.Name;
+import org.jooq.OrderField;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
+import org.jooq.SQL;
+import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import tech.provve.accounts.db.generated.tables.records.AccountsRecord;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import tech.provve.accounts.db.generated.tables.records.AccountsRecord;
 
 
 /**
@@ -40,24 +55,20 @@ public class Accounts extends TableImpl<AccountsRecord> {
     /**
      * The column <code>accounts.accounts.login</code>. Логин пользователя
      */
-    public final TableField<AccountsRecord, String> LOGIN = createField(
-            DSL.name("login"),
-            SQLDataType.VARCHAR(50)
-                       .nullable(false),
-            this,
-            "Логин пользователя"
-    );
+    public final TableField<AccountsRecord, String> LOGIN = createField(DSL.name("login"),
+                                                                        SQLDataType.VARCHAR(50)
+                                                                                   .nullable(false),
+                                                                        this,
+                                                                        "Логин пользователя");
 
     /**
      * The column <code>accounts.accounts.email</code>. Email пользователя
      * (может быть NULL, если не получено согласие)
      */
-    public final TableField<AccountsRecord, String> EMAIL = createField(
-            DSL.name("email"),
-            SQLDataType.VARCHAR(254),
-            this,
-            "Email пользователя (может быть NULL, если не получено согласие)"
-    );
+    public final TableField<AccountsRecord, String> EMAIL = createField(DSL.name("email"),
+                                                                        SQLDataType.VARCHAR(254),
+                                                                        this,
+                                                                        "Email пользователя (может быть NULL, если не получено согласие)");
 
     /**
      * The column <code>accounts.accounts.avatar_url</code>. Ссылка на аватар
@@ -69,60 +80,58 @@ public class Accounts extends TableImpl<AccountsRecord> {
      * The column <code>accounts.accounts.premium</code>. Является ли
      * пользователь платным
      */
-    public final TableField<AccountsRecord, Boolean> PREMIUM = createField(
-            DSL.name("premium"),
-            SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)),
-            this,
-            "Является ли пользователь платным"
-    );
+    public final TableField<AccountsRecord, Boolean> PREMIUM = createField(DSL.name("premium"),
+                                                                           SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)),
+                                                                           this,
+                                                                           "Является ли пользователь платным");
 
     /**
      * The column <code>accounts.accounts.password_hash</code>. Хэшированный
      * пароль пользователя
      */
-    public final TableField<AccountsRecord, String> PASSWORD_HASH = createField(
-            DSL.name("password_hash"),
-            SQLDataType.CLOB.nullable(false),
-            this,
-            "Хэшированный пароль пользователя"
-    );
+    public final TableField<AccountsRecord, String> PASSWORD_HASH = createField(DSL.name("password_hash"),
+                                                                                SQLDataType.CLOB.nullable(false),
+                                                                                this,
+                                                                                "Хэшированный пароль пользователя");
 
     /**
      * The column <code>accounts.accounts.consent_personal_data</code>. Флаг
      * согласия пользователя на обработку персональных данных
      */
-    public final TableField<AccountsRecord, Boolean> CONSENT_PERSONAL_DATA = createField(
-            DSL.name("consent_personal_data"),
-            SQLDataType.BOOLEAN.defaultValue(DSL.field(
-                    DSL.raw("false"),
-                    SQLDataType.BOOLEAN
-            )),
-            this,
-            "Флаг согласия пользователя на обработку персональных данных"
-    );
+    public final TableField<AccountsRecord, Boolean> CONSENT_PERSONAL_DATA = createField(DSL.name("consent_personal_data"),
+                                                                                         SQLDataType.BOOLEAN.defaultValue(DSL.field(DSL.raw("false"),
+                                                                                                                                    SQLDataType.BOOLEAN)),
+                                                                                         this,
+                                                                                         "Флаг согласия пользователя на обработку персональных данных");
 
     /**
      * The column <code>accounts.accounts.username</code>. Отображаемое имя
      * пользователя
      */
-    public final TableField<AccountsRecord, String> USERNAME = createField(
-            DSL.name("username"),
-            SQLDataType.VARCHAR(30)
-                       .nullable(false),
-            this,
-            "Отображаемое имя пользователя"
-    );
+    public final TableField<AccountsRecord, String> USERNAME = createField(DSL.name("username"),
+                                                                           SQLDataType.VARCHAR(30)
+                                                                                      .nullable(false),
+                                                                           this,
+                                                                           "Отображаемое имя пользователя");
 
     /**
      * The column <code>accounts.accounts.contact_info</code>. Произвальная
      * информация с контакными данными
      */
-    public final TableField<AccountsRecord, String> CONTACT_INFO = createField(
-            DSL.name("contact_info"),
-            SQLDataType.CLOB,
-            this,
-            "Произвальная информация с контакными данными"
-    );
+    public final TableField<AccountsRecord, String> CONTACT_INFO = createField(DSL.name("contact_info"),
+                                                                               SQLDataType.CLOB,
+                                                                               this,
+                                                                               "Произвальная информация с контакными данными");
+
+    /**
+     * The column <code>accounts.accounts.interests</code>. Интересы
+     * пользователя
+     */
+    public final TableField<AccountsRecord, String[]> INTERESTS = createField(DSL.name("interests"),
+                                                                              SQLDataType.VARCHAR(100)
+                                                                                         .array(),
+                                                                              this,
+                                                                              "Интересы пользователя");
 
     private Accounts(Name alias, Table<AccountsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

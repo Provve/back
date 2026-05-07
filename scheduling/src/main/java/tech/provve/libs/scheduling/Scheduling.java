@@ -41,8 +41,9 @@ public class Scheduling {
                                                   .scheduledTo(when));
     }
 
-    public void addExam(String voteName, Instant when) {
+    public void addExam(String voteName, String skillName, Instant when) {
         scheduler.schedule(ADD_EXAM_AFTER_VOTE.instance(voteName)
+                                              .data(skillName)
                                               .scheduledTo(when));
     }
 

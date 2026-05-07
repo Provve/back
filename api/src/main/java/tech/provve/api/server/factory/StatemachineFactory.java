@@ -31,7 +31,8 @@ public class StatemachineFactory {
 
     @Bean
     @Named(SaveExamMachine.VALIDATION_ERROR_NOTIFICATION_SENDER)
-    public BiConsumer<String, String> validationErrorNotificationSender(NotificationSendingService notificationSendingService, AccountRepository accountRepository) {
+    public BiConsumer<String, String> validationErrorNotificationSender(NotificationSendingService notificationSendingService,
+                                                                        AccountRepository accountRepository) {
         return (exam, author) -> {
             String email = accountRepository.findByLogin(author)
                                             .map(Account::email)
@@ -53,7 +54,10 @@ public class StatemachineFactory {
 
     @Bean
     @Named(SaveExamMachine.DELAYED_EXAM_VOTE_CREATOR)
-    public Consumer<String> delayedExamVoteCreator(VoteRepository voteRepository, Scheduling scheduling, ObjectMapper objectMapper, Supplier<LocalDateTime> deadlineSupplier) {
+    public Consumer<String> delayedExamVoteCreator(VoteRepository voteRepository,
+                                                   Scheduling scheduling,
+                                                   ObjectMapper objectMapper,
+                                                   Supplier<LocalDateTime> deadlineSupplier) {
         return delayedVoteJson -> {
             try {
                 var deadline = deadlineSupplier.get();
@@ -62,7 +66,10 @@ public class StatemachineFactory {
                                        .deadline(deadline)
                                        .build();
                 voteRepository.save(vote);
-                scheduling.addExam(vote.getName(), deadline.toInstant(ZoneOffset.UTC));
+                scheduling.addExam(vote.getName(),
+                                   vote.getExam()
+                                       .skillName(),
+                                   deadline.toInstant(ZoneOffset.UTC));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException("Couldn't create Vote from given json:" + e);
             }
