@@ -1,34 +1,17 @@
 package tech.provve.api.server.generated.api;
 
-import tech.provve.api.server.generated.dto.AddCommentRequest;
-import tech.provve.api.server.generated.dto.CastVoteRequest;
-import tech.provve.api.server.generated.dto.CollectionRequest;
-import tech.provve.api.server.generated.dto.Comments;
-import tech.provve.api.server.generated.dto.DeleteCommentRequest;
-import tech.provve.api.server.generated.dto.EditCommentRequest;
-import tech.provve.api.server.generated.dto.Error;
-import tech.provve.api.server.generated.dto.ExamAddVote;
-import tech.provve.api.server.generated.dto.ListCommentsRequest;
-import tech.provve.api.server.generated.dto.ReplyCommentRequest;
-import tech.provve.api.server.generated.dto.SkillAddVote;
-import tech.provve.api.server.generated.dto.SkillDelVote;
-import tech.provve.api.server.generated.dto.Votes;
-
-import tech.provve.api.server.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.ValidationHandler;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.ValidationHandler;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import jakarta.inject.Singleton;
-
-import java.util.List;
-import java.util.Map;
+import tech.provve.api.server.RouteHandler;
+import tech.provve.api.server.generated.dto.*;
 
 @Singleton
 public class VotesApiHandler implements RouteHandler {

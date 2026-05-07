@@ -31,7 +31,7 @@ public class ResultRepository extends Filtering {
     private final RecordMapper<Record, Result> outputMapper = record -> new Result(
             record.get(RESULT.EXAM_NAME),
             record.get(RESULT.EXAMINEE),
-            record.get(RESULT.DURATION)
+            record.get(RESULT.DURATION_MINUTES)
                   .toDuration()
     );
 
@@ -39,7 +39,7 @@ public class ResultRepository extends Filtering {
         dsl.insertInto(RESULT)
            .set(new ResultRecord(result.examName(),
                                  result.examinee(),
-                                 YearToSecond.valueOf(result.duration())))
+                                 YearToSecond.valueOf(result.durationMinutes())))
            .execute();
     }
 
@@ -50,11 +50,21 @@ public class ResultRepository extends Filtering {
                           .fetchOne());
     }
 
-    @SuppressWarnings("all")
-    public List<Result> getAll(Filter filter, String examinee, String previous, int pageSize) {
+
+    public List<Result> getAll(Filter filter, String previous, int pageSize) {
+        List<Condition> conditions = jooqConditions(filter);
+        return getAll0(previous, pageSize, conditions);
+    }
+
+    public List<Result> getAllForExaminee(Filter filter, String examinee, String previous, int pageSize) {
         List<Condition> conditions = jooqConditions(filter);
         conditions.add(RESULT.EXAMINEE.eq(examinee));
 
+        return getAll0(previous, pageSize, conditions);
+    }
+
+    @SuppressWarnings("all")
+    private List<Result> getAll0(String previous, int pageSize, List<Condition> conditions) {
         var select = dsl.select()
                         .from(RESULT)
                         .where(conditions)

@@ -82,7 +82,7 @@ public class CommentRepository {
                                                  .filter(c -> null != c.parentId())
                                                  .toList();
 
-        Map<Comment, List<Comment>> tree = new HashMap<>(anchors.size());
+        Map<Comment, List<Comment>> tree = HashMap.newHashMap(anchors.size());
         anchors.stream()
                .map(anchor -> {
                    var repliesForAnchor = replies.stream()

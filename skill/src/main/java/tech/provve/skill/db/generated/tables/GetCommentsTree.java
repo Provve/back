@@ -4,14 +4,21 @@
 package tech.provve.skill.db.generated.tables;
 
 
-import org.jooq.*;
+import java.time.OffsetDateTime;
+
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Name;
+import org.jooq.Schema;
+import org.jooq.Table;
+import org.jooq.TableField;
+import org.jooq.TableOptions;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+
 import tech.provve.skill.db.generated.Skill;
 import tech.provve.skill.db.generated.tables.records.GetCommentsTreeRecord;
-
-import java.time.OffsetDateTime;
 
 
 /**

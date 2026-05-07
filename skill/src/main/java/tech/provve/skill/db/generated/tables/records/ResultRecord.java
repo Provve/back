@@ -6,6 +6,7 @@ package tech.provve.skill.db.generated.tables.records;
 
 import org.jooq.impl.TableRecordImpl;
 import org.jooq.types.YearToSecond;
+
 import tech.provve.skill.db.generated.tables.Result;
 
 
@@ -48,17 +49,17 @@ public class ResultRecord extends TableRecordImpl<ResultRecord> {
     }
 
     /**
-     * Setter for <code>skill.result.duration</code>.
+     * Setter for <code>skill.result.duration_minutes</code>.
      */
-    public ResultRecord setDuration(YearToSecond value) {
+    public ResultRecord setDurationMinutes(YearToSecond value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>skill.result.duration</code>.
+     * Getter for <code>skill.result.duration_minutes</code>.
      */
-    public YearToSecond getDuration() {
+    public YearToSecond getDurationMinutes() {
         return (YearToSecond) get(2);
     }
 
@@ -76,12 +77,12 @@ public class ResultRecord extends TableRecordImpl<ResultRecord> {
     /**
      * Create a detached, initialised ResultRecord
      */
-    public ResultRecord(String examName, String examinee, YearToSecond duration) {
+    public ResultRecord(String examName, String examinee, YearToSecond durationMinutes) {
         super(Result.RESULT);
 
         setExamName(examName);
         setExaminee(examinee);
-        setDuration(duration);
+        setDurationMinutes(durationMinutes);
         resetTouchedOnNotNull();
     }
 }

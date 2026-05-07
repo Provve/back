@@ -105,6 +105,35 @@ paths:
       security:
         - auth: [ ]
 
+  /examinees:
+    post:
+      tags:
+        - skills
+      summary: Получиь список прошедших экзамены
+      operationId: listExaminees
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CollectionAuthenticated.request"
+      responses:
+        '200':
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Examinees"
+        '400':
+          $ref: "#/components/responses/ValidationError"
+        '401':
+          $ref: "#/components/responses/Unauthenticated"
+        '403':
+          description: Доступно только премиум-пользователям
+      security:
+        - auth: [ ]
+
+
   /upgrade:
     get:
       tags:
@@ -799,9 +828,9 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/Error"
-
     Unauthenticated:
       description: Следует пройти аутентификацию
+
   schemas:
     Filter:
       type: object
@@ -810,6 +839,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Condition"
+
     Condition:
       type: object
       properties:
@@ -913,7 +943,7 @@ components:
         exam_name:
           type: string
           description: ID экзамена, по которому получен результат
-        time:
+        duration_minutes:
           description: Затраченное время, в минутах
           type: integer
           format: int64
@@ -1065,13 +1095,28 @@ components:
           items:
             $ref: "#/components/schemas/Comment.response"
 
+    Examinees:
+      type: object
+      properties:
+        examinees:
+          type: array
+          items:
+            $ref: "#/components/schemas/Examinee"
+        cursor:
+          $ref: "#/components/schemas/Cursor"
+
+    Examinee:
+      allOf:
+        - $ref: "#/components/schemas/Result.response"
+        - $ref: "#/components/schemas/ProfilePublicView"
+
     ProfilePublicView:
       type: object
       description: Краткая информация о профиле
       properties:
-        username:
+        login:
           type: string
-          description: Отображаемое имя профиля
+          description: Логин пользователя (уникальный идентификатор для входа)
         avatar_url:
           type: string
           description: URL на аватар профиля
@@ -1085,9 +1130,6 @@ components:
         - type: object
           description: Краткая информация о профиле
           properties:
-            login:
-              type: string
-              description: Логин пользователя (уникальный идентификатор для входа)
             email:
               type: string
               format: email

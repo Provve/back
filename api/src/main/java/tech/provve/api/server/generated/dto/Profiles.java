@@ -1,37 +1,40 @@
 package tech.provve.api.server.generated.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import tech.provve.api.server.generated.dto.Cursor;
-import tech.provve.api.server.generated.dto.Notification;
+import tech.provve.api.server.generated.dto.ProfilePublicView;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Notifications {
+public class Profiles {
 
-    private List<Notification> notifications = new ArrayList<>();
+    private List<ProfilePublicView> profiles = new ArrayList<>();
     private Cursor cursor;
 
-    public Notifications() {
+    public Profiles() {
 
     }
 
-    public Notifications(List<Notification> notifications, Cursor cursor) {
-        this.notifications = notifications;
+    public Profiles(List<ProfilePublicView> profiles, Cursor cursor) {
+        this.profiles = profiles;
         this.cursor = cursor;
     }
 
 
-    @JsonProperty("notifications")
-    public List<Notification> getNotifications() {
-        return notifications;
+    @JsonProperty("profiles")
+    public List<ProfilePublicView> getProfiles() {
+        return profiles;
     }
 
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
+    public void setProfiles(List<ProfilePublicView> profiles) {
+        this.profiles = profiles;
     }
 
 
@@ -53,23 +56,23 @@ public class Notifications {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Notifications notifications = (Notifications) o;
-        return Objects.equals(notifications, notifications.notifications) &&
-               Objects.equals(cursor, notifications.cursor);
+        Profiles profiles = (Profiles) o;
+        return Objects.equals(profiles, profiles.profiles) &&
+               Objects.equals(cursor, profiles.cursor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(notifications, cursor);
+        return Objects.hash(profiles, cursor);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class Notifications {\n");
+        sb.append("class Profiles {\n");
 
-        sb.append("    notifications: ")
-          .append(toIndentedString(notifications))
+        sb.append("    profiles: ")
+          .append(toIndentedString(profiles))
           .append("\n");
         sb.append("    cursor: ")
           .append(toIndentedString(cursor))

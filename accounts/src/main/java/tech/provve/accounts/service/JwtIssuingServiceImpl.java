@@ -9,6 +9,8 @@ import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
+import static tech.provve.accounts.service.JwsParsingService.PREMIUM;
+
 @Singleton
 @RequiredArgsConstructor
 public class JwtIssuingServiceImpl implements JwtIssuingService {
@@ -25,7 +27,7 @@ public class JwtIssuingServiceImpl implements JwtIssuingService {
     public String issueAuth(String login, boolean premium) {
         int expirationSeconds = Config.getInt("security.jwt.auth.expires-in-seconds");
         return jwtAuth.generateToken(
-                JsonObject.of("premium", premium),
+                JsonObject.of(PREMIUM, premium),
                 new JWTOptions().setSubject(login)
                                 .setExpiresInSeconds(expirationSeconds)
         );

@@ -12,7 +12,7 @@ public interface ResultResponseMapper {
 
     default ResultResponse map(Result from) {
         return new ResultResponse(from.examName(),
-                                  from.duration()
+                                  from.durationMinutes()
                                       .toMinutes());
     }
 

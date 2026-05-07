@@ -31,6 +31,7 @@ import java.util.Objects;
 
 import static java.util.Objects.requireNonNullElseGet;
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
+import static tech.provve.accounts.service.JwsParsingService.PREMIUM;
 
 @Singleton
 @RequiredArgsConstructor
@@ -230,7 +231,7 @@ public class AccountServiceImpl implements AccountService {
             throw new AccessDenied("The Profile is not yours.");
         }
         var account = repository.findByLogin(login)
-                                .orElseThrow(AccountNotFound::new); // маловероятно, пусть будет для инфомративности
+                                .orElseThrow(AccountNotFound::new); // маловероятно, пусть будет для информативности
 
         return AccountResponseMapper.INST.map(account);
     }
