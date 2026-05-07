@@ -2,26 +2,26 @@ package tech.provve.notification.domain.value;
 
 import java.util.List;
 
-public record AccountDowngraded(RecipientRequisites requisites) implements NotifyCommand {
+public record VoteStarted(RecipientRequisites requisites, String voteName) implements NotifyCommand {
 
     @Override
     public String subject() {
-        return "Премиум-подписка кончилась";
+        return "Запущено голосование";
     }
 
     @Override
     public NotificationLevel level() {
-        return NotificationLevel.WARNING;
+        return NotificationLevel.INFO;
     }
 
     @Override
     public String templateName() {
-        return "account_downgraded.html";
+        return "vote_started.html";
     }
 
     @Override
     public String fillTemplate(String rawTemplate) {
-        return rawTemplate.replace("{{login}}", requisites().login());
+        return rawTemplate.replace("{{vote}}", voteName);
     }
 
     @Override
