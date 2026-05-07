@@ -66,6 +66,18 @@ public class AccountRepository {
                   .fetchOptional(outputMapper);
     }
 
+    @SuppressWarnings("all")
+    public List<Account> findInterestedIn(String skillName) {
+        var select = dsl.select()
+                        .from(ACCOUNTS_)
+                        .where(ACCOUNTS_.INTERESTS.contains(new String[]{skillName}));
+        return dsl.fetchMany(select)
+                  .stream()
+                  .map(result -> result.map(outputMapper))
+                  .findAny()
+                  .get();
+    }
+
     public void updatePasswordHash(String passwordHash, String login) {
         dsl.update(ACCOUNTS_)
            .set(ACCOUNTS_.PASSWORD_HASH, passwordHash)

@@ -24,4 +24,4 @@ COMMENT ON COLUMN accounts.accounts.password_hash IS 'Хэшированный �
 COMMENT ON COLUMN accounts.accounts.consent_personal_data IS 'Флаг согласия пользователя на обработку персональных данных';
 COMMENT ON COLUMN accounts.accounts.username IS 'Отображаемое имя пользователя';
 COMMENT ON COLUMN accounts.accounts.contact_info IS 'Произвальная информация с контакными данными';
-COMMENT ON COLUMN accounts.accounts.interests IS 'Интересы пользователя';
+COMMENT ON COLUMN accounts.accounts.interests IS 'Интересы пользователя. Значения равны skill.name';

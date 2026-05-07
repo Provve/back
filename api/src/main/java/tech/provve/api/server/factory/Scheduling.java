@@ -26,7 +26,7 @@ import static java.time.Duration.ofMinutes;
 import static tech.provve.libs.scheduling.Descriptors.*;
 
 /**
- * ID каждой таски = vote examName
+ * ID каждой таски = voteName
  */
 @Factory
 public class Scheduling {
@@ -87,13 +87,17 @@ public class Scheduling {
     @Bean
     @Named("5")
     @SuppressWarnings("all")
-    public OneTimeTask<Void> addExamAfterVote(VoteService voteService, VoteRepository voteRepository, ExamRepository examRepository) {
+    public OneTimeTask<String> addExamAfterVote(VoteService voteService,
+                                                VoteRepository voteRepository,
+                                                ExamRepository examRepository,
+                                                AccountService accountService) {
         return Tasks.oneTime(ADD_EXAM_AFTER_VOTE)
                     .execute((task, _) -> {
                         boolean success = voteService.end(task.getId());
                         if (success) {
                             voteRepository.findByName(task.getId())
                                           .ifPresent(vote -> examRepository.save(vote.getExam()));
+                            accountService.notifyVoteStarted(task.getId(), task.getData());
                         }
                     });
     }
