@@ -40,6 +40,7 @@ configurations {
 dependencies {
     spec libs.antifraud.api
 
+    implementation project(':events')
     implementation project(':accounts')
     implementation project(':notification')
     implementation project(':payment')

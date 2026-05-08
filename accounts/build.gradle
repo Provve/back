@@ -17,6 +17,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(':events')
     implementation project(':notification')
     implementation project(':scheduling')
     implementation project(':s3')

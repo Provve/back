@@ -17,8 +17,8 @@ repositories {
 }
 
 dependencies {
+    implementation project(':events')
     implementation project(':accounts')
-    implementation project(':notification')
     implementation project(':scheduling')
     implementation project(':s3')
     implementation project(':statemachine')
