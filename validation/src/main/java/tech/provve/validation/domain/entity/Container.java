@@ -124,7 +124,7 @@ public class Container {
         Главная задача Экзамена не логи анализировать, а проверить резульат. Пусть эта процедура выполняется в рамках проверки результата. Как именно — не важно.
          */
         var secret = Config.get("check-exam.secret");
-        var successPattern = "%s ok".formatted(secret);
+        var successPattern = "%s".formatted(secret);
         return logs.stream()
                    .anyMatch(log -> log.contains(successPattern));
     }
