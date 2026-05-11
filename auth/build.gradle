@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly libs.vertx.auth.jwt
+    implementation libs.bundles.jjwt
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.avaje
+    implementation libs.avaje.config
+    annotationProcessor libs.avaje.generator
+
+    testImplementation libs.bundles.testing
+    testAnnotationProcessor libs.avaje.generator
+    testCompileOnly libs.vertx.auth.jwt
+}
+
+test {
+    useJUnitPlatform()
+}

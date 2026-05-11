@@ -9,4 +9,5 @@ include 'api',
         'statemachine',
         'scheduling',
         's3',
-        'events'
+        'events',
+        'auth'

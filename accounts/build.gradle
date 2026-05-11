@@ -26,7 +26,6 @@ dependencies {
     implementation libs.argon2
     implementation libs.vertx.auth.jwt
     implementation libs.vertx.web
-    implementation libs.bundles.jjwt
 
     testImplementation libs.local.s3.rest
     testImplementation libs.local.s3.jupiter

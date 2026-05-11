@@ -97,7 +97,6 @@ public class Scheduling {
                         if (success) {
                             voteRepository.findByName(task.getId())
                                           .ifPresent(vote -> examRepository.save(vote.getExam()));
-                            accountService.notifyVoteStarted(task.getId(), task.getData());
                         }
                     });
     }

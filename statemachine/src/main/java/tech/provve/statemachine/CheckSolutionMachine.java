@@ -3,8 +3,6 @@ package tech.provve.statemachine;
 import de.amr.statemachine.Match;
 import de.amr.statemachine.StateMachine;
 import io.avaje.config.Config;
-import io.avaje.inject.External;
-import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;
@@ -14,12 +12,12 @@ import tech.provve.statemachine.domain.value.CheckSolutionEvent;
 import tech.provve.statemachine.domain.value.CheckSolutionState;
 import tech.provve.statemachine.domain.value.PrivateArchive;
 import tech.provve.statemachine.repository.CheckSolutionRepository;
+import tech.provve.validation.domain.entity.SolutionContainer;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import static tech.provve.statemachine.domain.value.CheckSolutionEvent.*;
 import static tech.provve.statemachine.domain.value.CheckSolutionState.*;
@@ -31,35 +29,15 @@ import static tech.provve.statemachine.domain.value.PrivateArchive.IGNORE_FILE;
 @Singleton
 public class CheckSolutionMachine extends StateMachine<CheckSolutionState, CheckSolutionEvent> {
 
-    public static final String BUILD_IMAGE_FOR_EXAMINEE = "Check/1";
-    public static final String PROCESS_CONTAINER = "Check/2";
-
+    private final SolutionContainer solutionContainer;
     private final CheckSolutionRepository repository;
     private final S3Service s3;
 
-    /**
-     * Build image with exam + solution files and name it after an examinee
-     */
-    private final BiConsumer<String, Path> buildDockerImage;
-
-    /**
-     * Create container from image named after an examinee. Process its whole lifecycle.
-     */
-    private final BiConsumer<String, String> processContainer;
-
-    public CheckSolutionMachine(CheckSolutionRepository repository,
-                                S3Service s3,
-
-                                @External
-                                @Named(PROCESS_CONTAINER) BiConsumer<String, String> processContainer,
-
-                                @External
-                                @Named(BUILD_IMAGE_FOR_EXAMINEE) BiConsumer<String, Path> buildDockerImage) {
+    public CheckSolutionMachine(SolutionContainer solutionContainer, CheckSolutionRepository repository, S3Service s3) {
         super(CheckSolutionState.class, Match.BY_EQUALITY);
         this.repository = repository;
         this.s3 = s3;
-        this.processContainer = processContainer;
-        this.buildDockerImage = buildDockerImage;
+        this.solutionContainer = solutionContainer;
     }
 
     /**
@@ -124,7 +102,7 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                                 Config.setProperty("check-exam.secret", secret);
                                 Files.delete(secretPath);
 
-                                buildDockerImage.accept(examinee, tempDirPath);
+                                solutionContainer.buildDockerImage(examinee, tempDirPath);
 
                                 repository.updateState(name, getState());
 
@@ -135,7 +113,7 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                         })
                     .state(RUNNING)
                         .onEntry(() -> {
-                            processContainer.accept(examinee, name);
+                            solutionContainer.runSolution(examinee, name);
                             repository.updateState(name, getState());
                             process(STOP);
                         })

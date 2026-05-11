@@ -1,5 +1,3 @@
-package tech.provve.accounts.service;
-
 import io.avaje.inject.Bean;
 import io.avaje.inject.Factory;
 import io.avaje.inject.Primary;
@@ -12,10 +10,14 @@ import io.vertx.ext.auth.jwt.JWTAuthOptions;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.junit.jupiter.api.Test;
+import tech.provve.libs.auth.JwsParsingService;
+import tech.provve.libs.auth.JwsParsingServiceImpl;
+import tech.provve.libs.auth.JwtIssuingService;
+import tech.provve.libs.auth.JwtIssuingServiceImpl;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
-import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
+import static tech.provve.libs.auth.JwsParsingService.JWT_SUBJECT;
 
 @TestScope
 @Factory

@@ -2,8 +2,6 @@ package tech.provve.skill.service.application;
 
 import io.avaje.inject.test.InjectTest;
 import jakarta.inject.Inject;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import tech.provve.accounts.service.JwsParsingService;
@@ -15,9 +13,9 @@ import tech.provve.skill.repository.VoteRepository;
 
 import java.net.URI;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @InjectTest

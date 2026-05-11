@@ -21,6 +21,7 @@ import tech.provve.validation.service.ValidationService;
 import java.nio.file.Path;
 
 import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
+import static tech.provve.accounts.service.JwsParsingService.PREMIUM;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
@@ -42,6 +43,12 @@ public class SkillsController implements SkillsApi {
     public Future<ApiResponse<Examinees>> listExaminees(CollectionAuthenticatedRequest collectionAuthenticatedRequest) {
         try {
             inputValidator.validate(InputValidatorMapper.INSTANCE.map(collectionAuthenticatedRequest));
+
+            boolean premium = Boolean.parseBoolean(jwsParsingService.parseAuth(collectionAuthenticatedRequest.getAuthToken(), PREMIUM));
+            if (!premium) {
+                throw new AccessDenied("You have to buy premium access first");
+            }
+
             return Future.succeededFuture(new ApiResponse<>(200, resultService.listExaminees(collectionAuthenticatedRequest)));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));

@@ -49,7 +49,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public boolean confirmPayment(String accountLogin, String signature) {
         var invoice = invoiceRepository.findBy(accountLogin);
-        return invoice.filter(value -> signature.equals(value.signature()))
+        return invoice.filter(i -> signature.equals(i.signature()))
                       .isPresent();
     }
 }
