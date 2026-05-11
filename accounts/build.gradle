@@ -17,10 +17,11 @@ repositories {
 }
 
 dependencies {
-    implementation project(':events')
     implementation project(':notification')
+    implementation project(':events')
     implementation project(':scheduling')
     implementation project(':s3')
+    implementation project(':auth')
 
     implementation libs.bundles.aws
     implementation libs.argon2

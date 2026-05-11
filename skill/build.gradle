@@ -20,6 +20,7 @@ dependencies {
     implementation project(':events')
     implementation project(':accounts')
     implementation project(':scheduling')
+    implementation project(':auth')
     implementation project(':s3')
     implementation project(':statemachine')
     implementation libs.zip4j

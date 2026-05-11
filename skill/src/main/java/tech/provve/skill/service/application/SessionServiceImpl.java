@@ -4,9 +4,9 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.api.server.generated.dto.CreateSessionRequest;
 import tech.provve.api.server.generated.dto.CreateSessionResponse;
+import tech.provve.libs.auth.JwsParsingService;
 import tech.provve.skill.domain.entity.Session;
 import tech.provve.skill.exception.ExamNotFound;
 import tech.provve.skill.exception.ExamPassTwice;
@@ -18,7 +18,7 @@ import tech.provve.skill.repository.VoteRepository;
 import java.security.SecureRandom;
 import java.time.Instant;
 
-import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
+import static tech.provve.libs.auth.JwsParsingService.JWT_SUBJECT;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)

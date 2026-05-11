@@ -8,9 +8,9 @@ import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.jooq.exception.IntegrityConstraintViolationException;
-import tech.provve.accounts.service.JwsParsingService;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.api.server.generated.dto.*;
+import tech.provve.libs.auth.JwsParsingService;
 import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.skill.domain.entity.Comment;
@@ -34,7 +34,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import static java.util.Collections.emptyList;
-import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
+import static tech.provve.libs.auth.JwsParsingService.JWT_SUBJECT;
 import static tech.provve.skill.domain.entity.Vote.Type.*;
 import static tech.provve.skill.service.XssSanitizer.sanitize;
 
