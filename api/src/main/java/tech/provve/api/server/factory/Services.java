@@ -14,7 +14,7 @@ import org.simplejavamail.api.mailer.Mailer;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import tech.provve.accounts.repository.AccountRepository;
-import tech.provve.accounts.service.*;
+import tech.provve.accounts.service.PasswordHashingService;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.accounts.service.application.AccountServiceImpl;
 import tech.provve.libs.s3.S3Service;
@@ -36,7 +36,7 @@ import tech.provve.statemachine.service.ZipManipulator;
 import tech.provve.statemachine.service.domain.StatemachineService;
 import tech.provve.statemachine.service.domain.StatemachineServiceImpl;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
-import tech.provve.validation.domain.entity.Container;
+import tech.provve.validation.domain.entity.SolutionContainer;
 import tech.provve.validation.repository.ContainerRepository;
 import tech.provve.validation.repository.ObservationRepository;
 import tech.provve.validation.service.ValidationService;
@@ -63,11 +63,11 @@ import static tech.provve.statemachine.SaveExamMachine.*;
 public class Services {
 
     @Bean
-    public Container container(DockerClient dockerClient,
-                               ContainerRepository containerRepository,
-                               ResultRepository resultRepository,
-                               SessionRepository sessionRepository) {
-        return new Container(dockerClient, containerRepository, resultRepository, sessionRepository);
+    public SolutionContainer container(DockerClient dockerClient,
+                                       ContainerRepository containerRepository,
+                                       ResultRepository resultRepository,
+                                       SessionRepository sessionRepository) {
+        return new SolutionContainer(dockerClient, containerRepository, resultRepository, sessionRepository);
     }
 
     @Bean

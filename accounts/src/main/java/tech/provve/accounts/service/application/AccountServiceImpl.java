@@ -10,10 +10,10 @@ import tech.provve.accounts.exception.*;
 import tech.provve.accounts.mapper.AccountMapper;
 import tech.provve.accounts.mapper.AccountResponseMapper;
 import tech.provve.accounts.repository.AccountRepository;
-import tech.provve.accounts.service.JwsParsingService;
-import tech.provve.accounts.service.JwtIssuingService;
 import tech.provve.accounts.service.PasswordHashingService;
 import tech.provve.api.server.generated.dto.*;
+import tech.provve.libs.auth.JwsParsingService;
+import tech.provve.libs.auth.JwtIssuingService;
 import tech.provve.libs.s3.S3Service;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.domain.value.*;
@@ -29,7 +29,7 @@ import java.util.Objects;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNullElseGet;
-import static tech.provve.accounts.service.JwsParsingService.JWT_SUBJECT;
+import static tech.provve.libs.auth.JwsParsingService.JWT_SUBJECT;
 
 @Singleton
 @RequiredArgsConstructor

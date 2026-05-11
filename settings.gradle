@@ -6,6 +6,8 @@ include 'api',
         'payment',
         'skill',
         'accounts',
+        'statemachine',
         'scheduling',
         's3',
-        'statemachine'
+        'events',
+        'auth'

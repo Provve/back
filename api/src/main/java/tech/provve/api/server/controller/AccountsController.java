@@ -5,6 +5,7 @@ import io.vertx.core.Future;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import tech.provve.accounts.exception.*;
+import tech.provve.accounts.repository.AccountRepository;
 import tech.provve.accounts.service.application.AccountService;
 import tech.provve.api.server.exception.HttpException;
 import tech.provve.api.server.exception.ValidationError;
@@ -22,6 +23,7 @@ import tech.provve.payment.service.application.PaymentService;
 public class AccountsController implements AccountsApi {
 
     private final AccountService accountService;
+    private final AccountRepository accountRepository;
     private final InputValidator validatingService;
 
     @External
@@ -149,6 +151,19 @@ public class AccountsController implements AccountsApi {
     @Override
     public Future<ApiResponse<String>> upgradeAccount(String login) {
         try {
+            accountRepository.findByLogin(login)
+                             .ifPresentOrElse(
+                                     a -> {
+                                         if (a.isPremium()) {
+                                             throw new AccountAlreadyUpgraded("Account with login '%s' already upgraded".formatted(
+                                                     login));
+                                         }
+                                     }, () -> {
+                                         throw new AccountNotFound("Account with login '%s' not found".formatted(
+                                                 login));
+                                     }
+                             );
+
             return Future.succeededFuture(new ApiResponse<>(paymentService.createInvoice(login)));
         } catch (AccountNotFound e) {
             return Future.failedFuture(new HttpException(e, 404));

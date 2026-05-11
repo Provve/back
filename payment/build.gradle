@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(':accounts')
+    implementation project(':events')
     implementation libs.bundles.jjwt
     implementation libs.failsafe
 

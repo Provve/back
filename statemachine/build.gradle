@@ -17,6 +17,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(':validation')
     implementation project(':s3')
     implementation libs.zip4j
     implementation fileTree(dir: 'libs', include: ['*.jar'])

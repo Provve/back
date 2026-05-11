@@ -1,4 +1,4 @@
-package tech.provve.accounts.service;
+package tech.provve.libs.auth;
 
 import io.avaje.config.Config;
 import io.avaje.inject.External;
@@ -9,7 +9,7 @@ import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
-import static tech.provve.accounts.service.JwsParsingService.PREMIUM;
+import static tech.provve.libs.auth.JwsParsingService.PREMIUM;
 
 @Singleton
 @RequiredArgsConstructor

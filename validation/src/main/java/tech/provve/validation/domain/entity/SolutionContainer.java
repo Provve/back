@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 @Singleton
-public class Container {
+public class SolutionContainer {
 
     private final ContainerRepository containerRepository;
     private final ResultRepository resultRepository;
@@ -42,10 +42,10 @@ public class Container {
                                                              .handle(StillRunning.class)
                                                              .build();
 
-    public Container(@External DockerClient client,
-                     ContainerRepository repository,
-                     @External ResultRepository resultRepository,
-                     @External SessionRepository sessionRepository) {
+    public SolutionContainer(@External DockerClient client,
+                             ContainerRepository repository,
+                             @External ResultRepository resultRepository,
+                             @External SessionRepository sessionRepository) {
         dockerClient = client;
         containerRepository = repository;
         this.resultRepository = resultRepository;
@@ -58,7 +58,7 @@ public class Container {
     }
 
     @SneakyThrows
-    public void buildDockerImage(String examinee, Path dockerFileHomeDir) {
+    public void buildDockerImage(String examinee, Path dockerFileHomeDir) { //
         dockerClient.buildImageCmd(dockerFileHomeDir.toFile())
                     .withNetworkMode("none")
                     .withTags(Set.of(examinee))
@@ -68,7 +68,7 @@ public class Container {
                     .awaitCompletion();
     }
 
-    public void processContainer(String examinee, String examName) {
+    public void runSolution(String examinee, String examName) {
         CreateContainerResponse container = dockerClient.createContainerCmd(examinee)
                                                         .withNetworkDisabled(true)
                                                         .exec();
@@ -89,7 +89,7 @@ public class Container {
         }
     }
 
-    public void awaitContainerTermination(String containerId) {
+    private void awaitContainerTermination(String containerId) {
         val exception = new StillRunning();
         var info = dockerClient.inspectContainerCmd(containerId)
                                .exec();
@@ -103,7 +103,7 @@ public class Container {
     }
 
     @SneakyThrows
-    public List<String> getContainerLogs(String containerId) {
+    private List<String> getContainerLogs(String containerId) {
         LogContainerCmd logCmd = dockerClient.logContainerCmd(containerId)
                                              .withStdOut(true)
                                              .withStdErr(true);
@@ -119,12 +119,12 @@ public class Container {
         return logs;
     }
 
-    public boolean analyzeContainerLogs(List<String> logs) {
+    private boolean analyzeContainerLogs(List<String> logs) {
         /*
         Главная задача Экзамена не логи анализировать, а проверить резульат. Пусть эта процедура выполняется в рамках проверки результата. Как именно — не важно.
          */
         var secret = Config.get("check-exam.secret");
-        var successPattern = "%s ok".formatted(secret);
+        var successPattern = "%s".formatted(secret);
         return logs.stream()
                    .anyMatch(log -> log.contains(successPattern));
     }

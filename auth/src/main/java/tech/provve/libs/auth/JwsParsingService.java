@@ -1,4 +1,4 @@
-package tech.provve.accounts.service;
+package tech.provve.libs.auth;
 
 public interface JwsParsingService {
 

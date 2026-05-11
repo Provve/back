@@ -1,4 +1,4 @@
-package tech.provve.accounts.service;
+package tech.provve.libs.auth;
 
 import io.avaje.config.Config;
 import io.jsonwebtoken.Jwts;

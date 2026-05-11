@@ -7,6 +7,7 @@ import io.avaje.inject.Factory;
 import jakarta.inject.Named;
 import tech.provve.accounts.domain.model.Account;
 import tech.provve.accounts.repository.AccountRepository;
+import tech.provve.accounts.service.application.AccountService;
 import tech.provve.libs.scheduling.Scheduling;
 import tech.provve.notification.domain.value.AuthoredExamNotSaved;
 import tech.provve.notification.domain.value.AuthoredExamSaved;
@@ -14,11 +15,8 @@ import tech.provve.notification.domain.value.RecipientRequisites;
 import tech.provve.notification.service.NotificationSendingService;
 import tech.provve.skill.domain.entity.Vote;
 import tech.provve.skill.repository.VoteRepository;
-import tech.provve.statemachine.CheckSolutionMachine;
 import tech.provve.statemachine.SaveExamMachine;
-import tech.provve.validation.domain.entity.Container;
 
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.function.BiConsumer;
@@ -57,7 +55,8 @@ public class StatemachineFactory {
     public Consumer<String> delayedExamVoteCreator(VoteRepository voteRepository,
                                                    Scheduling scheduling,
                                                    ObjectMapper objectMapper,
-                                                   Supplier<LocalDateTime> deadlineSupplier) {
+                                                   Supplier<LocalDateTime> deadlineSupplier,
+                                                   AccountService accountService) {
         return delayedVoteJson -> {
             try {
                 var deadline = deadlineSupplier.get();
@@ -70,22 +69,13 @@ public class StatemachineFactory {
                                    vote.getExam()
                                        .skillName(),
                                    deadline.toInstant(ZoneOffset.UTC));
+                accountService.notifyVoteStarted(vote.getName(),
+                                                 vote.getExam()
+                                                     .skillName());
             } catch (JsonProcessingException e) {
                 throw new RuntimeException("Couldn't create Vote from given json:" + e);
             }
         };
-    }
-
-    @Bean
-    @Named(CheckSolutionMachine.BUILD_IMAGE_FOR_EXAMINEE)
-    public BiConsumer<String, Path> buildDockerImage(Container container) {
-        return container::buildDockerImage;
-    }
-
-    @Bean
-    @Named(CheckSolutionMachine.PROCESS_CONTAINER)
-    public BiConsumer<String, String> processContainer(Container container) {
-        return container::processContainer;
     }
 
 }

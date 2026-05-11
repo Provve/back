@@ -18,14 +18,15 @@ repositories {
 
 dependencies {
     implementation project(':notification')
+    implementation project(':events')
     implementation project(':scheduling')
     implementation project(':s3')
+    implementation project(':auth')
 
     implementation libs.bundles.aws
     implementation libs.argon2
     implementation libs.vertx.auth.jwt
     implementation libs.vertx.web
-    implementation libs.bundles.jjwt
 
     testImplementation libs.local.s3.rest
     testImplementation libs.local.s3.jupiter

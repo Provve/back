@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static tech.provve.accounts.service.JwsParsingService.PREMIUM;
-
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ResultServiceImpl implements ResultService {
@@ -45,11 +43,6 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public Examinees listExaminees(CollectionAuthenticatedRequest request) throws AccessDenied {
-        boolean premium = Boolean.parseBoolean(jwsParsingService.parseAuth(request.getAuthToken(), PREMIUM));
-        if (!premium) {
-            throw new AccessDenied("You have to buy premium access first");
-        }
-
         var pagination = request.getPagination();
         List<Result> results = resultRepository.getAll(request.getFilter(), pagination.getPrevious(), pagination.getSize())
                                                .stream()

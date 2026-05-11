@@ -16,13 +16,12 @@ import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 import tech.provve.statemachine.repository.CheckSolutionRepository;
 import tech.provve.statemachine.repository.SaveExamRepository;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
+import tech.provve.validation.domain.entity.SolutionContainer;
 
 import java.nio.file.Path;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static tech.provve.statemachine.CheckSolutionMachine.BUILD_IMAGE_FOR_EXAMINEE;
-import static tech.provve.statemachine.CheckSolutionMachine.PROCESS_CONTAINER;
 import static tech.provve.statemachine.SaveExamMachine.*;
 
 @Singleton
@@ -31,6 +30,7 @@ public class StatemachineServiceImpl implements StatemachineService {
 
     private final SaveExamRepository saveExamRepository;
     private final CheckSolutionRepository checkSolutionRepository;
+    private final SolutionContainer solutionContainer;
     private final PrivateArchiveSpecification privateArchiveSpecification;
 
     @External
@@ -44,14 +44,6 @@ public class StatemachineServiceImpl implements StatemachineService {
     @External
     @Named(EXAM_SAVED_NOTIFICATION_SENDER)
     private final BiConsumer<String, String> examSavedNotificationSender;
-
-    @External
-    @Named(BUILD_IMAGE_FOR_EXAMINEE)
-    private final BiConsumer<String, Path> buildDockerImage;
-
-    @External
-    @Named(PROCESS_CONTAINER)
-    private final BiConsumer<String, String> processContainer;
 
     @External
     private final S3Service s3Service;
@@ -105,6 +97,6 @@ public class StatemachineServiceImpl implements StatemachineService {
     }
 
     private CheckSolutionMachine checkSolutionMachine() {
-        return new CheckSolutionMachine(checkSolutionRepository, s3Service, processContainer, buildDockerImage);
+        return new CheckSolutionMachine(solutionContainer, checkSolutionRepository, s3Service);
     }
 }
