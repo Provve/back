@@ -1,109 +1,69 @@
 [versions]
-junit = '6.0.2'
-s3 = '2.2'
-vertx = '4.5.24'
-flyway = '12.0.1'
-jooq = '3.20.11'
-mapstruct = '1.6.3'
-provve-backend = '0.0.1'
-testcontainers = '2.0.2'
-avaje = '12.3'
-avaje-config = '5.0'
-simple-java-mail = '8.12.6'
-testcontainers-mailpit = '1.2.0'
-jjwt = '0.13.0'
-docker = '3.7.1'
+docker = "3.7.1"
+flyway = "12.0.1"
+jackson = "3.2.2"
+jjwt = "0.13.0"
+junit = "6.0.2"
+s3 = "2.2"
+testcontainers = "2.0.2"
+tinylog = "2.7.0"
+vertx = "4.5.24"
 
 [libraries]
-antifraud-api = { group = 'tech.provve.specs', name = 'antifraud-api', version.ref = 'provve-backend' }
-argon2 = { module = 'de.mkammerer:argon2-jvm', version = '2.12' }
-
-vertx-core = { module = 'io.vertx:vertx-core', version.ref = 'vertx' }
-vertx-auth-jwt = { module = 'io.vertx:vertx-auth-jwt', version.ref = 'vertx' }
-vertx-web = { module = 'io.vertx:vertx-web', version.ref = 'vertx' }
-vertx-web-open-api = { module = 'io.vertx:vertx-web-openapi', version.ref = 'vertx' }
-vertx-junit = { module = 'io.vertx:vertx-junit5', version.ref = 'vertx' }
-
-jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind', version = '2.20.1' }
-jackson-time = { module = 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310', version = '2.21.1' }
-lombok = { group = 'org.projectlombok', name = 'lombok', version = '1.18.42' }
-slf4j = { group = 'org.slf4j', name = 'slf4j-api', version = '2.1.0-alpha1' }
-simple-mail = { module = 'org.simplejavamail:simple-java-mail', version.ref = 'simple-java-mail' }
-
-jjwt-api = { module = 'io.jsonwebtoken:jjwt-api', version.ref = 'jjwt' }
-jjwt-impl = { module = 'io.jsonwebtoken:jjwt-impl', version.ref = 'jjwt' }
-jjwt-jackson = { module = 'io.jsonwebtoken:jjwt-jackson', version.ref = 'jjwt' }
-
-avaje = { module = 'io.avaje:avaje-inject', version.ref = 'avaje' }
-avaje-generator = { module = 'io.avaje:avaje-inject-generator', version.ref = 'avaje' }
-avaje-test = { module = 'io.avaje:avaje-inject-test', version.ref = 'avaje' }
-avaje-config = { module = 'io.avaje:avaje-config', version.ref = 'avaje-config' }
-
-mockito-core = { module = 'org.mockito:mockito-core', version = '5.21.0' }
-assertj = { module = 'org.assertj:assertj-core', version = '3.27.6' }
-junit-jupiter = { module = 'org.junit.jupiter:junit-jupiter', version.ref = 'junit' }
-junit-platform-launcher = { module = 'org.junit.platform:junit-platform-launcher', version.ref = 'junit' }
-testcontainers-postgresql = { module = 'org.testcontainers:testcontainers-postgresql', version.ref = 'testcontainers' }
-testcontainers-junit = { module = 'org.testcontainers:testcontainers-junit-jupiter', version.ref = 'testcontainers' }
-testcontainers-mailpit = { group = 'ch.martinelli.oss', name = 'testcontainers-mailpit', version.ref = 'testcontainers-mailpit' }
-local-s3-jupiter = { module = 'io.github.robothy:local-s3-jupiter', version.ref = 's3' }
-local-s3-rest = { module = 'io.github.robothy:local-s3-rest', version.ref = 's3' }
-aws-s3 = { module = 'software.amazon.awssdk:s3', version = '2.42.4' }
-aws-crt = { module = 'software.amazon.awssdk.crt:aws-crt', version = '0.43.4' }
-url-encoder = { module = 'com.uwyn:urlencoder', version = '1.3.2' }
-zip4j = { module = 'net.lingala.zip4j:zip4j', version = '2.11.6' }
-
-hibernate-validation = { group = 'org.hibernate.validator', name = 'hibernate-validator', version = '9.1.0.Final' }
-expressly = { group = 'org.glassfish.expressly', name = 'expressly', version = '6.0.0' }
-jooq = { group = 'org.jooq', name = 'jooq', version.ref = 'jooq' }
-jooq-postgres = { group = 'org.jooq', name = 'jooq-postgres-extensions', version.ref = 'jooq' }
-mapstruct-processor = { module = 'org.mapstruct:mapstruct-processor', version.ref = 'mapstruct' }
-mapstruct = { module = 'org.mapstruct:mapstruct', version.ref = 'mapstruct' }
-bucket4j-caffeine = { module = 'com.bucket4j:bucket4j_jdk17-caffeine', version = '8.16.1' }
-caffeine = { module = 'com.github.ben-manes.caffeine:caffeine', version = '2.9.3' }
-failsafe = { module = 'dev.failsafe:failsafe', version = '3.3.2' }
-jsoup = { module = 'org.jsoup:jsoup', version = '1.22.1' }
-
-jdbc-postgres = { module = 'org.postgresql:postgresql', version = '42.7.2' }
-flyway-postgres = { module = 'org.flywaydb:flyway-database-postgresql', version.ref = 'flyway' }
-db-scheduler = { module = 'com.github.kagkarlsson:db-scheduler', version = '16.7.1' }
-docker = { module = 'com.github.docker-java:docker-java', version.ref = 'docker' }
-docker-transport = { module = 'com.github.docker-java:docker-java-transport-httpclient5', version.ref = 'docker' }
-
-provve-api-dto = { module = 'tech.provve.api:server-dto', version = '0.0.1' }
-
+antifraud-api = { module = "tech.provve.specs:antifraud-api", version = "0.0.1" }
+argon2 = { module = "de.mkammerer:argon2-jvm", version = "2.12" }
+vertx-core = { module = "io.vertx:vertx-core", version.ref = "vertx" }
+vertx-auth-jwt = { module = "io.vertx:vertx-auth-jwt", version.ref = "vertx" }
+vertx-web = { module = "io.vertx:vertx-web", version.ref = "vertx" }
+vertx-web-open-api = { module = "io.vertx:vertx-web-openapi", version.ref = "vertx" }
+vertx-junit = { module = "io.vertx:vertx-junit5", version.ref = "vertx" }
+jackson = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-bom = { module = "tools.jackson:jackson-bom", version.ref = "jackson" }
+lombok = { module = "org.projectlombok:lombok", version = "1.18.42" }
+simple-mail = { module = "org.simplejavamail:simple-java-mail", version = "8.12.6" }
+jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
+jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
+jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
+avaje-config = { module = "io.avaje:avaje-config", version = "5.2" }
+assertj = { module = "org.assertj:assertj-core", version = "3.27.6" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
+testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
+testcontainers-junit = { module = "org.testcontainers:testcontainers-junit-jupiter", version.ref = "testcontainers" }
+testcontainers-mailpit = { module = "ch.martinelli.oss:testcontainers-mailpit", version = "1.2.0" }
+local-s3-jupiter = { module = "io.github.robothy:local-s3-jupiter", version.ref = "s3" }
+local-s3-rest = { module = "io.github.robothy:local-s3-rest", version.ref = "s3" }
+aws-s3 = { module = "software.amazon.awssdk:s3", version = "2.42.4" }
+aws-crt = { module = "software.amazon.awssdk.crt:aws-crt", version = "0.43.4" }
+url-encoder = { module = "com.uwyn:urlencoder", version = "1.3.2" }
+zip4j = { module = "net.lingala.zip4j:zip4j", version = "2.11.6" }
+bucket4j-caffeine = { module = "com.bucket4j:bucket4j_jdk17-caffeine", version = "8.16.1" }
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version = "2.9.3" }
+failsafe = { module = "dev.failsafe:failsafe", version = "3.3.2" }
+jsoup = { module = "org.jsoup:jsoup", version = "1.22.1" }
+jdbc-postgres = { module = "org.postgresql:postgresql", version = "42.7.2" }
+flyway-postgres = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
+db-scheduler = { module = "com.github.kagkarlsson:db-scheduler", version = "16.12.0" }
+docker = { module = "com.github.docker-java:docker-java", version.ref = "docker" }
+docker-transport = { module = "com.github.docker-java:docker-java-transport-httpclient5", version.ref = "docker" }
+json-schema-validator = { module = "com.networknt:json-schema-validator", version = "3.0.6" }
+mybatis = { module = "org.mybatis:mybatis", version = "3.5.19" }
+hikari = { module = "com.zaxxer:HikariCP", version = "7.1.0" }
+slf4j-tinylog = { module = "org.tinylog:slf4j-tinylog", version.ref = "tinylog" }
+tinylog = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
+dop = { module = "io.github.alekseyvideman:dop-utilities", version = "0.1.0-SNAPSHOT" }
 
 [bundles]
-testing = [
-    'junit-jupiter',
-    'junit-platform-launcher',
-    'assertj',
-    'avaje-test',
-    'testcontainers-junit',
-    'testcontainers-postgresql'
-]
-vertx = [
-    'vertx-web',
-    'vertx-core',
-    'vertx-auth-jwt',
-    'vertx-web-open-api'
-]
-jjwt = [
-    'jjwt-api',
-    'jjwt-impl',
-    'jjwt-jackson'
-]
-jackson = [
-    'jackson-databind',
-    'jackson-time'
-]
-aws = ['aws-s3', 'aws-crt']
-docker = ['docker', 'docker-transport']
-
+testing = ["junit-jupiter", "junit-platform-launcher", "assertj", "testcontainers-junit", "testcontainers-postgresql"]
+vertx = ["vertx-web", "vertx-core", "vertx-auth-jwt", "vertx-web-open-api"]
+jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
+aws = ["aws-s3", "aws-crt"]
+docker = ["docker", "docker-transport"]
+logging = ["tinylog", "slf4j-tinylog"]
+database = ["hikari", "flyway-postgres", "mybatis", "jdbc-postgres"]
 
 [plugins]
-openapi-generator = { id = 'org.openapi.generator', version = '7.18.0' }
-shadow = { id = 'com.gradleup.shadow', version = '9.3.1' }
-flyway = { id = 'org.flywaydb.flyway', version.ref = 'flyway' }
-jooq = { id = 'org.jooq.jooq-codegen-gradle', version.ref = 'jooq' }
-dependencycheck = { id = 'org.owasp.dependencycheck', version = '12.2.0' }
+openapi-generator = { id = "org.openapi.generator", version = "7.18.0" }
+shadow = { id = "com.gradleup.shadow", version = "9.4.2" }
+flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
+dependencycheck = { id = "org.owasp.dependencycheck", version = "12.2.0" }

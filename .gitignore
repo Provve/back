@@ -1,5 +1,6 @@
 .gradle
 build/
+.env
 .nrepl-port
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -16,3 +17,4 @@ api/**/.openapi-generator/
 .clj-kondo
 .lsp
 .vscode
+.gigacode
