@@ -1,0 +1,27 @@
+Команда для JVM.Gradle:
+./gradlew test |  awk '/^BUILD SUCCESSFUL/ { print "${SECRET}" }'
+
+Команда для JVM.Maven:
+mvn test | awk '/BUILD SUCCESS/ { print "${SECRET}" }'
+
+Команда для Python.PyTest:
+pytest --quiet | awk '/passed/ { print "${SECRET}" }'
+
+Команда для Rust.Cargo:
+cargo test --quiet | awk '/^test result: ok/ { print "${SECRET}" }'
+
+Команда для Go.GoTestSum:
+gotestsum | awk '/^DONE/ { print "${SECRET}" }'
+
+Команда для JavaScript.Jest:
+bun test &> >(awk '{
+    if ($0 ~ /^Tests:/) {
+        match($0, /([0-9]+) passed, ([0-9]+)/, m);
+        passed = m[1];
+        total = m[2];
+
+        if (passed == total) {
+            print "${SECRET}";
+        }
+    }
+}')

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CollectionAuthenticatedRequest",
+  "type": "object",
+  "properties": {
+    "collectionRequest": {
+      "$ref": "CollectionRequest.json"
+    },
+    "authToken": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "collectionRequest",
+    "authToken"
+  ],
+  "additionalProperties": false
+}

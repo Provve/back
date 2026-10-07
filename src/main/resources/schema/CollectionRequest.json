@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CollectionRequest",
+  "type": "object",
+  "properties": {
+    "filter": {
+      "$ref": "#/$defs/Filter"
+    },
+    "pagination": {
+      "$ref": "#/$defs/Pagination"
+    }
+  },
+  "required": [
+    "filter",
+    "pagination"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "Pagination": {
+      "type": "object",
+      "properties": {
+        "previous": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "previous",
+        "size"
+      ],
+      "additionalProperties": false
+    },
+    "Filter": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Condition"
+          }
+        }
+      },
+      "required": [
+        "conditions"
+      ],
+      "additionalProperties": false
+    },
+    "Condition": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operator": {
+          "type": "string",
+          "enum": [
+            "EQUALS",
+            "NOT_EQUALS",
+            "CONTAINS",
+            "NOT_CONTAINS",
+            "GREATER_THAN",
+            "LESS_THAN",
+            "GREATER_THAN_OR_EQUAL",
+            "LESS_THAN_OR_EQUAL"
+          ]
+        }
+      },
+      "required": [
+        "field",
+        "value",
+        "operator"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

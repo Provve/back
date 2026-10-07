@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateSessionRequest",
+  "type": "object",
+  "properties": {
+    "examName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redirect": {
+      "type": "string",
+      "format": "uri"
+    },
+    "authToken": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "examName",
+    "redirect",
+    "authToken"
+  ],
+  "additionalProperties": false
+}

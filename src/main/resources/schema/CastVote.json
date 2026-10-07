@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CastVote",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authToken": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reaction": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "name",
+    "authToken",
+    "reaction"
+  ],
+  "additionalProperties": false
+}
