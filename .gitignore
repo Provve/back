@@ -18,3 +18,5 @@ api/**/.openapi-generator/
 .lsp
 .vscode
 .gigacode
+
+/logs
