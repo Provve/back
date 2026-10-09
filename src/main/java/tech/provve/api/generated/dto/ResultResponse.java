@@ -1,9 +1,9 @@
 package tech.provve.api.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 /**
  * Успешный результат
@@ -11,26 +11,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultResponse {
 
-    private String examName;
+    private String skillName;
     private Long durationMinutes;
 
     public ResultResponse() {
 
     }
 
-    public ResultResponse(String examName, Long durationMinutes) {
-        this.examName = examName;
+    public ResultResponse(String skillName, Long durationMinutes) {
+        this.skillName = skillName;
         this.durationMinutes = durationMinutes;
     }
 
 
-    @JsonProperty("exam_name")
-    public String getExamName() {
-        return examName;
+    @JsonProperty("skill_name")
+    public String getSkillName() {
+        return skillName;
     }
 
-    public void setExamName(String examName) {
-        this.examName = examName;
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
     }
 
 
@@ -53,13 +53,13 @@ public class ResultResponse {
             return false;
         }
         ResultResponse resultResponse = (ResultResponse) o;
-        return Objects.equals(examName, resultResponse.examName) &&
+        return Objects.equals(skillName, resultResponse.skillName) &&
                 Objects.equals(durationMinutes, resultResponse.durationMinutes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(examName, durationMinutes);
+        return Objects.hash(skillName, durationMinutes);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class ResultResponse {
         StringBuilder sb = new StringBuilder();
         sb.append("class ResultResponse {\n");
 
-        sb.append("    examName: ")
-          .append(toIndentedString(examName))
+        sb.append("    skillName: ")
+          .append(toIndentedString(skillName))
           .append("\n");
         sb.append("    durationMinutes: ")
           .append(toIndentedString(durationMinutes))

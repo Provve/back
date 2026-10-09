@@ -1,6 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer
-import org.openapitools.generator.gradle.plugin.extensions.OpenApiGeneratorGenerateExtension
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 
@@ -154,6 +153,9 @@ tasks {
 
     named("openApiGenerate") {
         dependsOn("copyApiSpecs")
+        // outputDir is the project root, so Gradle would snapshot the whole project as task output,
+        // including its own .gradle/.../checksums.lock which is held by the running daemon.
+        doNotTrackState("outputDir points at the project root and contains Gradle's own locked cache files")
     }
 
     withType<ProcessResources>().configureEach {

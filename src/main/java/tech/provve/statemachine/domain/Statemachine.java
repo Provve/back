@@ -4,14 +4,13 @@ package tech.provve.statemachine.domain;
 import alekseyvideman.dop.Collection;
 import tech.provve.accounts.Account;
 import tech.provve.constants.Entity;
-import tech.provve.task.Scheduling;
 import tech.provve.notification.NotificationSending;
-
 import tech.provve.statemachine.CheckSolutionMachine;
-import tech.provve.statemachine.SaveExamMachine;
+import tech.provve.statemachine.SaveSkillMachine;
 import tech.provve.statemachine.domain.value.CheckSolutionState;
-import tech.provve.statemachine.domain.value.SaveExamState;
+import tech.provve.statemachine.domain.value.SaveSkillState;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
+import tech.provve.task.Scheduling;
 import tech.provve.util.Jackson;
 import tech.provve.util.Storage;
 import tools.jackson.core.type.TypeReference;
@@ -26,7 +25,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class Statemachine {
-    public static Consumer<String> delayedExamVoteCreator = delayedVoteJson -> {
+    public static Consumer<String> delayedSkillVoteCreator = delayedVoteJson -> {
         try {
             var deadline = LocalDateTime.now(ZoneOffset.UTC)
                                         .plusMonths(1);
@@ -36,49 +35,46 @@ public class Statemachine {
             Storage.saveVote(vote);
 
             String voteName = Collection.get(vote, Entity.Vote.NAME);
-            Map<String, Object> exam = Collection.get(vote, Entity.Vote.EXAM);
-            String skillName = Collection.get(exam, Entity.Exam.SKILL_NAME);
 
-            Scheduling.addExam(voteName,
-                               skillName,
-                               deadline.toInstant(ZoneOffset.UTC));
-            Account.notifyVoteStarted(voteName, skillName);
+            Scheduling.addSkill(voteName,
+                                deadline.toInstant(ZoneOffset.UTC));
+            Account.notifyVoteStarted(voteName, voteName);
         } catch (DatabindException e) {
             throw new RuntimeException("Couldn't create Vote from given json:" + e);
         }
     };
 
-    public static BiConsumer<String, String> validationErrorNotificationSender = (exam, author) -> {
+    public static BiConsumer<String, String> validationErrorNotificationSender = (skill, author) -> {
         String email = Storage.findAccountByLogin(author)
                               .map(account -> Collection.<String>getOrNull(account, Entity.Account.EMAIL))
                               .orElse(null);
         NotificationSending.send(
-                NotificationSending.authoredExamNotSavedCommand(author, email),
-                NotificationSending.fillAuthoredExamNotSavedTemplate(author, exam)
+                NotificationSending.authoredSkillNotSavedCommand(author, email),
+                NotificationSending.fillAuthoredSkillNotSavedTemplate(author, skill)
         );
     };
 
-    public static BiConsumer<String, String> examSavedNotificationSender = (exam, author) -> {
+    public static BiConsumer<String, String> skillSavedNotificationSender = (skill, author) -> {
         String email = Storage.findAccountByLogin(author)
                               .map(account -> Collection.<String>getOrNull(account, Entity.Account.EMAIL))
                               .orElse(null);
         NotificationSending.send(
-                NotificationSending.authoredExamSavedCommand(author, email),
-                NotificationSending.fillAuthoredExamSavedTemplate(author, exam)
+                NotificationSending.authoredSkillSavedCommand(author, email),
+                NotificationSending.fillAuthoredSkillSavedTemplate(author, skill)
         );
     };
 
     public static void continueAll() {
-        Storage.listSaveExams()
+        Storage.listSaveSkills()
                .stream()
-               .filter(s -> !SaveExamState.PREPARED.equals(Collection.get(s, Entity.SaveExam.STATE)))
-               .forEach(saveExam -> {
+               .filter(s -> !SaveSkillState.PREPARED.equals(Collection.get(s, Entity.SaveSkill.STATE)))
+               .forEach(saveSkill -> {
 
-                   var s = new SaveExamMachine();
-                   s.setInitialState(Collection.get(saveExam, Entity.SaveExam.STATE));
-                   s.init(Collection.get(saveExam, Entity.SaveExam.NAME),
-                          Collection.get(saveExam, Entity.SaveExam.AUTHOR),
-                          Collection.get(saveExam, Entity.SaveExam.DELAYED_VOTE_JSON));
+                   var s = new SaveSkillMachine();
+                   s.setInitialState(Collection.get(saveSkill, Entity.SaveSkill.STATE));
+                   s.init(Collection.get(saveSkill, Entity.SaveSkill.NAME),
+                          Collection.get(saveSkill, Entity.SaveSkill.AUTHOR),
+                          Collection.get(saveSkill, Entity.SaveSkill.DELAYED_VOTE_JSON));
                });
 
         Storage.listCheckSolutions()
@@ -93,24 +89,24 @@ public class Statemachine {
                });
     }
 
-    public static void createSaveExam(String name, String author, String delayedVoteJson) throws StatemachineAlreadyExists {
-        if (Storage.saveExamExists(name)) {
+    public static void createSaveSkill(String name, String author, String delayedVoteJson) throws StatemachineAlreadyExists {
+        if (Storage.saveSkillExists(name)) {
             throw new StatemachineAlreadyExists(name);
         }
-        Map<String, Object> saveExam = new HashMap<>();
-        saveExam.put(Entity.SaveExam.NAME, name);
-        saveExam.put(Entity.SaveExam.STATE, SaveExamState.UNPREPARED);
-        saveExam.put(Entity.SaveExam.AUTHOR, author);
-        saveExam.put(Entity.SaveExam.DELAYED_VOTE_JSON, delayedVoteJson);
-        createSaveExam(saveExam);
+        Map<String, Object> saveSkill = new HashMap<>();
+        saveSkill.put(Entity.SaveSkill.NAME, name);
+        saveSkill.put(Entity.SaveSkill.STATE, SaveSkillState.UNPREPARED);
+        saveSkill.put(Entity.SaveSkill.AUTHOR, author);
+        saveSkill.put(Entity.SaveSkill.DELAYED_VOTE_JSON, delayedVoteJson);
+        createSaveSkill(saveSkill);
     }
 
-    private static void createSaveExam(Map<String, Object> saveExam) {
-        var s = saveExamMachine();
-        s.setInitialState(Collection.get(saveExam, Entity.SaveExam.STATE));
-        s.init(Collection.get(saveExam, Entity.SaveExam.NAME),
-               Collection.get(saveExam, Entity.SaveExam.AUTHOR),
-               Collection.get(saveExam, Entity.SaveExam.DELAYED_VOTE_JSON));
+    private static void createSaveSkill(Map<String, Object> saveSkill) {
+        var s = saveSkillMachine();
+        s.setInitialState(Collection.get(saveSkill, Entity.SaveSkill.STATE));
+        s.init(Collection.get(saveSkill, Entity.SaveSkill.NAME),
+               Collection.get(saveSkill, Entity.SaveSkill.AUTHOR),
+               Collection.get(saveSkill, Entity.SaveSkill.DELAYED_VOTE_JSON));
     }
 
     public static void createCheckSolution(String name, String examinee, Path solutionArchivePath) throws StatemachineAlreadyExists {
@@ -132,8 +128,8 @@ public class Statemachine {
                solutionArchivePath);
     }
 
-    private static SaveExamMachine saveExamMachine() {
-        return new SaveExamMachine();
+    private static SaveSkillMachine saveSkillMachine() {
+        return new SaveSkillMachine();
     }
 
     private static CheckSolutionMachine checkSolutionMachine() {

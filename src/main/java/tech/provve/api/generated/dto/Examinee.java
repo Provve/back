@@ -1,18 +1,16 @@
 package tech.provve.api.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Examinee {
 
-    private String examName;
+    private String skillName;
     private Long durationMinutes;
     private String login;
     private String avatarUrl;
@@ -23,8 +21,8 @@ public class Examinee {
 
     }
 
-    public Examinee(String examName, Long durationMinutes, String login, String avatarUrl, String contactInfo, List<String> interests) {
-        this.examName = examName;
+    public Examinee(String skillName, Long durationMinutes, String login, String avatarUrl, String contactInfo, List<String> interests) {
+        this.skillName = skillName;
         this.durationMinutes = durationMinutes;
         this.login = login;
         this.avatarUrl = avatarUrl;
@@ -33,13 +31,13 @@ public class Examinee {
     }
 
 
-    @JsonProperty("exam_name")
-    public String getExamName() {
-        return examName;
+    @JsonProperty("skill_name")
+    public String getSkillName() {
+        return skillName;
     }
 
-    public void setExamName(String examName) {
-        this.examName = examName;
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
     }
 
 
@@ -102,7 +100,7 @@ public class Examinee {
             return false;
         }
         Examinee examinee = (Examinee) o;
-        return Objects.equals(examName, examinee.examName) &&
+        return Objects.equals(skillName, examinee.skillName) &&
                 Objects.equals(durationMinutes, examinee.durationMinutes) &&
                 Objects.equals(login, examinee.login) &&
                 Objects.equals(avatarUrl, examinee.avatarUrl) &&
@@ -112,7 +110,7 @@ public class Examinee {
 
     @Override
     public int hashCode() {
-        return Objects.hash(examName, durationMinutes, login, avatarUrl, contactInfo, interests);
+        return Objects.hash(skillName, durationMinutes, login, avatarUrl, contactInfo, interests);
     }
 
     @Override
@@ -120,8 +118,8 @@ public class Examinee {
         StringBuilder sb = new StringBuilder();
         sb.append("class Examinee {\n");
 
-        sb.append("    examName: ")
-          .append(toIndentedString(examName))
+        sb.append("    skillName: ")
+          .append(toIndentedString(skillName))
           .append("\n");
         sb.append("    durationMinutes: ")
           .append(toIndentedString(durationMinutes))

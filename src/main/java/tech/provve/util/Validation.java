@@ -82,13 +82,6 @@ public class Validation {
         return Validation.validate(serialized, schemaLocations);
     }
 
-    public static String validateExamAddVote(Map<String, Object> examAddVote) {
-        var singleKey = "q";
-        var schemaLocations = Map.of(singleKey, "classpath:schema/ExamAddVote.json");
-        Map<String, String> serialized = Map.of(singleKey, Jackson.json.writeValueAsString(examAddVote));
-        return Validation.validate(serialized, schemaLocations);
-    }
-
     public static String validateRegisterAccountRequest(Map<String, Object> registerAccountRequest) {
         var singleKey = "q";
         var schemaLocations = Map.of(singleKey, "classpath:schema/RegisterAccountRequest.json");

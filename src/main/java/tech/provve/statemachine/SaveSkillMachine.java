@@ -8,11 +8,12 @@ import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.model.FileHeader;
 import net.lingala.zip4j.model.ZipParameters;
 import tech.provve.constants.Entity;
-import tech.provve.util.S3;
-import tech.provve.statemachine.domain.value.SaveExamEvent;
-import tech.provve.statemachine.domain.value.SaveExamState;
 import tech.provve.statemachine.domain.Statemachine;
+import tech.provve.statemachine.domain.value.SaveSkillEvent;
+import tech.provve.statemachine.domain.value.SaveSkillState;
 import tech.provve.statemachine.specification.PrivateArchiveSpecification;
+import tech.provve.statemachine.specification.PublicArchiveSpecification;
+import tech.provve.util.S3;
 import tech.provve.util.Storage;
 
 import java.io.*;
@@ -24,63 +25,70 @@ import java.util.zip.ZipInputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static tech.provve.constants.Entity.PrivateArchive.*;
-import static tech.provve.statemachine.domain.value.SaveExamEvent.INVALIDATE;
-import static tech.provve.statemachine.domain.value.SaveExamEvent.PREPARE;
-import static tech.provve.statemachine.domain.value.SaveExamState.*;
 import static tech.provve.statemachine.SecretGenerator.bytesToHex;
 import static tech.provve.statemachine.SecretGenerator.generateSecret;
 import static tech.provve.statemachine.ZipManipulator.extractFromZip;
+import static tech.provve.statemachine.domain.value.SaveSkillEvent.INVALIDATE;
+import static tech.provve.statemachine.domain.value.SaveSkillEvent.PREPARE;
+import static tech.provve.statemachine.domain.value.SaveSkillState.*;
 
 /**
- * МС для сохранения приватного архива экзамена
+ * МС для сохранения навыка вместе с приватным и публичным архивами экзамена
  */
-public class SaveExamMachine extends StateMachine<SaveExamState, SaveExamEvent> {
+public class SaveSkillMachine extends StateMachine<SaveSkillState, SaveSkillEvent> {
 
-    public SaveExamMachine() {
-        super(SaveExamState.class, Match.BY_EQUALITY);
+    public SaveSkillMachine() {
+        super(SaveSkillState.class, Match.BY_EQUALITY);
     }
 
     public void init(String name, String author, String delayedVoteJson) {
         //@formatter:off
         beginStateMachine()
-                .description("Save Exam")
+                .description("Save Skill")
                 .initialState(UNPREPARED)
                 .states()
                     .state(UNPREPARED)
                         .onEntry(() -> {
-                            var bucket = Config.get("s3.buckets.exams");
+                            var bucket = Config.get("s3.buckets.archives");
                             var privateArchiveKey = S3.privateArchiveKeygen(name);
-                            byte[] privateArchiveData = S3.download(bucket, privateArchiveKey);
+                            var publicArchiveKey = S3.publicArchiveKeygen(name);
 
-                            boolean valid = PrivateArchiveSpecification.isValid(privateArchiveData);
-                            if (!valid) process(INVALIDATE);
+                            byte[] privateArchiveData = S3.download(bucket, privateArchiveKey);
+                            byte[] publicArchiveData = S3.download(bucket, publicArchiveKey);
+
+                            boolean valid = PrivateArchiveSpecification.isValid(privateArchiveData)
+                                    && PublicArchiveSpecification.isValid(publicArchiveData);
+                            if (!valid) {
+                                process(INVALIDATE);
+                                return;
+                            }
 
                             byte[] updatedArchive = injectSecret(privateArchiveData);
                             S3.crtUpload(bucket, privateArchiveKey, updatedArchive);
 
-                            Map<String, Object> saveExam = new HashMap<>();
-                            saveExam.put(Entity.SaveExam.NAME, name);
-                            saveExam.put(Entity.SaveExam.STATE, getState());
-                            saveExam.put(Entity.SaveExam.AUTHOR, author);
-                            saveExam.put(Entity.SaveExam.DELAYED_VOTE_JSON, delayedVoteJson);
-                            Storage.saveSaveExam(saveExam);
+                            Map<String, Object> saveSkill = new HashMap<>();
+                            saveSkill.put(Entity.SaveSkill.NAME, name);
+                            saveSkill.put(Entity.SaveSkill.STATE, getState());
+                            saveSkill.put(Entity.SaveSkill.AUTHOR, author);
+                            saveSkill.put(Entity.SaveSkill.DELAYED_VOTE_JSON, delayedVoteJson);
+                            Storage.saveSaveSkill(saveSkill);
 
                             process(PREPARE);
                         })
                     .state(PREPARED)
                         .onEntry(() -> {
-                            Statemachine.delayedExamVoteCreator.accept(delayedVoteJson);
-                            Statemachine.examSavedNotificationSender.accept(name, author);
-                            Storage.updateSaveExamState(name, getState());
+                            Statemachine.delayedSkillVoteCreator.accept(delayedVoteJson);
+                            Statemachine.skillSavedNotificationSender.accept(name, author);
+                            Storage.updateSaveSkillState(name, getState());
                         })
                     .state(INVALID)
                         .onEntry(() -> {
-                            var bucket = Config.get("s3.buckets.exams");
+                            var bucket = Config.get("s3.buckets.archives");
                             S3.delete(bucket, S3.privateArchiveKeygen(name));
                             S3.delete(bucket, S3.publicArchiveKeygen(name));
 
                             Statemachine.validationErrorNotificationSender.accept(name, author);
-                            Storage.deleteSaveExam(name);
+                            Storage.deleteSaveSkill(name);
                         })
                 .transitions()
                     .when(UNPREPARED).then(PREPARED).on(PREPARE)

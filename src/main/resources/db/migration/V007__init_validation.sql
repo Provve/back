@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS validation.container
 (
     login
 ),
-    exam_name VARCHAR
+    skill_name VARCHAR
 (
     100
 ) NOT NULL, -- без FK, потому что невалидное значение не может прийти
@@ -51,4 +51,4 @@ ON COLUMN validation.container.examinee IS 'Автор решения';
 COMMENT
 ON COLUMN validation.container.container_id IS 'ID контейнера (как в docker ps)';
 COMMENT
-ON COLUMN validation.container.exam_name IS 'По какому экзамену сделано решение';
+ON COLUMN validation.container.skill_name IS 'По какому навыку сделано решение';

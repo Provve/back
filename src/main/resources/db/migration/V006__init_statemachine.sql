@@ -1,16 +1,16 @@
 CREATE SCHEMA IF NOT EXISTS statemachine;
 
-CREATE TYPE statemachine.save_exam_state AS ENUM ('UNPREPARED', 'PREPARED');
+CREATE TYPE statemachine.save_skill_state AS ENUM ('UNPREPARED', 'PREPARED');
 
-CREATE TABLE statemachine.save_exam
+CREATE TABLE statemachine.save_skill
 (
     name              TEXT PRIMARY KEY,
-    state             statemachine.save_exam_state NOT NULL,
+    state statemachine.save_skill_state NOT NULL,
     author            VARCHAR(50) REFERENCES accounts.accounts (login) ON DELETE CASCADE,
     delayed_vote_json TEXT                         NOT NULL
 );
 COMMENT
-ON COLUMN statemachine.save_exam.delayed_vote_json IS 'Параметры голосования для отложеного создания';
+ON COLUMN statemachine.save_skill.delayed_vote_json IS 'Параметры голосования для отложеного создания';
 
 
 

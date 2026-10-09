@@ -1,15 +1,13 @@
 package tech.provve.api.controller;
 
 import io.vertx.core.Future;
-import tech.provve.accounts.exception.AccessDenied;
 import tech.provve.accounts.JwsParsing;
+import tech.provve.accounts.exception.AccessDenied;
 import tech.provve.api.ApiResponse;
 import tech.provve.api.exception.HttpException;
 import tech.provve.api.exception.ValidationError;
 import tech.provve.api.generated.api.SkillsApi;
 import tech.provve.api.generated.dto.*;
-import tech.provve.api.generated.dto.*;
-import tech.provve.skill.domain.Exam;
 import tech.provve.skill.domain.Result;
 import tech.provve.skill.domain.Skill;
 import tech.provve.util.Jackson;
@@ -24,7 +22,7 @@ import static tech.provve.accounts.JwsParsing.PREMIUM;
 public class SkillsController implements SkillsApi {
 
     @Override
-    public Future<ApiResponse<ResultResponse>> getExamResult(String examName) {
+    public Future<ApiResponse<ResultResponse>> getExamResult(String skillName) {
         return null;
     }
 
@@ -45,19 +43,6 @@ public class SkillsController implements SkillsApi {
             return Future.failedFuture(new HttpException(e, 400));
         } catch (AccessDenied e) {
             return Future.failedFuture(new HttpException(e, 403));
-        }
-    }
-
-    @Override
-    public Future<ApiResponse<Exams>> listExams(String skillName, CollectionRequest collectionRequest) {
-        try {
-            Map<String, Object> params = Jackson.convertToMap(collectionRequest);
-            String failureMessage = Validation.validateCollectionRequest(params);
-            if (failureMessage != null && !failureMessage.isEmpty()) throw new ValidationError(failureMessage);
-
-            return Future.succeededFuture(new ApiResponse<>(200, Exam.list(collectionRequest)));
-        } catch (ValidationError e) {
-            return Future.failedFuture(new HttpException(e, 400));
         }
     }
 
@@ -88,11 +73,11 @@ public class SkillsController implements SkillsApi {
     }
 
     @Override
-    public Future<ApiResponse<Void>> submitExamSolution(String examName, SubmitExamSolutionRequest submitExamSolutionRequest) {
+    public Future<ApiResponse<Void>> submitExamSolution(String skillName, SubmitExamSolutionRequest submitExamSolutionRequest) {
         Map<String, Object> params = Jackson.convertToMap(submitExamSolutionRequest);
         var examinee = JwsParsing.parseTrust(submitExamSolutionRequest.getTrustToken(), JWT_SUBJECT);
         var accepted = tech.provve.validation.Validation.validate(examinee,
-                                                                  examName,
+                                                                  skillName,
                                                                   Path.of(submitExamSolutionRequest.getSolution()
                                                                                                    .uploadedFileName()));
         if (accepted) {

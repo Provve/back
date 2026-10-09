@@ -9,7 +9,7 @@ s3:
     # public read
     images: i4s
     # archives with exams, private
-    exams: e3s
+    archives: e3s
     # archives with solutions, private
     solutions: s7s
   credentials:

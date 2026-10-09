@@ -115,16 +115,16 @@ public class NotificationSending {
                 .buildMailer();
     }
 
-    public static String fillAuthoredExamSavedTemplate(String login, String examName) {
-        return loadTemplate("authored_exam_saved.html")
+    public static String fillAuthoredSkillSavedTemplate(String login, String skillName) {
+        return loadTemplate("authored_skill_saved.html")
                 .replace("{{login}}", login)
-                .replace("{{exam}}", examName);
+                .replace("{{skill}}", skillName);
     }
 
-    public static String fillAuthoredExamNotSavedTemplate(String login, String examName) {
-        return loadTemplate("authored_exam_not_saved.html")
+    public static String fillAuthoredSkillNotSavedTemplate(String login, String skillName) {
+        return loadTemplate("authored_skill_not_saved.html")
                 .replace("{{login}}", login)
-                .replace("{{exam}}", examName);
+                .replace("{{skill}}", skillName);
     }
 
     public static String fillResetCodeTemplate(String login, String resetToken) {
@@ -148,18 +148,18 @@ public class NotificationSending {
                 .replace("{{vote}}", voteName);
     }
 
-    public static Map<String, Object> authoredExamSavedCommand(String login, String email) {
+    public static Map<String, Object> authoredSkillSavedCommand(String login, String email) {
         Map<String, Object> command = new HashMap<>();
-        command.put(Entity.NotifyCommand.SUBJECT, "Экзамен сохранен");
+        command.put(Entity.NotifyCommand.SUBJECT, "Навык сохранен");
         command.put(Entity.NotifyCommand.LEVEL, NotificationLevel.INFO);
         command.put(Entity.NotifyCommand.REQUISITES, requisites(login, email));
         command.put(Entity.NotifyCommand.ADDRESSES, List.of(Address.EMAIL, Address.INTERNAL));
         return command;
     }
 
-    public static Map<String, Object> authoredExamNotSavedCommand(String login, String email) {
+    public static Map<String, Object> authoredSkillNotSavedCommand(String login, String email) {
         Map<String, Object> command = new HashMap<>();
-        command.put(Entity.NotifyCommand.SUBJECT, "Экзамен не сохранен");
+        command.put(Entity.NotifyCommand.SUBJECT, "Навык не сохранен");
         command.put(Entity.NotifyCommand.LEVEL, NotificationLevel.ERROR);
         command.put(Entity.NotifyCommand.REQUISITES, requisites(login, email));
         command.put(Entity.NotifyCommand.ADDRESSES, List.of(Address.EMAIL, Address.INTERNAL));

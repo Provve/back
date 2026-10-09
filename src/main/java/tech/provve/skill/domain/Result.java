@@ -1,9 +1,9 @@
 package tech.provve.skill.domain;
 
 import alekseyvideman.dop.Collection;
-import tech.provve.accounts.exception.AccessDenied;
-import tech.provve.accounts.JwsParsing;
 import tech.provve.accounts.Account;
+import tech.provve.accounts.JwsParsing;
+import tech.provve.accounts.exception.AccessDenied;
 import tech.provve.api.generated.dto.*;
 import tech.provve.constants.Entity;
 import tech.provve.util.Jackson;
@@ -29,7 +29,7 @@ public class Result {
         }
 
         var cursor = new Cursor(all.getLast()
-                                   .getExamName());
+                                   .getSkillName());
         return new Results(all, cursor);
     }
 

@@ -3,7 +3,7 @@
   "title": "CreateSessionRequest",
   "type": "object",
   "properties": {
-    "examName": {
+    "skillName": {
       "type": "string",
       "minLength": 1
     },
@@ -17,7 +17,7 @@
     }
   },
   "required": [
-    "examName",
+    "skillName",
     "redirect",
     "authToken"
   ],

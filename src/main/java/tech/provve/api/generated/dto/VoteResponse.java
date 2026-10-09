@@ -1,18 +1,13 @@
 package tech.provve.api.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import tech.provve.api.generated.dto.ExamAddVoteResponse;
-import tech.provve.api.generated.dto.VoteResponseAllOfReactions;
+import java.util.Objects;
 
 /**
  * Всеохватывающее представление голосования
@@ -27,8 +22,7 @@ public class VoteResponse {
 
     public enum TypeEnum {
         ADD_SKILL("add_skill"),
-        DEL_SKILL("del_skill"),
-        ADD_EXAM("add_exam");
+        DEL_SKILL("del_skill");
 
         private String value;
 
@@ -46,20 +40,20 @@ public class VoteResponse {
     private TypeEnum type;
     private VoteResponseAllOfReactions reactions;
     private OffsetDateTime deadline;
-    private ExamAddVoteResponse examAdd;
+    private SkillAddVoteResponse skillAdd;
 
     public VoteResponse() {
 
     }
 
-    public VoteResponse(String name, String arguments, List<String> tags, TypeEnum type, VoteResponseAllOfReactions reactions, OffsetDateTime deadline, ExamAddVoteResponse examAdd) {
+    public VoteResponse(String name, String arguments, List<String> tags, TypeEnum type, VoteResponseAllOfReactions reactions, OffsetDateTime deadline, SkillAddVoteResponse skillAdd) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;
         this.type = type;
         this.reactions = reactions;
         this.deadline = deadline;
-        this.examAdd = examAdd;
+        this.skillAdd = skillAdd;
     }
 
 
@@ -123,13 +117,13 @@ public class VoteResponse {
     }
 
 
-    @JsonProperty("exam_add")
-    public ExamAddVoteResponse getExamAdd() {
-        return examAdd;
+    @JsonProperty("skill_add")
+    public SkillAddVoteResponse getSkillAdd() {
+        return skillAdd;
     }
 
-    public void setExamAdd(ExamAddVoteResponse examAdd) {
-        this.examAdd = examAdd;
+    public void setSkillAdd(SkillAddVoteResponse skillAdd) {
+        this.skillAdd = skillAdd;
     }
 
 
@@ -148,12 +142,12 @@ public class VoteResponse {
                 Objects.equals(type, voteResponse.type) &&
                 Objects.equals(reactions, voteResponse.reactions) &&
                 Objects.equals(deadline, voteResponse.deadline) &&
-                Objects.equals(examAdd, voteResponse.examAdd);
+                Objects.equals(skillAdd, voteResponse.skillAdd);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, arguments, tags, type, reactions, deadline, examAdd);
+        return Objects.hash(name, arguments, tags, type, reactions, deadline, skillAdd);
     }
 
     @Override
@@ -179,8 +173,8 @@ public class VoteResponse {
         sb.append("    deadline: ")
           .append(toIndentedString(deadline))
           .append("\n");
-        sb.append("    examAdd: ")
-          .append(toIndentedString(examAdd))
+        sb.append("    skillAdd: ")
+          .append(toIndentedString(skillAdd))
           .append("\n");
         sb.append("}");
         return sb.toString();

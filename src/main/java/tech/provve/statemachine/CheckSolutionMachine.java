@@ -6,11 +6,11 @@ import io.avaje.config.Config;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;
 import tech.provve.constants.Entity;
-import tech.provve.util.S3;
 import tech.provve.statemachine.domain.value.CheckSolutionEvent;
 import tech.provve.statemachine.domain.value.CheckSolutionState;
-import tech.provve.util.Storage;
 import tech.provve.util.Container;
+import tech.provve.util.S3;
+import tech.provve.util.Storage;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,9 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static tech.provve.constants.Entity.PrivateArchive.IGNORE_FILE;
 import static tech.provve.statemachine.domain.value.CheckSolutionEvent.*;
 import static tech.provve.statemachine.domain.value.CheckSolutionState.*;
-import static tech.provve.constants.Entity.PrivateArchive.IGNORE_FILE;
 
 /**
  * МС для проверки решения от экзаменуемого
@@ -33,7 +33,7 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
     }
 
     /**
-     * @param name название экзамена
+     * @param name название навыка
      */
     public void init(String name, String examinee, Path solutionArchivePath) {
 //        @formatter:off
@@ -53,7 +53,7 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                                 new ZipFile(solutionArchivePath.toFile()).extractAll(solutionTempDirPath.toString());
 
                                 // скачал экзамен и записал на диск
-                                byte[] examArchive = S3.download(Config.get("s3.buckets.exams"), S3.privateArchiveKeygen(name));
+                                byte[] examArchive = S3.download(Config.get("s3.buckets.archives"), S3.privateArchiveKeygen(name));
                                 Path examTempFile = Files.createTempFile(null, ".zip");
                                 Files.write(Path.of(examTempFile.toString()), examArchive);
 
@@ -68,7 +68,7 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                                 zipParameters.setExcludeFileFilter(ignoreList::contains);
                                 new ZipFile(examTempFile.toFile()).addFolder(solutionTempDirPath.toFile(), zipParameters);
 
-                                S3.crtUpload(Config.get("s3.buckets.exams"), S3.solutionExamArchiveKeygen(name, examinee), Files.readAllBytes(examTempFile));
+                                S3.crtUpload(Config.get("s3.buckets.archives"), S3.solutionExamArchiveKeygen(name, examinee), Files.readAllBytes(examTempFile));
 
                                 Map<String, Object> checkSolution = new HashMap<>();
                                 checkSolution.put(Entity.CheckSolution.NAME, name);
@@ -85,7 +85,7 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                     .state(PREPARED)
                         .onEntry(() -> {
                             try {
-                                byte[] mergedSolutionExamArchive = S3.download(Config.get("s3.buckets.exams"), S3.solutionExamArchiveKeygen(name, examinee));
+                                byte[] mergedSolutionExamArchive = S3.download(Config.get("s3.buckets.archives"), S3.solutionExamArchiveKeygen(name, examinee));
                                 // извлек
                                 Path tempArchivePath = Files.createTempFile(null, ".zip");
                                 Files.write(tempArchivePath, mergedSolutionExamArchive);
@@ -115,7 +115,7 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                         })
                     .state(STOPPED)
                         .onEntry(() -> {
-                            S3.delete(Config.get("s3.buckets.exams"), S3.solutionExamArchiveKeygen(name, examinee));
+                            S3.delete(Config.get("s3.buckets.archives"), S3.solutionExamArchiveKeygen(name, examinee));
                             Storage.updateCheckSolutionState(name, getState());
                         })
                     .state(CRASHED)

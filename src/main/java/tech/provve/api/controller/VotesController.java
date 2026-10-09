@@ -6,11 +6,10 @@ import tech.provve.api.exception.HttpException;
 import tech.provve.api.exception.ValidationError;
 import tech.provve.api.generated.api.VotesApi;
 import tech.provve.api.generated.dto.*;
-import tech.provve.api.generated.dto.*;
 import tech.provve.constants.Entity;
-import tech.provve.skill.exception.*;
 import tech.provve.skill.XssSanitizer;
 import tech.provve.skill.domain.Vote;
+import tech.provve.skill.exception.*;
 import tech.provve.statemachine.exception.StatemachineAlreadyExists;
 import tech.provve.util.Jackson;
 import tech.provve.util.Validation;
@@ -42,24 +41,6 @@ public class VotesController implements VotesApi {
     }
 
     @Override
-    public Future<ApiResponse<Void>> createExamAddVote(ExamAddVote examAddVote) {
-        try {
-            Map<String, Object> params = Jackson.convertToMap(examAddVote);
-            String failureMessage = Validation.validateExamAddVote(params);
-            if (failureMessage != null && !failureMessage.isEmpty()) throw new ValidationError(failureMessage);
-
-            Vote.create(examAddVote);
-            return Future.succeededFuture(new ApiResponse<>(202));
-        } catch (ValidationError e) {
-            return Future.failedFuture(new HttpException(e, 400));
-        } catch (SkillNotFound e) {
-            return Future.failedFuture(new HttpException(e, 404));
-        } catch (VoteAlreadyExists | StatemachineAlreadyExists e) {
-            return Future.failedFuture(new HttpException(e, 409));
-        }
-    }
-
-    @Override
     public Future<ApiResponse<Void>> createSkillAddVote(SkillAddVote skillAddVote) {
         try {
             Map<String, Object> params = Jackson.convertToMap(skillAddVote);
@@ -67,10 +48,10 @@ public class VotesController implements VotesApi {
             if (failureMessage != null && !failureMessage.isEmpty()) throw new ValidationError(failureMessage);
 
             Vote.create(skillAddVote);
-            return Future.succeededFuture(new ApiResponse<>(200));
+            return Future.succeededFuture(new ApiResponse<>(202));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
-        } catch (VoteAlreadyExists e) {
+        } catch (VoteAlreadyExists | SkillAlreadyExists | StatemachineAlreadyExists e) {
             return Future.failedFuture(new HttpException(e, 409));
         }
     }

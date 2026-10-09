@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.jspecify.annotations.NonNull;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -41,6 +42,18 @@ public class ZipManipulator {
             }
 
             return fitFiles == filesInside.length;
+        }
+    }
+
+    /**
+     * Проверяет, что данные являются валидным непустым zip-архивом.
+     */
+    public static boolean isValid(byte[] zipData) {
+        try (var byteArray = new ByteArrayInputStream(zipData);
+             var zis = new ZipInputStream(byteArray)) {
+            return zis.getNextEntry() != null;
+        } catch (IOException e) {
+            return false;
         }
     }
 

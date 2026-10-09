@@ -21,9 +21,9 @@ public class Validation {
     }
 
     @SneakyThrows
-    public static boolean validate(String examinee, String examName, Path solutionArchivePath) {
-        Statemachine.createCheckSolution(examName, examinee, renameExtensionToZip(solutionArchivePath.toString()).toPath());
-        return !(Storage.voteExists(examName, true));
+    public static boolean validate(String examinee, String skillName, Path solutionArchivePath) {
+        Statemachine.createCheckSolution(skillName, examinee, renameExtensionToZip(solutionArchivePath.toString()).toPath());
+        return !(Storage.voteExists(skillName, true));
     }
 
     // Vertx записывает временные файлы с расришением .tmp, а нужен .zip

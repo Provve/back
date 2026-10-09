@@ -1,13 +1,12 @@
 package tech.provve.api.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.ext.web.FileUpload;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkillAddVote {
@@ -16,16 +15,22 @@ public class SkillAddVote {
     private String arguments;
     private List<String> tags = new ArrayList<>();
     private String authToken;
+    private String description;
+    private FileUpload publicArchive;
+    private FileUpload privateArchive;
 
     public SkillAddVote() {
 
     }
 
-    public SkillAddVote(String name, String arguments, List<String> tags, String authToken) {
+    public SkillAddVote(String name, String arguments, List<String> tags, String authToken, String description, FileUpload publicArchive, FileUpload privateArchive) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;
         this.authToken = authToken;
+        this.description = description;
+        this.publicArchive = publicArchive;
+        this.privateArchive = privateArchive;
     }
 
 
@@ -69,6 +74,36 @@ public class SkillAddVote {
     }
 
 
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    @JsonProperty("public_archive")
+    public FileUpload getPublicArchive() {
+        return publicArchive;
+    }
+
+    public void setPublicArchive(FileUpload publicArchive) {
+        this.publicArchive = publicArchive;
+    }
+
+
+    @JsonProperty("private_archive")
+    public FileUpload getPrivateArchive() {
+        return privateArchive;
+    }
+
+    public void setPrivateArchive(FileUpload privateArchive) {
+        this.privateArchive = privateArchive;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -81,12 +116,15 @@ public class SkillAddVote {
         return Objects.equals(name, skillAddVote.name) &&
                 Objects.equals(arguments, skillAddVote.arguments) &&
                 Objects.equals(tags, skillAddVote.tags) &&
-                Objects.equals(authToken, skillAddVote.authToken);
+                Objects.equals(authToken, skillAddVote.authToken) &&
+                Objects.equals(description, skillAddVote.description) &&
+                Objects.equals(publicArchive, skillAddVote.publicArchive) &&
+                Objects.equals(privateArchive, skillAddVote.privateArchive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, arguments, tags, authToken);
+        return Objects.hash(name, arguments, tags, authToken, description, publicArchive, privateArchive);
     }
 
     @Override
@@ -105,6 +143,15 @@ public class SkillAddVote {
           .append("\n");
         sb.append("    authToken: ")
           .append(toIndentedString(authToken))
+          .append("\n");
+        sb.append("    description: ")
+          .append(toIndentedString(description))
+          .append("\n");
+        sb.append("    publicArchive: ")
+          .append(toIndentedString(publicArchive))
+          .append("\n");
+        sb.append("    privateArchive: ")
+          .append(toIndentedString(privateArchive))
           .append("\n");
         sb.append("}");
         return sb.toString();

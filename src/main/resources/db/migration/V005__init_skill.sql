@@ -8,7 +8,7 @@ CREATE TABLE skill.vote
     author    VARCHAR(50) REFERENCES accounts.accounts (login),
     deadline  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     arguments TEXT,
-    type      SMALLINT CHECK (type >= 0 AND type <= 2),
+    type SMALLINT CHECK (type >= 0 AND type <= 1),
     tags      TEXT[]
 );
 COMMENT
@@ -26,7 +26,7 @@ ON COLUMN skill.vote.deadline IS 'Конечный срок, когда голо
 COMMENT
 ON COLUMN skill.vote.arguments IS 'Аргументы за совершение действия, предложенного в голосовании.';
 COMMENT
-ON COLUMN skill.vote.type IS '0 = добавление навыка, 1 = удаление навыка, 2 = добавление экзамена';
+ON COLUMN skill.vote.type IS '0 = добавление навыка (вместе с экзаменом), 1 = удаление навыка';
 COMMENT
 ON COLUMN skill.vote.tags IS 'Поисковые теги';
 
@@ -70,13 +70,22 @@ CREATE TRIGGER AFTER_INSERT_VOTE
 
 CREATE TABLE skill.skill
 (
-    name VARCHAR(100) PRIMARY KEY,
-    tags TEXT[]
+    name                VARCHAR(100) PRIMARY KEY,
+    description         VARCHAR(3000),
+    private_archive_url TEXT,
+    public_archive_url  TEXT,
+    tags                TEXT[]
 );
 COMMENT
-ON TABLE skill.skill IS 'Таблица навыков';
+ON TABLE skill.skill IS 'Таблица навыков. Навык создаётся сразу вместе с данными экзамена.';
 COMMENT
-ON COLUMN skill.skill.name IS 'Название навыка';
+ON COLUMN skill.skill.name IS 'Название навыка. Оно же идентификатор экзамена.';
+COMMENT
+ON COLUMN skill.skill.description IS 'Постановка задания для экзаменуемых';
+COMMENT
+ON COLUMN skill.skill.private_archive_url IS 'Проверяющая часть экзамена';
+COMMENT
+ON COLUMN skill.skill.public_archive_url IS 'Проверяемая часть экзамена, задание';
 COMMENT
 ON COLUMN skill.skill.tags IS 'Поисковые теги';
 
@@ -86,21 +95,28 @@ CREATE INDEX idx_skill_tags ON skill.skill USING GIN(tags);
 
 CREATE TABLE skill.ts_skill_ru
 (
-    skill_name    VARCHAR(100) REFERENCES skill.skill (name) ON DELETE CASCADE,
-    ts_skill_name TSVECTOR NOT NULL
+    skill_name    VARCHAR(100) PRIMARY KEY REFERENCES skill.skill (name) ON DELETE CASCADE,
+    ts_skill_name TSVECTOR NOT NULL,
+    description   TSVECTOR
 );
 COMMENT
 ON TABLE skill.ts_skill_ru IS 'Хранит подготовленные для поиска значения skill в русской локали';
 COMMENT
 ON COLUMN skill.ts_skill_ru.ts_skill_name IS 'Подготовленный для поиска skill.name';
+COMMENT
+ON COLUMN skill.ts_skill_ru.description IS 'Подготовленный для поиска skill.description';
 
 CREATE INDEX ts_skill_name_ru_idx ON skill.ts_skill_ru USING GIN (ts_skill_name);
+CREATE INDEX ts_skill_description_ru_idx ON skill.ts_skill_ru USING GIN (description);
 
 CREATE
-OR REPLACE FUNCTION INSERT_INTO_TS_SKILL() RETURNS TRIGGER AS $$
+OR REPLACE FUNCTION UPSERT_INTO_TS_SKILL() RETURNS TRIGGER AS $$
 BEGIN
-INSERT INTO skill.ts_skill_ru (skill_name, ts_skill_name)
-VALUES (NEW.name, to_tsvector('russian', NEW.name));
+INSERT INTO skill.ts_skill_ru (skill_name, ts_skill_name, description)
+VALUES (NEW.name, to_tsvector('russian', NEW.name), to_tsvector('russian', NEW.description)) ON CONFLICT (skill_name) DO
+UPDATE
+    SET ts_skill_name = EXCLUDED.ts_skill_name,
+    description = EXCLUDED.description;
 RETURN NEW;
 END;
 $$
@@ -110,28 +126,31 @@ CREATE TRIGGER AFTER_INSERT_SKILL
     AFTER INSERT
     ON skill.skill
     FOR EACH ROW
-    EXECUTE FUNCTION INSERT_INTO_TS_SKILL();
+    EXECUTE FUNCTION UPSERT_INTO_TS_SKILL();
+
+CREATE TRIGGER AFTER_UPDATE_DESCRIPTION_SKILL
+    AFTER UPDATE OF description
+    ON skill.skill
+    FOR EACH ROW
+    EXECUTE FUNCTION UPSERT_INTO_TS_SKILL();
 
 
 
-CREATE TABLE skill.exam_add_vote
+CREATE TABLE skill.skill_add_vote
 (
-    vote_name           VARCHAR(100) REFERENCES skill.vote (name) ON DELETE CASCADE,  -- удалить при удалении самого голосования (модерацией)
-    skill_name          VARCHAR(100) REFERENCES skill.skill (name) ON DELETE CASCADE, -- удалить при удалении навыка
+    vote_name VARCHAR(100) PRIMARY KEY REFERENCES skill.vote (name) ON DELETE CASCADE, -- удалить при удалении самого голосования (модерацией)
     description         VARCHAR(3000),
     private_archive_url TEXT NOT NULL,
     public_archive_url  TEXT NOT NULL
 );
 COMMENT
-ON TABLE skill.exam_add_vote IS 'Данные голосования на добавление экзамена (type = 2)';
+ON TABLE skill.skill_add_vote IS 'Данные голосования на добавление навыка вместе с экзаменом (type = 0)';
 COMMENT
-ON COLUMN skill.exam_add_vote.skill_name IS 'Связанный навык';
+ON COLUMN skill.skill_add_vote.description IS 'Финальная постановка задания для экзаменуемых';
 COMMENT
-ON COLUMN skill.exam_add_vote.description IS 'Финальная постановка задания для экзаменуемых';
+ON COLUMN skill.skill_add_vote.private_archive_url IS 'Проверяющая часть экзамена';
 COMMENT
-ON COLUMN skill.exam_add_vote.private_archive_url IS 'Проверяющая часть экзамена';
-COMMENT
-ON COLUMN skill.exam_add_vote.public_archive_url IS 'Проверяемая часть экзамена, задание';
+ON COLUMN skill.skill_add_vote.public_archive_url IS 'Проверяемая часть экзамена, задание';
 
 CREATE
 OR REPLACE FUNCTION delete_related_vote()
@@ -152,74 +171,37 @@ END;
 $$
 LANGUAGE plpgsql;
 COMMENT
-ON FUNCTION delete_related_vote() IS 'При удалении навыка, голосование на добавление к нему экзамена теряет смысл. Не вызывать вручную!';
+ON FUNCTION delete_related_vote() IS 'При удалении навыка, голосование на его добавление теряет смысл. Не вызывать вручную!';
 
-CREATE TRIGGER before_delete_exam_add_vote
+CREATE TRIGGER before_delete_skill_add_vote
     BEFORE DELETE
-    ON skill.exam_add_vote
+    ON skill.skill_add_vote
     FOR EACH ROW EXECUTE PROCEDURE delete_related_vote();
 
-
-
-CREATE TABLE skill.exam
-(
-    name                VARCHAR(100) PRIMARY KEY,
-    skill_name          VARCHAR(100) REFERENCES skill.skill (name) ON DELETE CASCADE,
-    description         VARCHAR(3000) NOT NULL,
-    private_archive_url TEXT          NOT NULL,
-    public_archive_url  TEXT          NOT NULL
-);
-COMMENT
-ON TABLE skill.exam IS 'Данные экзамена.';
-COMMENT
-ON COLUMN skill.exam.name IS 'Название экзамена';
-COMMENT
-ON COLUMN skill.exam.skill_name IS 'Какой навык экзамен проверяет';
-COMMENT
-ON COLUMN skill.exam.description IS 'Постановка задания для экзаменуемых';
-COMMENT
-ON COLUMN skill.exam.private_archive_url IS 'Проверяющая часть экзамена';
-COMMENT
-ON COLUMN skill.exam.public_archive_url IS 'Проверяемая часть экзамена, задание';
-
-
-
-CREATE TABLE skill.ts_exam_ru
-(
-    exam_name    VARCHAR(100) REFERENCES skill.exam (name) ON DELETE CASCADE,
-    ts_exam_name TSVECTOR NOT NULL,
-    description  TSVECTOR NOT NULL
-);
-COMMENT
-ON TABLE skill.ts_exam_ru IS 'Хранит подготовленные для поиска значения exam в русской локали';
-COMMENT
-ON COLUMN skill.ts_exam_ru.ts_exam_name IS 'Подготовленный для поиска exam.name';
-COMMENT
-ON COLUMN skill.ts_exam_ru.description IS 'Подготовленный для поиска exam.description';
-
-CREATE INDEX ts_exam_name_ru_idx ON skill.ts_exam_ru USING GIN (ts_exam_name);
-CREATE INDEX ts_exam_description_ru_idx ON skill.ts_exam_ru USING GIN (description);
-
 CREATE
-OR REPLACE FUNCTION INSERT_INTO_TS_EXAM() RETURNS TRIGGER AS $$
+OR REPLACE FUNCTION delete_skill_add_vote()
+RETURNS TRIGGER AS $$
 BEGIN
-INSERT INTO skill.ts_exam_ru (exam_name, ts_exam_name, description)
-VALUES (NEW.name, to_tsvector('russian', NEW.name), to_tsvector('russian', NEW.description));
-RETURN NEW;
+DELETE
+FROM skill.skill_add_vote
+WHERE vote_name = OLD.name;
+RETURN OLD;
 END;
 $$
-LANGUAGE PLPGSQL;
+LANGUAGE plpgsql;
+COMMENT
+ON FUNCTION delete_skill_add_vote() IS 'Удаление данных голосования на добавление навыка при удалении самого навыка.';
 
-CREATE TRIGGER AFTER_INSERT_EXAM
-    AFTER INSERT
-    ON skill.exam
-    FOR EACH ROW
-    EXECUTE FUNCTION INSERT_INTO_TS_EXAM();
+CREATE TRIGGER after_delete_skill
+    AFTER DELETE
+    ON skill.skill
+    FOR EACH ROW EXECUTE PROCEDURE delete_skill_add_vote();
+
 
 
 CREATE TABLE skill.result
 (
-    exam_name VARCHAR(100) REFERENCES skill.exam (name) ON DELETE CASCADE,
+    skill_name VARCHAR(100) REFERENCES skill.skill (name) ON DELETE CASCADE,
     examinee  VARCHAR(50) REFERENCES accounts.accounts (login) ON DELETE CASCADE,
     duration_minutes INTERVAL NOT NULL
 );
@@ -365,15 +347,15 @@ LANGUAGE plpgsql;
 
 CREATE TABLE skill.session
 (
-    owner     VARCHAR(50) REFERENCES accounts.accounts (login) ON DELETE CASCADE,
-    exam_name VARCHAR(100) REFERENCES skill.exam (name),
-    created   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    owner      VARCHAR(50) REFERENCES accounts.accounts (login) ON DELETE CASCADE,
+    skill_name VARCHAR(100) REFERENCES skill.skill (name),
+    created    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT
 ON TABLE skill.session IS 'Таблица для хранения сессий экзаменуемых';
 COMMENT
 ON COLUMN skill.session.owner IS 'Логин экзаменуемого';
 COMMENT
-ON COLUMN skill.session.exam_name IS 'Проводимый экзамен';
+ON COLUMN skill.session.skill_name IS 'Навык, экзамен по которому проводится';
 COMMENT
 ON COLUMN skill.session.created IS 'Время начала сессии';

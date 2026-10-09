@@ -1,5 +1,5 @@
 package tech.provve.statemachine.domain.value;
 
-public enum SaveExamEvent {
+public enum SaveSkillEvent {
     PREPARE, INVALIDATE
 }

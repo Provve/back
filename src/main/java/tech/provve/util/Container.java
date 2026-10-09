@@ -22,11 +22,7 @@ import tech.provve.validation.exception.StillRunning;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Container {
 
@@ -66,7 +62,7 @@ public class Container {
     /**
      * Create container from image named after an examinee. Process its whole lifecycle.
      */
-    public static void processContainer(String examinee, String examName) {
+    public static void processContainer(String examinee, String skillName) {
         CreateContainerResponse container = DOCKER_CLIENT.createContainerCmd(examinee)
                                                          .withNetworkDisabled(true)
                                                          .exec();
@@ -74,7 +70,7 @@ public class Container {
                      .exec();
         Map<String, Object> containerView = new HashMap<>();
         containerView.put(Entity.Container.EXAMINEE, examinee);
-        containerView.put(Entity.Container.EXAM_NAME, examName);
+        containerView.put(Entity.Container.SKILL_NAME, skillName);
         containerView.put(Entity.Container.CONTAINER_ID, container.getId());
         Storage.saveContainer(containerView);
 
@@ -88,7 +84,7 @@ public class Container {
         Instant sessionStartTime = Collection.get(session, Entity.Session.STARTED);
         if (result) {
             Map<String, Object> examResult = new HashMap<>();
-            examResult.put(Entity.Result.EXAM_NAME, examName);
+            examResult.put(Entity.Result.SKILL_NAME, skillName);
             examResult.put(Entity.Result.EXAMINEE, examinee);
             examResult.put(Entity.Result.DURATION_MINUTES, Duration.between(sessionStartTime, Instant.now()));
             Storage.saveResult(examResult);

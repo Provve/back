@@ -23,8 +23,7 @@ public class Scheduling {
                                      ContinueStatemachinesTask.TASK,
                                      DowngradePremiumAccountTask.TASK,
                                      AddSkillAfterVoteTask.TASK,
-                                     DeleteSkillAfterVoteTask.TASK,
-                                     AddExamAfterVoteTask.TASK
+                                     DeleteSkillAfterVoteTask.TASK
                              )
                              .pollUsingLockAndFetch(0.5, 1.0)
                              .pollingInterval(ofMinutes(1))
@@ -46,12 +45,6 @@ public class Scheduling {
     public static void delSkill(String voteName, Instant when) {
         scheduler.schedule(DeleteSkillAfterVoteTask.DESCRIPTOR.instance(voteName)
                                                               .scheduledTo(when));
-    }
-
-    public static void addExam(String voteName, String skillName, Instant when) {
-        scheduler.schedule(AddExamAfterVoteTask.DESCRIPTOR.instance(voteName)
-                                                          .data(skillName)
-                                                          .scheduledTo(when));
     }
 
     public static void downgradePremiumAccount(String login, Instant when) {

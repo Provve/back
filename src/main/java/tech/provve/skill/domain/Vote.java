@@ -3,13 +3,13 @@ package tech.provve.skill.domain;
 import alekseyvideman.dop.Collection;
 import io.avaje.config.Config;
 import lombok.SneakyThrows;
-import tech.provve.accounts.JwsParsing;
 import tech.provve.accounts.Account;
+import tech.provve.accounts.JwsParsing;
 import tech.provve.api.generated.dto.*;
 import tech.provve.constants.Entity;
+import tech.provve.skill.XssSanitizer;
 import tech.provve.skill.domain.value.VoteType;
 import tech.provve.skill.exception.*;
-import tech.provve.skill.XssSanitizer;
 import tech.provve.statemachine.domain.Statemachine;
 import tech.provve.task.Scheduling;
 import tech.provve.util.Jackson;
@@ -32,31 +32,52 @@ public class Vote {
     private static final Supplier<LocalDateTime> DEADLINE_SUPPLIER = () -> LocalDateTime.now(ZoneOffset.UTC)
                                                                                         .plusMonths(1);
 
+    @SneakyThrows
     public static void create(SkillAddVote skillAddVote) throws VoteAlreadyExists {
         Storage.findVoteByName(skillAddVote.getName())
                .ifPresent(_ -> {
                    throw new VoteAlreadyExists(skillAddVote.getName());
                });
+        if (Storage.skillExists(skillAddVote.getName())) {
+            throw new SkillAlreadyExists(skillAddVote.getName());
+        }
+
+        String publicArchive = skillAddVote.getPublicArchive()
+                                           .uploadedFileName();
+        String privateArchive = skillAddVote.getPrivateArchive()
+                                            .uploadedFileName();
+
+        String bucket = Config.get("s3.buckets.archives");
+        String privateArchiveUrl = S3.crtUpload(
+                bucket, S3.privateArchiveKeygen(skillAddVote.getName()),
+                Files.readAllBytes(Path.of(privateArchive))
+        );
+        String publicArchiveUrl = S3.crtUpload(
+                bucket, S3.publicArchiveKeygen(skillAddVote.getName()),
+                Files.readAllBytes(Path.of(publicArchive))
+        );
+
+        Map<String, Object> skill = new HashMap<>();
+        skill.put(Entity.Skill.DESCRIPTION, skillAddVote.getDescription());
+        skill.put(Entity.Skill.PRIVATE_ARCHIVE_URL, privateArchiveUrl);
+        skill.put(Entity.Skill.PUBLIC_ARCHIVE_URL, publicArchiveUrl);
 
         var author = JwsParsing.parseAuth(skillAddVote.getAuthToken(), JWT_SUBJECT);
-        var deadline = DEADLINE_SUPPLIER.get();
 
         Map<String, Object> vote = new HashMap<>();
         vote.put(Entity.Vote.NAME, sanitize(skillAddVote.getName()));
         vote.put(Entity.Vote.ACTIVE, true);
         vote.put(Entity.Vote.SUCCESS, false);
         vote.put(Entity.Vote.AUTHOR, author);
-        vote.put(Entity.Vote.DEADLINE, deadline);
         vote.put(Entity.Vote.ARGUMENTS, sanitize(skillAddVote.getArguments()));
         vote.put(Entity.Vote.TYPE, VoteType.ADD_SKILL);
         vote.put(Entity.Vote.TAGS, skillAddVote.getTags()
                                                .stream()
                                                .map(XssSanitizer::sanitize)
                                                .toList());
-        Storage.saveVote(vote);
+        vote.put(Entity.Vote.SKILL, skill);
 
-        String voteName = Collection.get(vote, Entity.Vote.NAME);
-        Scheduling.addSkill(voteName, deadline.toInstant(ZoneOffset.UTC));
+        Statemachine.createSaveSkill(skillAddVote.getName(), author, Jackson.json.writeValueAsString(vote));
     }
 
     public static void create(SkillDelVote skillDelVote) throws VoteAlreadyExists {
@@ -84,56 +105,6 @@ public class Vote {
 
         String voteName = Collection.get(vote, Entity.Vote.NAME);
         Scheduling.delSkill(voteName, deadline.toInstant(ZoneOffset.UTC));
-    }
-
-    @SneakyThrows
-    public static void create(ExamAddVote examAddVote) throws VoteAlreadyExists {
-        Storage.findVoteByName(examAddVote.getName())
-               .ifPresent(_ -> {
-                   throw new VoteAlreadyExists(examAddVote.getName());
-               });
-        if (!Storage.skillExists(examAddVote.getSkillName())) {
-            throw new SkillNotFound(examAddVote.getSkillName());
-        }
-
-        String publicArchive = examAddVote.getPublicArchive()
-                                          .uploadedFileName();
-        String privateArchive = examAddVote.getPrivateArchive()
-                                           .uploadedFileName();
-
-        String bucket = Config.get("s3.buckets.exams");
-        String privateArchiveUrl = S3.crtUpload(
-                bucket, S3.privateArchiveKeygen(examAddVote.getName()),
-                Files.readAllBytes(Path.of(privateArchive))
-        );
-        String publicArchiveUrl = S3.crtUpload(
-                bucket, S3.publicArchiveKeygen(examAddVote.getName()),
-                Files.readAllBytes(Path.of(publicArchive))
-        );
-
-        Map<String, Object> exam = new HashMap<>();
-        exam.put(Entity.Exam.NAME, examAddVote.getName());
-        exam.put(Entity.Exam.SKILL_NAME, examAddVote.getSkillName());
-        exam.put(Entity.Exam.DESCRIPTION, examAddVote.getDescription());
-        exam.put(Entity.Exam.PRIVATE_ARCHIVE_URL, privateArchiveUrl);
-        exam.put(Entity.Exam.PUBLIC_ARCHIVE_URL, publicArchiveUrl);
-
-        var author = JwsParsing.parseAuth(examAddVote.getAuthToken(), JWT_SUBJECT);
-
-        Map<String, Object> vote = new HashMap<>();
-        vote.put(Entity.Vote.NAME, sanitize(examAddVote.getName()));
-        vote.put(Entity.Vote.ACTIVE, true);
-        vote.put(Entity.Vote.SUCCESS, false);
-        vote.put(Entity.Vote.AUTHOR, author);
-        vote.put(Entity.Vote.ARGUMENTS, sanitize(examAddVote.getArguments()));
-        vote.put(Entity.Vote.TYPE, VoteType.ADD_EXAM);
-        vote.put(Entity.Vote.TAGS, examAddVote.getTags()
-                                              .stream()
-                                              .map(XssSanitizer::sanitize)
-                                              .toList());
-        vote.put(Entity.Vote.EXAM, exam);
-
-        Statemachine.createSaveExam(examAddVote.getName(), author, Jackson.json.writeValueAsString(vote));
     }
 
     public static Votes list(CollectionRequest collectionRequest) {

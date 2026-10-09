@@ -16,9 +16,9 @@ import tech.provve.notification.repository.NotificationRepository;
 import tech.provve.payment.repository.RobokassaInvoiceRepository;
 import tech.provve.skill.repository.*;
 import tech.provve.statemachine.domain.value.CheckSolutionState;
-import tech.provve.statemachine.domain.value.SaveExamState;
+import tech.provve.statemachine.domain.value.SaveSkillState;
 import tech.provve.statemachine.repository.CheckSolutionRepository;
-import tech.provve.statemachine.repository.SaveExamRepository;
+import tech.provve.statemachine.repository.SaveSkillRepository;
 import tech.provve.validation.repository.ContainerRepository;
 import tech.provve.validation.repository.ObservationRepository;
 
@@ -218,34 +218,6 @@ public class Storage {
         }
     }
 
-    public static void saveExam(Map<String, Object> exam) {
-        try (var session = sqlSessionFactory.openSession(true)) {
-            session.getMapper(ExamRepository.class)
-                   .save(exam);
-        }
-    }
-
-    public static Optional<Map<String, Object>> findExam(String name) {
-        try (var session = sqlSessionFactory.openSession(false)) {
-            return session.getMapper(ExamRepository.class)
-                          .find(name);
-        }
-    }
-
-    public static boolean examExists(String name) {
-        try (var session = sqlSessionFactory.openSession(false)) {
-            return session.getMapper(ExamRepository.class)
-                          .exists(name);
-        }
-    }
-
-    public static List<Map<String, Object>> getAllExams(Filter filter, String previous, int pageSize) {
-        try (var session = sqlSessionFactory.openSession(false)) {
-            return session.getMapper(ExamRepository.class)
-                          .getAll(filter, previous, pageSize);
-        }
-    }
-
     public static void saveNotification(Map<String, Object> inputNotification) {
         try (var session = sqlSessionFactory.openSession(true)) {
             session.getMapper(NotificationRepository.class)
@@ -316,37 +288,37 @@ public class Storage {
         }
     }
 
-    public static void saveSaveExam(Map<String, Object> saveExam) {
+    public static void saveSaveSkill(Map<String, Object> saveSkill) {
         try (var session = sqlSessionFactory.openSession(true)) {
-            session.getMapper(SaveExamRepository.class)
-                   .save(saveExam);
+            session.getMapper(SaveSkillRepository.class)
+                   .save(saveSkill);
         }
     }
 
-    public static void updateSaveExamState(String name, SaveExamState state) {
+    public static void updateSaveSkillState(String name, SaveSkillState state) {
         try (var session = sqlSessionFactory.openSession(true)) {
-            session.getMapper(SaveExamRepository.class)
+            session.getMapper(SaveSkillRepository.class)
                    .updateState(name, state);
         }
     }
 
-    public static List<Map<String, Object>> listSaveExams() {
+    public static List<Map<String, Object>> listSaveSkills() {
         try (var session = sqlSessionFactory.openSession(false)) {
-            return session.getMapper(SaveExamRepository.class)
+            return session.getMapper(SaveSkillRepository.class)
                           .list();
         }
     }
 
-    public static boolean saveExamExists(String name) {
+    public static boolean saveSkillExists(String name) {
         try (var session = sqlSessionFactory.openSession(false)) {
-            return session.getMapper(SaveExamRepository.class)
+            return session.getMapper(SaveSkillRepository.class)
                           .exists(name);
         }
     }
 
-    public static void deleteSaveExam(String name) {
+    public static void deleteSaveSkill(String name) {
         try (var session = sqlSessionFactory.openSession(true)) {
-            session.getMapper(SaveExamRepository.class)
+            session.getMapper(SaveSkillRepository.class)
                    .delete(name);
         }
     }
@@ -421,10 +393,10 @@ public class Storage {
         }
     }
 
-    public static void insertExamAddVote(Map<String, Object> vote) {
+    public static void insertSkillAddVote(Map<String, Object> vote) {
         try (var session = sqlSessionFactory.openSession(true)) {
             session.getMapper(VoteRepository.class)
-                   .insertExamAddVote(vote);
+                   .insertSkillAddVote(vote);
         }
     }
 
@@ -449,10 +421,10 @@ public class Storage {
         }
     }
 
-    public static Map<String, Object> selectExamAddVote(String name) {
+    public static Map<String, Object> selectSkillAddVote(String name) {
         try (var session = sqlSessionFactory.openSession(false)) {
             return session.getMapper(VoteRepository.class)
-                          .selectExamAddVote(name);
+                          .selectSkillAddVote(name);
         }
     }
 
@@ -528,12 +500,11 @@ public class Storage {
             configuration.addMapper(CheckSolutionRepository.class);
             configuration.addMapper(CommentRepository.class);
             configuration.addMapper(ContainerRepository.class);
-            configuration.addMapper(ExamRepository.class);
             configuration.addMapper(NotificationRepository.class);
             configuration.addMapper(ObservationRepository.class);
             configuration.addMapper(ResultRepository.class);
             configuration.addMapper(RobokassaInvoiceRepository.class);
-            configuration.addMapper(SaveExamRepository.class);
+            configuration.addMapper(SaveSkillRepository.class);
             configuration.addMapper(SessionRepository.class);
             configuration.addMapper(SkillRepository.class);
             configuration.addMapper(VoteRepository.class);

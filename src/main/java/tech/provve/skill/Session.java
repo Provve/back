@@ -5,8 +5,8 @@ import tech.provve.accounts.JwsParsing;
 import tech.provve.api.generated.dto.CreateSessionRequest;
 import tech.provve.api.generated.dto.CreateSessionResponse;
 import tech.provve.constants.Entity;
-import tech.provve.skill.exception.ExamNotFound;
 import tech.provve.skill.exception.ExamPassTwice;
+import tech.provve.skill.exception.SkillNotFound;
 import tech.provve.util.Storage;
 
 import java.security.SecureRandom;
@@ -20,23 +20,23 @@ public class Session {
 
     @SneakyThrows
     public static CreateSessionResponse create(CreateSessionRequest request) {
-        if (!(Storage.examExists(request.getExamName()))) {
-            throw new ExamNotFound(request.getExamName());
+        if (!(Storage.skillExists(request.getSkillName()))) {
+            throw new SkillNotFound(request.getSkillName());
         }
 
         var login = JwsParsing.parseAuth(request.getAuthToken(),
                                          JWT_SUBJECT);
         boolean notFirstAttempt = Storage.sessionExists(login) || Storage.resultExists(login);
         if (notFirstAttempt) throw new ExamPassTwice(login,
-                                                     request.getExamName());
+                                                     request.getSkillName());
 
-        boolean skillCanBeRemoved = Storage.voteExists(request.getExamName(), true);
+        boolean skillCanBeRemoved = Storage.voteExists(request.getSkillName(), true);
         var nonce = String.valueOf(SecureRandom.getInstanceStrong()
                                                .nextInt());
 
         Map<String, Object> session = new HashMap<>();
         session.put(Entity.Session.OWNER, login);
-        session.put(Entity.Session.EXAM_NAME, request.getExamName());
+        session.put(Entity.Session.SKILL_NAME, request.getSkillName());
         session.put(Entity.Session.STARTED, Instant.now());
         Storage.saveSession(session);
 

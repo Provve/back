@@ -1,15 +1,6 @@
 package tech.provve.skill.repository;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.One;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.jspecify.annotations.NullMarked;
 import tech.provve.api.generated.dto.Filter;
 import tech.provve.constants.Entity;
@@ -25,15 +16,15 @@ public interface VoteRepository {
 
     String VOTE = "vote";
     String VOTE_REACTIONS = "voteReactions";
-    String VOTE_EXAM = "voteExam";
+    String VOTE_SKILL = "voteSkill";
 
     default void save(Map<String, Object> vote) {
         VoteType voteType = VoteType.valueOf(vote.get(Entity.Vote.TYPE)
                                                  .toString());
         vote.put(Entity.Vote.TYPE, voteType);
         insertVote(vote);
-        if (VoteType.ADD_EXAM.equals(voteType)) {
-            insertExamAddVote(vote);
+        if (VoteType.ADD_SKILL.equals(voteType)) {
+            insertSkillAddVote(vote);
         }
     }
 
@@ -53,16 +44,15 @@ public interface VoteRepository {
     void insertVote(@Param("vote") Map<String, Object> vote);
 
     @Insert("""
-            INSERT INTO skill.exam_add_vote (vote_name, skill_name, description, private_archive_url, public_archive_url)
+            INSERT INTO skill.skill_add_vote (vote_name, description, private_archive_url, public_archive_url)
             VALUES (
                 #{vote.name, typeHandler=org.apache.ibatis.type.StringTypeHandler},
-                #{vote.exam.skillName, typeHandler=org.apache.ibatis.type.StringTypeHandler},
-                #{vote.exam.description, typeHandler=org.apache.ibatis.type.StringTypeHandler},
-                #{vote.exam.privateArchiveUrl, typeHandler=org.apache.ibatis.type.StringTypeHandler},
-                #{vote.exam.publicArchiveUrl, typeHandler=org.apache.ibatis.type.StringTypeHandler}
+                #{vote.skill.description, typeHandler=org.apache.ibatis.type.StringTypeHandler},
+                #{vote.skill.privateArchiveUrl, typeHandler=org.apache.ibatis.type.StringTypeHandler},
+                #{vote.skill.publicArchiveUrl, typeHandler=org.apache.ibatis.type.StringTypeHandler}
             )
             """)
-    void insertExamAddVote(@Param("vote") Map<String, Object> vote);
+    void insertSkillAddVote(@Param("vote") Map<String, Object> vote);
 
     @Delete("""
             DELETE FROM skill.vote
@@ -86,8 +76,8 @@ public interface VoteRepository {
             @Result(property = Entity.Vote.TAGS, column = "tags", typeHandler = org.apache.ibatis.type.ArrayTypeHandler.class),
             @Result(property = Entity.Vote.REACTIONS, column = "name", javaType = Map.class,
                     one = @One(select = "selectReactionsTotal")),
-            @Result(property = Entity.Vote.EXAM, column = "name", javaType = Map.class,
-                    one = @One(select = "selectExamAddVote"))
+            @Result(property = Entity.Vote.SKILL, column = "name", javaType = Map.class,
+                    one = @One(select = "selectSkillAddVote"))
     })
     Optional<Map<String, Object>> findByName(@Param("name") String name);
 
@@ -102,17 +92,16 @@ public interface VoteRepository {
     Map<String, Object> selectReactionsTotal(@Param("name") String name);
 
     @Select("""
-            SELECT skill_name, description, private_archive_url, public_archive_url
-            FROM skill.exam_add_vote
+            SELECT description, private_archive_url, public_archive_url
+            FROM skill.skill_add_vote
             WHERE vote_name = #{name, typeHandler=org.apache.ibatis.type.StringTypeHandler}
             """)
-    @Results(id = VOTE_EXAM, value = {
-            @Result(property = Entity.Exam.SKILL_NAME, column = "skill_name", typeHandler = org.apache.ibatis.type.StringTypeHandler.class),
-            @Result(property = Entity.Exam.DESCRIPTION, column = "description", typeHandler = org.apache.ibatis.type.StringTypeHandler.class),
-            @Result(property = Entity.Exam.PRIVATE_ARCHIVE_URL, column = "private_archive_url", typeHandler = org.apache.ibatis.type.StringTypeHandler.class),
-            @Result(property = Entity.Exam.PUBLIC_ARCHIVE_URL, column = "public_archive_url", typeHandler = org.apache.ibatis.type.StringTypeHandler.class)
+    @Results(id = VOTE_SKILL, value = {
+            @Result(property = Entity.Skill.DESCRIPTION, column = "description", typeHandler = org.apache.ibatis.type.StringTypeHandler.class),
+            @Result(property = Entity.Skill.PRIVATE_ARCHIVE_URL, column = "private_archive_url", typeHandler = org.apache.ibatis.type.StringTypeHandler.class),
+            @Result(property = Entity.Skill.PUBLIC_ARCHIVE_URL, column = "public_archive_url", typeHandler = org.apache.ibatis.type.StringTypeHandler.class)
     })
-    Map<String, Object> selectExamAddVote(@Param("name") String name);
+    Map<String, Object> selectSkillAddVote(@Param("name") String name);
 
     /**
      * @return Существует ли активное голосование?

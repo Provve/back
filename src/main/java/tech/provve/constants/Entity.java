@@ -50,15 +50,6 @@ public final class Entity {
 
         public static final String NAME = "name";
         public static final String TAGS = "tags";
-    }
-
-    public static final class Exam {
-
-        private Exam() {
-        }
-
-        public static final String NAME = "name";
-        public static final String SKILL_NAME = "skillName";
         public static final String DESCRIPTION = "description";
         public static final String PRIVATE_ARCHIVE_URL = "privateArchiveUrl";
         public static final String PUBLIC_ARCHIVE_URL = "publicArchiveUrl";
@@ -77,7 +68,7 @@ public final class Entity {
         public static final String ARGUMENTS = "arguments";
         public static final String TYPE = "type";
         public static final String TAGS = "tags";
-        public static final String EXAM = "exam";
+        public static final String SKILL = "skill";
         public static final String REACTIONS = "reactions";
     }
 
@@ -108,7 +99,7 @@ public final class Entity {
         private Result() {
         }
 
-        public static final String EXAM_NAME = "examName";
+        public static final String SKILL_NAME = "skillName";
         public static final String EXAMINEE = "examinee";
         public static final String DURATION_MINUTES = "durationMinutes";
     }
@@ -119,7 +110,7 @@ public final class Entity {
         }
 
         public static final String OWNER = "owner";
-        public static final String EXAM_NAME = "examName";
+        public static final String SKILL_NAME = "skillName";
         public static final String STARTED = "started";
     }
 
@@ -182,22 +173,22 @@ public final class Entity {
         public static final String REQUISITES = "requisites";
     }
 
-    public static final class AuthoredExamSaved {
+    public static final class AuthoredSkillSaved {
 
-        private AuthoredExamSaved() {
+        private AuthoredSkillSaved() {
         }
 
         public static final String REQUISITES = "requisites";
-        public static final String EXAM_NAME = "examName";
+        public static final String SKILL_NAME = "skillName";
     }
 
-    public static final class AuthoredExamNotSaved {
+    public static final class AuthoredSkillNotSaved {
 
-        private AuthoredExamNotSaved() {
+        private AuthoredSkillNotSaved() {
         }
 
         public static final String REQUISITES = "requisites";
-        public static final String EXAM_NAME = "examName";
+        public static final String SKILL_NAME = "skillName";
     }
 
     public static final class VoteStarted {
@@ -235,9 +226,9 @@ public final class Entity {
         public static final String EXAMINEE = "examinee";
     }
 
-    public static final class SaveExam {
+    public static final class SaveSkill {
 
-        private SaveExam() {
+        private SaveSkill() {
         }
 
         public static final String NAME = "name";
@@ -265,7 +256,7 @@ public final class Entity {
         }
 
         public static final String EXAMINEE = "examinee";
-        public static final String EXAM_NAME = "examName";
+        public static final String SKILL_NAME = "skillName";
         public static final String CONTAINER_ID = "containerId";
     }
 

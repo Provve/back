@@ -1,26 +1,28 @@
 package tech.provve.api.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkillResponse {
 
     private String name;
+    private String description;
+    private String publicArchiveUrl;
     private List<String> tags = new ArrayList<>();
 
     public SkillResponse() {
 
     }
 
-    public SkillResponse(String name, List<String> tags) {
+    public SkillResponse(String name, String description, String publicArchiveUrl, List<String> tags) {
         this.name = name;
+        this.description = description;
+        this.publicArchiveUrl = publicArchiveUrl;
         this.tags = tags;
     }
 
@@ -32,6 +34,26 @@ public class SkillResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    @JsonProperty("public_archive_url")
+    public String getPublicArchiveUrl() {
+        return publicArchiveUrl;
+    }
+
+    public void setPublicArchiveUrl(String publicArchiveUrl) {
+        this.publicArchiveUrl = publicArchiveUrl;
     }
 
 
@@ -55,12 +77,14 @@ public class SkillResponse {
         }
         SkillResponse skillResponse = (SkillResponse) o;
         return Objects.equals(name, skillResponse.name) &&
+                Objects.equals(description, skillResponse.description) &&
+                Objects.equals(publicArchiveUrl, skillResponse.publicArchiveUrl) &&
                 Objects.equals(tags, skillResponse.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, tags);
+        return Objects.hash(name, description, publicArchiveUrl, tags);
     }
 
     @Override
@@ -70,6 +94,12 @@ public class SkillResponse {
 
         sb.append("    name: ")
           .append(toIndentedString(name))
+          .append("\n");
+        sb.append("    description: ")
+          .append(toIndentedString(description))
+          .append("\n");
+        sb.append("    publicArchiveUrl: ")
+          .append(toIndentedString(publicArchiveUrl))
           .append("\n");
         sb.append("    tags: ")
           .append(toIndentedString(tags))

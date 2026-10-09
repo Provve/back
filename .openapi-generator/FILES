@@ -28,12 +28,8 @@ src/main/java/tech/provve/api/generated/dto/DeleteAccountRequest.java
 src/main/java/tech/provve/api/generated/dto/DeleteCommentRequest.java
 src/main/java/tech/provve/api/generated/dto/EditCommentRequest.java
 src/main/java/tech/provve/api/generated/dto/Error.java
-src/main/java/tech/provve/api/generated/dto/ExamAddVote.java
-src/main/java/tech/provve/api/generated/dto/ExamAddVoteResponse.java
-src/main/java/tech/provve/api/generated/dto/ExamResponse.java
 src/main/java/tech/provve/api/generated/dto/Examinee.java
 src/main/java/tech/provve/api/generated/dto/Examinees.java
-src/main/java/tech/provve/api/generated/dto/Exams.java
 src/main/java/tech/provve/api/generated/dto/Filter.java
 src/main/java/tech/provve/api/generated/dto/ListCommentsRequest.java
 src/main/java/tech/provve/api/generated/dto/Notification.java
@@ -50,6 +46,7 @@ src/main/java/tech/provve/api/generated/dto/ResultResponse.java
 src/main/java/tech/provve/api/generated/dto/Results.java
 src/main/java/tech/provve/api/generated/dto/RobokassaConfirmPaymentRequest.java
 src/main/java/tech/provve/api/generated/dto/SkillAddVote.java
+src/main/java/tech/provve/api/generated/dto/SkillAddVoteResponse.java
 src/main/java/tech/provve/api/generated/dto/SkillDelVote.java
 src/main/java/tech/provve/api/generated/dto/SkillResponse.java
 src/main/java/tech/provve/api/generated/dto/Skills.java

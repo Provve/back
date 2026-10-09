@@ -2,6 +2,7 @@ package tech.provve.api.controller;
 
 import io.vertx.core.Future;
 import tech.provve.accounts.JwsParsing;
+import tech.provve.api.Antifraud;
 import tech.provve.api.ApiResponse;
 import tech.provve.api.exception.HttpException;
 import tech.provve.api.exception.ValidationError;
@@ -10,10 +11,9 @@ import tech.provve.api.generated.dto.CreateSessionRequest;
 import tech.provve.api.generated.dto.CreateSessionResponse;
 import tech.provve.api.generated.dto.ObservationUploadRequest;
 import tech.provve.api.generated.dto.ObservationUploadResponse;
-import tech.provve.api.Antifraud;
-import tech.provve.skill.exception.ExamNotFound;
-import tech.provve.skill.exception.ExamPassTwice;
 import tech.provve.skill.Session;
+import tech.provve.skill.exception.ExamPassTwice;
+import tech.provve.skill.exception.SkillNotFound;
 import tech.provve.util.Jackson;
 import tech.provve.util.Validation;
 
@@ -34,7 +34,7 @@ public class SessionsController implements SessionsApi {
             return Future.succeededFuture(new ApiResponse<>(200, response));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));
-        } catch (ExamNotFound e) {
+        } catch (SkillNotFound e) {
             return Future.failedFuture(new HttpException(e, 404));
         } catch (ExamPassTwice e) {
             return Future.failedFuture(new HttpException(e, 409));

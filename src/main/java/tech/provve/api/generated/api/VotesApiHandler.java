@@ -1,33 +1,16 @@
 package tech.provve.api.generated.api;
 
-import tech.provve.api.generated.dto.AddCommentRequest;
-import tech.provve.api.generated.dto.CastVoteRequest;
-import tech.provve.api.generated.dto.CollectionRequest;
-import tech.provve.api.generated.dto.Comments;
-import tech.provve.api.generated.dto.DeleteCommentRequest;
-import tech.provve.api.generated.dto.EditCommentRequest;
-import tech.provve.api.generated.dto.Error;
-import tech.provve.api.generated.dto.ExamAddVote;
-import tech.provve.api.generated.dto.ListCommentsRequest;
-import tech.provve.api.generated.dto.ReplyCommentRequest;
-import tech.provve.api.generated.dto.SkillAddVote;
-import tech.provve.api.generated.dto.SkillDelVote;
-import tech.provve.api.generated.dto.Votes;
-
-import tech.provve.api.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.ValidationHandler;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.ValidationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Map;
+import tech.provve.api.RouteHandler;
+import tech.provve.api.generated.dto.*;
 
 public class VotesApiHandler implements RouteHandler {
 
@@ -44,8 +27,6 @@ public class VotesApiHandler implements RouteHandler {
                .handler(this::addComment);
         builder.operation("castVote")
                .handler(this::castVote);
-        builder.operation("createExamAddVote")
-               .handler(this::createExamAddVote);
         builder.operation("createSkillAddVote")
                .handler(this::createSkillAddVote);
         builder.operation("createSkillDelVote")
@@ -106,33 +87,6 @@ public class VotesApiHandler implements RouteHandler {
         logger.debug("Parameter castVoteRequest is {}", castVoteRequest);
 
         api.castVote(name, castVoteRequest)
-           .onSuccess(apiResponse -> {
-               routingContext.response()
-                             .setStatusCode(apiResponse.getStatusCode());
-               if (apiResponse.hasData()) {
-                   routingContext.json(apiResponse.getData());
-               } else {
-                   routingContext.response()
-                                 .end();
-               }
-           })
-           .onFailure(routingContext::fail);
-    }
-
-    private void createExamAddVote(RoutingContext routingContext) {
-        logger.info("createExamAddVote()");
-
-        // Param extraction
-        RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
-
-        RequestParameter body = requestParameters.body();
-        ExamAddVote examAddVote = body != null ? DatabindCodec.mapper()
-                                                              .convertValue(body.get(), new TypeReference<ExamAddVote>() {
-                                                              }) : null;
-
-        logger.debug("Parameter examAddVote is {}", examAddVote);
-
-        api.createExamAddVote(examAddVote)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

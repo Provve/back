@@ -1,16 +1,15 @@
 package tech.provve.api.generated.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.URI;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateSessionRequest {
 
-    private String examName;
+    private String skillName;
     private URI redirect;
     private String authToken;
 
@@ -18,20 +17,20 @@ public class CreateSessionRequest {
 
     }
 
-    public CreateSessionRequest(String examName, URI redirect, String authToken) {
-        this.examName = examName;
+    public CreateSessionRequest(String skillName, URI redirect, String authToken) {
+        this.skillName = skillName;
         this.redirect = redirect;
         this.authToken = authToken;
     }
 
 
-    @JsonProperty("exam_name")
-    public String getExamName() {
-        return examName;
+    @JsonProperty("skill_name")
+    public String getSkillName() {
+        return skillName;
     }
 
-    public void setExamName(String examName) {
-        this.examName = examName;
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
     }
 
 
@@ -64,14 +63,14 @@ public class CreateSessionRequest {
             return false;
         }
         CreateSessionRequest createSessionRequest = (CreateSessionRequest) o;
-        return Objects.equals(examName, createSessionRequest.examName) &&
+        return Objects.equals(skillName, createSessionRequest.skillName) &&
                 Objects.equals(redirect, createSessionRequest.redirect) &&
                 Objects.equals(authToken, createSessionRequest.authToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(examName, redirect, authToken);
+        return Objects.hash(skillName, redirect, authToken);
     }
 
     @Override
@@ -79,8 +78,8 @@ public class CreateSessionRequest {
         StringBuilder sb = new StringBuilder();
         sb.append("class CreateSessionRequest {\n");
 
-        sb.append("    examName: ")
-          .append(toIndentedString(examName))
+        sb.append("    skillName: ")
+          .append(toIndentedString(skillName))
           .append("\n");
         sb.append("    redirect: ")
           .append(toIndentedString(redirect))

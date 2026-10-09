@@ -420,48 +420,19 @@ paths:
         '400':
           $ref: "#/components/responses/ValidationError"
 
-  /skills/{skill_name}/exams:
-    post:
-      tags:
-        - skills
-      summary: Получение списка экзаменов по навыку
-      operationId: listExams
-      parameters:
-        - name: skill_name
-          in: path
-          required: true
-          schema:
-            type: string
-            description: ID навыка
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Collection.request"
-      responses:
-        '200':
-          description: Успешно получен список экзаменов
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Exams"
-        '400':
-          $ref: "#/components/responses/ValidationError"
-
-  /exams/{exam_name}/solution:
+  /skills/{skill_name}/solution:
     post:
       tags:
         - skills
       summary: Отправка решения экзамена на проверку
       operationId: submitExamSolution
       parameters:
-        - name: exam_name
+        - name: skill_name
           in: path
           required: true
           schema:
             type: string
-          description: ID экзамена, для которой отправляется решение
+          description: ID навыка, по которому отправляется решение
       requestBody:
         required: true
         content:
@@ -480,7 +451,7 @@ paths:
 
   /skills/{skill_name}/results:
     post:
-      summary: Получение результатов по экзаменам навыка.
+      summary: Получение результатов по навыку.
       tags:
         - skills
       operationId: listResults
@@ -511,19 +482,19 @@ paths:
       security:
         - auth: [ ]
 
-  /exams/{exam_name}/result:
+  /skills/{skill_name}/result:
     get:
-      summary: Посмотреть результат
+      summary: Посмотреть результат экзамена
       tags:
         - skills
       operationId: getExamResult
       parameters:
-        - name: exam_name
+        - name: skill_name
           in: path
           required: true
           schema:
             type: string
-          description: ID экзамена, результат по которому нужно получить
+          description: ID навыка, результат по которому нужно получить
       responses:
         '200':
           description: Результат получен
@@ -605,32 +576,6 @@ paths:
           $ref: "#/components/responses/ValidationError"
         '401':
           $ref: "#/components/responses/Unauthenticated"
-        '409':
-          $ref: "#/components/responses/DataNotUnique"
-      security:
-        - auth: [ ]
-
-  /votes/exam-add:
-    post:
-      tags:
-        - votes
-      summary: Создать голосование на добавление экзамена
-      operationId: createExamAddVote
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExamAddVote'
-      responses:
-        '202':
-          description: Голосование будет создано, пользователь получит уведомление
-        '400':
-          $ref: "#/components/responses/ValidationError"
-        '401':
-          $ref: "#/components/responses/Unauthenticated"
-        '404':
-          description: Связанный навык не найден
         '409':
           $ref: "#/components/responses/DataNotUnique"
       security:
@@ -915,35 +860,18 @@ components:
       properties:
         name:
           type: string
-          description: Название навыка
+          description: Название навыка. Оно же идентификатор экзамена.
+        description:
+          type: string
+          description: Постановка задания для экзаменуемых
+        public_archive_url:
+          type: string
+          description: Проверяемая часть экзамена, задание
         tags:
           $ref: "#/components/schemas/Tags"
       required:
         - name
         - tags
-
-    Exams:
-      type: object
-      properties:
-        exams:
-          type: array
-          items:
-            $ref: "#/components/schemas/Exam.response"
-        cursor:
-          $ref: "#/components/schemas/Cursor"
-
-    Exam.response:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Используется как ID
-        description:
-          type: string
-          description: Описание для пользователей
-        public_archive_url:
-          type: string
-          description: Проверяемая часть экзамена, задание
 
     Results:
       type: object
@@ -959,9 +887,9 @@ components:
       description: Успешный результат
       type: object
       properties:
-        exam_name:
+        skill_name:
           type: string
-          description: ID экзамена, по которому получен результат
+          description: ID навыка, по которому получен результат
         duration_minutes:
           description: Затраченное время, в минутах
           type: integer
@@ -991,19 +919,8 @@ components:
     SkillAddVote:
       allOf:
         - $ref: '#/components/schemas/Vote.request'
-
-    SkillDelVote:
-      allOf:
-        - $ref: '#/components/schemas/Vote.request'
-
-    ExamAddVote:
-      allOf:
-        - $ref: '#/components/schemas/Vote.request'
         - type: object
           properties:
-            skill_name:
-              type: string
-              description: ID навыка, для проверки которого добавляют экзамен
             description:
               type: string
               maxLength: 3000
@@ -1017,10 +934,13 @@ components:
               format: binary
               description: Проверяющая часть экзамена
           required:
-            - skill_name
             - description
             - public_archive
             - private_archive
+
+    SkillDelVote:
+      allOf:
+        - $ref: '#/components/schemas/Vote.request'
 
     Votes:
       type: object
@@ -1040,11 +960,10 @@ components:
           properties:
             type:
               type: string
-              enum: [ add_skill, del_skill, add_exam ]
+              enum: [ add_skill, del_skill ]
               description: |
-                add_skill — добавление навыка,
-                del_skill — удаление навыка,
-                add_exam — добавление экзамена
+                add_skill — добавление навыка вместе с экзаменом,
+                del_skill — удаление навыка
             reactions:
               type: object
               description: Голоса
@@ -1060,19 +979,16 @@ components:
               format: date-time
               description: Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие.
               example: '2025-12-31T23:59:59Z'
-            exam_add:
-              $ref: "#/components/schemas/ExamAddVote.response"
+            skill_add:
+              $ref: "#/components/schemas/SkillAddVote.response"
           required:
             - type
             - reactions
             - deadline
 
-    ExamAddVote.response:
+    SkillAddVote.response:
       type: object
       properties:
-        skill_name:
-          type: string
-          description: ID навыка, для проверки которого добавляют экзамен
         description:
           type: string
           description: Финальная постановка задания для экзаменуемых
@@ -1080,7 +996,6 @@ components:
           type: string
           description: Проверяемая часть экзамена, задание
       required:
-        - skill_name
         - description
         - public_archive_url
 
@@ -1362,9 +1277,9 @@ components:
     CreateSession.request:
       type: object
       properties:
-        exam_name:
+        skill_name:
           type: string
-          description: ID экзамена
+          description: ID навыка, экзамен по которому будет проводиться
         redirect:
           type: string
           format: uri
@@ -1372,7 +1287,7 @@ components:
         auth_token:
           $ref: "#/components/schemas/AuthToken"
       required:
-        - exam_name
+        - skill_name
         - redirect
         - auth_token
 

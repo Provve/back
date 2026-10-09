@@ -18,6 +18,12 @@ public class Skill {
         Map<String, Object> skill = new HashMap<>();
         skill.put(Entity.Skill.NAME, Collection.get(fromVote, Entity.Vote.NAME));
         skill.put(Entity.Skill.TAGS, Collection.get(fromVote, Entity.Vote.TAGS));
+
+        Map<String, Object> skillAddVote = Collection.get(fromVote, Entity.Vote.SKILL);
+        skill.put(Entity.Skill.DESCRIPTION, Collection.get(skillAddVote, Entity.Skill.DESCRIPTION));
+        skill.put(Entity.Skill.PRIVATE_ARCHIVE_URL, Collection.get(skillAddVote, Entity.Skill.PRIVATE_ARCHIVE_URL));
+        skill.put(Entity.Skill.PUBLIC_ARCHIVE_URL, Collection.get(skillAddVote, Entity.Skill.PUBLIC_ARCHIVE_URL));
+
         Storage.saveSkill(skill);
     }
 
@@ -30,6 +36,8 @@ public class Skill {
                                          .stream()
                                          .map(skill -> new SkillResponse(
                                                  Collection.get(skill, Entity.Skill.NAME),
+                                                 Collection.getOrNull(skill, Entity.Skill.DESCRIPTION),
+                                                 Collection.getOrNull(skill, Entity.Skill.PUBLIC_ARCHIVE_URL),
                                                  Collection.get(skill, Entity.Skill.TAGS)))
                                          .toList();
         if (all.isEmpty()) {
