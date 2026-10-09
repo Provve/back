@@ -1,24 +1,17 @@
 package tech.provve.api.generated.api;
 
-import tech.provve.api.generated.dto.CreateSessionRequest;
-import tech.provve.api.generated.dto.CreateSessionResponse;
-import tech.provve.api.generated.dto.ObservationUploadRequest;
-import tech.provve.api.generated.dto.ObservationUploadResponse;
-
-import tech.provve.api.RouteHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.ValidationHandler;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.ValidationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Map;
+import tech.provve.api.RouteHandler;
+import tech.provve.api.generated.dto.CreateSessionRequest;
+import tech.provve.api.generated.dto.ObservationUploadRequest;
 
 public class SessionsApiHandler implements RouteHandler {
 

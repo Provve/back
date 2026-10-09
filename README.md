@@ -42,15 +42,10 @@ classDiagram
 classDiagram
     class Skill {
         String name
-        List~String~ tags
-    }
-
-    class Exam {
-        String name
-        String skillName
         String description
         String privateArchiveUrl
         String publicArchiveUrl
+        List~String~ tags
     }
 
     class Vote {
@@ -62,8 +57,14 @@ classDiagram
         String arguments
         String type
         List~String~ tags
-        Exam exam
+        SkillAddVote skill
         VoteReactions reactions
+    }
+
+    class SkillAddVote {
+        String description
+        String privateArchiveUrl
+        String publicArchiveUrl
     }
 
     class VoteReactions {
@@ -81,23 +82,23 @@ classDiagram
     }
 
     class Result {
-        String examName
+        String skillName
         String examinee
         Duration durationMinutes
     }
 
     class Session {
         String owner
-        String examName
+        String skillName
         Instant started
     }
 
-    Skill "1" --> "*" Exam : checked by (name = skillName)
-    Exam "1" --> "*" Result : has
-    Exam "1" --> "*" Session : has
+    Skill "1" --> "*" Result: has (name = skillName)
+    Skill "1" --> "*" Session: has (name = skillName)
     Vote "1" --> "*" Comment : has
     Vote "1" --> "1" VoteReactions : has reactions
-    Vote "1" --> "0..1" Exam : has exam (ADD_EXAM)
+    Vote "1" --> "0..1" SkillAddVote: has payload (ADD_SKILL)
+    Vote "0..1" --> "1" Skill: creates (name)
     Comment "1" --> "0..*" Comment : replies (parentId)
 ```
 
@@ -138,14 +139,14 @@ classDiagram
         RecipientRequisites requisites
     }
 
-    class AuthoredExamSaved {
+    class AuthoredSkillSaved {
         RecipientRequisites requisites
-        String examName
+        String skillName
     }
 
-    class AuthoredExamNotSaved {
+    class AuthoredSkillNotSaved {
         RecipientRequisites requisites
-        String examName
+        String skillName
     }
 
     class VoteStarted {
@@ -156,15 +157,15 @@ classDiagram
     NotifyCommand <|-- ResetCode
     NotifyCommand <|-- AccountUpgraded
     NotifyCommand <|-- AccountDowngraded
-    NotifyCommand <|-- AuthoredExamSaved
-    NotifyCommand <|-- AuthoredExamNotSaved
+    NotifyCommand <|-- AuthoredSkillSaved
+    NotifyCommand <|-- AuthoredSkillNotSaved
     NotifyCommand <|-- VoteStarted
     NotifyCommand "1" --> "1" RecipientRequisites: sends to
     ResetCode --> RecipientRequisites
     AccountUpgraded --> RecipientRequisites
     AccountDowngraded --> RecipientRequisites
-    AuthoredExamSaved --> RecipientRequisites
-    AuthoredExamNotSaved --> RecipientRequisites
+    AuthoredSkillSaved --> RecipientRequisites
+    AuthoredSkillNotSaved --> RecipientRequisites
     VoteStarted --> RecipientRequisites
 ```
 
@@ -194,7 +195,7 @@ classDiagram
         String examinee
     }
 
-    class SaveExam {
+    class SaveSkill {
         String name
         String state
         String author
@@ -216,7 +217,7 @@ classDiagram
 
     class ContainerView {
         String examinee
-        String examName
+        String skillName
         String containerId
     }
 ```
