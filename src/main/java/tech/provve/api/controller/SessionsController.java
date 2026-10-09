@@ -12,7 +12,6 @@ import tech.provve.api.generated.dto.CreateSessionResponse;
 import tech.provve.api.generated.dto.ObservationUploadRequest;
 import tech.provve.api.generated.dto.ObservationUploadResponse;
 import tech.provve.skill.Session;
-import tech.provve.skill.exception.ExamPassTwice;
 import tech.provve.skill.exception.SkillNotFound;
 import tech.provve.util.Jackson;
 import tech.provve.util.Validation;
@@ -36,8 +35,6 @@ public class SessionsController implements SessionsApi {
             return Future.failedFuture(new HttpException(e, 400));
         } catch (SkillNotFound e) {
             return Future.failedFuture(new HttpException(e, 404));
-        } catch (ExamPassTwice e) {
-            return Future.failedFuture(new HttpException(e, 409));
         }
     }
 

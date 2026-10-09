@@ -50,8 +50,8 @@ public class SaveSkillMachine extends StateMachine<SaveSkillState, SaveSkillEven
                     .state(UNPREPARED)
                         .onEntry(() -> {
                             var bucket = Config.get("s3.buckets.archives");
-                            var privateArchiveKey = S3.privateArchiveKeygen(name);
-                            var publicArchiveKey = S3.publicArchiveKeygen(name);
+                            var privateArchiveKey = S3.Key.privateArchive(name);
+                            var publicArchiveKey = S3.Key.publicArchive(name);
 
                             byte[] privateArchiveData = S3.download(bucket, privateArchiveKey);
                             byte[] publicArchiveData = S3.download(bucket, publicArchiveKey);
@@ -84,8 +84,8 @@ public class SaveSkillMachine extends StateMachine<SaveSkillState, SaveSkillEven
                     .state(INVALID)
                         .onEntry(() -> {
                             var bucket = Config.get("s3.buckets.archives");
-                            S3.delete(bucket, S3.privateArchiveKeygen(name));
-                            S3.delete(bucket, S3.publicArchiveKeygen(name));
+                            S3.delete(bucket, S3.Key.privateArchive(name));
+                            S3.delete(bucket, S3.Key.publicArchive(name));
 
                             Statemachine.validationErrorNotificationSender.accept(name, author);
                             Storage.deleteSaveSkill(name);

@@ -9,6 +9,5 @@ public interface SkillsApi {
     Future<ApiResponse<Examinees>> listExaminees(CollectionAuthenticatedRequest collectionAuthenticatedRequest);
     Future<ApiResponse<Results>> listResults(String skillName, CollectionAuthenticatedRequest collectionAuthenticatedRequest);
     Future<ApiResponse<Skills>> listSkills(CollectionRequest collectionRequest);
-
     Future<ApiResponse<Void>> submitExamSolution(String skillName, SubmitExamSolutionRequest submitExamSolutionRequest);
 }

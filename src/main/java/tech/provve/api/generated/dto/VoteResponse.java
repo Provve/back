@@ -22,7 +22,7 @@ public class VoteResponse {
 
     public enum TypeEnum {
         ADD_SKILL("add_skill"),
-        DEL_SKILL("del_skill");
+        ARCHIVE_SKILL("archive_skill");
 
         private String value;
 

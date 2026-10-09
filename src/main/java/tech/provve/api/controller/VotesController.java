@@ -57,13 +57,13 @@ public class VotesController implements VotesApi {
     }
 
     @Override
-    public Future<ApiResponse<Void>> createSkillDelVote(SkillDelVote skillDelVote) {
+    public Future<ApiResponse<Void>> createSkillArchiveVote(SkillArchiveVote skillArchiveVote) {
         try {
-            Map<String, Object> params = Jackson.convertToMap(skillDelVote);
-            String failureMessage = Validation.validateSkillDelVote(params);
+            Map<String, Object> params = Jackson.convertToMap(skillArchiveVote);
+            String failureMessage = Validation.validateSkillArchiveVote(params);
             if (failureMessage != null && !failureMessage.isEmpty()) throw new ValidationError(failureMessage);
 
-            Vote.create(skillDelVote);
+            Vote.create(skillArchiveVote);
             return Future.succeededFuture(new ApiResponse<>(200));
         } catch (ValidationError e) {
             return Future.failedFuture(new HttpException(e, 400));

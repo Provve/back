@@ -26,7 +26,7 @@ ON COLUMN skill.vote.deadline IS 'Конечный срок, когда голо
 COMMENT
 ON COLUMN skill.vote.arguments IS 'Аргументы за совершение действия, предложенного в голосовании.';
 COMMENT
-ON COLUMN skill.vote.type IS '0 = добавление навыка (вместе с экзаменом), 1 = удаление навыка';
+ON COLUMN skill.vote.type IS '0 = добавление навыка (вместе с экзаменом), 1 = архивация навыка';
 COMMENT
 ON COLUMN skill.vote.tags IS 'Поисковые теги';
 
@@ -74,7 +74,8 @@ CREATE TABLE skill.skill
     description         VARCHAR(3000),
     private_archive_url TEXT,
     public_archive_url  TEXT,
-    tags                TEXT[]
+    tags     TEXT[],
+    archived BOOLEAN NOT NULL DEFAULT FALSE
 );
 COMMENT
 ON TABLE skill.skill IS 'Таблица навыков. Навык создаётся сразу вместе с данными экзамена.';
@@ -88,6 +89,8 @@ COMMENT
 ON COLUMN skill.skill.public_archive_url IS 'Проверяемая часть экзамена, задание';
 COMMENT
 ON COLUMN skill.skill.tags IS 'Поисковые теги';
+COMMENT
+ON COLUMN skill.skill.archived IS 'Признак архивации навыка';
 
 CREATE INDEX idx_skill_tags ON skill.skill USING GIN(tags);
 
@@ -203,8 +206,14 @@ CREATE TABLE skill.result
 (
     skill_name VARCHAR(100) REFERENCES skill.skill (name) ON DELETE CASCADE,
     examinee  VARCHAR(50) REFERENCES accounts.accounts (login) ON DELETE CASCADE,
-    duration_minutes INTERVAL NOT NULL
+    duration_minutes INTERVAL NOT NULL,
+    success    BOOLEAN,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC')
 );
+COMMENT
+ON COLUMN skill.result.success IS 'Успешно ли пройден экзамен';
+COMMENT
+ON COLUMN skill.result.created_at IS 'Время создания результата (UTC)';
 
 
 

@@ -22,7 +22,8 @@ public class Validation {
 
     @SneakyThrows
     public static boolean validate(String examinee, String skillName, Path solutionArchivePath) {
-        Statemachine.createCheckSolution(skillName, examinee, renameExtensionToZip(solutionArchivePath.toString()).toPath());
+        File renamedExtensionToZip = renameExtensionToZip(solutionArchivePath.toString());
+        Statemachine.createCheckSolution(skillName, examinee, renamedExtensionToZip.toPath());
         return !(Storage.voteExists(skillName, true));
     }
 

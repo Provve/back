@@ -1,18 +1,28 @@
 package tech.provve.api.generated.api;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameter;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.ValidationHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import tech.provve.api.RouteHandler;
 import tech.provve.api.generated.dto.CollectionAuthenticatedRequest;
 import tech.provve.api.generated.dto.CollectionRequest;
+import tech.provve.api.generated.dto.Error;
+import tech.provve.api.generated.dto.Examinees;
+import tech.provve.api.generated.dto.ResultResponse;
+import tech.provve.api.generated.dto.Results;
+import tech.provve.api.generated.dto.Skills;
 import tech.provve.api.generated.dto.SubmitExamSolutionRequest;
+
+import tech.provve.api.RouteHandler;
+import com.fasterxml.jackson.core.type.TypeReference;
+import io.vertx.core.json.jackson.DatabindCodec;
+import io.vertx.ext.web.openapi.RouterBuilder;
+import io.vertx.ext.web.validation.RequestParameters;
+import io.vertx.ext.web.validation.RequestParameter;
+import io.vertx.ext.web.validation.ValidationHandler;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.core.json.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 public class SkillsApiHandler implements RouteHandler {
 

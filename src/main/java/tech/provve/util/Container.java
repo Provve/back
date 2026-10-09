@@ -78,17 +78,16 @@ public class Container {
         awaitContainerTermination(containerId);
         List<String> logs = getContainerLogs(containerId);
 
-        boolean result = analyzeContainerLogs(logs);
+        boolean success = analyzeContainerLogs(logs);
         Map<String, Object> session = Storage.findSession(examinee)
                                              .get();
         Instant sessionStartTime = Collection.get(session, Entity.Session.STARTED);
-        if (result) {
             Map<String, Object> examResult = new HashMap<>();
             examResult.put(Entity.Result.SKILL_NAME, skillName);
             examResult.put(Entity.Result.EXAMINEE, examinee);
             examResult.put(Entity.Result.DURATION_MINUTES, Duration.between(sessionStartTime, Instant.now()));
+        examResult.put(Entity.Result.SUCCESS, success);
             Storage.saveResult(examResult);
-        }
     }
 
     public static void awaitContainerTermination(String containerId) {

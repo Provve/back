@@ -5,7 +5,6 @@ import tech.provve.accounts.JwsParsing;
 import tech.provve.api.generated.dto.CreateSessionRequest;
 import tech.provve.api.generated.dto.CreateSessionResponse;
 import tech.provve.constants.Entity;
-import tech.provve.skill.exception.ExamPassTwice;
 import tech.provve.skill.exception.SkillNotFound;
 import tech.provve.util.Storage;
 
@@ -26,9 +25,6 @@ public class Session {
 
         var login = JwsParsing.parseAuth(request.getAuthToken(),
                                          JWT_SUBJECT);
-        boolean notFirstAttempt = Storage.sessionExists(login) || Storage.resultExists(login);
-        if (notFirstAttempt) throw new ExamPassTwice(login,
-                                                     request.getSkillName());
 
         boolean skillCanBeRemoved = Storage.voteExists(request.getSkillName(), true);
         var nonce = String.valueOf(SecureRandom.getInstanceStrong()

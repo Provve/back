@@ -145,7 +145,7 @@ public class Account {
         String bucket = Config.get("s3.buckets.images");
         String avatarUrl = S3.upload(
                 bucket,
-                S3.defaultKeygen(avatar),
+                S3.Key.uuid(avatar),
                 avatar
         );
         Storage.updateAccountAvatarUrl(login, avatarUrl);

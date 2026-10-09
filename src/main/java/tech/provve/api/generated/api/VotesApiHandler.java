@@ -29,8 +29,8 @@ public class VotesApiHandler implements RouteHandler {
                .handler(this::castVote);
         builder.operation("createSkillAddVote")
                .handler(this::createSkillAddVote);
-        builder.operation("createSkillDelVote")
-               .handler(this::createSkillDelVote);
+        builder.operation("createSkillArchiveVote")
+               .handler(this::createSkillArchiveVote);
         builder.operation("deleteComment")
                .handler(this::deleteComment);
         builder.operation("editComment")
@@ -127,20 +127,20 @@ public class VotesApiHandler implements RouteHandler {
            .onFailure(routingContext::fail);
     }
 
-    private void createSkillDelVote(RoutingContext routingContext) {
-        logger.info("createSkillDelVote()");
+    private void createSkillArchiveVote(RoutingContext routingContext) {
+        logger.info("createSkillArchiveVote()");
 
         // Param extraction
         RequestParameters requestParameters = routingContext.get(ValidationHandler.REQUEST_CONTEXT_KEY);
 
         RequestParameter body = requestParameters.body();
-        SkillDelVote skillDelVote = body != null ? DatabindCodec.mapper()
-                                                                .convertValue(body.get(), new TypeReference<SkillDelVote>() {
-                                                                }) : null;
+        SkillArchiveVote skillArchiveVote = body != null ? DatabindCodec.mapper()
+                                                                        .convertValue(body.get(), new TypeReference<SkillArchiveVote>() {
+                                                                        }) : null;
 
-        logger.debug("Parameter skillDelVote is {}", skillDelVote);
+        logger.debug("Parameter skillArchiveVote is {}", skillArchiveVote);
 
-        api.createSkillDelVote(skillDelVote)
+        api.createSkillArchiveVote(skillArchiveVote)
            .onSuccess(apiResponse -> {
                routingContext.response()
                              .setStatusCode(apiResponse.getStatusCode());

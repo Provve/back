@@ -366,8 +366,6 @@ paths:
           $ref: "#/components/responses/Unauthenticated"
         '404':
           description: Указанный экзамен не найден
-        '409':
-          description: Дважды пройти экзамен нельзя
       security:
         - auth: [ ]
 
@@ -443,9 +441,11 @@ paths:
         '202':
           description: Решение успешно принято на проверку
         '200':
-          description: Приниято. Система уведомила Пользователя об активном голосовании на удаление навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка.
+          description: Приниято. Система уведомила Пользователя об активном голосовании на архивацию навыка, предупредив, что результат по экзамена может быть удален ввиду удаления родительского навыка.
         '401':
           $ref: "#/components/responses/Unauthenticated"
+        '409':
+          $ref: "#/components/responses/ExamRetakeTooSoon"
       security:
         - trust: [ ]
 
@@ -557,18 +557,18 @@ paths:
       security:
         - auth: [ ]
 
-  /votes/skill-del:
+  /votes/skill-archive:
     post:
       tags:
         - votes
-      summary: Создать голосование на удаление навыка
-      operationId: createSkillDelVote
+      summary: Создать голосование на архивацию навыка
+      operationId: createSkillArchiveVote
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SkillDelVote'
+              $ref: '#/components/schemas/SkillArchiveVote'
       responses:
         '200':
           description: Голосование успешно создано
@@ -784,6 +784,8 @@ components:
       description: Эти данные нельзя записывать без согласия пользователя на обработку ПД
     DataNotUnique:
       description: Данные не удовлетворяют требованию уникальности
+    ExamRetakeTooSoon:
+      description: Пересдача экзамена возможна не чаще чем раз в 7 дней
     ValidationError:
       description: Ошибка валидации данных
       content:
@@ -894,6 +896,13 @@ components:
           description: Затраченное время, в минутах
           type: integer
           format: int64
+        success:
+          type: boolean
+          description: Успешно ли пройден экзамен
+        created_at:
+          type: string
+          format: date-time
+          description: Время создания результата (UTC)
 
     Vote:
       description: Простая форма голосования
@@ -938,7 +947,7 @@ components:
             - public_archive
             - private_archive
 
-    SkillDelVote:
+    SkillArchiveVote:
       allOf:
         - $ref: '#/components/schemas/Vote.request'
 
@@ -960,10 +969,10 @@ components:
           properties:
             type:
               type: string
-              enum: [ add_skill, del_skill ]
+              enum: [ add_skill, archive_skill ]
               description: |
                 add_skill — добавление навыка вместе с экзаменом,
-                del_skill — удаление навыка
+                archive_skill — архивация навыка
             reactions:
               type: object
               description: Голоса
@@ -1299,7 +1308,7 @@ components:
           format: uri
         loss_risk:
           type: boolean
-          description: Идёт голосование за удаление навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
+          description: Идёт голосование за архивацию навыка, но сессия создана и пользователь может начинать экзамен на свой риск.
         nonce:
           type: string
           description: Случайное значение для алгоритма проверки легитимности Антифрода.

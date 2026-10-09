@@ -44,45 +44,6 @@ public class S3 {
                                                                      .build();
 
     /**
-     * Генерирует ключ приватного архива экзамена (проверяющей части)
-     *
-     * @param examName название самого экзамена
-     */
-    public static String privateArchiveKeygen(String examName) {
-        return "private/" +
-                UrlEncoder.encode(examName);
-    }
-
-    /**
-     * Генерирует ключ публичного архива экзамена (проверяемой части)
-     * <br> examName — название самого экзамена
-     */
-    public static String publicArchiveKeygen(String examName) {
-        return "public/" +
-                UrlEncoder.encode(examName);
-    }
-
-    public static String solutionArchiveKeygen(String examName, String examinee) {
-        return examinee + "/" + UrlEncoder.encode(examName);
-    }
-
-    /**
-     * Генерирует ключ для объединенного архива с проверяющей и проверяемой частью, содержащую решение от пользователя
-     */
-    public static String solutionExamArchiveKeygen(String examName, String examinee) {
-        return "merged/" +
-                examinee + "/" + UrlEncoder.encode(examName);
-    }
-
-    /**
-     * Генерирует UUID из данных
-     */
-    public static String defaultKeygen(byte[] data) {
-        return UUID.nameUUIDFromBytes(data)
-                   .toString();
-    }
-
-    /**
      * Checks if the specified bucket exists. Amazon S3 buckets are named in a global namespace; use this method to
      * determine if a specified bucket name already exists, and therefore can't be used to create a new bucket.
      *
@@ -146,5 +107,44 @@ public class S3 {
         S3_CLIENT.deleteObject(builder -> builder.bucket(bucket)
                                                  .key(key)
                                                  .build());
+    }
+
+    public static class Key {
+
+        /**
+         * Генерирует ключ приватного архива навыка (проверяющей части)
+         *
+         * @param skillName название самого навыка
+         */
+        public static String privateArchive(String skillName) {
+            return "private/" +
+                    UrlEncoder.encode(skillName);
+        }
+
+        /**
+         * Генерирует ключ публичного архива навыка (проверяемой части)
+         * <br> skillName — название самого навыка
+         */
+        public static String publicArchive(String skillName) {
+            return "public/" +
+                    UrlEncoder.encode(skillName);
+        }
+
+        public static String solutionArchive(String skillName, String examinee) {
+            return examinee + "/" + UrlEncoder.encode(skillName);
+        }
+
+        /**
+         * Генерирует ключ для объединенного архива с проверяющей и проверяемой частью, содержащую решение от пользователя
+         */
+        public static String mergedArchive(String skillName, String examinee) {
+            return "merged/" +
+                    examinee + "/" + UrlEncoder.encode(skillName);
+        }
+
+        public static String uuid(byte[] data) {
+            return UUID.nameUUIDFromBytes(data)
+                       .toString();
+        }
     }
 }

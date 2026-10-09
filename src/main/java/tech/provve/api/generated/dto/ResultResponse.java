@@ -3,6 +3,7 @@ package tech.provve.api.generated.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
@@ -13,14 +14,18 @@ public class ResultResponse {
 
     private String skillName;
     private Long durationMinutes;
+    private Boolean success;
+    private OffsetDateTime createdAt;
 
     public ResultResponse() {
 
     }
 
-    public ResultResponse(String skillName, Long durationMinutes) {
+    public ResultResponse(String skillName, Long durationMinutes, Boolean success, OffsetDateTime createdAt) {
         this.skillName = skillName;
         this.durationMinutes = durationMinutes;
+        this.success = success;
+        this.createdAt = createdAt;
     }
 
 
@@ -44,6 +49,26 @@ public class ResultResponse {
     }
 
 
+    @JsonProperty("success")
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
+
+    @JsonProperty("created_at")
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -54,12 +79,14 @@ public class ResultResponse {
         }
         ResultResponse resultResponse = (ResultResponse) o;
         return Objects.equals(skillName, resultResponse.skillName) &&
-                Objects.equals(durationMinutes, resultResponse.durationMinutes);
+                Objects.equals(durationMinutes, resultResponse.durationMinutes) &&
+                Objects.equals(success, resultResponse.success) &&
+                Objects.equals(createdAt, resultResponse.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(skillName, durationMinutes);
+        return Objects.hash(skillName, durationMinutes, success, createdAt);
     }
 
     @Override
@@ -72,6 +99,12 @@ public class ResultResponse {
           .append("\n");
         sb.append("    durationMinutes: ")
           .append(toIndentedString(durationMinutes))
+          .append("\n");
+        sb.append("    success: ")
+          .append(toIndentedString(success))
+          .append("\n");
+        sb.append("    createdAt: ")
+          .append(toIndentedString(createdAt))
           .append("\n");
         sb.append("}");
         return sb.toString();

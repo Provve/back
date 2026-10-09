@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SkillDelVote {
+public class SkillArchiveVote {
 
     private String name;
     private String arguments;
     private List<String> tags = new ArrayList<>();
     private String authToken;
 
-    public SkillDelVote() {
+    public SkillArchiveVote() {
 
     }
 
-    public SkillDelVote(String name, String arguments, List<String> tags, String authToken) {
+    public SkillArchiveVote(String name, String arguments, List<String> tags, String authToken) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;
@@ -75,11 +75,11 @@ public class SkillDelVote {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SkillDelVote skillDelVote = (SkillDelVote) o;
-        return Objects.equals(name, skillDelVote.name) &&
-                Objects.equals(arguments, skillDelVote.arguments) &&
-                Objects.equals(tags, skillDelVote.tags) &&
-                Objects.equals(authToken, skillDelVote.authToken);
+        SkillArchiveVote skillArchiveVote = (SkillArchiveVote) o;
+        return Objects.equals(name, skillArchiveVote.name) &&
+                Objects.equals(arguments, skillArchiveVote.arguments) &&
+                Objects.equals(tags, skillArchiveVote.tags) &&
+                Objects.equals(authToken, skillArchiveVote.authToken);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class SkillDelVote {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class SkillDelVote {\n");
+        sb.append("class SkillArchiveVote {\n");
 
         sb.append("    name: ")
           .append(toIndentedString(name))

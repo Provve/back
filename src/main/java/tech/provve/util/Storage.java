@@ -253,10 +253,10 @@ public class Storage {
         }
     }
 
-    public static boolean resultExists(String examinee) {
+    public static Optional<Map<String, Object>> findResult(String skillName, String examinee) {
         try (var session = sqlSessionFactory.openSession(false)) {
             return session.getMapper(ResultRepository.class)
-                          .exists(examinee);
+                          .find(skillName, examinee);
         }
     }
 
@@ -337,10 +337,10 @@ public class Storage {
         }
     }
 
-    public static boolean sessionExists(String owner) {
-        try (var session = sqlSessionFactory.openSession(false)) {
-            return session.getMapper(SessionRepository.class)
-                          .exists(owner);
+    public static void deleteSession(String owner) {
+        try (var session = sqlSessionFactory.openSession(true)) {
+            session.getMapper(SessionRepository.class)
+                   .delete(owner);
         }
     }
 
@@ -365,6 +365,13 @@ public class Storage {
         }
     }
 
+    public static boolean skillNameTaken(String name) {
+        try (var session = sqlSessionFactory.openSession(false)) {
+            return session.getMapper(SkillRepository.class)
+                          .nameTaken(name);
+        }
+    }
+
     public static List<Map<String, Object>> getAllSkills(Filter filter, String previous, int pageSize) {
         try (var session = sqlSessionFactory.openSession(false)) {
             return session.getMapper(SkillRepository.class)
@@ -372,10 +379,10 @@ public class Storage {
         }
     }
 
-    public static void deleteSkill(String name) {
+    public static void archiveSkill(String name) {
         try (var session = sqlSessionFactory.openSession(true)) {
             session.getMapper(SkillRepository.class)
-                   .delete(name);
+                   .archive(name);
         }
     }
 

@@ -35,12 +35,10 @@ public interface SessionRepository {
     })
     Optional<Map<String, Object>> find(@Param("owner") String owner);
 
-    @Select("""
-            SELECT EXISTS(
-                SELECT 1 FROM skill.session
-                WHERE owner = #{owner, typeHandler=org.apache.ibatis.type.StringTypeHandler}
-            )
+    @Delete("""
+            DELETE FROM skill.session
+            WHERE owner = #{owner, typeHandler=org.apache.ibatis.type.StringTypeHandler}
             """)
-    boolean exists(@Param("owner") String owner);
+    void delete(@Param("owner") String owner);
 
 }

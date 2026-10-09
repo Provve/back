@@ -110,10 +110,10 @@ public class Validation {
         return Validation.validate(serialized, schemaLocations);
     }
 
-    public static String validateSkillDelVote(Map<String, Object> skillDelVote) {
+    public static String validateSkillArchiveVote(Map<String, Object> skillArchiveVote) {
         var singleKey = "q";
-        var schemaLocations = Map.of(singleKey, "classpath:schema/SkillDelVote.json");
-        Map<String, String> serialized = Map.of(singleKey, Jackson.json.writeValueAsString(skillDelVote));
+        var schemaLocations = Map.of(singleKey, "classpath:schema/SkillArchiveVote.json");
+        Map<String, String> serialized = Map.of(singleKey, Jackson.json.writeValueAsString(skillArchiveVote));
         return Validation.validate(serialized, schemaLocations);
     }
 

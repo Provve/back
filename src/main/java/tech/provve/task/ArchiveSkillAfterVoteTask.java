@@ -6,14 +6,14 @@ import com.github.kagkarlsson.scheduler.task.helper.Tasks;
 import tech.provve.skill.domain.Vote;
 import tech.provve.util.Storage;
 
-public class DeleteSkillAfterVoteTask {
+public class ArchiveSkillAfterVoteTask {
 
-    public static final TaskDescriptor<Void> DESCRIPTOR = TaskDescriptor.of("SKILL_DELETE");
+    public static final TaskDescriptor<Void> DESCRIPTOR = TaskDescriptor.of("SKILL_ARCHIVE");
     static final OneTimeTask<Void> TASK = Tasks.oneTime(DESCRIPTOR)
                                                .execute((task, _) -> {
                                                    boolean success = Vote.end(task.getId());
                                                    if (success) {
-                                                       Storage.deleteSkill(task.getId());
+                                                       Storage.archiveSkill(task.getId());
                                                    }
                                                });
 }

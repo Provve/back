@@ -38,7 +38,7 @@ public class Vote {
                .ifPresent(_ -> {
                    throw new VoteAlreadyExists(skillAddVote.getName());
                });
-        if (Storage.skillExists(skillAddVote.getName())) {
+        if (Storage.skillNameTaken(skillAddVote.getName())) {
             throw new SkillAlreadyExists(skillAddVote.getName());
         }
 
@@ -49,11 +49,11 @@ public class Vote {
 
         String bucket = Config.get("s3.buckets.archives");
         String privateArchiveUrl = S3.crtUpload(
-                bucket, S3.privateArchiveKeygen(skillAddVote.getName()),
+                bucket, S3.Key.privateArchive(skillAddVote.getName()),
                 Files.readAllBytes(Path.of(privateArchive))
         );
         String publicArchiveUrl = S3.crtUpload(
-                bucket, S3.publicArchiveKeygen(skillAddVote.getName()),
+                bucket, S3.Key.publicArchive(skillAddVote.getName()),
                 Files.readAllBytes(Path.of(publicArchive))
         );
 
@@ -80,31 +80,31 @@ public class Vote {
         Statemachine.createSaveSkill(skillAddVote.getName(), author, Jackson.json.writeValueAsString(vote));
     }
 
-    public static void create(SkillDelVote skillDelVote) throws VoteAlreadyExists {
-        Storage.findVoteByName(skillDelVote.getName())
+    public static void create(SkillArchiveVote skillArchiveVote) throws VoteAlreadyExists {
+        Storage.findVoteByName(skillArchiveVote.getName())
                .ifPresent(_ -> {
-                   throw new VoteAlreadyExists(skillDelVote.getName());
+                   throw new VoteAlreadyExists(skillArchiveVote.getName());
                });
 
-        var author = JwsParsing.parseAuth(skillDelVote.getAuthToken(), JWT_SUBJECT);
+        var author = JwsParsing.parseAuth(skillArchiveVote.getAuthToken(), JWT_SUBJECT);
         var deadline = DEADLINE_SUPPLIER.get();
 
         Map<String, Object> vote = new HashMap<>();
-        vote.put(Entity.Vote.NAME, sanitize(skillDelVote.getName()));
+        vote.put(Entity.Vote.NAME, sanitize(skillArchiveVote.getName()));
         vote.put(Entity.Vote.ACTIVE, true);
         vote.put(Entity.Vote.SUCCESS, false);
         vote.put(Entity.Vote.AUTHOR, author);
         vote.put(Entity.Vote.DEADLINE, deadline);
-        vote.put(Entity.Vote.ARGUMENTS, sanitize(skillDelVote.getArguments()));
-        vote.put(Entity.Vote.TYPE, VoteType.DEL_SKILL);
-        vote.put(Entity.Vote.TAGS, skillDelVote.getTags()
-                                               .stream()
-                                               .map(XssSanitizer::sanitize)
-                                               .toList());
+        vote.put(Entity.Vote.ARGUMENTS, sanitize(skillArchiveVote.getArguments()));
+        vote.put(Entity.Vote.TYPE, VoteType.ARCHIVE_SKILL);
+        vote.put(Entity.Vote.TAGS, skillArchiveVote.getTags()
+                                                   .stream()
+                                                   .map(XssSanitizer::sanitize)
+                                                   .toList());
         Storage.saveVote(vote);
 
         String voteName = Collection.get(vote, Entity.Vote.NAME);
-        Scheduling.delSkill(voteName, deadline.toInstant(ZoneOffset.UTC));
+        Scheduling.archiveSkill(voteName, deadline.toInstant(ZoneOffset.UTC));
     }
 
     public static Votes list(CollectionRequest collectionRequest) {

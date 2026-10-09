@@ -53,6 +53,7 @@ public final class Entity {
         public static final String DESCRIPTION = "description";
         public static final String PRIVATE_ARCHIVE_URL = "privateArchiveUrl";
         public static final String PUBLIC_ARCHIVE_URL = "publicArchiveUrl";
+        public static final String ARCHIVED = "archived";
     }
 
     public static final class Vote {
@@ -102,6 +103,8 @@ public final class Entity {
         public static final String SKILL_NAME = "skillName";
         public static final String EXAMINEE = "examinee";
         public static final String DURATION_MINUTES = "durationMinutes";
+        public static final String SUCCESS = "success";
+        public static final String CREATED_AT = "createdAt";
     }
 
     public static final class Session {

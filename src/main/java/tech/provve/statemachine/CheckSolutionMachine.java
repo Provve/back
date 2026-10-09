@@ -12,6 +12,7 @@ import tech.provve.util.Container;
 import tech.provve.util.S3;
 import tech.provve.util.Storage;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,13 +48,13 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                                 // сохранил решение в s3
                                 byte[] solutionArchive = Files.readAllBytes(solutionArchivePath);
                                 S3.crtUpload(Config.get("s3.buckets.solutions"),
-                                                                         S3.solutionArchiveKeygen(name, examinee), solutionArchive);
+                                                                         S3.Key.solutionArchive(name, examinee), solutionArchive);
                                 // извлек
                                 Path solutionTempDirPath = Files.createTempDirectory(null);
                                 new ZipFile(solutionArchivePath.toFile()).extractAll(solutionTempDirPath.toString());
 
                                 // скачал экзамен и записал на диск
-                                byte[] examArchive = S3.download(Config.get("s3.buckets.archives"), S3.privateArchiveKeygen(name));
+                                byte[] examArchive = S3.download(Config.get("s3.buckets.archives"), S3.Key.privateArchive(name));
                                 Path examTempFile = Files.createTempFile(null, ".zip");
                                 Files.write(Path.of(examTempFile.toString()), examArchive);
 
@@ -63,12 +64,12 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
 
                                 // добавил в архив экзамена файлы решения, предварительно отфильтровав их
                                 var ignoreListFilePath = Path.of(ignoreListDirPath, IGNORE_FILE);
-                                List<String> ignoreList = Files.readAllLines(ignoreListFilePath);
+                                List<File> ignoreList = Files.readAllLines(ignoreListFilePath).stream().map(File::new).toList();
                                 ZipParameters zipParameters = new ZipParameters();
                                 zipParameters.setExcludeFileFilter(ignoreList::contains);
                                 new ZipFile(examTempFile.toFile()).addFolder(solutionTempDirPath.toFile(), zipParameters);
 
-                                S3.crtUpload(Config.get("s3.buckets.archives"), S3.solutionExamArchiveKeygen(name, examinee), Files.readAllBytes(examTempFile));
+                                S3.crtUpload(Config.get("s3.buckets.archives"), S3.Key.mergedArchive(name, examinee), Files.readAllBytes(examTempFile));
 
                                 Map<String, Object> checkSolution = new HashMap<>();
                                 checkSolution.put(Entity.CheckSolution.NAME, name);
@@ -81,11 +82,10 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                                 process(CRASH);
                             }
                         })
-                        .onExit(() -> S3.delete(Config.get("s3.buckets.solutions"), S3.solutionArchiveKeygen(name, examinee)))
                     .state(PREPARED)
                         .onEntry(() -> {
                             try {
-                                byte[] mergedSolutionExamArchive = S3.download(Config.get("s3.buckets.archives"), S3.solutionExamArchiveKeygen(name, examinee));
+                                byte[] mergedSolutionExamArchive = S3.download(Config.get("s3.buckets.archives"), S3.Key.mergedArchive(name, examinee));
                                 // извлек
                                 Path tempArchivePath = Files.createTempFile(null, ".zip");
                                 Files.write(tempArchivePath, mergedSolutionExamArchive);
@@ -115,8 +115,9 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                         })
                     .state(STOPPED)
                         .onEntry(() -> {
-                            S3.delete(Config.get("s3.buckets.archives"), S3.solutionExamArchiveKeygen(name, examinee));
+                            S3.delete(Config.get("s3.buckets.archives"), S3.Key.mergedArchive(name, examinee));
                             Storage.updateCheckSolutionState(name, getState());
+                            Storage.deleteSession(examinee);
                         })
                     .state(CRASHED)
                 .transitions()

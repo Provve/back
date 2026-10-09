@@ -10,10 +10,13 @@ import tech.provve.api.generated.api.SkillsApi;
 import tech.provve.api.generated.dto.*;
 import tech.provve.skill.domain.Result;
 import tech.provve.skill.domain.Skill;
+import tech.provve.skill.exception.ExamRetakeTooSoon;
 import tech.provve.util.Jackson;
+import tech.provve.util.Storage;
 import tech.provve.util.Validation;
 
 import java.nio.file.Path;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 import static tech.provve.accounts.JwsParsing.JWT_SUBJECT;
@@ -74,17 +77,31 @@ public class SkillsController implements SkillsApi {
 
     @Override
     public Future<ApiResponse<Void>> submitExamSolution(String skillName, SubmitExamSolutionRequest submitExamSolutionRequest) {
-        Map<String, Object> params = Jackson.convertToMap(submitExamSolutionRequest);
-        var examinee = JwsParsing.parseTrust(submitExamSolutionRequest.getTrustToken(), JWT_SUBJECT);
-        var accepted = tech.provve.validation.Validation.validate(examinee,
-                                                                  skillName,
-                                                                  Path.of(submitExamSolutionRequest.getSolution()
-                                                                                                   .uploadedFileName()));
-        if (accepted) {
-            return Future.succeededFuture(new ApiResponse<>(200));
-        }
+        try {
+            Map<String, Object> params = Jackson.convertToMap(submitExamSolutionRequest);
+            var examinee = JwsParsing.parseTrust(submitExamSolutionRequest.getTrustToken(), JWT_SUBJECT);
+            Storage.findResult(skillName, examinee)
+                   .map(result -> Jackson.convertToClass(result, ResultResponse.class))
+                   .filter(result -> result.getCreatedAt() != null
+                           && !result.getCreatedAt()
+                                     .isBefore(OffsetDateTime.now()
+                                                             .minusDays(7)))
+                   .ifPresent(_ -> {
+                       throw new ExamRetakeTooSoon(examinee, skillName);
+                   });
 
-        return Future.succeededFuture(new ApiResponse<>(202));
+            var accepted = tech.provve.validation.Validation.validate(examinee,
+                                                                      skillName,
+                                                                      Path.of(submitExamSolutionRequest.getSolution()
+                                                                                                       .uploadedFileName()));
+            if (accepted) {
+                return Future.succeededFuture(new ApiResponse<>(200));
+            }
+
+            return Future.succeededFuture(new ApiResponse<>(202));
+        } catch (ExamRetakeTooSoon e) {
+            return Future.failedFuture(new HttpException(e, 409));
+        }
     }
 
 }

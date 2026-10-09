@@ -31,6 +31,7 @@ public interface SkillRepository {
             SELECT name, description, private_archive_url, public_archive_url, tags
             FROM skill.skill
             WHERE name = #{name, typeHandler=org.apache.ibatis.type.StringTypeHandler}
+            AND archived = FALSE
             """)
     @Results(id = SKILL, value = {
             @Result(property = Entity.Skill.NAME, column = "name", typeHandler = org.apache.ibatis.type.StringTypeHandler.class),
@@ -45,16 +46,27 @@ public interface SkillRepository {
             SELECT EXISTS(
                 SELECT 1 FROM skill.skill
                 WHERE name = #{name, typeHandler=org.apache.ibatis.type.StringTypeHandler}
+                AND archived = FALSE
             )
             """)
     boolean exists(@Param("name") String name);
+
+    @Select("""
+            SELECT EXISTS(
+                SELECT 1 FROM skill.skill
+                WHERE name = #{name, typeHandler=org.apache.ibatis.type.StringTypeHandler}
+            )
+            """)
+    boolean nameTaken(@Param("name") String name);
 
     @Select("""
             <script>
             SELECT name, description, private_archive_url, public_archive_url, tags
             FROM skill.skill
             <where>
+                archived = FALSE
                 <if test="filter != null">
+                    AND
                     <foreach collection="filter.conditions" item="condition" separator="AND">
                         <choose>
                             <when test="(condition.field == 'name' or condition.field == 'examName') and condition.operator.toString() == 'EQ'">
@@ -89,10 +101,11 @@ public interface SkillRepository {
                                      @Param("previous") String previous,
                                      @Param("pageSize") int pageSize);
 
-    @Delete("""
-            DELETE FROM skill.skill
+    @Update("""
+            UPDATE skill.skill
+            SET archived = TRUE
             WHERE name = #{name, typeHandler=org.apache.ibatis.type.StringTypeHandler}
             """)
-    void delete(@Param("name") String name);
+    void archive(@Param("name") String name);
 
 }

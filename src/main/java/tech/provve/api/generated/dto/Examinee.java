@@ -3,6 +3,7 @@ package tech.provve.api.generated.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +13,8 @@ public class Examinee {
 
     private String skillName;
     private Long durationMinutes;
+    private Boolean success;
+    private OffsetDateTime createdAt;
     private String login;
     private String avatarUrl;
     private String contactInfo;
@@ -21,9 +24,11 @@ public class Examinee {
 
     }
 
-    public Examinee(String skillName, Long durationMinutes, String login, String avatarUrl, String contactInfo, List<String> interests) {
+    public Examinee(String skillName, Long durationMinutes, Boolean success, OffsetDateTime createdAt, String login, String avatarUrl, String contactInfo, List<String> interests) {
         this.skillName = skillName;
         this.durationMinutes = durationMinutes;
+        this.success = success;
+        this.createdAt = createdAt;
         this.login = login;
         this.avatarUrl = avatarUrl;
         this.contactInfo = contactInfo;
@@ -48,6 +53,26 @@ public class Examinee {
 
     public void setDurationMinutes(Long durationMinutes) {
         this.durationMinutes = durationMinutes;
+    }
+
+
+    @JsonProperty("success")
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
+
+    @JsonProperty("created_at")
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 
@@ -102,6 +127,8 @@ public class Examinee {
         Examinee examinee = (Examinee) o;
         return Objects.equals(skillName, examinee.skillName) &&
                 Objects.equals(durationMinutes, examinee.durationMinutes) &&
+                Objects.equals(success, examinee.success) &&
+                Objects.equals(createdAt, examinee.createdAt) &&
                 Objects.equals(login, examinee.login) &&
                 Objects.equals(avatarUrl, examinee.avatarUrl) &&
                 Objects.equals(contactInfo, examinee.contactInfo) &&
@@ -110,7 +137,7 @@ public class Examinee {
 
     @Override
     public int hashCode() {
-        return Objects.hash(skillName, durationMinutes, login, avatarUrl, contactInfo, interests);
+        return Objects.hash(skillName, durationMinutes, success, createdAt, login, avatarUrl, contactInfo, interests);
     }
 
     @Override
@@ -123,6 +150,12 @@ public class Examinee {
           .append("\n");
         sb.append("    durationMinutes: ")
           .append(toIndentedString(durationMinutes))
+          .append("\n");
+        sb.append("    success: ")
+          .append(toIndentedString(success))
+          .append("\n");
+        sb.append("    createdAt: ")
+          .append(toIndentedString(createdAt))
           .append("\n");
         sb.append("    login: ")
           .append(toIndentedString(login))
