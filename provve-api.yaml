@@ -988,7 +988,7 @@ components:
               format: date-time
               description: Конечный срок, когда голосование закроется, будет подсчитан результат и совершенно действие.
               example: '2025-12-31T23:59:59Z'
-            skill_add:
+            skill:
               $ref: "#/components/schemas/SkillAddVote.response"
           required:
             - type
@@ -1004,9 +1004,13 @@ components:
         public_archive_url:
           type: string
           description: Проверяемая часть экзамена, задание
+        private_archive_url:
+          type: string
+          description: Проверяющая часть экзамена
       required:
         - description
         - public_archive_url
+        - private_archive_url
 
     Comments:
       type: object

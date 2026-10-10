@@ -1,22 +1,25 @@
 package tech.provve.api.generated.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SkillAddVoteResponse {
 
     private String description;
     private String publicArchiveUrl;
+    private String privateArchiveUrl;
 
     public SkillAddVoteResponse() {
 
     }
 
-    public SkillAddVoteResponse(String description, String publicArchiveUrl) {
+    public SkillAddVoteResponse(String description, String publicArchiveUrl, String privateArchiveUrl) {
         this.description = description;
         this.publicArchiveUrl = publicArchiveUrl;
+        this.privateArchiveUrl = privateArchiveUrl;
     }
 
 
@@ -40,6 +43,16 @@ public class SkillAddVoteResponse {
     }
 
 
+    @JsonProperty("private_archive_url")
+    public String getPrivateArchiveUrl() {
+        return privateArchiveUrl;
+    }
+
+    public void setPrivateArchiveUrl(String privateArchiveUrl) {
+        this.privateArchiveUrl = privateArchiveUrl;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -50,12 +63,13 @@ public class SkillAddVoteResponse {
         }
         SkillAddVoteResponse skillAddVoteResponse = (SkillAddVoteResponse) o;
         return Objects.equals(description, skillAddVoteResponse.description) &&
-                Objects.equals(publicArchiveUrl, skillAddVoteResponse.publicArchiveUrl);
+                Objects.equals(publicArchiveUrl, skillAddVoteResponse.publicArchiveUrl) &&
+                Objects.equals(privateArchiveUrl, skillAddVoteResponse.privateArchiveUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, publicArchiveUrl);
+        return Objects.hash(description, publicArchiveUrl, privateArchiveUrl);
     }
 
     @Override
@@ -68,6 +82,9 @@ public class SkillAddVoteResponse {
           .append("\n");
         sb.append("    publicArchiveUrl: ")
           .append(toIndentedString(publicArchiveUrl))
+          .append("\n");
+        sb.append("    privateArchiveUrl: ")
+          .append(toIndentedString(privateArchiveUrl))
           .append("\n");
         sb.append("}");
         return sb.toString();

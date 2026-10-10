@@ -40,20 +40,20 @@ public class VoteResponse {
     private TypeEnum type;
     private VoteResponseAllOfReactions reactions;
     private OffsetDateTime deadline;
-    private SkillAddVoteResponse skillAdd;
+    private SkillAddVoteResponse skill;
 
     public VoteResponse() {
 
     }
 
-    public VoteResponse(String name, String arguments, List<String> tags, TypeEnum type, VoteResponseAllOfReactions reactions, OffsetDateTime deadline, SkillAddVoteResponse skillAdd) {
+    public VoteResponse(String name, String arguments, List<String> tags, TypeEnum type, VoteResponseAllOfReactions reactions, OffsetDateTime deadline, SkillAddVoteResponse skill) {
         this.name = name;
         this.arguments = arguments;
         this.tags = tags;
         this.type = type;
         this.reactions = reactions;
         this.deadline = deadline;
-        this.skillAdd = skillAdd;
+        this.skill = skill;
     }
 
 
@@ -117,13 +117,13 @@ public class VoteResponse {
     }
 
 
-    @JsonProperty("skill_add")
-    public SkillAddVoteResponse getSkillAdd() {
-        return skillAdd;
+    @JsonProperty("skill")
+    public SkillAddVoteResponse getSkill() {
+        return skill;
     }
 
-    public void setSkillAdd(SkillAddVoteResponse skillAdd) {
-        this.skillAdd = skillAdd;
+    public void setSkill(SkillAddVoteResponse skill) {
+        this.skill = skill;
     }
 
 
@@ -142,12 +142,12 @@ public class VoteResponse {
                 Objects.equals(type, voteResponse.type) &&
                 Objects.equals(reactions, voteResponse.reactions) &&
                 Objects.equals(deadline, voteResponse.deadline) &&
-                Objects.equals(skillAdd, voteResponse.skillAdd);
+                Objects.equals(skill, voteResponse.skill);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, arguments, tags, type, reactions, deadline, skillAdd);
+        return Objects.hash(name, arguments, tags, type, reactions, deadline, skill);
     }
 
     @Override
@@ -173,8 +173,8 @@ public class VoteResponse {
         sb.append("    deadline: ")
           .append(toIndentedString(deadline))
           .append("\n");
-        sb.append("    skillAdd: ")
-          .append(toIndentedString(skillAdd))
+        sb.append("    skill: ")
+          .append(toIndentedString(skill))
           .append("\n");
         sb.append("}");
         return sb.toString();
