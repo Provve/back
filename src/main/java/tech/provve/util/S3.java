@@ -130,8 +130,18 @@ public class S3 {
                     UrlEncoder.encode(skillName);
         }
 
-        public static String solutionArchive(String skillName, String examinee) {
-            return examinee + "/" + UrlEncoder.encode(skillName);
+        /**
+         * Генерирует ключ архива с решением экзаменуемого.
+         * <p>Номер — порядковый номер попытки: количество уже сохранённых результатов
+         * (строк таблицы {@code skill.result}) по паре skillName+examinee, увеличенное на 1.
+         * Т.е. первая попытка получает номер 1, вторая — 2, и так далее вплоть до n.
+         *
+         * @param skillName название навыка
+         * @param examinee  логин экзаменуемого
+         * @param number    порядковый номер попытки (1..n)
+         */
+        public static String solutionArchive(String skillName, String examinee, int number) {
+            return examinee + "/" + UrlEncoder.encode(skillName) + "-" + number;
         }
 
         /**

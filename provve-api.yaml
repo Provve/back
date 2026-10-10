@@ -899,6 +899,13 @@ components:
         success:
           type: boolean
           description: Успешно ли пройден экзамен
+        examinee:
+          type: string
+          description: Логин экзаменуемого, прошедшего экзамен
+        attempts:
+          type: integer
+          format: int32
+          description: Количество попыток прохождения экзамена по навыку
         created_at:
           type: string
           format: date-time

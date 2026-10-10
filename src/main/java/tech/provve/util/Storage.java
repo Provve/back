@@ -260,6 +260,13 @@ public class Storage {
         }
     }
 
+    public static int countResults(String skillName, String examinee) {
+        try (var session = sqlSessionFactory.openSession(false)) {
+            return session.getMapper(ResultRepository.class)
+                          .count(skillName, examinee);
+        }
+    }
+
     public static List<Map<String, Object>> getAllResults(Filter filter, String previous, int pageSize) {
         try (var session = sqlSessionFactory.openSession(false)) {
             return session.getMapper(ResultRepository.class)

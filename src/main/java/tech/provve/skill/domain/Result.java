@@ -20,9 +20,17 @@ public class Result {
     public static Results list(CollectionAuthenticatedRequest request) {
         var login = JwsParsing.parseAuth(request.getAuthToken(), JwsParsing.JWT_SUBJECT);
         var pagination = request.getPagination();
-        List<ResultResponse> all = Storage.getAllResultsForExaminee(request.getFilter(), login, pagination.getPrevious(), pagination.getSize())
-                                          .stream()
-                                          .map(result -> Jackson.convertToClass(result, ResultResponse.class))
+
+        List<Map<String, Object>> results = Storage.getAllResultsForExaminee(request.getFilter(), login, pagination.getPrevious(), pagination.getSize());
+
+        List<ResultResponse> all = results.stream()
+                                          .map(result -> {
+                                              ResultResponse response = Jackson.convertToClass(result, ResultResponse.class);
+                                              String skillName = response.getSkillName();
+                                              int attempts = Storage.countResults(skillName, login);
+                                              response.setAttempts(attempts);
+                                              return response;
+                                          })
                                           .toList();
         if (all.isEmpty()) {
             return new Results(all, new Cursor(""));
@@ -55,9 +63,18 @@ public class Result {
         List<Examinee> examinees = profiles.entrySet()
                                            .stream()
                                            .map(entry -> {
-                                               Map<String, Object> examinee = Jackson.convertToMap(entry.getKey());
-                                               examinee.putAll(Jackson.convertToMap(entry.getValue()));
-                                               return Jackson.convertToClass(examinee, Examinee.class);
+                                               Map<String, Object> resultRaw = entry.getKey();
+                                               ProfilePublicView profile = entry.getValue();
+
+                                               Map<String, Object> merged = Jackson.convertToMap(resultRaw);
+                                               merged.putAll(Jackson.convertToMap(profile));
+                                               Examinee examinee = Jackson.convertToClass(merged, Examinee.class);
+
+                                               String skillName = examinee.getSkillName();
+                                               String examineeLogin = Collection.get(resultRaw, Entity.Result.EXAMINEE);
+                                               int attempts = Storage.countResults(skillName, examineeLogin);
+                                               examinee.setAttempts(attempts);
+                                               return examinee;
                                            })
                                            .toList();
         if (results.isEmpty()) {

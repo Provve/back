@@ -47,8 +47,9 @@ public class CheckSolutionMachine extends StateMachine<CheckSolutionState, Check
                             try {
                                 // сохранил решение в s3
                                 byte[] solutionArchive = Files.readAllBytes(solutionArchivePath);
+                                int number = Storage.countResults(name, examinee) + 1;
                                 S3.crtUpload(Config.get("s3.buckets.solutions"),
-                                                                         S3.Key.solutionArchive(name, examinee), solutionArchive);
+                                                                         S3.Key.solutionArchive(name, examinee, number), solutionArchive);
                                 // извлек
                                 Path solutionTempDirPath = Files.createTempDirectory(null);
                                 new ZipFile(solutionArchivePath.toFile()).extractAll(solutionTempDirPath.toString());

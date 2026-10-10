@@ -1,13 +1,16 @@
 package tech.provve.api.generated.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+
+import tech.provve.api.generated.dto.SkillAddVoteResponse;
+import tech.provve.api.generated.dto.VoteResponseAllOfReactions;
 
 /**
  * Всеохватывающее представление голосования

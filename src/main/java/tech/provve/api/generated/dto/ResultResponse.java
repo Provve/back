@@ -15,16 +15,20 @@ public class ResultResponse {
     private String skillName;
     private Long durationMinutes;
     private Boolean success;
+    private String examinee;
+    private Integer attempts;
     private OffsetDateTime createdAt;
 
     public ResultResponse() {
 
     }
 
-    public ResultResponse(String skillName, Long durationMinutes, Boolean success, OffsetDateTime createdAt) {
+    public ResultResponse(String skillName, Long durationMinutes, Boolean success, String examinee, Integer attempts, OffsetDateTime createdAt) {
         this.skillName = skillName;
         this.durationMinutes = durationMinutes;
         this.success = success;
+        this.examinee = examinee;
+        this.attempts = attempts;
         this.createdAt = createdAt;
     }
 
@@ -59,6 +63,26 @@ public class ResultResponse {
     }
 
 
+    @JsonProperty("examinee")
+    public String getExaminee() {
+        return examinee;
+    }
+
+    public void setExaminee(String examinee) {
+        this.examinee = examinee;
+    }
+
+
+    @JsonProperty("attempts")
+    public Integer getAttempts() {
+        return attempts;
+    }
+
+    public void setAttempts(Integer attempts) {
+        this.attempts = attempts;
+    }
+
+
     @JsonProperty("created_at")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -81,12 +105,14 @@ public class ResultResponse {
         return Objects.equals(skillName, resultResponse.skillName) &&
                 Objects.equals(durationMinutes, resultResponse.durationMinutes) &&
                 Objects.equals(success, resultResponse.success) &&
+                Objects.equals(examinee, resultResponse.examinee) &&
+                Objects.equals(attempts, resultResponse.attempts) &&
                 Objects.equals(createdAt, resultResponse.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(skillName, durationMinutes, success, createdAt);
+        return Objects.hash(skillName, durationMinutes, success, examinee, attempts, createdAt);
     }
 
     @Override
@@ -102,6 +128,12 @@ public class ResultResponse {
           .append("\n");
         sb.append("    success: ")
           .append(toIndentedString(success))
+          .append("\n");
+        sb.append("    examinee: ")
+          .append(toIndentedString(examinee))
+          .append("\n");
+        sb.append("    attempts: ")
+          .append(toIndentedString(attempts))
           .append("\n");
         sb.append("    createdAt: ")
           .append(toIndentedString(createdAt))

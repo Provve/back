@@ -102,4 +102,16 @@ public interface ResultRepository {
     Optional<Map<String, Object>> find(@Param("skillName") String skillName,
                                        @Param("examinee") String examinee);
 
+    /**
+     * @return количество результатов (попыток) экзаменуемого по навыку
+     */
+    @Select("""
+            SELECT COUNT(*)
+            FROM skill.result
+            WHERE skill_name = #{skillName, typeHandler=org.apache.ibatis.type.StringTypeHandler}
+              AND examinee = #{examinee, typeHandler=org.apache.ibatis.type.StringTypeHandler}
+            """)
+    int count(@Param("skillName") String skillName,
+              @Param("examinee") String examinee);
+
 }
